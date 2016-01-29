@@ -16,7 +16,8 @@ namespace Trukman
 		public App ()
 		{
 			// The root page of your application
-			MainPage = new NavigationPage (new SignUpTypePage());
+			MainPage = new NavigationPage ();
+			MainPage.Navigation.PushAsync (new SignUpTypePage ());
 		}
 
 		protected override void OnStart ()

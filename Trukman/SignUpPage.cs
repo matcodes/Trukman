@@ -6,8 +6,9 @@ namespace Trukman
 {
 	public class SignUpPage : BasePage
 	{
-		private Editor edtName;
-		private Editor edtPass;
+		TruckmanEditor edtName;
+		TruckmanEditor edtPhone;
+		TruckmanEditor edtMC;
 
 		public SignUpPage ()
 		{
@@ -24,39 +25,74 @@ namespace Trukman
 				HeightRequest = 60,
 			};
 
-			edtName = new Editor {
+			edtName = new TruckmanEditor {
+				Text = "Full Name",
 				BackgroundColor = Color.FromRgb (230, 230, 230)
 			};
-			edtPass = new Editor {
+			edtPhone = new TruckmanEditor {
+				Text = "Phone",
+				BackgroundColor = Color.FromRgb (230, 230, 230)
+			};
+			edtMC = new TruckmanEditor {
+				Text = "MC #",
 				BackgroundColor = Color.FromRgb (230, 230, 230)
 			};
 
-			TrukmanButton btnRegister = new TrukmanButton {
-				Text = "REGISTER"
+			TrukmanButton btnEnter = new TrukmanButton {
+				Text = "ENTER"
 			};
 
-			btnRegister.Clicked += buttonClicked;
+			Label lblTerms = new Label {
+				Text = "By clicking Enter you agree to the ",
+				FontSize = 11,
+				VerticalTextAlignment = TextAlignment.Center
+			};
 
-			Content = //new RelativeLayout {
-			//				Children = {
-				new StackLayout { 
-				Spacing = 10,
-				Padding = new Thickness (40),
+			Button btnTerms = new Button {
+				Text = "Terms and Conditions",
+				BackgroundColor = Color.FromRgba (0, 0, 0, 0),
+				FontSize = 11
+			};
+
+			RelativeLayout relativeTermsLayout = new RelativeLayout {};
+			relativeTermsLayout.Children.Add (lblTerms, Constraint.RelativeToParent ((parent) => {
+				return 0;
+			}), Constraint.RelativeToParent ((parent) => {
+				return 0;
+			}), null, 
+				Constraint.RelativeToParent ((parent) => {
+					return 50;
+				}));
+
+			relativeTermsLayout.Children.Add (btnTerms, 
+				Constraint.RelativeToView (lblTerms, (parent, sibling) => {
+					return lblTerms.Width;
+			}), null, null, 
+				Constraint.RelativeToView (lblTerms, (parent, sibling) => {
+					return lblTerms.Height;
+			}));
+
+			btnEnter.Clicked += buttonClicked;
+
+			Content = new StackLayout { 
+				Spacing = Constants.StackLayoutDefaultSpacing,
+				Padding = new Thickness (Constants.ViewsPadding),
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				Children = {
 					lblTitle,
 					lblSignUpAs,
 					edtName,
-					edtPass,
-					btnRegister
+					edtPhone,
+					edtMC,
+					relativeTermsLayout,
+					btnEnter
 				}
-				//					}
-				//				}
 			};
 		}
 
-		private void buttonClicked (object sender, EventArgs e) {
-			App.ServerManager.Register(edtName.Text, edtPass.Text);
+		async void buttonClicked (object sender, EventArgs e) {
+			await Navigation.PushAsync(new SignUpCompanyPage());
+			//App.ServerManager.Register(edtName.Text, edtMC.Text);
 		}
 	}
 }
