@@ -6,12 +6,14 @@ namespace Trukman
 {
 	public class SignUpPage : BasePage
 	{
-		TruckmanEditor edtName;
-		TruckmanEditor edtPhone;
-		TruckmanEditor edtMC;
+		TrukmanEditor edtName;
+		TrukmanEditor edtPhone;
+		TrukmanEditor edtMC;
 
 		public SignUpPage ()
 		{
+			NavigationPage.SetHasNavigationBar (this, false);
+
 			Label lblTitle = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				Text = "TRUKMAN",
@@ -25,17 +27,14 @@ namespace Trukman
 				HeightRequest = 60,
 			};
 
-			edtName = new TruckmanEditor {
-				Text = "Full Name",
-				BackgroundColor = Color.FromRgb (230, 230, 230)
+			edtName = new TrukmanEditor {
+				Text = "Full Name"
 			};
-			edtPhone = new TruckmanEditor {
-				Text = "Phone",
-				BackgroundColor = Color.FromRgb (230, 230, 230)
+			edtPhone = new TrukmanEditor {
+				Text = "Phone"
 			};
-			edtMC = new TruckmanEditor {
-				Text = "MC #",
-				BackgroundColor = Color.FromRgb (230, 230, 230)
+			edtMC = new TrukmanEditor {
+				Text = "MC #"
 			};
 
 			TrukmanButton btnEnter = new TrukmanButton {
@@ -92,7 +91,7 @@ namespace Trukman
 
 		async void buttonClicked (object sender, EventArgs e) {
 			await Navigation.PushAsync(new SignUpCompanyPage());
-			//App.ServerManager.Register(edtName.Text, edtMC.Text);
+			App.ServerManager.Register(edtName.Text, edtMC.Text);
 		}
 	}
 }

@@ -3,13 +3,12 @@ using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class SignUpCompanyPage : BasePage
+	public class SignUpFleetSizePage : BasePage
 	{
-		TruckmanEditor edtCompName;
-		TruckmanEditor edtCompAddress;
-
-		public SignUpCompanyPage ()
+		public SignUpFleetSizePage ()
 		{
+			NavigationPage.SetHasNavigationBar (this, false);
+
 			Label lblTitle = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				Text = "TRUKMAN",
@@ -24,19 +23,11 @@ namespace Trukman
 				HeightRequest = 60,
 			};
 
-			edtCompName = new TruckmanEditor {
-				Text = "COMPANY NAME",
-				BackgroundColor = Color.FromRgb (230, 230, 230)
-			};
-			edtCompAddress = new TruckmanEditor {
-				Text = "COMPANY ADDRESS",
-				BackgroundColor = Color.FromRgb (230, 230, 230)
+			TrukmanButton btnNext = new TrukmanButton {
+				Text = "NEXT"
 			};
 
-			TrukmanButton btnProceed = new TrukmanButton {
-				Text = "PROCEED TO FLEET SIZE"
-			};
-			btnProceed.Clicked += proceedPressed;
+			btnNext.Clicked += invitePressed;
 
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -45,18 +36,19 @@ namespace Trukman
 				Children = {
 					lblTitle,
 					lblWelcome,
-					edtCompName,
-					edtCompAddress,
 					new BoxView {
-						HeightRequest = 30
+						HeightRequest = 60
 					},
-					btnProceed
+					btnNext
 				}
 			};
 		}
 
-		async void proceedPressed (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpFleetSizePage ());
+		async void invitePressed (object sender, EventArgs e) {
+//			await Navigation.PushAsync (new  MenuPage ());
+//			await DisplayAlert (null, "You're Signed Up Congratulations", "CLOSE");	
+//			AlertHandler.ShowCheckDriver (this, "Vlad");
+//			ser
 		}
 	}
 }

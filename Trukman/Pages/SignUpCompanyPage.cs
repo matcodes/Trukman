@@ -3,10 +3,15 @@ using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class SignUpFleetSizePage : BasePage
+	public class SignUpCompanyPage : BasePage
 	{
-		public SignUpFleetSizePage ()
+		TrukmanEditor edtCompName;
+		TrukmanEditor edtCompAddress;
+
+		public SignUpCompanyPage ()
 		{
+			NavigationPage.SetHasNavigationBar (this, false);
+
 			Label lblTitle = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				Text = "TRUKMAN",
@@ -21,11 +26,17 @@ namespace Trukman
 				HeightRequest = 60,
 			};
 
-			TrukmanButton btnInvite = new TrukmanButton {
-				Text = "INVITE DRIVERS"
+			edtCompName = new TrukmanEditor {
+				Text = "COMPANY NAME"
+			};
+			edtCompAddress = new TrukmanEditor {
+				Text = "COMPANY ADDRESS"
 			};
 
-			btnInvite.Clicked += invitePressed;
+			TrukmanButton btnProceed = new TrukmanButton {
+				Text = "PROCEED TO FLEET SIZE"
+			};
+			btnProceed.Clicked += proceedPressed;
 
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -34,16 +45,19 @@ namespace Trukman
 				Children = {
 					lblTitle,
 					lblWelcome,
+					edtCompName,
+					edtCompAddress,
 					new BoxView {
-						HeightRequest = 60
+						HeightRequest = 30
 					},
-					btnInvite
+					btnProceed
 				}
 			};
 		}
 
-		async void invitePressed (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpInvite ());
+		async void proceedPressed (object sender, EventArgs e) {
+			await Navigation.PushAsync (new SignUpFleetSizePage ());
+			App.ServerManager.AddCompany (edtCompName.Text);
 		}
 	}
 }

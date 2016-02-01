@@ -1,43 +1,24 @@
 ﻿<Properties StartupItem="iOS/Trukman.iOS.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone6.9.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Trukman/SignUpAssignDispatchPage.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Xamarin_Android_API_15" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/Resources/Resource.designer.cs">
     <Files>
       <File FileName="Trukman/Main.cs" Line="1" Column="1" />
-      <File FileName="Trukman/SignUpPage.cs" Line="94" Column="42" />
-      <File FileName="Trukman/SignUpTypePage.cs" Line="44" Column="4" />
-      <File FileName="Trukman/SignUpCompanyPage.cs" Line="32" Column="30" />
-      <File FileName="Trukman/SignUpFleetSizePage.cs" Line="28" Column="4" />
-      <File FileName="Trukman/SignUpInvite.cs" Line="56" Column="8" />
-      <File FileName="Trukman/CustomViews/TrukmanButton.cs" Line="13" Column="43" />
-      <File FileName="Trukman/SignUpAssignDispatchPage.cs" Line="33" Column="88" />
+      <File FileName="Trukman/SignUpPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpTypePage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpCompanyPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpFleetSizePage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpInvite.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpAssignDispatchPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/SignUpDriverPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/BasePage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/CustomViews/TruckmanEditor.cs" Line="1" Column="1" />
+      <File FileName="Droid/CustomViews/SegmentedControlRenderer.cs" Line="43" Column="94" />
+      <File FileName="Droid/Resources/Resource.designer.cs" Line="16" Column="2" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Trukman" expanded="True">
-            <Node name="Trukman" expanded="True">
-              <Node name="CustomViews" expanded="True" />
-              <Node name="SignUpAssignDispatchPage.cs" selected="True" />
-            </Node>
-            <Node name="Trukman.Droid" expanded="True">
-              <Node name="CustomViews" expanded="True" />
-            </Node>
-            <Node name="Trukman.iOS" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="CustomViews" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <RunToCursorBreakpoint file="/Users/simon/Documents/Apps/Trukman/Trukman/SignUpAssignDispatchPage.cs" line="8" column="37" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Trukman.Droid AndroidDesignerPreferredDevice="Nexus 4" />
 </Properties>

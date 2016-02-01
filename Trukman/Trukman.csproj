@@ -31,19 +31,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignUpTypePage.cs" />
-    <Compile Include="BasePage.cs" />
-    <Compile Include="SignUpPage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomViews\TrukmanButton.cs" />
-    <Compile Include="CustomViews\TruckmanEditor.cs" />
-    <Compile Include="SpecificDeviceInteraction\IServerManager.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="CustomViews\SegmentedControl.cs" />
-    <Compile Include="SignUpFleetSizePage.cs" />
-    <Compile Include="SignUpCompanyPage.cs" />
-    <Compile Include="SignUpInvite.cs" />
-    <Compile Include="SignUpAssignDispatchPage.cs" />
+    <Compile Include="CustomViews\TrukmanEditor.cs" />
+    <Compile Include="Pages\SignUpCompanyPage.cs" />
+    <Compile Include="Pages\SignUpDriverPage.cs" />
+    <Compile Include="Pages\SignUpFleetSizePage.cs" />
+    <Compile Include="Pages\SignUpPage.cs" />
+    <Compile Include="Pages\SignUpTypePage.cs" />
+    <Compile Include="Pages\MenuPage.cs" />
+    <Compile Include="Pages\BasePage.cs" />
+    <Compile Include="Module\AlertHandler.cs" />
+    <Compile Include="Module\IServerManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -67,5 +68,7 @@
   <ItemGroup>
     <Folder Include="CustomViews\" />
     <Folder Include="SpecificDeviceInteraction\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Module\" />
   </ItemGroup>
 </Project>

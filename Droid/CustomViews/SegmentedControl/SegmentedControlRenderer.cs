@@ -7,8 +7,10 @@ using Android.Util;
 using Android.Graphics;
 using Android.Views;
 using Android.Graphics.Drawables;
+using Trukman;
+using SegmentedControl;
 
-[assembly:ExportRenderer (typeof(SegmentedControl.SegmentedControl), typeof(SegmentedControl.Android.SegmentedControlRenderer))]
+[assembly:ExportRenderer (typeof(SegmentedControl), typeof(Trukman.Android.SegmentedControlRenderer))]
 namespace Trukman.Android
 {
 	public class SegmentedControlRenderer : ViewRenderer<SegmentedControl, RadioGroup>
@@ -39,12 +41,12 @@ namespace Trukman.Android
 
 			for (var i = 0; i < e.NewElement.Children.Count; i++) {
 				var o = e.NewElement.Children [i];
-				var v = (SegmentedControlButton)layoutInflater.Inflate (Resource.Layout.SegmentedControl, null);
+				var v = (SegmentedControlButton)layoutInflater.Inflate (Trukman.Droid.SegmentedControl.Resource.Layout.SegmentedControl, null);
 				v.Text = o.Text;
 				if (i == 0)
-					v.SetBackgroundResource (Resource.Drawable.segmented_control_first_background);
+					v.SetBackgroundResource (Trukman.Droid.SegmentedControl.Resource.Drawable.segmented_control_first_background);
 				else if (i == e.NewElement.Children.Count - 1)
-					v.SetBackgroundResource (Resource.Drawable.segmented_control_last_background);
+					v.SetBackgroundResource (SegmentedControl.Droid.Resource.Drawable.segmented_control_last_background);
 				g.AddView (v);
 			}
 
@@ -74,14 +76,14 @@ namespace Trukman.Android
 
 		private void Initialize (IAttributeSet attributes, int defStyle)
 		{
-			var a = this.Context.ObtainStyledAttributes (attributes, Resource.Styleable.SegmentedControlOption, defStyle, Resource.Style.SegmentedControlOption);
+			var a = this.Context.ObtainStyledAttributes (attributes, Trukman.Droid.Resource.Styleable.SegmentedControlOption, defStyle, Trukman.Droid.Resource.Style.SegmentedControlOption);
 
-			var lineColor = a.GetColor (Resource.Styleable.SegmentedControlOption_lineColor, 0);
+			var lineColor = a.GetColor (Trukman.Droid.Resource.Styleable.SegmentedControlOption_lineColor, 0);
 			linePaint = new Paint ();
 			linePaint.Color = lineColor;
 
-			lineHeightUnselected = a.GetDimensionPixelSize (Resource.Styleable.SegmentedControlOption_lineHeightUnselected, 0);
-			lineHeightSelected = a.GetDimensionPixelSize (Resource.Styleable.SegmentedControlOption_lineHeightSelected, 0);
+			lineHeightUnselected = a.GetDimensionPixelSize (Trukman.Droid.Resource.Styleable.SegmentedControlOption_lineHeightUnselected, 0);
+			lineHeightSelected = a.GetDimensionPixelSize (Trukman.Droid.Resource.Styleable.SegmentedControlOption_lineHeightSelected, 0);
 
 			a.Recycle ();
 		}

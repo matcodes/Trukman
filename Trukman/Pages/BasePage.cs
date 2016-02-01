@@ -9,13 +9,12 @@ namespace Trukman
 		protected override void OnAppearing ()
 		{
 			base.OnAppearing ();
-//
-			NavigationPage.SetHasNavigationBar (this, false);
+			//
 		}
 
 		public BasePage ()
 		{
-			
+
 		}
 	}
 }

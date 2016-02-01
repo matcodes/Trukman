@@ -17,6 +17,7 @@ namespace Trukman
 		{
 			// The root page of your application
 			MainPage = new NavigationPage ();
+
 			MainPage.Navigation.PushAsync (new SignUpTypePage ());
 		}
 

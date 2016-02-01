@@ -3,8 +3,15 @@ using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class SignUpTypePage : BasePage
+	public class SignUpTypePage : ContentPage
 	{
+		protected override void OnAppearing ()
+		{
+			base.OnAppearing ();
+
+			NavigationPage.SetHasNavigationBar (this, false);
+		}
+
 		public SignUpTypePage ()
 		{
 			Label lblTitle = new Label {
@@ -42,9 +49,9 @@ namespace Trukman
 				}
 			};
 
-			btnOwner.Clicked += buttonClicked;
-			btnDispatch.Clicked += buttonClicked;
-			btnDriver.Clicked += buttonClicked;
+			btnOwner.Clicked += ownerClicked;
+//			btnDispatch.Clicked += buttonClicked;
+			btnDriver.Clicked += driverClicked;
 
 			StackLayout stackLayout = new StackLayout { 
 				Spacing = Constants.StackLayoutDefaultSpacing,
@@ -81,8 +88,12 @@ namespace Trukman
 			Content = relativeLayout;					
 		}
 
-		async private void buttonClicked (object sender, EventArgs e) {
+		async private void ownerClicked (object sender, EventArgs e) {
 			await Navigation.PushAsync (new SignUpPage());
+		}
+
+		async private void driverClicked (object sender, EventArgs e) {
+			await Navigation.PushAsync (new SignUpDriverPage());
 		}
 	}
 }

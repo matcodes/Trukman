@@ -90,24 +90,36 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomViews\SegmentedControlRenderer.cs" />
+    <Compile Include="CustomViews\SegmentedControl\Resources\Resource.designer.cs" />
+    <Compile Include="CustomViews\SegmentedControl\SegmentedControlRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
+    <None Include="CustomViews\SegmentedControl\Resources\AboutResources.txt" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable\icon.png" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable-hdpi\icon.png" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable-xhdpi\icon.png" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable-xxhdpi\icon.png" />
+    <None Include="CustomViews\SegmentedControl\Resources\layout\SegmentedControl.axml" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable\segmented_control_background.xml" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable\segmented_control_first_background.xml" />
+    <None Include="CustomViews\SegmentedControl\Resources\drawable\segmented_control_last_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
     <Folder Include="Resources\values\" />
     <Folder Include="CustomViews\" />
+    <Folder Include="CustomViews\SegmentedControl\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\layout\SegmentedControl.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.3\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.3\build\MonoAndroid10\Xamarin.Insights.targets')" />
