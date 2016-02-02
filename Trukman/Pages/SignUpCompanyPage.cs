@@ -27,10 +27,10 @@ namespace Trukman
 			};
 
 			edtCompName = new TrukmanEditor {
-				Text = "COMPANY NAME"
+				Placeholder = "COMPANY NAME"
 			};
 			edtCompAddress = new TrukmanEditor {
-				Text = "COMPANY ADDRESS"
+				Placeholder = "COMPANY ADDRESS"
 			};
 
 			TrukmanButton btnProceed = new TrukmanButton {

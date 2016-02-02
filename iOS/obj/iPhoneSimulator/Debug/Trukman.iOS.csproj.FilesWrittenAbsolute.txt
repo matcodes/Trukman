@@ -19,3 +19,4 @@
 /Users/simon/Documents/Apps/Trukman/iOS/bin/iPhoneSimulator/Debug/Parse.iOS.dll
 /Users/simon/Documents/Apps/Trukman/iOS/bin/iPhoneSimulator/Debug/Trukman.dll
 /Users/simon/Documents/Apps/Trukman/iOS/bin/iPhoneSimulator/Debug/Trukman.dll.mdb
+/Users/simon/Documents/Apps/Trukman/iOS/bin/iPhoneSimulator/Debug/monotouch.dll

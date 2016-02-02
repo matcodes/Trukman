@@ -7,9 +7,10 @@ namespace Trukman
 	public interface IServerManager
 	{
 		void Init ();
-		void LogIn (string name, string pass);
-		void Register (string name, string pass);
-		void AddCompany (string name);
-		void RequestToJoinCompany (string name);
+		Task LogIn (string name, string pass);
+		Task Register (string name, string pass);
+		Task AddCompany (string name);
+		Task RequestToJoinCompany (string name);
+		void StartTimerForRequest ();
 	}
 }

@@ -8,7 +8,7 @@ namespace Trukman
 		public MenuPage ()
 		{
 			this.Master = new ContentPage {
-				Title = "lol",
+				Title = "",
 				Content = new StackLayout {
 					VerticalOptions = LayoutOptions.Center,
 					Children = {
@@ -20,7 +20,7 @@ namespace Trukman
 			};
 
 			this.Detail = new ContentPage {
-				Title = "lol",
+				Title = "",
 				Content = new StackLayout {
 					VerticalOptions = LayoutOptions.Center,
 					Children = {

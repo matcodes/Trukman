@@ -28,13 +28,13 @@ namespace Trukman
 			};
 
 			edtName = new TrukmanEditor {
-				Text = "Full Name"
+				Placeholder = "Full Name"
 			};
 			edtPhone = new TrukmanEditor {
-				Text = "Phone"
+				Placeholder = "Phone"
 			};
 			edtMC = new TrukmanEditor {
-				Text = "MC #"
+				Placeholder = "MC #"
 			};
 
 			TrukmanButton btnEnter = new TrukmanButton {

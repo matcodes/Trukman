@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace Trukman
 {
@@ -9,11 +10,8 @@ namespace Trukman
 		{
 		}
 
-		async static public void ShowCheckDriver (ContentPage page, String name) {
-			Boolean answer = await page.DisplayAlert (null, String.Format("Does Driver {0} Work for you", name), "YES", "NO");
-			if (answer) {
-
-			}
+		async static public Task<Boolean> ShowCheckDriver (String name) {
+			return await App.Current.MainPage.DisplayAlert (null, String.Format ("Does Driver {0} Work for you", name), "YES", "NO");
 		}
 	}
 }

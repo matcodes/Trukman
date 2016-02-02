@@ -47,7 +47,7 @@ namespace Trukman
 		async void invitePressed (object sender, EventArgs e) {
 //			await Navigation.PushAsync (new  MenuPage ());
 //			await DisplayAlert (null, "You're Signed Up Congratulations", "CLOSE");	
-//			AlertHandler.ShowCheckDriver (this, "Vlad");
+			App.ServerManager.StartTimerForRequest ();
 //			ser
 		}
 	}

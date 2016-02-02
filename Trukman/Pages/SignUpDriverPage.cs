@@ -5,6 +5,10 @@ namespace Trukman
 {
 	public class SignUpDriverPage : BasePage
 	{
+		TrukmanEditor edtName;
+		TrukmanEditor edtPhone;
+		TrukmanEditor edtCompany;
+
 		public SignUpDriverPage ()
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
@@ -16,20 +20,22 @@ namespace Trukman
 				FontSize = 33
 			};
 
-			TrukmanButton btnNext = new TrukmanButton {
+			TrukmanButton btnSend = new TrukmanButton {
 				Text = "SEND"
 			};
 
-			TrukmanEditor edtName = new TrukmanEditor {
-				Text = "FULL NAME"
+			btnSend.Clicked += sendButtonPressed;
+
+			edtName = new TrukmanEditor {
+				Placeholder = "FULL NAME"
 			};
 
-			TrukmanEditor edtPhone = new TrukmanEditor {
-				Text = "PHONE"
+			edtPhone = new TrukmanEditor {
+				Placeholder = "PHONE"
 			};
 
-			TrukmanEditor edtCompany = new TrukmanEditor {
-				Text = "COMPANY YOU WORK FOR"
+			edtCompany = new TrukmanEditor {
+				Placeholder = "COMPANY YOU WORK FOR"
 			};
 
 			Content = new StackLayout {
@@ -50,9 +56,14 @@ namespace Trukman
 					new BoxView {
 						HeightRequest = 30
 					},
-					btnNext
+					btnSend
 				}
 			};
+		}
+
+		async void sendButtonPressed (object sender, EventArgs e) {
+			await App.ServerManager.Register (edtName.Text, edtPhone.Text);
+			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 		}
 	}
 }
