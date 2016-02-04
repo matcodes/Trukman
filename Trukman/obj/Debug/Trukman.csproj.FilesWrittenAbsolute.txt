@@ -7,3 +7,4 @@
 /Users/simon/Documents/Apps/Trukman/Trukman/bin/Debug/Xamarin.Forms.Xaml.dll
 /Users/simon/Documents/Apps/Trukman/Trukman/bin/Debug/Xamarin.Forms.Platform.dll
 /Users/simon/Documents/Apps/Trukman/Trukman/bin/Debug/Newtonsoft.Json.dll
+/Users/simon/Documents/Apps/Trukman/Trukman/obj/Debug/Trukman.Resource.Image.pika.png

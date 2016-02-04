@@ -28,32 +28,34 @@ namespace Trukman
 			};
 
 			edtName = new TrukmanEditor {
-				Placeholder = "Full Name"
+				Placeholder = Localization.getString(Localization.LocalStrings.FULL_NAME)
 			};
 			edtPhone = new TrukmanEditor {
-				Placeholder = "Phone"
+				Placeholder = Localization.getString(Localization.LocalStrings.PHONE)
 			};
 			edtMC = new TrukmanEditor {
-				Placeholder = "MC #"
+				Placeholder = Localization.getString(Localization.LocalStrings.MC)
 			};
 
 			TrukmanButton btnEnter = new TrukmanButton {
-				Text = "ENTER"
+				Text = Localization.getString(Localization.LocalStrings.ENTER)
 			};
 
 			Label lblTerms = new Label {
-				Text = "By clicking Enter you agree to the ",
+				Text = Localization.getString(Localization.LocalStrings.BY_CLICKING_ENTER_YOU_AGREE_TO_THE),
 				FontSize = 11,
 				VerticalTextAlignment = TextAlignment.Center
 			};
 
 			Button btnTerms = new Button {
-				Text = "Terms and Conditions",
+				Text = Localization.getString(Localization.LocalStrings.TERMS_AND_CONDITIONS),
 				BackgroundColor = Color.FromRgba (0, 0, 0, 0),
 				FontSize = 11
 			};
 
-			RelativeLayout relativeTermsLayout = new RelativeLayout {};
+			RelativeLayout relativeTermsLayout = new RelativeLayout {
+				HorizontalOptions = LayoutOptions.Fill
+			};
 			relativeTermsLayout.Children.Add (lblTerms, Constraint.RelativeToParent ((parent) => {
 				return 0;
 			}), Constraint.RelativeToParent ((parent) => {

@@ -1,6 +1,6 @@
-# Version: 9.4.1.24 (cycle6-xi: 47eb74b4)
+# Version: 9.4.1.25 (cycle6-xi: 962a050)
 # [first argument, ignore] # /Users/simon/Documents/Apps/Trukman/iOS/mtouch.exe
-/Library/Frameworks/Xamarin.iOS.framework/Versions/9.4.1.24/bin/mtouch \
+/Library/Frameworks/Xamarin.iOS.framework/Versions/9.4.1.25/bin/mtouch \
 	--cache \
 	/Users/simon/Documents/Apps/Trukman/iOS/obj/iPhoneSimulator/Debug/mtouch-cache \
 	--sim \

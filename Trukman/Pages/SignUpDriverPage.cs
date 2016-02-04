@@ -23,21 +23,21 @@ namespace Trukman
 			};
 
 			TrukmanButton btnSend = new TrukmanButton {
-				Text = "SEND"
+				Text = Localization.getString(Localization.LocalStrings.SEND)
 			};
 
 			btnSend.Clicked += sendButtonPressed;
 
 			edtName = new TrukmanEditor {
-				Placeholder = "FULL NAME"
+				Placeholder = Localization.getString(Localization.LocalStrings.FULL_NAME)
 			};
 
 			edtPhone = new TrukmanEditor {
-				Placeholder = "PHONE"
+				Placeholder = Localization.getString(Localization.LocalStrings.PHONE)
 			};
 
 			edtCompany = new TrukmanEditor {
-				Placeholder = "COMPANY YOU WORK FOR"
+				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_YOU_WORK_FOR)
 			};
 
 			Content = new StackLayout {
@@ -66,7 +66,9 @@ namespace Trukman
 		async void sendButtonPressed (object sender, EventArgs e) {
 			await App.ServerManager.Register (edtName.Text, edtPhone.Text, userRole);
 			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+			await Navigation.PushAsync (new RootPage ());
 		}
+			
 	}
 }
 

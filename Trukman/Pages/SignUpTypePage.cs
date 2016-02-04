@@ -5,6 +5,11 @@ namespace Trukman
 {
 	public class SignUpTypePage : ContentPage
 	{
+		Label lblSignUpAs;
+		TrukmanButton btnOwner;
+		TrukmanButton btnDispatch;
+		TrukmanButton btnDriver;
+
 		protected override void OnAppearing ()
 		{
 			base.OnAppearing ();
@@ -19,23 +24,19 @@ namespace Trukman
 				Text = "TRUKMAN",
 				FontSize = 33
 			};
-			Label lblSignUpAs = new Label {
+			lblSignUpAs = new Label {
 				HorizontalTextAlignment = TextAlignment.Start,
 				VerticalTextAlignment = TextAlignment.Center,
-				Text = "Sign Up As",
 				FontSize = 19,
 				HeightRequest = 60,
 			};
 
-			TrukmanButton btnOwner = new TrukmanButton {
-				Text = "OWNER/OPERATOR OR FLEET"
+			btnOwner = new TrukmanButton {
 			};
-			TrukmanButton btnDispatch = new TrukmanButton {
-				Text = "DISPATCH",
+			btnDispatch = new TrukmanButton {
 				Tag = 1
 			};
-			TrukmanButton btnDriver = new TrukmanButton {
-				Text = "DRIVER",
+			btnDriver = new TrukmanButton {
 				Tag = 2
 			};
 
@@ -43,6 +44,7 @@ namespace Trukman
 				Children = {
 					new SegmentedControlOption {					
 						Text = "English"
+
 					},
 					new SegmentedControlOption {					
 						Text = "Espanol"
@@ -50,6 +52,7 @@ namespace Trukman
 				}
 			};
 
+			segment.ValueChanged += Segment_ValueChanged;
 			btnOwner.Clicked += ownerClicked;
 			btnDispatch.Clicked += driverClicked;
 			btnDriver.Clicked += driverClicked;
@@ -86,7 +89,25 @@ namespace Trukman
 					return parent.Width;
 				}));
 
-			Content = relativeLayout;					
+			Content = relativeLayout;
+			updateText ();
+		}
+
+		void updateText(){
+			lblSignUpAs.Text = Localization.getString (Localization.LocalStrings.SIGN_UP_AS);
+			btnOwner.Text = Localization.getString (Localization.LocalStrings.OWNER_or_OPERATOR_OR_FLEET);
+			btnDispatch.Text = Localization.getString (Localization.LocalStrings.DISPATCH);
+			btnDriver.Text = Localization.getString (Localization.LocalStrings.DRIVER);
+		}
+
+		void Segment_ValueChanged (object sender, EventArgs e)
+		{
+			if (((SegmentedControl)sender).SelectedValue == "English") {
+				Localization.language = Localization.Languages.ENGLISH;
+			}else if (((SegmentedControl)sender).SelectedValue == "Espanol") {
+				Localization.language = Localization.Languages.ESPANIOL;
+			}
+			updateText();
 		}
 
 		async private void ownerClicked (object sender, EventArgs e) {

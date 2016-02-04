@@ -7,6 +7,7 @@ namespace Trukman
 	{
 		TrukmanEditor edtCompName;
 		TrukmanEditor edtCompAddress;
+		Label lblWelcome;
 
 		public SignUpCompanyPage ()
 		{
@@ -18,23 +19,23 @@ namespace Trukman
 				FontSize = 33
 			};
 
-			Label lblWelcome = new Label {
+			lblWelcome = new Label {
 				HorizontalTextAlignment = TextAlignment.Start,
 				VerticalTextAlignment = TextAlignment.Center,
-				Text = "Welcome to Trukman. Let's get you set-up",
+				Text = Localization.getString(Localization.LocalStrings.WELCOME),
 				FontSize = 14,
 				HeightRequest = 60,
 			};
 
 			edtCompName = new TrukmanEditor {
-				Placeholder = "COMPANY NAME"
+				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_NAME)
 			};
 			edtCompAddress = new TrukmanEditor {
-				Placeholder = "COMPANY ADDRESS"
+				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_ADRESS)
 			};
 
 			TrukmanButton btnProceed = new TrukmanButton {
-				Text = "PROCEED TO FLEET SIZE"
+				Text = Localization.getString(Localization.LocalStrings.PROCEED_TO_FLEET_SIZE)
 			};
 			btnProceed.Clicked += proceedPressed;
 

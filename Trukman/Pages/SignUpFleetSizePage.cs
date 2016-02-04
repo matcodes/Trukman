@@ -5,6 +5,9 @@ namespace Trukman
 {
 	public class SignUpFleetSizePage : BasePage
 	{
+
+		RelativeLayout relativeLayout = new RelativeLayout ();
+
 		public SignUpFleetSizePage ()
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
@@ -18,13 +21,62 @@ namespace Trukman
 			Label lblWelcome = new Label {
 				HorizontalTextAlignment = TextAlignment.Start,
 				VerticalTextAlignment = TextAlignment.Center,
-				Text = "Welcome to Trukman. Let's get you set-up",
+				Text = Localization.getString(Localization.LocalStrings.WELCOME),
 				FontSize = 14,
 				HeightRequest = 60,
 			};
+				
+			Label lblFleet = new Label {
+				HorizontalTextAlignment = TextAlignment.Start,
+				VerticalTextAlignment = TextAlignment.Center,
+				Text = "FLEET SIZE",
+				FontSize = 25,
+				TextColor = Color.FromRgb(219,219,219)
+
+			};
+
+			Label lblFirstNummer = new Label {
+				HorizontalTextAlignment = TextAlignment.Start,
+				VerticalTextAlignment = TextAlignment.Center,
+				Text = "0",
+				FontSize = 25,
+				TextColor = Color.FromRgb(219,219,219)
+			};
+
+			Label lblSecondNummer = new Label {
+				HorizontalTextAlignment = TextAlignment.Start,
+				VerticalTextAlignment = TextAlignment.Center,
+				Text = "0",
+				FontSize = 25,
+				TextColor = Color.FromRgb(219,219,219)
+			};
+
+			Label lblLastNummer = new Label {
+				HorizontalTextAlignment = TextAlignment.Start,
+				VerticalTextAlignment = TextAlignment.Center,
+				Text = "0",
+				FontSize = 25,
+				TextColor = Color.FromRgb(219,219,219)
+			};
+
+			relativeLayout.Children.Add (lblFleet, Constraint.RelativeToParent((Parent) => {
+				return 0;
+			}));
+
+			relativeLayout.Children.Add (lblFirstNummer, Constraint.RelativeToView(lblFleet, (parent, view) => {
+				return parent.Width - 20;
+			}));
+
+			relativeLayout.Children.Add(lblSecondNummer, Constraint.RelativeToView(lblFirstNummer, (parent, view) => {
+				return view.X - 40;
+			}));
+
+			relativeLayout.Children.Add (lblLastNummer, Constraint.RelativeToView (lblSecondNummer, (parent, view) => {
+				return view.X - 40;
+			}));
 
 			TrukmanButton btnNext = new TrukmanButton {
-				Text = "NEXT"
+				Text = Localization.getString(Localization.LocalStrings.NEXT)
 			};
 
 			btnNext.Clicked += invitePressed;
@@ -36,6 +88,7 @@ namespace Trukman
 				Children = {
 					lblTitle,
 					lblWelcome,
+					relativeLayout,
 					new BoxView {
 						HeightRequest = 60
 					},

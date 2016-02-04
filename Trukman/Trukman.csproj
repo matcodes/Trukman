@@ -41,10 +41,12 @@
     <Compile Include="Pages\SignUpFleetSizePage.cs" />
     <Compile Include="Pages\SignUpPage.cs" />
     <Compile Include="Pages\SignUpTypePage.cs" />
-    <Compile Include="Pages\MenuPage.cs" />
-    <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Module\AlertHandler.cs" />
     <Compile Include="Module\IServerManager.cs" />
+    <Compile Include="Pages\MenuList.cs" />
+    <Compile Include="Pages\RootPage.cs" />
+    <Compile Include="Module\Localization.cs" />
+    <Compile Include="Pages\BasePage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -70,5 +72,12 @@
     <Folder Include="SpecificDeviceInteraction\" />
     <Folder Include="Pages\" />
     <Folder Include="Module\" />
+    <Folder Include="Resource\" />
+    <Folder Include="Resource\Image\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Image\pika.png">
+      <LogicalName>pika.png</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
