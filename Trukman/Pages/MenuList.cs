@@ -24,17 +24,17 @@ namespace Trukman
 			
 			List<ItemsMenu> listItems = new List<ItemsMenu>
 			{
-				new ItemsMenu("Manage Drivers", "pika.png"),
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.MANAGE_DRIVERS), "pika.png"),
 
-				new ItemsMenu("Manage Dispatch", "pika.png"),
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.MANAGE_DISPATCH), "pika.png"),
 
-				new ItemsMenu("Manage Fleet", "pika.png"),
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.MANAGE_FLEET), "pika.png"),
 
-				new ItemsMenu("Setting", "pika.png"),
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.SETTING), "pika.png"),
 
-				new ItemsMenu("Help", "pika.png"),
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.HELP), "pika.png"),
 
-				new ItemsMenu("Cambiar a Espanol","pika.png")
+				new ItemsMenu(Localization.getString(Localization.LocalStrings.CAMBIAR_A_ESPANOL),"pika.png")
 					};
 			ItemsSource = listItems;
 

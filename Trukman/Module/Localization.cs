@@ -28,7 +28,13 @@ namespace Trukman
 			OWNER_or_OPERATOR_OR_FLEET,
 			DISPATCH,
 			DRIVER,
-			NEXT
+			NEXT,
+			MANAGE_DRIVERS,
+			MANAGE_DISPATCH,
+			MANAGE_FLEET,
+			SETTING,
+			HELP,
+			CAMBIAR_A_ESPANOL
 		};
 
 		static string[] engStrings = {
@@ -48,7 +54,13 @@ namespace Trukman
 			"OWNER/OPERATOR OR FLEET",
 			"DISPATCH",
 			"DRIVER",
-			"Next"
+			"Next",
+			"Manage Drivers",
+			"Manage Dispatch",
+			"Manage Fleet",
+			"Setting",
+			"Help",
+			"Cambiar a Espanol"
 		};
 
 		static string[] espStrings = {
@@ -68,7 +80,14 @@ namespace Trukman
 			"DUENO OPERADOR",
 			"DESPACHADOR",
 			"CONDUCTOR",
-			"Próximo"
+			"Próximo",
+			//not tranclate
+			"Manage Drivers",
+			"Manage Dispatch",
+			"Manage Fleet",
+			"Setting",
+			"Help",
+			"Cambiar a Espanol"
 		};
 
 
