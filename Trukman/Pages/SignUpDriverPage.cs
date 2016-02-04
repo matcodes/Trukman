@@ -9,6 +9,8 @@ namespace Trukman
 		TrukmanEditor edtPhone;
 		TrukmanEditor edtCompany;
 
+		public UserRole userRole;
+
 		public SignUpDriverPage ()
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
@@ -62,7 +64,7 @@ namespace Trukman
 		}
 
 		async void sendButtonPressed (object sender, EventArgs e) {
-			await App.ServerManager.Register (edtName.Text, edtPhone.Text);
+			await App.ServerManager.Register (edtName.Text, edtPhone.Text, userRole);
 			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 		}
 	}

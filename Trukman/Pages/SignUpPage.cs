@@ -91,7 +91,7 @@ namespace Trukman
 
 		async void buttonClicked (object sender, EventArgs e) {
 			await Navigation.PushAsync(new SignUpCompanyPage());
-			App.ServerManager.Register(edtName.Text, edtMC.Text);
+			App.ServerManager.Register(edtName.Text, edtMC.Text, UserRole.UserRoleOwner);
 		}
 	}
 }

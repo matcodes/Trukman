@@ -7,6 +7,7 @@ using Foundation;
 
 namespace Trukman
 {
+
 	public class ServerManager : IServerManager
 	{
 		static string ServerCompany = "Company";
@@ -14,7 +15,12 @@ namespace Trukman
 		static string ServerUserName = "username";
 		static string ServerRequesting = "requesting";
 		static string ServerOwner = "owner";
+		static string ServerRole = "role";
+		static string ServerDispatchers = "dispatchers";
+		static string ServerDrivers = "drivers";
 		Timer timerForRequst;
+
+
 
 		public ServerManager ()
 		{
@@ -28,11 +34,12 @@ namespace Trukman
 			await ParseUser.LogInAsync (name, pass);
 		}
 
-		async public Task Register(string name, string pass) {
+		async public Task Register(string name, string pass, UserRole role) {
 			ParseUser user = new ParseUser {
 				Username = name,
 				Password = pass
 			};
+			user [ServerRole] = (int)role;
 			await user.SignUpAsync ();
 		}
 
@@ -46,27 +53,47 @@ namespace Trukman
 		public async Task RequestToJoinCompany (string name) {
 			var query = ParseObject.GetQuery(ServerCompany)
 				.WhereEqualTo(ServerName, name);
-			ParseObject company = await query.FirstAsync();
-			ParseRelation<ParseUser> companyRequesting = company.GetRelation<ParseUser> (ServerRequesting);
-			companyRequesting.Add (ParseUser.CurrentUser);
-			await company.SaveAsync ();
+			IEnumerator<ParseObject> companyEnum = (await query.FindAsync()).GetEnumerator();
+			companyEnum.MoveNext();
+			ParseObject company = companyEnum.Current;
+			if (company != null) {
+				ParseRelation<ParseUser> companyRequesting = company.GetRelation<ParseUser> (ServerRequesting);
+				companyRequesting.Add (ParseUser.CurrentUser);
+				await company.SaveAsync ();
+			}
 		}
+
+
 
 		public async void CheckRequests () {
 			var query = ParseObject.GetQuery (ServerCompany)
 				.WhereEqualTo (ServerOwner, ParseUser.CurrentUser);
 			ParseObject company = await query.FirstAsync ();
-			var userRelation = company.GetRelation<ParseUser> (ServerRequesting);
-			IEnumerable<ParseUser> users = await userRelation.Query.FindAsync ();
+			var requestRelation = company.GetRelation<ParseUser> (ServerRequesting);
+			IEnumerable<ParseUser> users = await requestRelation.Query.FindAsync ();
 			foreach (ParseUser user in users) {
-				NSObject test = new NSObject ();
-				test.InvokeOnMainThread (async delegate {
-					Boolean answer;
-					answer = await AlertHandler.ShowCheckDriver (user.Username);
+				NSObject excecuter = new NSObject ();
+				excecuter.InvokeOnMainThread (async delegate {
+					UserRole role = (UserRole)user.Get<int> (ServerRole);
+
+					Boolean answer = false;
+					if (role == UserRole.UserRoleDispatch)
+						answer = await AlertHandler.ShowCheckDispatch (user.Username);
+					else if (role == UserRole.UserRoleDriver)
+						answer = await AlertHandler.ShowCheckDriver (user.Username);
 					if (answer) {
-						Console.WriteLine ("YES");
+						requestRelation.Remove (user);
+						if (role == UserRole.UserRoleDispatch) {
+							var dispatchRelation = company.GetRelation<ParseObject> (ServerDispatchers);
+							dispatchRelation.Add(user);
+							await company.SaveAsync ();
+						} else if (role == UserRole.UserRoleDriver) {
+							var dispatchRelation = company.GetRelation<ParseObject> (ServerDrivers);
+							dispatchRelation.Add(user);
+							await company.SaveAsync ();
+						}
 					} else {
-						Console.WriteLine ("NO");
+						requestRelation.Remove (user);
 					}
 				});
 			}

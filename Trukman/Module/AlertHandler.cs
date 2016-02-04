@@ -13,6 +13,10 @@ namespace Trukman
 		async static public Task<Boolean> ShowCheckDriver (String name) {
 			return await App.Current.MainPage.DisplayAlert (null, String.Format ("Does Driver {0} Work for you", name), "YES", "NO");
 		}
+
+		async static public Task<Boolean> ShowCheckDispatch (String name) {
+			return await App.Current.MainPage.DisplayAlert (null, String.Format ("Does Dispatch {0} Work for you", name), "YES", "NO");
+		}
 	}
 }
 

@@ -28,14 +28,15 @@ namespace Trukman
 			};
 
 			TrukmanButton btnOwner = new TrukmanButton {
-				Text = "OWNER/OPERATOR OR FLEET",
-
+				Text = "OWNER/OPERATOR OR FLEET"
 			};
 			TrukmanButton btnDispatch = new TrukmanButton {
-				Text = "DISPATCH"
+				Text = "DISPATCH",
+				Tag = 1
 			};
 			TrukmanButton btnDriver = new TrukmanButton {
-				Text = "DRIVER"
+				Text = "DRIVER",
+				Tag = 2
 			};
 
 			SegmentedControl segment = new SegmentedControl {
@@ -50,7 +51,7 @@ namespace Trukman
 			};
 
 			btnOwner.Clicked += ownerClicked;
-//			btnDispatch.Clicked += buttonClicked;
+			btnDispatch.Clicked += driverClicked;
 			btnDriver.Clicked += driverClicked;
 
 			StackLayout stackLayout = new StackLayout { 
@@ -93,7 +94,7 @@ namespace Trukman
 		}
 
 		async private void driverClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpDriverPage());
+			await Navigation.PushAsync (new SignUpDriverPage {userRole = (UserRole)((TrukmanButton)sender).Tag});
 		}
 	}
 }
