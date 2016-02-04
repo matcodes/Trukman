@@ -6,6 +6,8 @@ namespace Trukman
 	public class RootPage : MasterDetailPage
 	{
 		public RootPage(){
+			
+			NavigationPage.SetHasNavigationBar (this, false);
 
 			RelativeLayout relativeLayout = new RelativeLayout{VerticalOptions = LayoutOptions.Fill};
 			RelativeLayout relativeLayout2 = new RelativeLayout{ VerticalOptions = LayoutOptions.Fill };
