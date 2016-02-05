@@ -2,16 +2,14 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone6.9.0" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Trukman/Pages/SignUpFleetSizePage.cs">
     <Files>
-      <File FileName="Trukman/Pages/SignUpCompanyPage.cs" Line="38" Column="83" />
-      <File FileName="Trukman/Resource/Localization/Localization.cs" Line="60" Column="7" />
-      <File FileName="Trukman/Pages/SignUpTypePage.cs" Line="39" Column="35" />
-      <File FileName="Trukman/CustomViews/SegmentedControl.cs" Line="7" Column="2" />
-      <File FileName="Trukman/Pages/SignUpPage.cs" Line="81" Column="52" />
-      <File FileName="iOS/Main.cs" Line="17" Column="1" />
-      <File FileName="Trukman/Pages/BasePage.cs" Line="1" Column="1" />
-      <File FileName="Trukman/Pages/MenuPage.cs" Line="1" Column="1" />
-      <File FileName="Trukman/Pages/SignUpDriverPage.cs" Line="26" Column="66" />
-      <File FileName="Trukman/Pages/SignUpFleetSizePage.cs" Line="60" Column="8" />
+      <File FileName="Trukman/CustomViews/SegmentedControl.cs" Line="24" Column="3" />
+      <File FileName="Trukman/Pages/SignUpFleetSizePage.cs" Line="45" Column="16" />
+      <File FileName="iOS/CustomViews/SegmentedControlRenderer.cs" Line="1" Column="1" />
+      <File FileName="iOS/CustomViews/PickerControlRenderer.cs" Line="1" Column="1" />
+      <File FileName="Trukman/Pages/SignUpPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/Pages/SignUpTypePage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/Pages/SignUpCompanyPage.cs" Line="1" Column="1" />
+      <File FileName="Trukman/CustomViews/TrukmanEditor.cs" Line="6" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

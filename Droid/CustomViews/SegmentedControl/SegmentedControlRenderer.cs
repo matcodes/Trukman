@@ -8,7 +8,6 @@ using Android.Graphics;
 using Android.Views;
 using Android.Graphics.Drawables;
 using Trukman;
-using SegmentedControl;
 
 [assembly:ExportRenderer (typeof(SegmentedControl), typeof(Trukman.Android.SegmentedControlRenderer))]
 namespace Trukman.Android

@@ -18,7 +18,7 @@ namespace Trukman
 
 			Label labelBred = new Label { Text = "o/o", TextColor = Color.FromRgb (164,164,164) };
 
-			Label labelMenu = new Label{ Text = "Menu", TextColor = Color.FromRgb (211, 211, 211) };
+			Label labelMenu = new Label{ Text =  "Menu" , TextColor = Color.FromRgb (211, 211, 211) };
 
 			MenuList menu = new MenuList ();
 
@@ -69,7 +69,7 @@ namespace Trukman
 				Constraint.RelativeToView(box, (parent, view) => {
 					return view.Y + 25;	
 				}));
-
+			
 			this.Master = new ContentPage {
 				Title = "MasterPage",
 				BackgroundColor = Color.FromRgb(126, 126, 126),
