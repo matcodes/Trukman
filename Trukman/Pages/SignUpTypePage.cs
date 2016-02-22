@@ -115,7 +115,7 @@ namespace Trukman
 		}
 
 		async private void driverClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpDriverPage {userRole = (UserRole)((TrukmanButton)sender).Tag});
+			await Navigation.PushAsync (new SignUpDriverPage ((UserRole)((TrukmanButton)sender).Tag)); // {userRole = (UserRole)((TrukmanButton)sender).Tag});
 		}
 	}
 }

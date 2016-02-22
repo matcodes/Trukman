@@ -11,8 +11,10 @@ namespace Trukman
 
 		public UserRole userRole;
 
-		public SignUpDriverPage ()
+		// TODO: убрать из конструктора юзера
+		public SignUpDriverPage (UserRole _userRole)
 		{
+			userRole = _userRole;
 			NavigationPage.SetHasNavigationBar (this, false);
 
 
@@ -40,6 +42,17 @@ namespace Trukman
 				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_YOU_WORK_FOR)
 			};
 
+			// TODO: для тестирования, убрать потом
+			if (userRole == UserRole.UserRoleDispatch) {
+				edtName.Text = "dsp1";
+				edtPhone.Text = "123";
+				edtCompany.Text = "DKG Company";
+			} else if (userRole == UserRole.UserRoleDriver) {
+				edtName.Text = "Alex A Driver";
+				edtPhone.Text = "123";
+				edtCompany.Text = "DKG Company";
+			}
+
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
 				Spacing = Constants.StackLayoutDefaultSpacing,
@@ -65,8 +78,9 @@ namespace Trukman
 
 		async void sendButtonPressed (object sender, EventArgs e) {
 			await App.ServerManager.Register (edtName.Text, edtPhone.Text, userRole);
+			//await App.ServerManager.LogIn (edtName.Text, edtPhone.Text);
 			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-			await Navigation.PushAsync (new RootPage ());
+			await Navigation.PushModalAsync (new RootPage());
 		}
 			
 	}

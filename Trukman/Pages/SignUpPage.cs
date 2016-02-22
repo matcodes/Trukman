@@ -75,6 +75,10 @@ namespace Trukman
 
 			btnEnter.Clicked += buttonClicked;
 
+			// TODO: для тестирования, удалить потом
+			edtName.Text = "DKG";
+			edtMC.Text = "158851";
+
 			Content = new StackLayout { 
 				Spacing = Constants.StackLayoutDefaultSpacing,
 				Padding = new Thickness (Constants.ViewsPadding),
@@ -92,8 +96,8 @@ namespace Trukman
 		}
 
 		async void buttonClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync(new SignUpCompanyPage());
 			App.ServerManager.Register(edtName.Text, edtMC.Text, UserRole.UserRoleOwner);
+			await Navigation.PushAsync(new SignUpCompanyPage());
 		}
 	}
 }

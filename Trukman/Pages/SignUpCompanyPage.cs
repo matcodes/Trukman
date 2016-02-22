@@ -39,6 +39,9 @@ namespace Trukman
 			};
 			btnProceed.Clicked += proceedPressed;
 
+			// TODO: для тестирования, потом убрать
+			edtCompName.Text = "DKG Company";
+
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				Spacing = Constants.StackLayoutDefaultSpacing,

@@ -30,11 +30,11 @@ namespace Trukman
 			ParseClient.Initialize ("NsNjjvCGhqVKOZqCro2WOEr6gZHGTC9YlVB5jZqe", "WvSfa6MIvTb9L6BucGIiCQgV1zBc4OCR0UTS7D2L");
 		}
 
-		async public Task LogIn(string name, string pass) {
+		public async Task LogIn(string name, string pass) {
 			await ParseUser.LogInAsync (name, pass);
 		}
 
-		async public Task Register(string name, string pass, UserRole role) {
+		public async Task Register(string name, string pass, UserRole role) {
 			ParseUser user = new ParseUser {
 				Username = name,
 				Password = pass
@@ -43,7 +43,7 @@ namespace Trukman
 			await user.SignUpAsync ();
 		}
 
-		async public Task AddCompany (string name) {
+		public async Task AddCompany (string name) {
 			ParseObject company = new ParseObject (ServerCompany);
 			company [ServerName] = name;
 			company [ServerOwner] = ParseUser.CurrentUser;

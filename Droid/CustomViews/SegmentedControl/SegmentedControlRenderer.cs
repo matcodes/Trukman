@@ -8,8 +8,9 @@ using Android.Graphics;
 using Android.Views;
 using Android.Graphics.Drawables;
 using Trukman;
+using Trukman.Droid;
 
-[assembly:ExportRenderer (typeof(SegmentedControl), typeof(Trukman.Android.SegmentedControlRenderer))]
+[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Android.SegmentedControlRenderer))]
 namespace Trukman.Android
 {
 	public class SegmentedControlRenderer : ViewRenderer<SegmentedControl, RadioGroup>
@@ -40,12 +41,12 @@ namespace Trukman.Android
 
 			for (var i = 0; i < e.NewElement.Children.Count; i++) {
 				var o = e.NewElement.Children [i];
-				var v = (SegmentedControlButton)layoutInflater.Inflate (Trukman.Droid.SegmentedControl.Resource.Layout.SegmentedControl, null);
+				var v = (SegmentedControlButton)layoutInflater.Inflate (Resource.Layout.SegmentedControl, null);
 				v.Text = o.Text;
 				if (i == 0)
-					v.SetBackgroundResource (Trukman.Droid.SegmentedControl.Resource.Drawable.segmented_control_first_background);
+					v.SetBackgroundResource (Resource.Drawable.segmented_control_first_background);
 				else if (i == e.NewElement.Children.Count - 1)
-					v.SetBackgroundResource (SegmentedControl.Droid.Resource.Drawable.segmented_control_last_background);
+					v.SetBackgroundResource (Resource.Drawable.segmented_control_last_background);
 				g.AddView (v);
 			}
 
