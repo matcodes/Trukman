@@ -1,15 +1,16 @@
 ﻿using System;
+
 using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class SignUpDriverPage : BasePage
+	public class SignUpDispatchPage : BasePage
 	{
 		TrukmanEditor edtName;
 		TrukmanEditor edtPhone;
 		TrukmanEditor edtCompany;
 
-		public SignUpDriverPage ()
+		public SignUpDispatchPage ()
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
 
@@ -38,9 +39,9 @@ namespace Trukman
 			};
 
 			// TODO: для тестирования, убрать потом
-			// edtName.Text = "Alex A Driver";
-			// edtPhone.Text = "123";
-			// edtCompany.Text = "DKG Company";
+			//edtName.Text = "dsp1";
+			//edtPhone.Text = "123";
+			//edtCompany.Text = "DKG Company";
 
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
@@ -66,12 +67,12 @@ namespace Trukman
 		}
 
 		async void sendButtonPressed (object sender, EventArgs e) {
-			await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDriver);
+			await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
 			//await App.ServerManager.LogIn (edtName.Text, edtPhone.Text);
 			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 			await Navigation.PushModalAsync (new RootPage());
 		}
-			
+
 	}
 }
 

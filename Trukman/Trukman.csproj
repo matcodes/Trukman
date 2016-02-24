@@ -39,7 +39,6 @@
     <Compile Include="Pages\SignUpCompanyPage.cs" />
     <Compile Include="Pages\SignUpDriverPage.cs" />
     <Compile Include="Pages\SignUpFleetSizePage.cs" />
-    <Compile Include="Pages\SignUpPage.cs" />
     <Compile Include="Pages\SignUpTypePage.cs" />
     <Compile Include="Module\AlertHandler.cs" />
     <Compile Include="Module\IServerManager.cs" />
@@ -56,6 +55,8 @@
     <Compile Include="Pages\DriverListPage.cs" />
     <Compile Include="Module\IGPSManager.cs" />
     <Compile Include="Module\Entities.cs" />
+    <Compile Include="Pages\SignUpDispatchPage.cs" />
+    <Compile Include="Pages\SignUpOwnerPage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

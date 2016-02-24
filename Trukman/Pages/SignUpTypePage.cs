@@ -111,11 +111,14 @@ namespace Trukman
 		}
 
 		async private void ownerClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpPage());
+			await Navigation.PushAsync (new SignUpOwnerPage());
 		}
 
 		async private void driverClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpDriverPage ((UserRole)((TrukmanButton)sender).Tag)); // {userRole = (UserRole)((TrukmanButton)sender).Tag});
+			if (((TrukmanButton)sender).Tag == 1)
+				await Navigation.PushAsync (new SignUpDispatchPage());
+			else if (((TrukmanButton)sender).Tag == 2)
+				await Navigation.PushAsync (new SignUpDriverPage ());
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace Trukman
 
 		async void proceedPressed (object sender, EventArgs e) {
 			await Navigation.PushAsync (new SignUpFleetSizePage ());
-			App.ServerManager.AddCompany (edtCompName.Text);
+			await App.ServerManager.AddCompany (edtCompName.Text);
 		}
 	}
 }

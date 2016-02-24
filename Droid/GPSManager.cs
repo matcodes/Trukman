@@ -9,7 +9,7 @@ using Trukman.Droid;
 
 namespace Trukman.Droid
 {
-	public class GPSManager: IGPSManager 
+	public class GPSManager: Java.Lang.Object, IGPSManager//, ILocationListener 
 	{
 		public GPSManager ()
 		{

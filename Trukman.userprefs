@@ -1,13 +1,10 @@
 ﻿<Properties StartupItem="Droid\Trukman.Droid.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.AVD_GalaxyNexus_ToolsForApacheCordova" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Trukman\Pages\DriverMainPage.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Droid\MainActivity.cs">
     <Files>
-      <File FileName="Trukman\Pages\SignUpPage.cs" Line="1" Column="1" />
-      <File FileName="Droid\ServerManager.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\SignUpCompanyPage.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\JobListPage.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\DriverListPage.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\DriverMainPage.cs" Line="22" Column="18" />
+      <File FileName="Droid\PDFActivity.cs" Line="16" Column="42" />
+      <File FileName="Droid\MainActivity.cs" Line="17" Column="35" />
+      <File FileName="Trukman\Pages\SignUpFleetSizePage.cs" Line="141" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

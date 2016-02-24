@@ -105,6 +105,7 @@
     <Compile Include="CustomViews\SegmentedControl\SegmentedControlRenderer.cs" />
     <Compile Include="ServerManager.cs" />
     <Compile Include="GPSManager.cs" />
+    <Compile Include="PDFActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -80,7 +80,7 @@ namespace Trukman
 
 		async void OkButton_Clicked (object sender, EventArgs e)
 		{
-			App.ServerManager.SaveJob (edtName.Text, edtDescription.Text, edtShipperAddress.Text, edtReceiveAddress.Text, edtDriver.Text);
+			await App.ServerManager.SaveJob (edtName.Text, edtDescription.Text, edtShipperAddress.Text, edtReceiveAddress.Text, edtDriver.Text);
 			await this.Navigation.PopModalAsync ();
 		}
 	}
