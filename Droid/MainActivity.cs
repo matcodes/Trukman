@@ -6,6 +6,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Preferences;
 
 using Android.OS;
 using Android.Locations;
@@ -17,14 +18,11 @@ namespace Trukman.Droid
 	[Activity (Label = "Trukman.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity, ILocationListener
 	{
-		//TextView _addressText;
-		//Location _currentLocation;
 		LocationManager _locationManager;
 
 		string _locationProvider;
-		long minTime = 5*60*1000;
-		float minDistance = 100;
-		//TextView _locationText;
+		long minTime = 1*60*1000; // раз в минуту
+		float minDistance = 100; // каждые 100 метров
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -36,13 +34,14 @@ namespace Trukman.Droid
 
 			LoadApplication (new App ());
 
-			App.ServerManager = new ServerManager();
-			App.ServerManager.Init ();
+			// Менеджер сервера
+			//App.ServerManager = new ServerManager();
+			//App.ServerManager.Init ();
 
-			//App.ServerManager.GetDriversInternal();
-			//task.Wait ();
-
+			// Местоположение по GPS
 			InitializeLocationManager();
+
+			//IGeolocator
 		}
 
 		void InitializeLocationManager()
@@ -62,7 +61,6 @@ namespace Trukman.Droid
 			{
 				_locationProvider = string.Empty;
 			}
-			//Log.Debug(TAG, "Using " + _locationProvider + ".");
 		}
 
 		protected override void OnDestroy ()
@@ -75,19 +73,28 @@ namespace Trukman.Droid
 		protected override void OnResume ()
 		{
 			base.OnResume ();
-			_locationManager.RequestLocationUpdates (_locationProvider, minTime, minDistance, this);
-			var location = _locationManager.GetLastKnownLocation (LocationManager.GpsProvider);
-			if (location != null)
-				App.ServerManager.SaveDriverLocation (new GPSLocation {
-					Longitude = location.Longitude,
-					Latitude = location.Latitude
-				});
+
+			//App.GpsManager.Resume ();
+
+			if (!string.IsNullOrEmpty (_locationProvider)) {
+				_locationManager.RequestLocationUpdates (_locationProvider, minTime, minDistance, this);
+				var location = _locationManager.GetLastKnownLocation (LocationManager.GpsProvider);
+				if (location != null)
+					App.ServerManager.SaveDriverLocation (new GPSLocation {
+						Longitude = location.Longitude,
+						Latitude = location.Latitude
+					});
+			}
 		}
 
 		protected override void OnPause ()
 		{
 			base.OnPause ();
-			_locationManager.RemoveUpdates(this);
+
+			//App.GpsManager.Pause ();
+
+			if (!string.IsNullOrEmpty (_locationProvider))
+				_locationManager.RemoveUpdates (this); 
 		}
 
 		public void OnLocationChanged(Location location) 

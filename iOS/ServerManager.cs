@@ -20,8 +20,6 @@ namespace Trukman
 		static string ServerDrivers = "drivers";
 		Timer timerForRequst;
 
-
-
 		public ServerManager ()
 		{
 		}

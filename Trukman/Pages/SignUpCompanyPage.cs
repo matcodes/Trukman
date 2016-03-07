@@ -40,7 +40,7 @@ namespace Trukman
 			btnProceed.Clicked += proceedPressed;
 
 			// TODO: для тестирования, потом убрать
-			edtCompName.Text = "DKG Company";
+			//edtCompName.Text = "DKG Company";
 
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -60,8 +60,8 @@ namespace Trukman
 		}
 
 		async void proceedPressed (object sender, EventArgs e) {
-			await Navigation.PushAsync (new SignUpFleetSizePage ());
 			await App.ServerManager.AddCompany (edtCompName.Text);
+			await Navigation.PushAsync (new SignUpFleetSizePage ());
 		}
 	}
 }

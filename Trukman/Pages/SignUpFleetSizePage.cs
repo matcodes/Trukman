@@ -17,7 +17,6 @@ namespace Trukman
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
 
-
 			Label lblTitle = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				Text = "TRUKMAN",
@@ -32,14 +31,12 @@ namespace Trukman
 				HeightRequest = 60,
 			};
 				
-				
 			Label lblFleet = new Label {
 				HorizontalTextAlignment = TextAlignment.Start,
 				VerticalTextAlignment = TextAlignment.Center,
 				Text = "FLEET SIZE",
 				FontSize = 25,
 				TextColor = Color.FromRgb(219,219,219)
-
 			};
 
 			lblNummer1 = new Label {
@@ -48,7 +45,6 @@ namespace Trukman
 				Text = "0",
 				FontSize = 25,
 				TextColor = Color.FromRgb(219,219,219)
-
 			};
 
 			lblNummer2 = new Label {
@@ -57,22 +53,19 @@ namespace Trukman
 				Text = "0",
 				FontSize = 25,
 				TextColor = Color.FromRgb(219,219,219)
-
 			};
+
 			lblNummer3 = new Label {
 				HorizontalTextAlignment = TextAlignment.Start,
 				VerticalTextAlignment = TextAlignment.Center,
 				Text = "0",
 				FontSize = 25,
 				TextColor = Color.FromRgb(219,219,219)
-
 			};
 
 			btnPicker = new Button {
-
 				Text = "",
-		//		BackgroundColor = Color.FromRgba(0,0,0,0),
-
+				BackgroundColor = Color.Transparent
 			};
 
 			picker = new Picker {
@@ -81,45 +74,45 @@ namespace Trukman
 			};
 			picker.SelectedIndexChanged += pickerColorPicker_SelectedIndexChanged;
 				
-
 			for(int i = 1; i < 1000; i++){
-
 				picker.Items.Add (Convert.ToString (i));
-
 			}
-					
-					
-			relativeLayout.Children.Add (lblFleet, Constraint.RelativeToParent((Parent) => {
-				return 0;
-			}));
-			relativeLayout.Children.Add (lblNummer1, Constraint.RelativeToView (lblFleet, (parent, view) => {
-				return parent.Width - 120;
-			}),
+
+			relativeLayout.Children.Add (lblFleet, 
+				Constraint.RelativeToParent((Parent) => {
+					return 0;
+				}));
+			relativeLayout.Children.Add (lblNummer1, 
+				Constraint.RelativeToView (lblFleet, (parent, view) => {
+					return parent.Width - 120;
+				}),
 				Constraint.RelativeToView (lblFleet, (parent, view) => {
 					return view.Y;
 				}));
-			relativeLayout.Children.Add (lblNummer2, Constraint.RelativeToView (lblNummer1, (parent, view) => {
-				return view.X + 35;
-			}),
+			relativeLayout.Children.Add (lblNummer2, 
+				Constraint.RelativeToView (lblNummer1, (parent, view) => {
+					return view.X + 35;
+				}),
 				Constraint.RelativeToView (lblFleet, (parent, view) => {
 					return view.Y;
 				}));
-			relativeLayout.Children.Add (lblNummer3, Constraint.RelativeToView (lblNummer2, (parent, view) => {
-				return view.X + 35;
-			}),
+			relativeLayout.Children.Add (lblNummer3, 
+				Constraint.RelativeToView (lblNummer2, (parent, view) => {
+					return view.X + 35;
+				}),
 				Constraint.RelativeToView (lblFleet, (parent, view) => {
 					return view.Y;
 				}));
-			relativeLayout.Children.Add (btnPicker, Constraint.RelativeToView (lblFleet, (parent, view) => {
-				return 0;
-			}),
+			relativeLayout.Children.Add (btnPicker,
+				Constraint.RelativeToView (lblFleet, (parent, view) => {
+					return 0;
+				}),
 				Constraint.RelativeToView (lblFleet, (parent, view) => {
 					return 0;
 				}),
 				Constraint.RelativeToView (lblFleet, (parent, view) => {
 					return parent.Width;
 				}));
-
 
 			TrukmanButton btnNext = new TrukmanButton {
 				Text = Localization.getString(Localization.LocalStrings.NEXT)
@@ -149,7 +142,7 @@ namespace Trukman
 //			await Navigation.PushAsync (new  MenuPage ());
 //			await DisplayAlert (null, "You're Signed Up Congratulations", "CLOSE");	
 			App.ServerManager.StartTimerForRequest ();
-//			ser
+			await Navigation.PushModalAsync (new RootPage ());
 		}
 		public void TapImgColorPicker_Tapped(object sender, EventArgs e)
 		{

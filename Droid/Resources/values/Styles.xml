@@ -19,4 +19,7 @@
         <item name="lineHeightUnselected">0dp</item>
         <item name="lineHeightSelected">0dp</item>
     </style>
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="colorPrimary">@color/primary_color</item>
+	</style>
 </resources>	

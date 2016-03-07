@@ -10,8 +10,8 @@ using Android.Graphics.Drawables;
 using Trukman;
 using Trukman.Droid;
 
-[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Android.SegmentedControlRenderer))]
-namespace Trukman.Android
+[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Droid.SegmentedControlRenderer))]
+namespace Trukman.Droid
 {
 	public class SegmentedControlRenderer : ViewRenderer<SegmentedControl, RadioGroup>
 	{

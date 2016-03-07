@@ -46,10 +46,6 @@
     <Compile Include="Pages\RootPage.cs" />
     <Compile Include="Module\Localization.cs" />
     <Compile Include="Pages\BasePage.cs" />
-    <Compile Include="Pages\EditJob.cs" />
-    <Compile Include="Pages\RootMasterPage.cs" />
-    <Compile Include="Pages\RootDetailPage.cs" />
-    <Compile Include="Pages\MasterPageItem.cs" />
     <Compile Include="Pages\DriverMainPage.cs" />
     <Compile Include="Pages\JobListPage.cs" />
     <Compile Include="Pages\DriverListPage.cs" />
@@ -57,6 +53,9 @@
     <Compile Include="Module\Entities.cs" />
     <Compile Include="Pages\SignUpDispatchPage.cs" />
     <Compile Include="Pages\SignUpOwnerPage.cs" />
+    <Compile Include="Pages\EditJobPage.cs" />
+    <Compile Include="Pages\ConstructPage.cs" />
+    <Compile Include="Module\TrukmanTimer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -77,9 +76,11 @@
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.0.1.6505\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
     </Reference>
+    <Reference Include="mscorlib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resource\Image\hamburger.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomViews\" />

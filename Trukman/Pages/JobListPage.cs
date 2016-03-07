@@ -14,11 +14,14 @@ namespace Trukman
 
 			Button btnAddJob = new TrukmanButton ()
 			{
-				Text = "Add job"
+				Text = "Add job",
 			};
 			btnAddJob.Clicked+= BtnAddJob_Clicked;
 
 			var layout = new StackLayout () {
+				//VerticalOptions = LayoutOptions.Center,
+				//Spacing = Constants.StackLayoutDefaultSpacing,
+				//Padding = new Thickness (Constants.ViewsPadding),
 				Children={
 					btnAddJob,
 					new Label { Text = "Job List" }
@@ -30,31 +33,37 @@ namespace Trukman
 			};
 
 			TableSection section = new TableSection ();
-			//section
-
 			tableView.Root = new TableRoot () {
 				section
 			};
 
 			section.Add (new ViewCell () { View = layout });
 
-			//LoadJobList ();
-
 			Content = tableView;
 
 			LoadJobList();
 		}
 
-		void LoadJobList ()
+		async void LoadJobList ()
 		{
 			var tableView = (Content as TableView);
 			var section = (TableSection)(tableView.Root[0]);
 
-			var jobList = App.ServerManager.GetJobList ();
+			var view = section [0];
+			section.Clear ();
+			section.Add (view);
+			//if (section.Count > 1)
+			//	section.RemoveAt (1);
+
+			var jobList = await App.ServerManager.GetJobList ();
+
 			foreach(var job in jobList)
 			{
-				section.Add (new TextCell (){ Text = job.Name, Detail = job.Description });
-				//section.Add (new TextCell (){ Text = "Job 2" });
+				Device.BeginInvokeOnMainThread(() =>
+					{
+						section.Add (new TextCell (){ Text = job.Name, Detail = job.Description });
+						//section.Add (new TextCell (){ Text = "Job 2" });
+					});
 			}
 		}
 
@@ -88,7 +97,9 @@ namespace Trukman
 		{
 			//var jobPage = ;
 			//jobPage.Disappearing += JobPage_Disappearing;
-			await Navigation.PushModalAsync (new EditJob ());
+			await Navigation.PushModalAsync (new EditJobPage ());
+
+			LoadJobList ();
 			//task.Wait ();
 
 			//var poppedPage = await Navigation.PopModalAsync ();

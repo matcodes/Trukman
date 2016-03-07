@@ -31,6 +31,7 @@ namespace Trukman
 			NEXT,
 			MANAGE_DRIVERS,
 			MANAGE_DISPATCH,
+			MANAGE_JOBS,
 			MANAGE_FLEET,
 			SETTING,
 			HELP,
@@ -57,6 +58,7 @@ namespace Trukman
 			"Next",
 			"Manage Drivers",
 			"Manage Dispatch",
+			"Manage Jobs", 
 			"Manage Fleet",
 			"Setting",
 			"Help",
@@ -84,6 +86,7 @@ namespace Trukman
 			//not tranclate
 			"Manage Drivers",
 			"Manage Dispatch",
+			"Manage Jobs", 
 			"Manage Fleet",
 			"Setting",
 			"Help",

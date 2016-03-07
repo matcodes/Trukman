@@ -12,8 +12,13 @@ namespace Trukman
 
 	public interface IGPSManager 
 	{
+		void InitializeLocationManager();
 		bool IsTurnOnGPSLocation();
+		void TryTurnOnGps();
 		GPSLocation GetCurrentLocation();
+
+		void Resume();
+		void Pause();
 	}
 }
 

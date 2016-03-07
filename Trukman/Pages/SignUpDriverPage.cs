@@ -38,9 +38,9 @@ namespace Trukman
 			};
 
 			// TODO: для тестирования, убрать потом
-			// edtName.Text = "Alex A Driver";
-			// edtPhone.Text = "123";
-			// edtCompany.Text = "DKG Company";
+			/*edtName.Text = "Alex A";
+			edtPhone.Text = "123";
+			edtCompany.Text = "company1";*/
 
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
@@ -66,10 +66,15 @@ namespace Trukman
 		}
 
 		async void sendButtonPressed (object sender, EventArgs e) {
-			await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDriver);
-			//await App.ServerManager.LogIn (edtName.Text, edtPhone.Text);
-			await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-			await Navigation.PushModalAsync (new RootPage());
+			try{
+				await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDriver);
+				bool isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+				if (isJoinCompany)
+					await Navigation.PushModalAsync (new RootPage ());
+			}
+			catch(Exception exc) {
+				await AlertHandler.ShowAlert (exc.Message);
+			}
 		}
 			
 	}
