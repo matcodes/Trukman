@@ -9,14 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PSPDFKit.Configuration.Theming;
-using PSPDFKit.Configuration.Activity;
-using PSPDFKit.Configuration.Page;
-using PSPDFKit;
-using PSPDFKit.UI;
 
-using PSPDFKit.Document;
-using PSPDFKit.Document.Library;
 using System.IO;
 
 namespace Trukman.Droid
@@ -24,14 +17,15 @@ namespace Trukman.Droid
 	[Activity (Name="com.trukman.ui.pdfactivity", Label = "PDFActivity", Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class PDFActivity : Activity
 	{
+        private DragRect dr;
+
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
 
-			// Активизация просмотрщика PDF
-			PSPDFKitGlobal.Initialize (this, GetString(Resource.String.pspdfkitLicenseKey));
+            SetContentView(Resource.Layout.PDF);
+            dr = FindViewById<DragRect>(Resource.Id.PDFView);
 
-			// Create your application here
 			ShowPdfDocument (Intent.Data);
 		}
 
@@ -44,26 +38,7 @@ namespace Trukman.Droid
 
 		void ShowPdfDocument (Android.Net.Uri docUri)
 		{
-			// Customize thumbnailBar color defaults
-			var thumbnailBarThemeConfiguration = new ThumbnailBarThemeConfiguration.Builder (this)
-				.SetBackgroundColor (Android.Graphics.Color.Argb (255, 52, 152, 219))
-				.SetThumbnailBorderColor (Android.Graphics.Color.Argb (255, 44, 62, 80))
-				.Build ();
-
-			// Show Document using PSPDFKit activity
-			var pspdfkitConfiguration = new PSPDFActivityConfiguration.Builder (ApplicationContext, GetString(Resource.String.pspdfkitLicenseKey))
-				.ScrollDirection (PageScrollDirection.Horizontal)
-				.ShowPageNumberOverlay ()
-				.ShowThumbnailGrid ()
-				.ShowThumbnailBar ()
-				.ThumbnailBarThemeConfiguration (thumbnailBarThemeConfiguration)
-				.Build ();
-
-			if (!PSPDFKitGlobal.IsOpenableUri (this, docUri)) {
-				ShowError ("This document uri cannot be opened \n " + docUri.ToString ());
-			}
-			else
-				PSPDFActivity.ShowDocument (this, docUri, pspdfkitConfiguration);
+            
 		}
 
 		void ShowError (string message = null)
