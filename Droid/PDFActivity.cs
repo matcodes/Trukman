@@ -17,14 +17,14 @@ namespace Trukman.Droid
 	[Activity (Name="com.trukman.ui.pdfactivity", Label = "PDFActivity", Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class PDFActivity : Activity
 	{
-        private DragRect dr;
+        private SelectionRectangleView selectRect;
 
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
 
             SetContentView(Resource.Layout.PDF);
-            dr = FindViewById<DragRect>(Resource.Id.PDFView);
+            selectRect = FindViewById<SelectionRectangleView>(Resource.Id.PDFView);
 
 			ShowPdfDocument (Intent.Data);
 		}

@@ -5,6 +5,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -14,10 +15,12 @@ using Android.Text;
 
 namespace Trukman.Droid
 {
-    public class DragRect : View
+    public class SelectionRectangleView : View
     {
         #region Private members
-        private Paint mRectPaint;
+
+        private Paint OutlinePaint = new Paint();
+        private Paint InlinePaint = new Paint();
 
         private int startX = 0;
         private int startY = 0;
@@ -27,23 +30,27 @@ namespace Trukman.Droid
 
         private OnUpCallback mCallback = null;
 
+        private Drawable resizeWidthBtn;
+        private Drawable resizeHeightBtn;
+
+
         #endregion
 
         #region Constructors
 
-        public DragRect(Context context)
+        public SelectionRectangleView(Context context)
             : base(context)
         {
             Initialize();
         }
 
-        public DragRect(Context context, IAttributeSet attrs)
+        public SelectionRectangleView(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
             Initialize();
         }
 
-        public DragRect(Context context, IAttributeSet attrs, int defStyle)
+        public SelectionRectangleView(Context context, IAttributeSet attrs, int defStyle)
             : base(context, attrs, defStyle)
         {
             Initialize();
@@ -61,10 +68,13 @@ namespace Trukman.Droid
 
         private void Initialize()
         {
-            mRectPaint = new Paint();
-            mRectPaint.SetARGB(255, 255, 0, 0);
-            mRectPaint.SetStyle(Paint.Style.Stroke);
-            mRectPaint.StrokeWidth = 5;
+            resizeWidthBtn = Context.Resources.GetDrawable(Resource.Drawable.width_resizer);
+            resizeHeightBtn = Context.Resources.GetDrawable(Resource.Drawable.height_resizer);
+
+            InlinePaint.SetARGB(125, 59, 211, 219);
+            OutlinePaint.SetARGB(255, 59, 211, 219);
+            OutlinePaint.SetStyle(Paint.Style.Stroke);
+            OutlinePaint.StrokeWidth = 3;
         }
 
         public override bool OnTouchEvent(MotionEvent e) {
@@ -77,12 +87,13 @@ namespace Trukman.Droid
                     break;
 
                 case MotionEventActions.Move:
-                    int x = (int) e.GetX();
-                    int y = (int) e.GetY();
+                    int x = (int)e.GetX();
+                    int y = (int)e.GetY();
 
                     if (!mDrawRect || Math.Abs(x - endX) > 5 || Math.Abs(y - endY) > 5) {
                         endX = x;
                         endY = y;
+
                         Invalidate();
                     }
 
@@ -90,8 +101,7 @@ namespace Trukman.Droid
                     break;
 
                 case MotionEventActions.Up:
-                    if (mCallback != null)
-                    {
+                    if (mCallback != null) {
                         mCallback.onRectFinished(new Rect(Math.Min(startX, endX), Math.Min(startY, endY),
                                 Math.Max(endX, startX), Math.Max(endY, startX)));
                     }
@@ -109,8 +119,27 @@ namespace Trukman.Droid
             base.OnDraw(canvas);
 
             if (mDrawRect) {
-                canvas.DrawRect(Math.Min(startX, endX), Math.Min(startY, endY),
-                    Math.Max(endX, startX), Math.Max(endY, startY), mRectPaint);
+                Rect rect = new Rect(Math.Min(startX, endX), Math.Min(startY, endY), Math.Max(endX, startX), Math.Max(endY, startY));
+                canvas.DrawRect(rect, InlinePaint);
+                canvas.DrawRect(rect, OutlinePaint);
+
+                int xMiddle = rect.Left + ((rect.Right - rect.Left) / 2);
+                int yMiddle = rect.Top + ((rect.Bottom - rect.Top) / 2);
+
+                int btnHalfWidth = resizeWidthBtn.IntrinsicWidth / 2;
+                int btnHalfHeight = resizeWidthBtn.IntrinsicHeight / 2;
+
+                resizeWidthBtn.SetBounds(rect.Left - btnHalfWidth, yMiddle - btnHalfHeight, rect.Left + btnHalfWidth, yMiddle + btnHalfHeight);
+                resizeWidthBtn.Draw(canvas);
+
+                resizeWidthBtn.SetBounds(rect.Right - btnHalfWidth, yMiddle - btnHalfHeight, rect.Right + btnHalfWidth, yMiddle + btnHalfHeight);
+                resizeWidthBtn.Draw(canvas);
+
+                resizeHeightBtn.SetBounds(xMiddle - btnHalfWidth, rect.Top - btnHalfHeight, xMiddle + btnHalfWidth, rect.Top + btnHalfHeight);
+                resizeHeightBtn.Draw(canvas);
+
+                resizeHeightBtn.SetBounds(xMiddle - btnHalfWidth, rect.Bottom - btnHalfHeight, xMiddle + btnHalfWidth, rect.Bottom + btnHalfHeight);
+                resizeHeightBtn.Draw(canvas);
             }
         }
     }
