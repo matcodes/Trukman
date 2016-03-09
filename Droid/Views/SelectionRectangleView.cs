@@ -28,7 +28,7 @@ namespace Trukman.Droid
         private int endY = 0;
         private int lastTouchX = 0;
         private int lastTouchY = 0;
-        private Boolean resizeMode;
+        private String resizeSide = null;
         private Boolean dragMode;
         private Boolean mDrawRect;
 
@@ -86,22 +86,55 @@ namespace Trukman.Droid
             int y = (int)e.GetY();
             switch (e.Action) {
                 case MotionEventActions.Down:
+                    int resizeRange = 10;
+
+                    if ((((x >= startX - resizeRange && x <= startX + resizeRange) || 
+                        (x >= endX - resizeRange && x <= endX + resizeRange)) && ((y >= startY && y <= endY) || (y >= endY && y <= startY))) ||
+                        (((y >= startY - resizeRange && y <= startY + resizeRange) || 
+                            (y >= endY - resizeRange && y <= endY + resizeRange)) && ((x >= startX && x <= endX) || (x >= endX && x <= startX))))
+                    {
+                        bool horizontalCheck = ((x >= startX && x <= endX) || (x >= endX && x <= startX));
+                        bool verticalCheck = ((y >= startY && y <= endY) || (y >= endY && y <= startY));
+
+
+                        if (Math.Abs(startX - x) < resizeRange && verticalCheck)
+                        {
+                            resizeSide = "left";
+                        }
+                        if (Math.Abs(endX - x) < resizeRange && verticalCheck)
+                        {
+                            resizeSide = "right";
+                        }
+                        if (Math.Abs(startY - y) < resizeRange && horizontalCheck)
+                        {
+                            resizeSide = "top";
+                        }
+                        if (Math.Abs(endY - y) < resizeRange && horizontalCheck)
+                        {
+                            resizeSide = "bottom";
+                        }
+
+                        dragMode = false;
+                        lastTouchX = x;
+                        lastTouchY = y;
                     
-                    // Checking touch for right to left and left to right resizing
-                    if ((x > startX && x < endX &&
+                    }
+                    // Checking touch for right to left and left to right selection
+                    else if ((x > startX && x < endX &&
                         y > startY && y < endY) ||
                         (x > endX && x < startX &&
-                        y > endY && y < startY))
+                            y > endY && y < startY))
                     {
                         dragMode = true;
-                        lastTouchX = (int)e.GetX();
-                        lastTouchY = (int)e.GetY();
+                        resizeSide = null;
+                        lastTouchX = x;
+                        lastTouchY = y;
                     }
                     else
                     {
                         mDrawRect = false;
                         dragMode = false;
-                        resizeMode = false;
+                        resizeSide = null;
                         startX = x;
                         startY = y;
                     }
@@ -120,6 +153,30 @@ namespace Trukman.Droid
                             startX += dx;
                             endY += dy;
                             endX += dx;
+                            lastTouchX = x;
+                            lastTouchY = y;
+                        }
+                        else if (resizeSide != null)
+                        {
+                            int dx = x - lastTouchX;
+                            int dy = y - lastTouchY;
+
+                            switch (resizeSide)
+                            {
+                                case "left":
+                                    startX += dx;
+                                    break;
+                                case "right":
+                                    endX += dx;
+                                    break;
+                                case "top":
+                                    startY += dy;
+                                    break;
+                                case "bottom":
+                                    endY += dy;
+                                    break;
+                            };
+
                             lastTouchX = x;
                             lastTouchY = y;
                         }
