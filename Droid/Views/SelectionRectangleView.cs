@@ -26,6 +26,10 @@ namespace Trukman.Droid
         private int startY = 0;
         private int endX = 0;
         private int endY = 0;
+        private int lastTouchX = 0;
+        private int lastTouchY = 0;
+        private Boolean resizeMode;
+        private Boolean dragMode;
         private Boolean mDrawRect;
 
         private OnUpCallback mCallback = null;
@@ -78,21 +82,52 @@ namespace Trukman.Droid
         }
 
         public override bool OnTouchEvent(MotionEvent e) {
+            int x = (int)e.GetX();
+            int y = (int)e.GetY();
             switch (e.Action) {
                 case MotionEventActions.Down:
-                    mDrawRect = false;
-                    startX = (int)e.GetX();
-                    startY = (int)e.GetY();
+                    
+                    // Checking touch for right to left and left to right resizing
+                    if ((x > startX && x < endX &&
+                        y > startY && y < endY) ||
+                        (x > endX && x < startX &&
+                        y > endY && y < startY))
+                    {
+                        dragMode = true;
+                        lastTouchX = (int)e.GetX();
+                        lastTouchY = (int)e.GetY();
+                    }
+                    else
+                    {
+                        mDrawRect = false;
+                        dragMode = false;
+                        resizeMode = false;
+                        startX = x;
+                        startY = y;
+                    }
+
                     Invalidate();
                     break;
 
                 case MotionEventActions.Move:
-                    int x = (int)e.GetX();
-                    int y = (int)e.GetY();
-
                     if (!mDrawRect || Math.Abs(x - endX) > 5 || Math.Abs(y - endY) > 5) {
-                        endX = x;
-                        endY = y;
+                        if (dragMode)
+                        {
+                            int dx = x - lastTouchX;
+                            int dy = y - lastTouchY;
+
+                            startY += dy;
+                            startX += dx;
+                            endY += dy;
+                            endX += dx;
+                            lastTouchX = x;
+                            lastTouchY = y;
+                        }
+                        else
+                        {
+                            endX = x;
+                            endY = y;
+                        }
 
                         Invalidate();
                     }
