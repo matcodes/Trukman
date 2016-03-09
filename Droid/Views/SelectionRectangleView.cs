@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
 using Android.Content;
+using Android.Support.V4.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
-using Android.Widget;
-using Android.Text;
+using Android.Util;
 
 namespace Trukman.Droid
 {
@@ -45,19 +38,19 @@ namespace Trukman.Droid
         public SelectionRectangleView(Context context)
             : base(context)
         {
-            Initialize();
+            Initialize(context);
         }
 
         public SelectionRectangleView(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
-            Initialize();
+            Initialize(context);
         }
 
         public SelectionRectangleView(Context context, IAttributeSet attrs, int defStyle)
             : base(context, attrs, defStyle)
         {
-            Initialize();
+            Initialize(context);
         }
 
         #endregion
@@ -70,10 +63,10 @@ namespace Trukman.Droid
             mCallback = callback;
         }
 
-        private void Initialize()
+        private void Initialize(Context ctx)
         {
-            resizeWidthBtn = Context.Resources.GetDrawable(Resource.Drawable.width_resizer);
-            resizeHeightBtn = Context.Resources.GetDrawable(Resource.Drawable.height_resizer);
+            resizeWidthBtn = ContextCompat.GetDrawable(ctx, Resource.Drawable.width_resizer);
+            resizeHeightBtn = ContextCompat.GetDrawable(ctx, Resource.Drawable.height_resizer);
 
             InlinePaint.SetARGB(125, 59, 211, 219);
             OutlinePaint.SetARGB(255, 59, 211, 219);
@@ -158,24 +151,7 @@ namespace Trukman.Droid
                         }
                         else if (resizeSide != null)
                         {
-                            int dx = x - lastTouchX;
-                            int dy = y - lastTouchY;
-
-                            switch (resizeSide)
-                            {
-                                case "left":
-                                    startX += dx;
-                                    break;
-                                case "right":
-                                    endX += dx;
-                                    break;
-                                case "top":
-                                    startY += dy;
-                                    break;
-                                case "bottom":
-                                    endY += dy;
-                                    break;
-                            };
+                            resize(x - lastTouchX, y - lastTouchY);
 
                             lastTouchX = x;
                             lastTouchY = y;
@@ -233,6 +209,24 @@ namespace Trukman.Droid
                 resizeHeightBtn.SetBounds(xMiddle - btnHalfWidth, rect.Bottom - btnHalfHeight, xMiddle + btnHalfWidth, rect.Bottom + btnHalfHeight);
                 resizeHeightBtn.Draw(canvas);
             }
+        }
+
+        private void resize(int dx, int dy) {
+            switch (resizeSide)
+            {
+                case "left":
+                    startX += dx;
+                    break;
+                case "right":
+                    endX += dx;
+                    break;
+                case "top":
+                    startY += dy;
+                    break;
+                case "bottom":
+                    endY += dy;
+                    break;
+            };
         }
     }
 }
