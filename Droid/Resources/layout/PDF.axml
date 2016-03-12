@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<trukman.droid.SelectionRectangleView xmlns:android="http://schemas.android.com/apk/res/android"
-    class="trukman.droid.dragrect"
-    android:id="@+id/PDFView"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<AbsoluteLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="match_parent"
+    p1:layout_height="match_parent"
+    p1:id="@+id/absoluteLayout1">
+    <WebView
+        p1:id="@+id/PDFWebView"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent" />
+    <trukman.droid.SelectionRectangleView
+        class="trukman.droid.dragrect"
+        p1:id="@+id/PDFView"
+        p1:orientation="vertical"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent" />
+</AbsoluteLayout>

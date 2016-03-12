@@ -79,7 +79,7 @@ namespace Trukman.Droid
             int y = (int)e.GetY();
             switch (e.Action) {
                 case MotionEventActions.Down:
-                    int resizeRange = 10;
+                    int resizeRange = 20;
 
                     if ((((x >= startX - resizeRange && x <= startX + resizeRange) || 
                         (x >= endX - resizeRange && x <= endX + resizeRange)) && ((y >= startY && y <= endY) || (y >= endY && y <= startY))) ||
