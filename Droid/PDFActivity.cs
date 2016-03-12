@@ -21,14 +21,22 @@ namespace Trukman.Droid
 	{
         private SelectionRectangleView selectRect;
         private WebView pdfWebView;
+        private Button doneButton;
+        private Button scanButton;
+        private Button cancelButton;
 
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
             SetContentView(Resource.Layout.PDF);
 
-            selectRect = FindViewById<SelectionRectangleView>(Resource.Id.PDFView);
+            doneButton = FindViewById<Button>(Resource.Id.doneButton);
+            cancelButton = FindViewById<Button>(Resource.Id.cancelButton);
+            cancelButton.Click += HandleModeSwitch;
+            scanButton = FindViewById<Button>(Resource.Id.scanButton);
+            scanButton.Click += HandleModeSwitch;
 
+            selectRect = FindViewById<SelectionRectangleView>(Resource.Id.PDFView);
 
 			ShowPdfDocument (Intent.Data);
 		}
@@ -43,6 +51,24 @@ namespace Trukman.Droid
         {
             base.OnPause();
             pdfWebView.ClearCache(true);
+        }
+
+        // Switch to scan/view mode
+        void HandleModeSwitch(object sender, EventArgs ea) {
+            if (selectRect.Visibility == ViewStates.Invisible)
+            {
+                selectRect.Visibility = ViewStates.Visible;
+                cancelButton.Visibility = ViewStates.Visible;
+                doneButton.Visibility = ViewStates.Visible;
+                scanButton.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                selectRect.Visibility = ViewStates.Invisible;
+                cancelButton.Visibility = ViewStates.Gone;
+                doneButton.Visibility = ViewStates.Gone;
+                scanButton.Visibility = ViewStates.Visible;
+            }
         }
 
 		void ShowPdfDocument (Android.Net.Uri docUri)
@@ -104,7 +130,7 @@ namespace Trukman.Droid
 
     public class JavaScriptResult : Java.Lang.Object, IValueCallback {
         public void OnReceiveValue(Java.Lang.Object result) {
-            Java.Lang.String json = (Java.Lang.String) result;
+            Java.Lang.String    json = (Java.Lang.String) result;
             // |json| is a string of JSON containing the result of your evaluation
         }
     }

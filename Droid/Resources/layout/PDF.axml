@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:p1="http://schemas.android.com/apk/res/android"
-    p1:minWidth="25px"
-    p1:minHeight="25px"
-    p1:layout_width="match_parent"
-    p1:layout_height="match_parent"
-    p1:id="@+id/absoluteLayout1">
+<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:layout_width="fill_parent"
+    p1:layout_height="fill_parent"
+    p1:id="@+id/PDFLayout">
     <WebView
         p1:id="@+id/PDFWebView"
         p1:layout_width="match_parent"
@@ -12,7 +10,30 @@
     <trukman.droid.SelectionRectangleView
         class="trukman.droid.dragrect"
         p1:id="@+id/PDFView"
+        p1:visibility="invisible"
         p1:orientation="vertical"
         p1:layout_width="match_parent"
         p1:layout_height="match_parent" />
-</AbsoluteLayout>
+    <Button
+        p1:id="@+id/scanButton"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:text="Scan"
+        p1:layout_centerHorizontal="true"
+        p1:layout_alignParentBottom="true" />
+    <Button
+        p1:id="@+id/doneButton"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:text="Done"
+        p1:visibility="gone"
+        p1:layout_centerHorizontal="true"
+        p1:layout_alignParentBottom="true" />
+    <Button
+        p1:id="@+id/cancelButton"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:layout_alignParentBottom="true"
+        p1:visibility="gone"
+        p1:text="Cancel" />
+</RelativeLayout>

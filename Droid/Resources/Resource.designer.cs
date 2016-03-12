@@ -2093,14 +2093,14 @@ namespace Trukman.Droid
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f0a0086
+			public const int PDFLayout = 2131361926;
+			
 			// aapt resource value: 0x7f0a0088
 			public const int PDFView = 2131361928;
 			
 			// aapt resource value: 0x7f0a0087
 			public const int PDFWebView = 2131361927;
-			
-			// aapt resource value: 0x7f0a0086
-			public const int absoluteLayout1 = 2131361926;
 			
 			// aapt resource value: 0x7f0a0079
 			public const int action0 = 2131361913;
@@ -2177,6 +2177,9 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f0a0076
 			public const int buttons = 2131361910;
 			
+			// aapt resource value: 0x7f0a008b
+			public const int cancelButton = 2131361931;
+			
 			// aapt resource value: 0x7f0a007a
 			public const int cancel_action = 2131361914;
 			
@@ -2227,6 +2230,9 @@ namespace Trukman.Droid
 			
 			// aapt resource value: 0x7f0a0077
 			public const int disconnect = 2131361911;
+			
+			// aapt resource value: 0x7f0a008a
+			public const int doneButton = 2131361930;
 			
 			// aapt resource value: 0x7f0a005c
 			public const int edit_query = 2131361884;
@@ -2362,6 +2368,9 @@ namespace Trukman.Droid
 			
 			// aapt resource value: 0x7f0a000d
 			public const int satellite = 2131361805;
+			
+			// aapt resource value: 0x7f0a0089
+			public const int scanButton = 2131361929;
 			
 			// aapt resource value: 0x7f0a0031
 			public const int screen = 2131361841;
