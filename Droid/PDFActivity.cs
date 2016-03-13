@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Threading.Tasks;
 
 using Android.App;
 using Android.Content;
@@ -10,9 +11,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 using Android.Webkit;
-
-using System.IO;
 
 namespace Trukman.Droid
 {
@@ -31,6 +31,8 @@ namespace Trukman.Droid
             SetContentView(Resource.Layout.PDF);
 
             doneButton = FindViewById<Button>(Resource.Id.doneButton);
+            doneButton.Click += HandleModeSwitch;
+            doneButton.Click += ScanImage;
             cancelButton = FindViewById<Button>(Resource.Id.cancelButton);
             cancelButton.Click += HandleModeSwitch;
             scanButton = FindViewById<Button>(Resource.Id.scanButton);
@@ -57,17 +59,23 @@ namespace Trukman.Droid
         void HandleModeSwitch(object sender, EventArgs ea) {
             if (selectRect.Visibility == ViewStates.Invisible)
             {
-                selectRect.Visibility = ViewStates.Visible;
-                cancelButton.Visibility = ViewStates.Visible;
-                doneButton.Visibility = ViewStates.Visible;
-                scanButton.Visibility = ViewStates.Gone;
+                RunOnUiThread(() =>
+                    {
+                        selectRect.Visibility = ViewStates.Visible;
+                        cancelButton.Visibility = ViewStates.Visible;
+                        doneButton.Visibility = ViewStates.Visible;
+                        scanButton.Visibility = ViewStates.Gone;
+                    });
             }
             else
             {
-                selectRect.Visibility = ViewStates.Invisible;
-                cancelButton.Visibility = ViewStates.Gone;
-                doneButton.Visibility = ViewStates.Gone;
-                scanButton.Visibility = ViewStates.Visible;
+                RunOnUiThread(() =>
+                    {
+                        selectRect.Visibility = ViewStates.Invisible;
+                        cancelButton.Visibility = ViewStates.Gone;
+                        doneButton.Visibility = ViewStates.Gone;
+                        scanButton.Visibility = ViewStates.Visible;
+                    });
             }
         }
 
@@ -103,36 +111,50 @@ namespace Trukman.Droid
             return path;
         }
 
-		void ShowError (string message = null)
-		{
-			var alert = new AlertDialog.Builder (this);
+        void ScanImage (object sender, EventArgs ea)
+        {
+            View v1 = Window.DecorView.FindViewById<WebView>(Resource.Id.PDFWebView);
+            Rect bounds = selectRect.getBounds();
+            v1.DrawingCacheEnabled = true;
+            Bitmap selectedFragment = Bitmap.CreateBitmap(v1.DrawingCache, bounds.Left, bounds.Top, bounds.Width(), bounds.Height());
+            v1.DrawingCacheEnabled = false;
 
-			alert.SetTitle ("Error");
-			alert.SetMessage (message ?? "There was an error");
-
-			alert.SetPositiveButton ("Ok", (senderAlert, args) => {
-				// Do something here to handle error
-			});
-
-			if (message != null) {
-				alert.SetNeutralButton ("Visit", (sender, e) => {
-					var uri = Android.Net.Uri.Parse ("https://pspdfkit.com/android/");
-					var intent = new Intent (Intent.ActionView, uri);
-					StartActivity (intent);
-				});
-			}
-
-			RunOnUiThread (() => {
-				alert.Show();
-			});
-		}
-	}
-
-    public class JavaScriptResult : Java.Lang.Object, IValueCallback {
-        public void OnReceiveValue(Java.Lang.Object result) {
-            Java.Lang.String    json = (Java.Lang.String) result;
-            // |json| is a string of JSON containing the result of your evaluation
+            OCRApi ocr = new OCRApi();
+            
+            Task parseTask = ocr.Parse(selectedFragment)
+                .ContinueWith((task) =>
+                    {
+                        OCRResponse response = task.Result;
+                        if (response.OCRExitCode == 1)
+                        {
+                            ShowResult(response.ParsedResults[0].ParsedText);
+                        }
+                        else
+                        {
+                            AlertHandler.ShowAlert(response.ErrorMessage);
+                        }
+                    });
         }
-    }
+
+        void ShowResult(string result)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Parse result");
+            alert.SetMessage(result);
+            alert.SetCancelable(false);
+            alert.SetPositiveButton("Close", delegate { });
+            alert.SetNeutralButton("Copy to clipboard", delegate
+                {
+                    var clipboard = (ClipboardManager)GetSystemService(LauncherActivity.ClipboardService);
+                    clipboard.PrimaryClip = ClipData.NewPlainText("PDF parse result", result);
+                });
+
+            RunOnUiThread(() =>
+                {
+                    alert.Show();
+                });
+
+        }
+	}
 }
 

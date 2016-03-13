@@ -2918,9 +2918,6 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f05002c
 			public const int mr_user_route_category_name = 2131034156;
 			
-			// aapt resource value: 0x7f050042
-			public const int pspdfkitLicenseKey = 2131034178;
-			
 			// aapt resource value: 0x7f05003f
 			public const int status_bar_notification_info_overflow = 2131034175;
 			

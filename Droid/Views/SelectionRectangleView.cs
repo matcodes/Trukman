@@ -59,6 +59,12 @@ namespace Trukman.Droid
             void onRectFinished(Rect rect);
         }
 
+
+        public Rect getBounds() {
+            return new Rect(Math.Min(startX, endX), Math.Min(startY, endY),
+                Math.Max(endX, startX), Math.Max(endY, startX));
+        }
+
         public void setOnUpCallback(OnUpCallback callback) {
             mCallback = callback;
         }
