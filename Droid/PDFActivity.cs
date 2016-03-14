@@ -93,7 +93,12 @@ namespace Trukman.Droid
             pdfWebView.SetWebChromeClient(new WebChromeClient());
 
 
-            string path = GetRealPathFromURI(docUri);
+            string path = docUri.Path;
+            if (docUri.Scheme == "content")
+            {
+                path = GetRealPathFromURI(docUri);
+            }
+
             pdfWebView.LoadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + WebUtility.UrlEncode(path));
 		}
 
@@ -101,6 +106,7 @@ namespace Trukman.Droid
         {
             var mediaStoreImagesMediaData = "_data";
             string[] projection = { mediaStoreImagesMediaData };
+
             Android.Database.ICursor cursor = ContentResolver.Query(contentURI, projection, 
                 null, null, null);
             int columnIndex = cursor.GetColumnIndexOrThrow(mediaStoreImagesMediaData);
@@ -121,7 +127,7 @@ namespace Trukman.Droid
 
             OCRApi ocr = new OCRApi();
             
-            Task parseTask = ocr.Parse(selectedFragment)
+            ocr.Parse(selectedFragment)
                 .ContinueWith((task) =>
                     {
                         OCRResponse response = task.Result;
