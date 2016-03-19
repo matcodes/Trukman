@@ -25,8 +25,6 @@ namespace Trukman.Droid
         private Boolean dragMode;
         private Boolean mDrawRect;
 
-        private OnUpCallback mCallback = null;
-
         private Drawable resizeWidthBtn;
         private Drawable resizeHeightBtn;
 
@@ -55,18 +53,10 @@ namespace Trukman.Droid
 
         #endregion
 
-        public interface OnUpCallback {
-            void onRectFinished(Rect rect);
-        }
-
 
         public Rect getBounds() {
             return new Rect(Math.Min(startX, endX), Math.Min(startY, endY),
-                Math.Max(endX, startX), Math.Max(endY, startX));
-        }
-
-        public void setOnUpCallback(OnUpCallback callback) {
-            mCallback = callback;
+                Math.Max(endX, startX), Math.Max(endY, startY));
         }
 
         private void Initialize(Context ctx)
@@ -175,10 +165,6 @@ namespace Trukman.Droid
                     break;
 
                 case MotionEventActions.Up:
-                    if (mCallback != null) {
-                        mCallback.onRectFinished(new Rect(Math.Min(startX, endX), Math.Min(startY, endY),
-                                Math.Max(endX, startX), Math.Max(endY, startX)));
-                    }
                     Invalidate();
                     break;
 
