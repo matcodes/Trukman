@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using System.IO;
 
 using Android.App;
 using Android.Content;
@@ -13,6 +14,8 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using Android.Webkit;
+
+using Newtonsoft.Json;
 
 namespace Trukman.Droid
 {
@@ -81,17 +84,15 @@ namespace Trukman.Droid
 
 		void ShowPdfDocument (Android.Net.Uri docUri)
 		{
-            pdfWebView = (WebView)FindViewById<WebView>(Resource.Id.PDFWebView);
+            pdfWebView = FindViewById<WebView>(Resource.Id.PDFWebView);
 
             WebSettings settings = pdfWebView.Settings;
             settings.JavaScriptEnabled = true;
             settings.AllowUniversalAccessFromFileURLs = true;
             settings.AllowFileAccessFromFileURLs = true;
-
-            settings.SetSupportZoom(true);
+            settings.AllowContentAccess = true; // Check this!
 
             pdfWebView.SetWebChromeClient(new WebChromeClient());
-
 
             string path = docUri.Path;
             if (docUri.Scheme == "content")
@@ -119,11 +120,10 @@ namespace Trukman.Droid
 
         void ScanImage (object sender, EventArgs ea)
         {
-            View v1 = Window.DecorView.FindViewById<WebView>(Resource.Id.PDFWebView);
             Rect bounds = selectRect.getBounds();
-            v1.DrawingCacheEnabled = true;
-            Bitmap selectedFragment = Bitmap.CreateBitmap(v1.DrawingCache, bounds.Left, bounds.Top, bounds.Width(), bounds.Height());
-            v1.DrawingCacheEnabled = false;
+            pdfWebView.DrawingCacheEnabled = true;
+            Bitmap selectedFragment = Bitmap.CreateBitmap(pdfWebView.GetDrawingCache(true), bounds.Left, bounds.Top, bounds.Width(), bounds.Height());
+            pdfWebView.DrawingCacheEnabled = false;
 
             OCRApi ocr = new OCRApi();
             
@@ -144,17 +144,17 @@ namespace Trukman.Droid
 
         void ShowResult(string result)
         {
+            string[] extraNames = new string[]{"Receiver", "Sender", "ReceiverAddress", "SenderAddress"};
+            string[] items = new string[]{"Save as receiver", "Save as sender", "Save as receiver address", "Save as sender address"};
+            var resultActivity = new Intent(this, typeof(OCRActivity));
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Parse result");
-            alert.SetMessage(result);
-            alert.SetCancelable(false);
-            alert.SetPositiveButton("Close", delegate { });
-            alert.SetNeutralButton("Copy to clipboard", delegate
-                {
-                    var clipboard = (ClipboardManager)GetSystemService(LauncherActivity.ClipboardService);
-                    clipboard.PrimaryClip = ClipData.NewPlainText("PDF parse result", result);
-                });
 
+            alert.SetTitle(result);
+            alert.SetItems(items, (o, e) => {
+                resultActivity.PutExtra(extraNames[e.Which], result);
+                StartActivity(resultActivity);
+            });
+            alert.SetNegativeButton("Cancel", delegate {});
             RunOnUiThread(() =>
                 {
                     alert.Show();
