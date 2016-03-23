@@ -38,11 +38,6 @@ namespace Trukman
 				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_YOU_WORK_FOR)
 			};
 
-			// TODO: для тестирования, убрать потом
-			/*edtName.Text = "dsp1";
-			edtPhone.Text = "123";
-			edtCompany.Text = "company1";*/
-
 			Content = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
 				Spacing = Constants.StackLayoutDefaultSpacing,
@@ -68,10 +63,21 @@ namespace Trukman
 
 		async void sendButtonPressed (object sender, EventArgs e) {
 			try{
-				await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
-				bool isJoinToCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-				if (isJoinToCompany)
-					await Navigation.PushModalAsync (new RootPage ());
+				bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
+				if (!findCompany)
+					await AlertHandler.ShowCheckCompany (edtCompany.Text);
+				else
+				{
+					await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
+					bool isJoinToCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+					if (isJoinToCompany)
+						await Navigation.PushAsync (new RootPage ());
+					else
+					{
+						await AlertHandler.ShowAlert (string.Format ("The owner of the company {0} has not yet added you to the company", edtCompany.Text));
+						await App.ServerManager.LogOut();
+					}
+				}
 			}
 			catch(Exception exc) {
 				await AlertHandler.ShowAlert (exc.Message);

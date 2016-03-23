@@ -35,6 +35,13 @@ namespace Trukman
 			MANAGE_FLEET,
 			SETTING,
 			HELP,
+			JOB_NAME,
+			JOB_DESCRIPTION,
+			SHIPPER_ADDRESS,
+			RECEIVE_ADDRESS,
+			DRIVER_NAME,
+			BTN_SAVE,
+			BTN_CANCEL,
 			CAMBIAR_A_ESPANOL
 		};
 
@@ -62,6 +69,13 @@ namespace Trukman
 			"Manage Fleet",
 			"Setting",
 			"Help",
+			"Job name",
+			"Job description",
+			"Shipper address",
+			"Receive address",
+			"Driver",
+			"Save",
+			"Cancel",
 			"Cambiar a Espanol"
 		};
 
@@ -90,6 +104,13 @@ namespace Trukman
 			"Manage Fleet",
 			"Setting",
 			"Help",
+			"Job name",
+			"Job description",
+			"Shipper address",
+			"Receive address",
+			"Driver",
+			"Save",
+			"Cancel",
 			"Cambiar a Espanol"
 		};
 

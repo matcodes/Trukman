@@ -16,19 +16,25 @@ namespace Trukman
 		void Init ();
 		Task LogIn (string name, string pass);
 		Task LogOut();
+		bool IsAuthorized ();
 		Task Register (string name, string pass, UserRole role);
 		Task AddCompany (string name);
-		Task<Boolean> RequestToJoinCompany (string name);
+		Task<bool> RequestToJoinCompany (string name);
 		void StartTimerForRequest ();
-		//void DisposeTimerForRequest();
 
+		Task<bool> FindCompany(string name);
 		UserRole GetCurrentUserRole();
 		string GetCurrentUserName();
+		bool IsOwner();
+		Task<bool> IsUserJoinedToCompany (string companyName = "");
 
 		Task SaveJob (string name, string description, string shipperAddress, 
-		              string receiveAddress, string driver); //, string company);
-		Task<List<Job>> GetJobList(string companyName = "", string driverName = "");
-		Task SaveDriverLocation(GPSLocation location);
-		Task<List<Driver>> GetDriverList ();
+		              string receiveAddress, string driver);
+		Task<IList<Job>> GetJobList(string driverName = "");
+		Task SaveDriverLocation(UserLocation location);
+
+		Task<IList<User>> GetDriverList ();
+		Task<IList<User>> GetDispatchList();
+		Task RemoveCompanyUser (Trukman.User _user);
 	}
 }

@@ -23,33 +23,23 @@ namespace Trukman
 			};
 
 			edtName = new TrukmanEditor {
-				Placeholder = "Job Name"//Localization.getString(Localization.LocalStrings.COMPANY_NAME)
+				Placeholder = Localization.getString(Localization.LocalStrings.JOB_NAME)
 			};
 			edtDescription = new TrukmanEditor {
-				Placeholder = "Description"//Localization.getString(Localization.LocalStrings.COMPANY_NAME)
+				Placeholder = Localization.getString(Localization.LocalStrings.JOB_DESCRIPTION)
 			};
 			edtShipperAddress = new TrukmanEditor {
-				Placeholder = "Shipper address"//Localization.getString(Localization.LocalStrings.COMPANY_NAME)
+				Placeholder = Localization.getString(Localization.LocalStrings.SHIPPER_ADDRESS)
 			};
 			edtReceiveAddress = new TrukmanEditor {
-				Placeholder = "Receive address"	
+				Placeholder = Localization.getString(Localization.LocalStrings.RECEIVE_ADDRESS)
 			};
 			edtDriver = new TrukmanEditor {
-				Placeholder = "Driver"	
+				Placeholder = Localization.getString(Localization.LocalStrings.DRIVER_NAME)
 			};
 
-			// TODO: для отладки, удалить код
-			/*edtName.Text = "First company job";
-			edtDescription.Text = "Job description";
-			edtShipperAddress.Text = "Address 1";
-			edtReceiveAddress.Text = "Address 2";
-			edtDriver.Text = "Alex A Driver";*/
-
-			// driver
-			// map
-
-			btnOk = new TrukmanButton{ Text = "Save" };
-			btnCancel = new TrukmanButton{ Text="Cancel" };
+			btnOk = new TrukmanButton{ Text = Localization.getString (Localization.LocalStrings.BTN_SAVE) };
+			btnCancel = new TrukmanButton{ Text = Localization.getString (Localization.LocalStrings.BTN_CANCEL) };
 
 			btnOk.Clicked += OkButton_Clicked;
 			btnCancel.Clicked += BtnCancel_Clicked;

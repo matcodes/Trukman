@@ -12,10 +12,15 @@ namespace Trukman
 			set { serverManager = value; }
 		}
 
-		static IGPSManager gpsManager;
-		public static IGPSManager GpsManager {
-			get { return gpsManager; }
-			set { gpsManager = value; }
+		static ILocationService locManager;
+		public static ILocationService LocManager {
+			get 
+			{ 
+				if (locManager == null) 
+					locManager = DependencyService.Get<ILocationService> ();
+				return locManager; 
+			}
+			//set { locManager = value; }
 		}
 
 		public App ()
@@ -24,15 +29,18 @@ namespace Trukman
 			ServerManager = DependencyService.Get<IServerManager> ();
 			ServerManager.Init ();
 
-			//if (App.ServerManager.GetCurrentUserRole () == UserRole.UserRoleDriver) {
-			GpsManager = DependencyService.Get<IGPSManager> ();
-			GpsManager.InitializeLocationManager ();
-			//}
-
 			// The root page of your application
 			MainPage = new NavigationPage ();
 
-			MainPage.Navigation.PushAsync (new SignUpTypePage ());
+			if (!ServerManager.IsAuthorized ())
+				MainPage.Navigation.PushAsync (new SignUpTypePage ());
+			else
+				MainPage.Navigation.PushAsync (new RootPage ());
+
+			//if (App.ServerManager.GetCurrentUserRole () == UserRole.UserRoleDriver) {
+				//LocManager = DependencyService.Get<ILocationService> ();
+				//LocManager.StartLocationUpdates ();
+			//}
 		}
 
 		protected override void OnStart ()

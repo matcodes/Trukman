@@ -12,20 +12,17 @@ using Android.OS;
 using Android.Locations;
 using System.Linq;
 using System.Collections.Generic;
+using Trukman.Droid.Services;
 
 namespace Trukman.Droid
 {
 	[Activity (Label = "Trukman.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity, ILocationListener
+	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
 	{
-		LocationManager _locationManager;
-
-		string _locationProvider;
-		long minTime = 1*60*1000; // раз в минуту
-		float minDistance = 100; // каждые 100 метров
-
 		protected override void OnCreate (Bundle bundle)
 		{
+			//LocationClient 
+
 			base.OnCreate (bundle);
 
 			Xamarin.FormsMaps.Init (this, bundle);
@@ -34,79 +31,34 @@ namespace Trukman.Droid
 
 			LoadApplication (new App ());
 
-			// Менеджер сервера
-			//App.ServerManager = new ServerManager();
-			//App.ServerManager.Init ();
-
-			// Местоположение по GPS
-			InitializeLocationManager();
-
-			//IGeolocator
-		}
-
-		void InitializeLocationManager()
-		{
-			_locationManager = (LocationManager) GetSystemService(LocationService);
-			Criteria criteriaForLocationService = new Criteria
-			{
-				Accuracy = Accuracy.Fine
+			LocationServiceStarter.Current.LocationServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
+				LocationServiceStarter.Current.LocationService.LocationChanged += HandleLocationChanged;
+				//LocationServiceStarter.Current.LocationService.OnProviderDisabled += HandleProviderDisabled;
+				//LocationServiceStarter.Current.LocationService.OnProviderEnabled += HandleProviderEnabled;
+				//LocationServiceStarter.Current.LocationService.OnStatusChanged += HandleStatusChanged;
 			};
-			IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
-
-			if (acceptableLocationProviders.Any())
-			{
-				_locationProvider = acceptableLocationProviders.First();
-			}
-			else
-			{
-				_locationProvider = string.Empty;
-			}
 		}
 
-		protected override void OnDestroy ()
+		#region Android Location Service methods
+		public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			base.OnDestroy ();
-
-			App.ServerManager.LogOut ();
+			Android.Locations.Location location = e.Location;
+			App.ServerManager.SaveDriverLocation (new UserLocation{ Longitude = location.Longitude, Latitude = location.Latitude });
 		}
 
-		protected override void OnResume ()
+		public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)
 		{
-			base.OnResume ();
-
-			//App.GpsManager.Resume ();
-
-			if (!string.IsNullOrEmpty (_locationProvider)) {
-				_locationManager.RequestLocationUpdates (_locationProvider, minTime, minDistance, this);
-				var location = _locationManager.GetLastKnownLocation (LocationManager.GpsProvider);
-				if (location != null)
-					App.ServerManager.SaveDriverLocation (new GPSLocation {
-						Longitude = location.Longitude,
-						Latitude = location.Latitude
-					});
-			}
 		}
 
-		protected override void OnPause ()
+		public void HandleProviderEnabled(object sender, ProviderEnabledEventArgs e)
 		{
-			base.OnPause ();
-
-			//App.GpsManager.Pause ();
-
-			if (!string.IsNullOrEmpty (_locationProvider))
-				_locationManager.RemoveUpdates (this); 
 		}
 
-		public void OnLocationChanged(Location location) 
+		public void HandleStatusChanged(object sender, StatusChangedEventArgs e)
 		{
-			App.ServerManager.SaveDriverLocation (new GPSLocation{ Longitude = location.Longitude, Latitude = location.Latitude });
 		}
 
-		public void OnProviderDisabled(string provider) {}
-
-		public void OnProviderEnabled(string provider) {}
-
-		public void OnStatusChanged(string provider, Availability status, Bundle extras) {}
+		#endregion
 	}
 }
 

@@ -33,7 +33,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomViews\TrukmanButton.cs" />
-    <Compile Include="Main.cs" />
     <Compile Include="CustomViews\SegmentedControl.cs" />
     <Compile Include="CustomViews\TrukmanEditor.cs" />
     <Compile Include="Pages\SignUpCompanyPage.cs" />
@@ -49,13 +48,16 @@
     <Compile Include="Pages\DriverMainPage.cs" />
     <Compile Include="Pages\JobListPage.cs" />
     <Compile Include="Pages\DriverListPage.cs" />
-    <Compile Include="Module\IGPSManager.cs" />
-    <Compile Include="Module\Entities.cs" />
     <Compile Include="Pages\SignUpDispatchPage.cs" />
     <Compile Include="Pages\SignUpOwnerPage.cs" />
     <Compile Include="Pages\EditJobPage.cs" />
     <Compile Include="Pages\ConstructPage.cs" />
     <Compile Include="Module\TrukmanTimer.cs" />
+    <Compile Include="Pages\CustomCell.cs" />
+    <Compile Include="Pages\DispatchListPage.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="Module\ILocationService.cs" />
+    <Compile Include="Module\Model.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

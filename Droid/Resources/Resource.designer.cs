@@ -1043,32 +1043,38 @@ namespace Trukman.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f060056
-			public const int abc_background_cache_hint_selector_material_dark = 2131099734;
-			
 			// aapt resource value: 0x7f060057
-			public const int abc_background_cache_hint_selector_material_light = 2131099735;
+			public const int ListViewHighlighted = 2131099735;
+			
+			// aapt resource value: 0x7f060056
+			public const int ListViewSelected = 2131099734;
 			
 			// aapt resource value: 0x7f060058
-			public const int abc_color_highlight_material = 2131099736;
+			public const int abc_background_cache_hint_selector_material_dark = 2131099736;
+			
+			// aapt resource value: 0x7f060059
+			public const int abc_background_cache_hint_selector_material_light = 2131099737;
+			
+			// aapt resource value: 0x7f06005a
+			public const int abc_color_highlight_material = 2131099738;
 			
 			// aapt resource value: 0x7f06000e
 			public const int abc_input_method_navigation_guard = 2131099662;
 			
-			// aapt resource value: 0x7f060059
-			public const int abc_primary_text_disable_only_material_dark = 2131099737;
-			
-			// aapt resource value: 0x7f06005a
-			public const int abc_primary_text_disable_only_material_light = 2131099738;
-			
 			// aapt resource value: 0x7f06005b
-			public const int abc_primary_text_material_dark = 2131099739;
+			public const int abc_primary_text_disable_only_material_dark = 2131099739;
 			
 			// aapt resource value: 0x7f06005c
-			public const int abc_primary_text_material_light = 2131099740;
+			public const int abc_primary_text_disable_only_material_light = 2131099740;
 			
 			// aapt resource value: 0x7f06005d
-			public const int abc_search_url_text = 2131099741;
+			public const int abc_primary_text_material_dark = 2131099741;
+			
+			// aapt resource value: 0x7f06005e
+			public const int abc_primary_text_material_light = 2131099742;
+			
+			// aapt resource value: 0x7f06005f
+			public const int abc_search_url_text = 2131099743;
 			
 			// aapt resource value: 0x7f06000f
 			public const int abc_search_url_text_normal = 2131099663;
@@ -1079,11 +1085,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060011
 			public const int abc_search_url_text_selected = 2131099665;
 			
-			// aapt resource value: 0x7f06005e
-			public const int abc_secondary_text_material_dark = 2131099742;
+			// aapt resource value: 0x7f060060
+			public const int abc_secondary_text_material_dark = 2131099744;
 			
-			// aapt resource value: 0x7f06005f
-			public const int abc_secondary_text_material_light = 2131099743;
+			// aapt resource value: 0x7f060061
+			public const int abc_secondary_text_material_light = 2131099745;
 			
 			// aapt resource value: 0x7f060012
 			public const int accent_material_dark = 2131099666;
@@ -1169,11 +1175,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060005
 			public const int common_signin_btn_light_text_pressed = 2131099653;
 			
-			// aapt resource value: 0x7f060060
-			public const int common_signin_btn_text_dark = 2131099744;
+			// aapt resource value: 0x7f060062
+			public const int common_signin_btn_text_dark = 2131099746;
 			
-			// aapt resource value: 0x7f060061
-			public const int common_signin_btn_text_light = 2131099745;
+			// aapt resource value: 0x7f060063
+			public const int common_signin_btn_text_light = 2131099747;
 			
 			// aapt resource value: 0x7f060048
 			public const int design_fab_shadow_end_color = 2131099720;
@@ -1322,8 +1328,8 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060043
 			public const int secondary_text_disabled_material_light = 2131099715;
 			
-			// aapt resource value: 0x7f060062
-			public const int segmented_control_text = 2131099746;
+			// aapt resource value: 0x7f060064
+			public const int segmented_control_text = 2131099748;
 			
 			// aapt resource value: 0x7f060054
 			public const int selected = 2131099732;
@@ -1334,11 +1340,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060045
 			public const int switch_thumb_disabled_material_light = 2131099717;
 			
-			// aapt resource value: 0x7f060063
-			public const int switch_thumb_material_dark = 2131099747;
+			// aapt resource value: 0x7f060065
+			public const int switch_thumb_material_dark = 2131099749;
 			
-			// aapt resource value: 0x7f060064
-			public const int switch_thumb_material_light = 2131099748;
+			// aapt resource value: 0x7f060066
+			public const int switch_thumb_material_light = 2131099750;
 			
 			// aapt resource value: 0x7f060046
 			public const int switch_thumb_normal_material_dark = 2131099718;
@@ -2923,6 +2929,9 @@ namespace Trukman.Droid
 			
 			// aapt resource value: 0x7f05002c
 			public const int mr_user_route_category_name = 2131034156;
+			
+			// aapt resource value: 0x7f050042
+			public const int pspdfkitLicenseKey = 2131034178;
 			
 			// aapt resource value: 0x7f05003e
 			public const int status_bar_notification_info_overflow = 2131034174;

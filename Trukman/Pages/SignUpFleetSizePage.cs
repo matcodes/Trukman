@@ -139,9 +139,7 @@ namespace Trukman
 		}
 
 		async void invitePressed (object sender, EventArgs e) {
-//			await Navigation.PushAsync (new  MenuPage ());
-//			await DisplayAlert (null, "You're Signed Up Congratulations", "CLOSE");	
-			App.ServerManager.StartTimerForRequest ();
+			//App.ServerManager.StartTimerForRequest ();
 			await Navigation.PushModalAsync (new RootPage ());
 		}
 		public void TapImgColorPicker_Tapped(object sender, EventArgs e)

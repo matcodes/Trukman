@@ -23,11 +23,12 @@ namespace Trukman
 			MenuList menu = new MenuList ();
 			menu.ItemSelected += OnItemSelected;
 
-			BoxView box = new BoxView{ BackgroundColor = Color.FromRgb (43, 43, 43),WidthRequest = 500, HeightRequest = 20 };
+			BoxView box = new BoxView{ BackgroundColor = Color.FromRgb (43, 43, 43), WidthRequest = 500, HeightRequest = 20 };
 
-			relativeLayout.Children.Add (image, Constraint.RelativeToParent ((Parent) => {
-				return Parent.Width / 20;
-			}),
+			relativeLayout.Children.Add (image, 
+				Constraint.RelativeToParent ((Parent) => {
+					return Parent.Width / 20;
+				}),
 				Constraint.RelativeToParent ((Parent) => {
 					return 20;
 				}),
@@ -35,37 +36,42 @@ namespace Trukman
 					return Parent.Width / 5;
 				}));
 
-			relativeLayout.Children.Add (labelNameUser, Constraint.RelativeToView(image, (parent, view) =>{
-				return view.X + view.Width + parent.Width / 50;
-			}),
+			relativeLayout.Children.Add (labelNameUser, 
+				Constraint.RelativeToView(image, (parent, view) =>{
+					return view.X + view.Width + parent.Width / 50;
+				}),
 				Constraint.RelativeToView(image, (parent, view) =>{
 					return view.Y;
 				}));
 
-			relativeLayout.Children.Add (labelBred, Constraint.RelativeToView (labelNameUser, (parent, view) => {
-				return view.X;
-			}),
+			relativeLayout.Children.Add (labelBred, 
+				Constraint.RelativeToView (labelNameUser, (parent, view) => {
+					return view.X;
+				}),
 				Constraint.RelativeToView(labelNameUser, (parent, view) =>{
 					return view.Y + parent.Width / 20;		
 				}));
 
-			relativeLayout2.Children.Add (box, Constraint.RelativeToParent ((Parent) => {
-				return 2;
-			}),
+			relativeLayout2.Children.Add (box, 
+				Constraint.RelativeToParent ((Parent) => {
+					return 2;
+				}),
 				Constraint.RelativeToParent ((Parent) => {
 					return 1;
 				}));
 
-			relativeLayout2.Children.Add (labelMenu, Constraint.RelativeToView (box, (parent, view) => {
-				return view.X + 30;
-			}),
+			relativeLayout2.Children.Add (labelMenu, 
+				Constraint.RelativeToView (box, (parent, view) => {
+					return view.X + 30;
+				}),
 				Constraint.RelativeToView (box, (parent, view) => {
 					return view.Y;
 				}));
 
-			relativeLayout2.Children.Add (menu, Constraint.RelativeToView (box, (parent, view) => {
-				return view.X + 5;
-			}),
+			relativeLayout2.Children.Add (menu, 
+				Constraint.RelativeToView (box, (parent, view) => {
+					return view.X + 5;
+				}),
 				Constraint.RelativeToView(box, (parent, view) => {
 					return view.Y + 25;	
 				}));
@@ -85,6 +91,10 @@ namespace Trukman
 			};
 
 			this.Detail = new ConstructPage ();
+
+			// Если пользователь владелец, запускаем таймер для отслеживания новых заявок на добавление диспетчеров/водителей
+			if (App.ServerManager.IsOwner ())
+				App.ServerManager.StartTimerForRequest ();
 		}
 
 		void OnItemSelected (object sender, SelectedItemChangedEventArgs e)
@@ -93,8 +103,8 @@ namespace Trukman
 			if (item != null)
 			{
 				if (item.TargetType != null)
-					Detail = new NavigationPage ((Page)Activator.CreateInstance (item.TargetType));
-				//((MenuList)sender).SelectedItem = null;
+					Detail = (Page)Activator.CreateInstance (item.TargetType);
+				((MenuList)sender).SelectedItem = null;
 				IsPresented = false;
 			}
 		}

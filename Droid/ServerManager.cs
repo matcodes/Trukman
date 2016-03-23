@@ -8,6 +8,7 @@ using System.Collections;
 using Xamarin.Forms;
 using Trukman.Droid;
 using Trukman.Droid.Helpers;
+using System.Collections.ObjectModel;
 
 [assembly: Dependency(typeof(ServerManager))]
 
@@ -38,8 +39,6 @@ namespace Trukman.Droid
 
 		Timer timerForRequst;
 
-		UserRole _userRole;
-
 		public ServerManager ()
 		{
 		}
@@ -54,18 +53,22 @@ namespace Trukman.Droid
 
 		public async Task LogOut()
 		{
-			//timerForRequst.Dispose ();
 			await ParseUser.LogOutAsync ();
 		}
 
-		async Task<ParseUser> FindUser(string name)
+		public bool IsAuthorized()
+		{
+			return ParseUser.CurrentUser != null;
+		}
+
+		async Task<ParseUser> GetUser(string name)
 		{
 			var query = ParseUser.Query.WhereEqualTo (ServerUserName, name);
 			return await query.FirstOrDefaultAsync ();
 		}
 
 		public async Task Register(string name, string pass, UserRole role) {
-			ParseUser _user = await FindUser(name);
+			ParseUser _user = await GetUser(name);
 			if (_user == null) {
 				ParseUser user = new ParseUser {
 					Username = name,
@@ -76,19 +79,11 @@ namespace Trukman.Droid
 			} else {
 				await this.LogIn (name, pass);
 			}
-			_userRole = role;
 		}
 
 		public async Task AddCompany (string name) {
 			// Добавление наименования компании в текущие настройки (для владельца компании)
 			SettingsService.AddOrUpdateSetting(ServerCompanyName, name);
-
-			/*var session = await ParseSession.GetCurrentSessionAsync ();
-			string currCompanyName = "";
-			// На всякий случай удаляем из сессии название компании и пишем новое
-			if (session.TryGetValue (ServerCompanyName, out currCompanyName))
-				session.Remove (ServerCompanyName);
-			session.Add (ServerCompanyName, name);*/
 
 			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
 			ParseObject company = await query.FirstOrDefaultAsync ();
@@ -101,50 +96,51 @@ namespace Trukman.Droid
 				await Task.FromResult (false);
 		}
 
-		public async Task<Boolean> RequestToJoinCompany (string name) {
-			// Добавление наименования компании в текущие настройки (для диспетчеров и водителей)
-			SettingsService.AddOrUpdateSetting(ServerCompanyName, name);
+		private async Task<ParseObject> GetCompany(string name)
+		{
+			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
+			return await query.FirstOrDefaultAsync ();
+		}
 
-			/*var session = await ParseSession.GetCurrentSessionAsync ();
-			string currCompanyName = "";
-			// На всякий случай удаляем из сессии название компании и пишем новое
-			if (session.TryGetValue (ServerCompanyName, out currCompanyName))
-				session.Remove (ServerCompanyName);
-			session.Add (ServerCompanyName, name);*/
+		public async Task<bool> FindCompany(string name)
+		{
+			return await GetCompany(name) != null;
+		}
+
+		public async Task<bool> IsUserJoinedToCompany(string companyName = "")
+		{
+			if (string.IsNullOrEmpty(companyName))
+				companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
 
 			// Прикрепляем НОВОГО пользователя (диспетчера/водителя) к указанной компании
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
+			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
 			var company = await query.FirstOrDefaultAsync ();
-			if (company != null) {
-				UserRole role = (UserRole)ParseUser.CurrentUser.Get<int> (ServerRole);
-				ParseRelation<ParseUser> companyUsers = null;
-				if (role == UserRole.UserRoleDispatch)
-					companyUsers = company.GetRelation<ParseUser> (ServerDispatchers);
-				else if (role == UserRole.UserRoleDriver)
-					companyUsers = company.GetRelation<ParseUser> (ServerDrivers);
 
-				var companyUser = await companyUsers.Query.WhereEqualTo (ServerUserName, ParseUser.CurrentUser.Username).FirstOrDefaultAsync ();
+			UserRole role = (UserRole)ParseUser.CurrentUser.Get<int> (ServerRole);
+			ParseRelation<ParseUser> companyUsers = null;
+			if (role == UserRole.UserRoleDispatch)
+				companyUsers = company.GetRelation<ParseUser> (ServerDispatchers);
+			else if (role == UserRole.UserRoleDriver)
+				companyUsers = company.GetRelation<ParseUser> (ServerDrivers);
 
-				//if (ParseUser.CurrentUser.IsNew) {
-				// Если пользователь еще не был добавлен к компании
-				if (companyUser == null) {
-					ParseRelation<ParseUser> companyRequesting = company.GetRelation<ParseUser> (ServerRequesting);
-					companyRequesting.Add (ParseUser.CurrentUser);
-					await company.SaveAsync ();
+			var companyUser = await companyUsers.Query.WhereEqualTo (ServerUserName, ParseUser.CurrentUser.Username).FirstOrDefaultAsync ();
 
-					Device.BeginInvokeOnMainThread (async delegate {
-						await AlertHandler.ShowAlert (string.Format("The owner of the company {0} has not yet added you to the company", name));
-					});
-						
-					return false;
-				} else
-					return true;
-			} else {
-				Device.BeginInvokeOnMainThread (async delegate {
-					await AlertHandler.ShowCheckRequestCompany (name);
-				});
+			// Если пользователь еще не был добавлен к компании
+			if (companyUser == null) {
+				ParseRelation<ParseUser> companyRequesting = company.GetRelation<ParseUser> (ServerRequesting);
+				companyRequesting.Add (ParseUser.CurrentUser);
+				await company.SaveAsync ();
+
 				return false;
-			}
+			} else
+				return true;
+		}
+
+		public async Task<bool> RequestToJoinCompany (string name) {
+			// Добавление наименования компании в текущие настройки (для диспетчеров и водителей)
+			SettingsService.AddOrUpdateSetting (ServerCompanyName, name);
+
+			return await IsUserJoinedToCompany (name);
 		}
 
 		public async void CheckRequests () {
@@ -156,7 +152,7 @@ namespace Trukman.Droid
 				Device.BeginInvokeOnMainThread (async delegate {
 					UserRole role = (UserRole)user.Get<int> (ServerRole);
 
-					Boolean answer = false;
+					bool answer = false;
 					if (role == UserRole.UserRoleDispatch)
 						answer = await AlertHandler.ShowCheckDispatch (user.Username);
 					else if (role == UserRole.UserRoleDriver)
@@ -185,19 +181,12 @@ namespace Trukman.Droid
 
 		public void StartTimerForRequest () {
 			TimerCallback callback = new TimerCallback (TimerForRequestFires);
-			timerForRequst = new Timer (callback, null, 0, 5000);
-			//CheckRequests ();
+			timerForRequst = new Timer (callback, null, 0, 15000);
 		}
-
-/*		public void DisposeTimerForRequest()
-		{
-			if (timerForRequst != null)
-				timerForRequst.Dispose ();
-		}*/
 
 		public UserRole GetCurrentUserRole()
 		{
-			return _userRole;
+			return (UserRole)(ParseUser.CurrentUser.Get<int>(ServerRole));
 		}
 
 		public string GetCurrentUserName()
@@ -205,15 +194,13 @@ namespace Trukman.Droid
 			return ParseUser.CurrentUser.Username;
 		}
 
-		async Task<ParseObject> GetCompany(string name)
+		public bool IsOwner()
 		{
-			var query = ParseObject.GetQuery(ServerCompany).
-				WhereEqualTo(ServerName, name);
-			return await query.FirstOrDefaultAsync ();
+			return (UserRole)(ParseUser.CurrentUser.Get<int> (ServerRole)) == UserRole.UserRoleOwner;
 		}
 
 		public async Task SaveJob(string name, string description, string shipperAddress, 
-			string receiveAddress, string driverName) //, string company)
+			string receiveAddress, string driverName)
 		{
 			var job = new ParseObject (ServerJobClass);
 			job [ServerName] = name;
@@ -221,25 +208,34 @@ namespace Trukman.Droid
 			job [ServerShipperAddrress] = shipperAddress;
 			job [ServerReceivedAddress] = receiveAddress;
 			job [ServerCompleted] = false;
-			ParseUser driver = await FindUser (driverName);
+
+			ParseUser driver = await GetUser (driverName);
 			job [ServerDriver] = driver;
-			//string company = (string)ParseUser.CurrentUser [ServerCompany];
-			//job [ServerCompany] = await GetCompany (company);
+
+			string companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
+			job [ServerCompany] = await GetCompany (companyName);
+
 			job [ServerCreateDispatcher] = ParseUser.CurrentUser;
 			await job.SaveAsync();
 		}
 
-		public async Task<List<Job>> GetJobList(string companyName = "", string driverName = "")
+		public async Task<IList<Job>> GetJobList(string driverName = "")
 		{
+			var companyName = SettingsService.GetSetting<string>(ServerCompanyName, "");
+			var compQuery = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerCompanyName, companyName);
+			ParseObject company = await compQuery.FirstOrDefaultAsync ();
+
 			var query = ParseObject.GetQuery (ServerJobClass);
-			if (!string.IsNullOrEmpty (companyName))
-				query = query.WhereEqualTo (ServerCompany, companyName);
-			if (_userRole == UserRole.UserRoleDriver)
+			// Фильтруем работы по компании
+			if (company != null)
+				query = query.WhereEqualTo (ServerCompany, company);
+			
+			if (GetCurrentUserRole()  == UserRole.UserRoleDriver)
 				query = query.WhereEqualTo (ServerDriver, ParseUser.CurrentUser);
 
 			var parseJobs = await query.FindAsync();
 
-			List<Job> resultList = new List<Job> ();
+			ObservableCollection<Job> resultList = new ObservableCollection<Job> ();
 			foreach (var parseObj in parseJobs) 
 			{
 				//ParseObject parseObj = jobEnum.Current;
@@ -258,9 +254,9 @@ namespace Trukman.Droid
 			return resultList;
 		}
 
-		public async Task SaveDriverLocation(GPSLocation location)
+		public async Task SaveDriverLocation(UserLocation location)
 		{
-			if (ParseUser.CurrentUser != null && _userRole == UserRole.UserRoleDriver) {
+			if (ParseUser.CurrentUser != null && this.GetCurrentUserRole() == UserRole.UserRoleDriver) {
 				var point = new ParseGeoPoint (location.Latitude, location.Longitude);
 				var user = ParseUser.CurrentUser;
 				user [ServerLocation] = point;
@@ -269,35 +265,77 @@ namespace Trukman.Droid
 				await Task.FromResult (false);
 		}
 
-		public async Task<List<Driver>> GetDriverList()
+		async Task<IEnumerable<ParseUser>> GetUserList (UserRole requestRole)
 		{
-			List<Driver> drivers = new List<Driver> ();
-			/*var session = await ParseSession.GetCurrentSessionAsync();
-			string companyName = "";
-			companyName = session.Get<string>(ServerCompanyName);*/
 			string companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
 			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
 			var company = await query.FirstOrDefaultAsync ();
-			if (company != null) {
-				ParseRelation<ParseUser> driversRelation = company.GetRelation<ParseUser> (ServerDrivers);
-				IEnumerable<ParseUser> parseDrivers = await driversRelation.Query.FindAsync ();
+			ParseRelation<ParseUser> userRelation;
+			if (requestRole == UserRole.UserRoleDispatch)
+				userRelation = company.GetRelation<ParseUser> (ServerDispatchers);
+			else 
+				userRelation = company.GetRelation<ParseUser> (ServerDrivers);
 
-			//var query = ParseUser.Query.WhereEqualTo("role", (int)UserRole.UserRoleDriver);
-			//var parseDrivers = await query.FindAsync ();
+			IEnumerable<ParseUser> userEnum = await userRelation.Query.FindAsync ();
 
-				foreach (var parseDriver in parseDrivers) {
-					var driver = new Driver ();
-					driver.Name = parseDriver.Username;
-					if (parseDriver.Keys.Contains (ServerLocation)) {
-						ParseGeoPoint point = (ParseGeoPoint)parseDriver [ServerLocation]; 
-						if (point.Longitude != 0 || point.Latitude != 0)
-							driver.location = new GPSLocation{ Latitude = point.Latitude, Longitude = point.Longitude };
-					}
-					drivers.Add (driver);
-				}
+			return userEnum;
+		}
+
+		public async Task<IList<Trukman.User>> GetDispatchList()
+		{
+			var dispatchEnum = await GetUserList (UserRole.UserRoleDispatch);
+
+			ObservableCollection<Trukman.User> userList = new ObservableCollection<User> (); // new List<User> ();
+			foreach (var dispatch in dispatchEnum) {
+				var user = new Trukman.User ();
+				user.UserName = dispatch.Username;
+				user.Email = dispatch.Email;
+				user.Role = UserRole.UserRoleDispatch;
+
+				userList.Add (user);
 			}
 
-			return drivers;
+			return userList;
+		}
+
+		public async Task<IList<Trukman.User>> GetDriverList()
+		{
+			var driverEnum = await GetUserList (UserRole.UserRoleDriver);
+
+			ObservableCollection<Trukman.User> userList = new ObservableCollection<User> ();
+			foreach (var driver in driverEnum) {
+				var user = new Trukman.User ();
+				user.UserName = driver.Username;
+				user.Role = UserRole.UserRoleDriver;
+
+				if (driver.Keys.Contains (ServerLocation)) {
+					ParseGeoPoint point = (ParseGeoPoint)driver[ServerLocation]; 
+					if (point.Longitude != 0 || point.Latitude != 0)
+						user.location = new UserLocation {
+							Latitude = point.Latitude,
+							Longitude = point.Longitude,
+							updatedAt = driver.UpdatedAt.GetValueOrDefault ()
+						};
+				}
+				userList.Add (user);
+			}
+
+			return userList;
+		}
+
+		public async Task RemoveCompanyUser (User _user)
+		{
+			var companyName = SettingsService.GetSetting<string> (ServerCompanyName);
+			var company = await GetCompany (companyName);
+			ParseRelation<ParseUser> relation;
+			if (_user.Role == UserRole.UserRoleDispatch)
+				relation = company.GetRelation<ParseUser> (ServerDispatchers);
+			else 
+				relation = company.GetRelation<ParseUser> (ServerDrivers);
+
+			ParseUser user = await GetUser (_user.UserName);
+			relation.Remove (user);
+			await company.SaveAsync ();
 		}
 	}
 }

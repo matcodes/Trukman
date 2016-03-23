@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Trukman
 {
-	public class DriverMainPage : ContentPage
+	public class DriverMainPage : BasePage
 	{
 		public DriverMainPage ()
 		{
@@ -35,11 +35,11 @@ namespace Trukman
 
 		async void TryTurnOnGps ()
 		{
-			bool turnOnGPS = App.GpsManager.IsTurnOnGPSLocation ();
+			bool turnOnGPS = App.LocManager.IsTurnOnGPSLocation ();
 			if (!turnOnGPS) {
 				bool isTryTurnOn = await AlertHandler.ShowGpsAlert ();
 				if (isTryTurnOn)
-					App.GpsManager.TryTurnOnGps ();
+					App.LocManager.TryTurnOnGps ();
 			}
 		}
 	

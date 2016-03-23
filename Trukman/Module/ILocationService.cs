@@ -4,21 +4,19 @@ using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class GPSLocation
+	public class UserLocation
 	{
 		public double Latitude{get;set;}
 		public double Longitude{get;set;}
+		public DateTime updatedAt{get;set;}
 	}
 
-	public interface IGPSManager 
+	public interface ILocationService
 	{
-		void InitializeLocationManager();
+		void StartLocationUpdates();
 		bool IsTurnOnGPSLocation();
 		void TryTurnOnGps();
-		GPSLocation GetCurrentLocation();
-
-		void Resume();
-		void Pause();
+		//UserLocation GetCurrentLocation();
 	}
 }
 

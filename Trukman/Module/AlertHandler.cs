@@ -18,7 +18,7 @@ namespace Trukman
 			return await App.Current.MainPage.DisplayAlert (null, String.Format ("Does Dispatch {0} Work for you", name), "YES", "NO");
 		}
 
-		async static public Task ShowCheckRequestCompany(string companyName)
+		async static public Task ShowCheckCompany(string companyName)
 		{
 			await App.Current.MainPage.DisplayAlert (null, string.Format ("Company {0} doesn't register in Trukman", companyName), "Ok");
 		}
@@ -36,6 +36,11 @@ namespace Trukman
 		async static public Task ShowExceptionMessage(string login)
 		{
 			await App.Current.MainPage.DisplayAlert (null, string.Format("Incorrect password for login {0}", login), "OK");
+		}
+
+		async static public Task<Boolean> ShowCheckRemoveUser(string name)
+		{
+			return await App.Current.MainPage.DisplayAlert (null, string.Format ("Are you sure to remove {0}", name), "YES", "NO");
 		}
 	}
 }

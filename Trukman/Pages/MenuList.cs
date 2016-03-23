@@ -23,7 +23,6 @@ namespace Trukman
 
 		public MenuList ()
 		{
-
 			var listItems = CreateListItems ();
 			ItemsSource = listItems;
 
@@ -63,13 +62,13 @@ namespace Trukman
 
 		List<ItemsMenu> CreateListItems ()
 		{
-			// Строим меню согласно роли пользователя
 			UserRole role = App.ServerManager.GetCurrentUserRole ();
 
+			// Строим меню согласно роли пользователя
 			if (role == UserRole.UserRoleOwner) {
 				return new List<ItemsMenu> {
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_DRIVERS), "pika.png", typeof(DriverListPage)),
-					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_DISPATCH), "pika.png", typeof(ConstructPage)),
+					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_DISPATCH), "pika.png", typeof(DispatchListPage)),
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_JOBS), "pika.png", typeof(JobListPage)),
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_FLEET), "pika.png", typeof(ConstructPage)),
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.SETTING), "pika.png", typeof(ConstructPage)),
@@ -83,9 +82,7 @@ namespace Trukman
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.HELP), "pika.png", typeof(ConstructPage)),
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.CAMBIAR_A_ESPANOL), "pika.png", typeof(ConstructPage))
 				};
-			}
-			else
-			{
+			} else {
 				return new List<ItemsMenu> {
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.MANAGE_JOBS), "pika.png", typeof(DriverMainPage)),
 					new ItemsMenu (Localization.getString (Localization.LocalStrings.HELP), "pika.png", typeof(ConstructPage)),

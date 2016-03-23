@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 
 namespace Trukman
 {
-	public class JobListPage : ContentPage
+	public class JobListPage : BasePage
 	{
 		TableView tableView;
 
 		public JobListPage ()
 		{
+			NavigationPage.SetHasNavigationBar (this, false);
+
 			Title = "Jobs";
 
 			Button btnAddJob = new TrukmanButton ()
@@ -17,6 +19,10 @@ namespace Trukman
 				Text = "Add job",
 			};
 			btnAddJob.Clicked+= BtnAddJob_Clicked;
+
+			//ListView listView = new ListView ();
+
+			//listView.ItemsSource
 
 			var layout = new StackLayout () {
 				//VerticalOptions = LayoutOptions.Center,
@@ -52,9 +58,6 @@ namespace Trukman
 			var view = section [0];
 			section.Clear ();
 			section.Add (view);
-			//if (section.Count > 1)
-			//	section.RemoveAt (1);
-
 			var jobList = await App.ServerManager.GetJobList ();
 
 			foreach(var job in jobList)
