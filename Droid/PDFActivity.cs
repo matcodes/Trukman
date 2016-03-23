@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
+using System.Threading.Tasks;
+using System.IO;
 
 using Android.App;
 using Android.Content;
@@ -9,86 +12,155 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PSPDFKit.Configuration.Theming;
-using PSPDFKit.Configuration.Activity;
-using PSPDFKit.Configuration.Page;
-using PSPDFKit;
-using PSPDFKit.UI;
+using Android.Graphics;
+using Android.Webkit;
 
-using PSPDFKit.Document;
-using PSPDFKit.Document.Library;
-using System.IO;
+using Newtonsoft.Json;
 
 namespace Trukman.Droid
 {
 	[Activity (Name="com.trukman.ui.pdfactivity", Label = "PDFActivity", Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class PDFActivity : Activity
 	{
+        private SelectionRectangleView selectRect;
+        private WebView pdfWebView;
+        private Button doneButton;
+        private Button scanButton;
+        private Button cancelButton;
+
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
+            SetContentView(Resource.Layout.PDF);
 
-			// Активизация просмотрщика PDF
-			PSPDFKitGlobal.Initialize (this, GetString(Resource.String.pspdfkitLicenseKey));
+            doneButton = FindViewById<Button>(Resource.Id.doneButton);
+            doneButton.Click += HandleModeSwitch;
+            doneButton.Click += ScanImage;
+            cancelButton = FindViewById<Button>(Resource.Id.cancelButton);
+            cancelButton.Click += HandleModeSwitch;
+            scanButton = FindViewById<Button>(Resource.Id.scanButton);
+            scanButton.Click += HandleModeSwitch;
 
-			// Create your application here
+            selectRect = FindViewById<SelectionRectangleView>(Resource.Id.PDFView);
+
 			ShowPdfDocument (Intent.Data);
 		}
 
-		void SearchText()
-		{
-			//PSPDFDocument
-			//string _path = System.Environment.GetFolderPath(System.Environment.CurrentDirectory);
-			//PSPDFLibrary library = PSPDFLibrary.Get (Path.Combine (_path, "library.db"));
-		}
+        protected override void OnResume ()
+        {
+            base.OnResume();
+            pdfWebView.LoadUrl("javascript:window.location.reload( true )");
+        }
+
+        protected override void OnPause ()
+        {
+            base.OnPause();
+            pdfWebView.ClearCache(true);
+        }
+
+        // Switch to scan/view mode
+        void HandleModeSwitch(object sender, EventArgs ea) {
+            if (selectRect.Visibility == ViewStates.Invisible)
+            {
+                RunOnUiThread(() =>
+                    {
+                        selectRect.Visibility = ViewStates.Visible;
+                        cancelButton.Visibility = ViewStates.Visible;
+                        doneButton.Visibility = ViewStates.Visible;
+                        scanButton.Visibility = ViewStates.Gone;
+                    });
+            }
+            else
+            {
+                RunOnUiThread(() =>
+                    {
+                        selectRect.Visibility = ViewStates.Invisible;
+                        cancelButton.Visibility = ViewStates.Gone;
+                        doneButton.Visibility = ViewStates.Gone;
+                        scanButton.Visibility = ViewStates.Visible;
+                    });
+            }
+        }
 
 		void ShowPdfDocument (Android.Net.Uri docUri)
 		{
-			// Customize thumbnailBar color defaults
-			var thumbnailBarThemeConfiguration = new ThumbnailBarThemeConfiguration.Builder (this)
-				.SetBackgroundColor (Android.Graphics.Color.Argb (255, 52, 152, 219))
-				.SetThumbnailBorderColor (Android.Graphics.Color.Argb (255, 44, 62, 80))
-				.Build ();
+            pdfWebView = FindViewById<WebView>(Resource.Id.PDFWebView);
 
-			// Show Document using PSPDFKit activity
-			var pspdfkitConfiguration = new PSPDFActivityConfiguration.Builder (ApplicationContext, GetString(Resource.String.pspdfkitLicenseKey))
-				.ScrollDirection (PageScrollDirection.Horizontal)
-				.ShowPageNumberOverlay ()
-				.ShowThumbnailGrid ()
-				.ShowThumbnailBar ()
-				.ThumbnailBarThemeConfiguration (thumbnailBarThemeConfiguration)
-				.Build ();
+            WebSettings settings = pdfWebView.Settings;
+            settings.JavaScriptEnabled = true;
+            settings.AllowUniversalAccessFromFileURLs = true;
+            settings.AllowFileAccessFromFileURLs = true;
+            settings.AllowContentAccess = true; // Check this!
 
-			if (!PSPDFKitGlobal.IsOpenableUri (this, docUri)) {
-				ShowError ("This document uri cannot be opened \n " + docUri.ToString ());
-			}
-			else
-				PSPDFActivity.ShowDocument (this, docUri, pspdfkitConfiguration);
+            pdfWebView.SetWebChromeClient(new WebChromeClient());
+
+            string path = docUri.Path;
+            if (docUri.Scheme == "content")
+            {
+                path = GetRealPathFromURI(docUri);
+            }
+
+            pdfWebView.LoadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + WebUtility.UrlEncode(path));
 		}
 
-		void ShowError (string message = null)
-		{
-			var alert = new AlertDialog.Builder (this);
+        private string GetRealPathFromURI(Android.Net.Uri contentURI)
+        {
+            var mediaStoreImagesMediaData = "_data";
+            string[] projection = { mediaStoreImagesMediaData };
 
-			alert.SetTitle ("Error");
-			alert.SetMessage (message ?? "There was an error");
+            Android.Database.ICursor cursor = ContentResolver.Query(contentURI, projection, 
+                null, null, null);
+            int columnIndex = cursor.GetColumnIndexOrThrow(mediaStoreImagesMediaData);
+            cursor.MoveToFirst();
 
-			alert.SetPositiveButton ("Ok", (senderAlert, args) => {
-				// Do something here to handle error
-			});
+            string path = cursor.GetString(columnIndex);
+            cursor.Close();
+            return path;
+        }
 
-			if (message != null) {
-				alert.SetNeutralButton ("Visit", (sender, e) => {
-					var uri = Android.Net.Uri.Parse ("https://pspdfkit.com/android/");
-					var intent = new Intent (Intent.ActionView, uri);
-					StartActivity (intent);
-				});
-			}
+        void ScanImage (object sender, EventArgs ea)
+        {
+            Rect bounds = selectRect.getBounds();
+            pdfWebView.DrawingCacheEnabled = true;
+            Bitmap selectedFragment = Bitmap.CreateBitmap(pdfWebView.GetDrawingCache(true), bounds.Left, bounds.Top, bounds.Width(), bounds.Height());
+            pdfWebView.DrawingCacheEnabled = false;
 
-			RunOnUiThread (() => {
-				alert.Show();
-			});
-		}
+            OCRApi ocr = new OCRApi();
+            
+            ocr.Parse(selectedFragment)
+                .ContinueWith((task) =>
+                    {
+                        OCRResponse response = task.Result;
+                        if (response.OCRExitCode == 1)
+                        {
+                            ShowResult(response.ParsedResults[0].ParsedText);
+                        }
+                        else
+                        {
+                            AlertHandler.ShowAlert(response.ErrorMessage);
+                        }
+                    });
+        }
+
+        void ShowResult(string result)
+        {
+            string[] extraNames = new string[]{"Receiver", "Sender", "ReceiverAddress", "SenderAddress"};
+            string[] items = new string[]{"Save as receiver", "Save as sender", "Save as receiver address", "Save as sender address"};
+            var resultActivity = new Intent(this, typeof(OCRActivity));
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+            alert.SetTitle(result);
+            alert.SetItems(items, (o, e) => {
+                resultActivity.PutExtra(extraNames[e.Which], result);
+                StartActivity(resultActivity);
+            });
+            alert.SetNegativeButton("Cancel", delegate {});
+            RunOnUiThread(() =>
+                {
+                    alert.Show();
+                });
+
+        }
 	}
 }
 
