@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="Droid\Trukman.Droid.csproj" RefactoringSettings.EnableRefactorings="True">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Xamarin_Android_API_23" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.Xamarin_Android_API_23" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Droid\PDFActivity.cs">
     <Files>
       <File FileName="Droid\ServerManager.cs" Line="1" Column="1" />
       <File FileName="Trukman\Pages\SignUpFleetSizePage.cs" Line="1" Column="1" />
       <File FileName="Trukman\Module\TrukmanTimer.cs" Line="1" Column="1" />
       <File FileName="Droid\MainActivity.cs" Line="1" Column="1" />
-      <File FileName="Droid\PDFActivity.cs" Line="70" Column="4" />
+      <File FileName="Droid\PDFActivity.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
