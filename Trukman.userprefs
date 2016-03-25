@@ -1,13 +1,32 @@
-﻿<Properties StartupItem="Droid\Trukman.Droid.csproj" RefactoringSettings.EnableRefactorings="True">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Xamarin_Android_API_23" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Droid\PDFActivity.cs">
+﻿<Properties StartupItem="iOS/Trukman.iOS.csproj" RefactoringSettings.EnableRefactorings="True">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone6s.9.3" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/ServerManager.cs">
     <Files>
-      <File FileName="Droid\ServerManager.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\SignUpFleetSizePage.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Module\TrukmanTimer.cs" Line="1" Column="1" />
-      <File FileName="Droid\MainActivity.cs" Line="1" Column="1" />
-      <File FileName="Droid\PDFActivity.cs" Line="11" Column="18" />
+      <File FileName="iOS/ServerManager.cs" Line="329" Column="10" />
+      <File FileName="Droid/ServerManager.cs" Line="38" Column="51" />
+      <File FileName="Trukman/Module/IServerManager.cs" Line="10" Column="20" />
+      <File FileName="Droid/Helpers/SettingsService.cs" Line="33" Column="67" />
+      <File FileName="Droid/Helpers/OCRApi.cs" Line="1" Column="1" />
+      <File FileName="iOS/Helpers/SettingsService.cs" Line="25" Column="57" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Trukman" expanded="True">
+            <Node name="Trukman" expanded="True">
+              <Node name="Module" expanded="True" />
+            </Node>
+            <Node name="Trukman.Droid" expanded="True">
+              <Node name="Helpers" expanded="True" />
+            </Node>
+            <Node name="Trukman.iOS" expanded="True">
+              <Node name="Helpers" expanded="True" />
+              <Node name="ServerManager.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
