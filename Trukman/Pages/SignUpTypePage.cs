@@ -17,13 +17,15 @@ namespace Trukman
 
 		public SignUpTypePage ()
 		{
-			Image image = new Image { Source = ImageSource.FromResource ("logo.png"), Aspect = Aspect.AspectFit };
+			Image logoImage = new Image { Source = ImageSource.FromResource ("logo.png"), Aspect = Aspect.AspectFit };
 
-			BackgroundImage = "background.png";
+			Image backgroundImage = new Image{ Source = ImageSource.FromResource("background.png"), Aspect = Aspect.Fill};
+			//BackgroundImage = "background.png"; не работает
 
 			lblSignUpAs = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				VerticalTextAlignment = TextAlignment.Center,
+				TextColor = Color.FromHex("F5FFFF"),
 				FontSize = 19,
 				HeightRequest = 60,
 			};
@@ -51,16 +53,23 @@ namespace Trukman
 
 			RelativeLayout relativeLayout = new RelativeLayout ();
 
+			relativeLayout.Children.Add (backgroundImage, 
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => parent.Width),
+				Constraint.RelativeToParent (parent => parent.Height)
+			);
 			relativeLayout.Children.Add (stackLayout,
 				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
 				Constraint.RelativeToParent (parent => parent.Height / 2 - stackLayout.Height / 2),
-				Constraint.RelativeToParent (parent => parent.Width));
-
-			relativeLayout.Children.Add (image,  
-				Constraint.RelativeToParent (parent => parent.Width / 2 - image.Width / 2),
+				Constraint.RelativeToParent (parent => parent.Width)
+			);
+			relativeLayout.Children.Add (logoImage,  
+				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
 				Constraint.RelativeToView (stackLayout, (parent, view) => {
-					return ((parent.Height - view.Height) / 2 - image.Height) / 2;
-				}));
+					return ((parent.Height - view.Height) / 2 - logoImage.Height) / 2;
+				})
+			);
 
 			Content = relativeLayout;
 			updateText ();

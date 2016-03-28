@@ -7,8 +7,9 @@ namespace Trukman
 		public int Tag;
 
 		public TrukmanButton () {
-			TextColor = Color.White;
-			BackgroundColor = Color.FromRgb (200, 200, 200);
+			TextColor = Color.FromHex ("BEBEBE");
+			BackgroundColor = Color.FromHex ("222222");
+			BorderRadius = 22;
 			//			 += (object sender, EventArgs e) => {
 			//				BackgroundColor = Color.Gray;
 			//			};

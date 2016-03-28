@@ -82,7 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="background.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomViews\" />
@@ -103,7 +102,7 @@
       <LogicalName>logo.png</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Image\background.png">
-      <LogicalName>Trukman.background.png</LogicalName>
+      <LogicalName>background.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
