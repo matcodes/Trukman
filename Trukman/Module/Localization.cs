@@ -18,6 +18,8 @@ namespace Trukman
 			PROCEED_TO_FLEET_SIZE,
 			SEND,
 			FULL_NAME,
+			FIRST_NAME,
+			LAST_NAME,
 			PHONE,
 			COMPANY_YOU_WORK_FOR,
 			MC,
@@ -39,10 +41,13 @@ namespace Trukman
 			JOB_DESCRIPTION,
 			SHIPPER_ADDRESS,
 			RECEIVE_ADDRESS,
-			DRIVER_NAME,
 			BTN_SAVE,
 			BTN_CANCEL,
-			CAMBIAR_A_ESPANOL
+			CAMBIAR_A_ESPANOL,
+			OWNER,
+			SUBMIT,
+			SIGN_UP,
+			HAVE_ACCOUNT_QUESTION
 		};
 
 		static string[] engStrings = {
@@ -52,16 +57,18 @@ namespace Trukman
 			"PROCEED TO FLEET SIZE",
 			"SEND",
 			"FULL NAME",
+			"First Name",
+			"Last Name",
 			"PHONE",
-			"COMPANY YOU WORK FOR",
+			"Company Name",
 			"MC #",
 			"ENTER",
 			"By clicking Enter you agree to the",
 			"Terms and Conditions",
-			"Sign Up As",
+			"SIGN IN AS", // "Sign Up As",
 			"OWNER/OPERATOR OR FLEET",
-			"DISPATCH",
-			"DRIVER",
+			"Dispatch",
+			"Driver",
 			"Next",
 			"Manage Drivers",
 			"Manage Dispatch",
@@ -73,10 +80,13 @@ namespace Trukman
 			"Job description",
 			"Shipper address",
 			"Receive address",
-			"Driver",
 			"Save",
 			"Cancel",
-			"Cambiar a Espanol"
+			"Cambiar a Espanol",
+			"O/O",
+			"Submit",
+			"Sign up",
+			"Already have an account?"
 		};
 
 		static string[] espStrings = {
@@ -86,6 +96,8 @@ namespace Trukman
 			"CONTIDAD DE CAMIONES",
 			"MANDAR",
 			"NOMBRE COMPLETO",
+			"First Name",
+			"Last Name",
 			"TELEFONO",
 			"EMPRESA PARA LA QUE TRABAJA",
 			"Numero de MC ",
@@ -94,8 +106,8 @@ namespace Trukman
 			"términos y condiciones",
 			"Registrece como",
 			"DUENO OPERADOR",
-			"DESPACHADOR",
-			"CONDUCTOR",
+			"Despachador",
+			"Conductor",
 			"Próximo",
 			//not tranclate
 			"Manage Drivers",
@@ -108,10 +120,13 @@ namespace Trukman
 			"Job description",
 			"Shipper address",
 			"Receive address",
-			"Driver",
 			"Save",
 			"Cancel",
-			"Cambiar a Espanol"
+			"Cambiar a Espanol",
+			"O/O",
+			"Submit",
+			"Sign up",
+			"Already have an account?"
 		};
 
 

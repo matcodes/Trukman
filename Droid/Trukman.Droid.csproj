@@ -157,11 +157,11 @@
     <AndroidResource Include="Resources\values\Styles.xml" />
     <AndroidResource Include="Resources\values\themes.xml" />
     <AndroidResource Include="Resources\drawable\segmented_control_first_background.xml" />
-    <AndroidResource Include="Resources\drawable\hamburger.png" />
     <AndroidResource Include="Resources\drawable\height_resizer.png" />
     <AndroidResource Include="Resources\drawable\width_resizer.png" />
     <AndroidResource Include="Resources\layout\PDF.axml" />
     <AndroidResource Include="Resources\layout\OCRResult.axml" />
+    <AndroidResource Include="Resources\drawable\segmented_control_transparent_background.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.4\build\MonoAndroid10\Xamarin.Insights.targets')" />

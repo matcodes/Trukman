@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="normal">#007aff</color>
-    <color name="light">#ffffff</color>
-    <color name="highlight">#007aff</color>
+    <color name="normal">#CECECE</color> <!-- был #007aff - синий -->
+    <color name="light">#ffffff</color> <!-- белый -->
+    <color name="dark">#222222</color> <!-- оттенок черного --> 
+    <color name="highlight">#007aff</color> <!-- оттенок синего -->
 
     <color name="selected">@color/highlight</color>
     <color name="primary_color">#1C87C1</color>

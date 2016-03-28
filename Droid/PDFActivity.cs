@@ -97,7 +97,7 @@ namespace Trukman.Droid
             string path = docUri.Path;
             if (docUri.Scheme == "content")
             {
-                path = GetRealPathFromURI(docUri);
+				path = GetRealPathFromURI(docUri);
             }
 
             pdfWebView.LoadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + WebUtility.UrlEncode(path));
@@ -105,7 +105,7 @@ namespace Trukman.Droid
 
         private string GetRealPathFromURI(Android.Net.Uri contentURI)
         {
-            var mediaStoreImagesMediaData = "_data";
+			var mediaStoreImagesMediaData = "_data";
             string[] projection = { mediaStoreImagesMediaData };
 
             Android.Database.ICursor cursor = ContentResolver.Query(contentURI, projection, 

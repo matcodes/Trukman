@@ -13,6 +13,7 @@ using Android.Locations;
 using System.Linq;
 using System.Collections.Generic;
 using Trukman.Droid.Services;
+using Android.Net;
 
 namespace Trukman.Droid
 {
@@ -30,6 +31,13 @@ namespace Trukman.Droid
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 
 			LoadApplication (new App ());
+
+			/*ConnectivityManager connectivityManager = (ConnectivityManager) GetSystemService(ConnectivityService);
+			NetworkInfo wifiInfo = connectivityManager.GetNetworkInfo(ConnectivityType.Wifi);
+			var networks = connectivityManager.GetAllNetworks();
+
+			NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
+			bool isOnline = (activeConnection != null) && activeConnection.IsConnected;*/
 
 			LocationServiceStarter.Current.LocationServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
 				LocationServiceStarter.Current.LocationService.LocationChanged += HandleLocationChanged;

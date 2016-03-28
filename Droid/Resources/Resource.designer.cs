@@ -1043,38 +1043,38 @@ namespace Trukman.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f060057
-			public const int ListViewHighlighted = 2131099735;
-			
-			// aapt resource value: 0x7f060056
-			public const int ListViewSelected = 2131099734;
-			
 			// aapt resource value: 0x7f060058
-			public const int abc_background_cache_hint_selector_material_dark = 2131099736;
+			public const int ListViewHighlighted = 2131099736;
+			
+			// aapt resource value: 0x7f060057
+			public const int ListViewSelected = 2131099735;
 			
 			// aapt resource value: 0x7f060059
-			public const int abc_background_cache_hint_selector_material_light = 2131099737;
+			public const int abc_background_cache_hint_selector_material_dark = 2131099737;
 			
 			// aapt resource value: 0x7f06005a
-			public const int abc_color_highlight_material = 2131099738;
+			public const int abc_background_cache_hint_selector_material_light = 2131099738;
+			
+			// aapt resource value: 0x7f06005b
+			public const int abc_color_highlight_material = 2131099739;
 			
 			// aapt resource value: 0x7f06000e
 			public const int abc_input_method_navigation_guard = 2131099662;
 			
-			// aapt resource value: 0x7f06005b
-			public const int abc_primary_text_disable_only_material_dark = 2131099739;
-			
 			// aapt resource value: 0x7f06005c
-			public const int abc_primary_text_disable_only_material_light = 2131099740;
+			public const int abc_primary_text_disable_only_material_dark = 2131099740;
 			
 			// aapt resource value: 0x7f06005d
-			public const int abc_primary_text_material_dark = 2131099741;
+			public const int abc_primary_text_disable_only_material_light = 2131099741;
 			
 			// aapt resource value: 0x7f06005e
-			public const int abc_primary_text_material_light = 2131099742;
+			public const int abc_primary_text_material_dark = 2131099742;
 			
 			// aapt resource value: 0x7f06005f
-			public const int abc_search_url_text = 2131099743;
+			public const int abc_primary_text_material_light = 2131099743;
+			
+			// aapt resource value: 0x7f060060
+			public const int abc_search_url_text = 2131099744;
 			
 			// aapt resource value: 0x7f06000f
 			public const int abc_search_url_text_normal = 2131099663;
@@ -1085,11 +1085,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060011
 			public const int abc_search_url_text_selected = 2131099665;
 			
-			// aapt resource value: 0x7f060060
-			public const int abc_secondary_text_material_dark = 2131099744;
-			
 			// aapt resource value: 0x7f060061
-			public const int abc_secondary_text_material_light = 2131099745;
+			public const int abc_secondary_text_material_dark = 2131099745;
+			
+			// aapt resource value: 0x7f060062
+			public const int abc_secondary_text_material_light = 2131099746;
 			
 			// aapt resource value: 0x7f060012
 			public const int accent_material_dark = 2131099666;
@@ -1175,11 +1175,14 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060005
 			public const int common_signin_btn_light_text_pressed = 2131099653;
 			
-			// aapt resource value: 0x7f060062
-			public const int common_signin_btn_text_dark = 2131099746;
-			
 			// aapt resource value: 0x7f060063
-			public const int common_signin_btn_text_light = 2131099747;
+			public const int common_signin_btn_text_dark = 2131099747;
+			
+			// aapt resource value: 0x7f060064
+			public const int common_signin_btn_text_light = 2131099748;
+			
+			// aapt resource value: 0x7f060053
+			public const int dark = 2131099731;
 			
 			// aapt resource value: 0x7f060048
 			public const int design_fab_shadow_end_color = 2131099720;
@@ -1226,8 +1229,8 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060025
 			public const int foreground_material_light = 2131099685;
 			
-			// aapt resource value: 0x7f060053
-			public const int highlight = 2131099731;
+			// aapt resource value: 0x7f060054
+			public const int highlight = 2131099732;
 			
 			// aapt resource value: 0x7f060026
 			public const int highlighted_text_material_dark = 2131099686;
@@ -1283,8 +1286,8 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060051
 			public const int normal = 2131099729;
 			
-			// aapt resource value: 0x7f060055
-			public const int primary_color = 2131099733;
+			// aapt resource value: 0x7f060056
+			public const int primary_color = 2131099734;
 			
 			// aapt resource value: 0x7f060036
 			public const int primary_dark_material_dark = 2131099702;
@@ -1328,11 +1331,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060043
 			public const int secondary_text_disabled_material_light = 2131099715;
 			
-			// aapt resource value: 0x7f060064
-			public const int segmented_control_text = 2131099748;
+			// aapt resource value: 0x7f060065
+			public const int segmented_control_text = 2131099749;
 			
-			// aapt resource value: 0x7f060054
-			public const int selected = 2131099732;
+			// aapt resource value: 0x7f060055
+			public const int selected = 2131099733;
 			
 			// aapt resource value: 0x7f060044
 			public const int switch_thumb_disabled_material_dark = 2131099716;
@@ -1340,11 +1343,11 @@ namespace Trukman.Droid
 			// aapt resource value: 0x7f060045
 			public const int switch_thumb_disabled_material_light = 2131099717;
 			
-			// aapt resource value: 0x7f060065
-			public const int switch_thumb_material_dark = 2131099749;
-			
 			// aapt resource value: 0x7f060066
-			public const int switch_thumb_material_light = 2131099750;
+			public const int switch_thumb_material_dark = 2131099750;
+			
+			// aapt resource value: 0x7f060067
+			public const int switch_thumb_material_light = 2131099751;
 			
 			// aapt resource value: 0x7f060046
 			public const int switch_thumb_normal_material_dark = 2131099718;
@@ -1961,127 +1964,127 @@ namespace Trukman.Droid
 			public const int design_snackbar_background = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int hamburger = 2130837594;
+			public const int height_resizer = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int height_resizer = 2130837595;
+			public const int ic_cast_dark = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int ic_cast_dark = 2130837596;
+			public const int ic_cast_disabled_light = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int ic_cast_disabled_light = 2130837597;
+			public const int ic_cast_light = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int ic_cast_light = 2130837598;
+			public const int ic_cast_off_light = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int ic_cast_off_light = 2130837599;
+			public const int ic_cast_on_0_light = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int ic_cast_on_0_light = 2130837600;
+			public const int ic_cast_on_1_light = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int ic_cast_on_1_light = 2130837601;
+			public const int ic_cast_on_2_light = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int ic_cast_on_2_light = 2130837602;
+			public const int ic_cast_on_light = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int ic_cast_on_light = 2130837603;
+			public const int ic_media_pause = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int ic_media_pause = 2130837604;
+			public const int ic_media_play = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int ic_media_play = 2130837605;
+			public const int ic_media_route_disabled_mono_dark = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int ic_media_route_disabled_mono_dark = 2130837606;
+			public const int ic_media_route_off_mono_dark = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int ic_media_route_off_mono_dark = 2130837607;
+			public const int ic_media_route_on_0_mono_dark = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int ic_media_route_on_0_mono_dark = 2130837608;
+			public const int ic_media_route_on_1_mono_dark = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int ic_media_route_on_1_mono_dark = 2130837609;
+			public const int ic_media_route_on_2_mono_dark = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int ic_media_route_on_2_mono_dark = 2130837610;
+			public const int ic_media_route_on_mono_dark = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int ic_media_route_on_mono_dark = 2130837611;
+			public const int ic_pause_dark = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int ic_pause_dark = 2130837612;
+			public const int ic_pause_light = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int ic_pause_light = 2130837613;
+			public const int ic_play_dark = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int ic_play_dark = 2130837614;
+			public const int ic_play_light = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int ic_play_light = 2130837615;
+			public const int ic_setting_dark = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int ic_setting_dark = 2130837616;
+			public const int ic_setting_light = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int ic_setting_light = 2130837617;
+			public const int icon = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int icon = 2130837618;
+			public const int mr_ic_cast_dark = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int mr_ic_cast_dark = 2130837619;
+			public const int mr_ic_cast_light = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int mr_ic_cast_light = 2130837620;
+			public const int mr_ic_media_route_connecting_mono_dark = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int mr_ic_media_route_connecting_mono_dark = 2130837621;
+			public const int mr_ic_media_route_connecting_mono_light = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int mr_ic_media_route_connecting_mono_light = 2130837622;
+			public const int mr_ic_media_route_mono_dark = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int mr_ic_media_route_mono_dark = 2130837623;
+			public const int mr_ic_media_route_mono_light = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int mr_ic_media_route_mono_light = 2130837624;
+			public const int mr_ic_pause_dark = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int mr_ic_pause_dark = 2130837625;
+			public const int mr_ic_pause_light = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int mr_ic_pause_light = 2130837626;
+			public const int mr_ic_play_dark = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int mr_ic_play_dark = 2130837627;
+			public const int mr_ic_play_light = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int mr_ic_play_light = 2130837628;
+			public const int mr_ic_settings_dark = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int mr_ic_settings_dark = 2130837629;
-			
-			// aapt resource value: 0x7f02007e
-			public const int mr_ic_settings_light = 2130837630;
+			public const int mr_ic_settings_light = 2130837629;
 			
 			// aapt resource value: 0x7f020083
 			public const int notification_template_icon_bg = 2130837635;
 			
+			// aapt resource value: 0x7f02007e
+			public const int segmented_control_background = 2130837630;
+			
 			// aapt resource value: 0x7f02007f
-			public const int segmented_control_background = 2130837631;
+			public const int segmented_control_first_background = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int segmented_control_first_background = 2130837632;
+			public const int segmented_control_last_background = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int segmented_control_last_background = 2130837633;
+			public const int segmented_control_transparent_background = 2130837633;
 			
 			// aapt resource value: 0x7f020082
 			public const int width_resizer = 2130837634;
@@ -2929,9 +2932,6 @@ namespace Trukman.Droid
 			
 			// aapt resource value: 0x7f05002c
 			public const int mr_user_route_category_name = 2131034156;
-			
-			// aapt resource value: 0x7f050042
-			public const int pspdfkitLicenseKey = 2131034178;
 			
 			// aapt resource value: 0x7f05003e
 			public const int status_bar_notification_info_overflow = 2131034174;

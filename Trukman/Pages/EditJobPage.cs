@@ -35,7 +35,7 @@ namespace Trukman
 				Placeholder = Localization.getString(Localization.LocalStrings.RECEIVE_ADDRESS)
 			};
 			edtDriver = new TrukmanEditor {
-				Placeholder = Localization.getString(Localization.LocalStrings.DRIVER_NAME)
+				Placeholder = Localization.getString(Localization.LocalStrings.DRIVER)
 			};
 
 			btnOk = new TrukmanButton{ Text = Localization.getString (Localization.LocalStrings.BTN_SAVE) };

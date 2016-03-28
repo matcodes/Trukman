@@ -82,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resource\Image\hamburger.png" />
+    <None Include="background.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomViews\" />
@@ -95,6 +95,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Resource\Image\pika.png">
       <LogicalName>pika.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\hamburger.png">
+      <LogicalName>hamburger.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\logo.png">
+      <LogicalName>logo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\background.png">
+      <LogicalName>Trukman.background.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
