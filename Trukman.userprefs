@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Droid\Trukman.Droid.csproj" RefactoringSettings.EnableRefactorings="True">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Xamarin_Android_API_23" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Droid\PDFActivity.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.ac2ce52" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Trukman\Pages\SignUpTypePage.cs">
     <Files>
-      <File FileName="Droid\ServerManager.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Pages\SignUpFleetSizePage.cs" Line="1" Column="1" />
-      <File FileName="Trukman\Module\TrukmanTimer.cs" Line="1" Column="1" />
-      <File FileName="Droid\MainActivity.cs" Line="1" Column="1" />
-      <File FileName="Droid\PDFActivity.cs" Line="11" Column="18" />
+      <File FileName="Trukman\Pages\RootPage.cs" Line="82" Column="27" />
+      <File FileName="Trukman\Module\Localization.cs" Line="1" Column="1" />
+      <File FileName="Trukman\Pages\SignUpDriverPage.cs" Line="23" Column="7" />
+      <File FileName="Trukman\Pages\SignUpTypePage.cs" Line="14" Column="4" />
+      <File FileName="Trukman\Pages\BasePage.cs" Line="7" Column="3" />
+      <File FileName="Trukman\Pages\MenuList.cs" Line="26" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -15,7 +16,10 @@
       <Breakpoint file="H:\Xamarin projects\Trukman\Droid\ServerManager.cs" line="84" column="1" />
       <Breakpoint file="H:\Xamarin projects\Trukman\Trukman\Pages\DriverListPage.cs" line="29" column="1" />
       <Breakpoint file="H:\Xamarin projects\Trukman\Trukman\Pages\DriverListPage.cs" line="83" column="1" />
+      <Breakpoint file="D:\Xamarin\Trukman\Trukman\Pages\SignUpDriverPage.cs" line="181" column="1" />
+      <Breakpoint file="D:\Xamarin\Trukman\Trukman\Pages\SignUpDriverPage.cs" line="30" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Trukman.Droid AndroidDesignerPreferredDevice="Nexus 4" />
 </Properties>
