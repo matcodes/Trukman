@@ -6,99 +6,97 @@ namespace Trukman
 {
 	public class SignUpOwnerPage : BasePage
 	{
-		TrukmanEditor edtName;
-		TrukmanEditor edtPhone;
+        Label lblSignup;
+
 		TrukmanEditor edtMC;
+        TrukmanButton btnSubmit;
 
 		public SignUpOwnerPage ()
 		{
-			NavigationPage.SetHasNavigationBar (this, false);
+            NavigationPage.SetHasNavigationBar (this, false);
+            Localization.language = Localization.Languages.ENGLISH;
 
-			Label lblTitle = new Label {
+            Image backgroundImage = new Image{ Source = ImageSource.FromResource ("background.png"), Aspect = Aspect.Fill };
+            Image hamburgerImage = new Image{ Source = ImageSource.FromResource ("hamburger.png"), Aspect = Aspect.Fill };
+
+            lblSignup = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
-				Text = "TRUKMAN",
+                Text = Localization.getString(Localization.LocalStrings.SIGN_UP).ToUpper(),
+                TextColor = Color.FromHex (Constants.SignUpFontColor),
 				FontSize = 33
 			};
-			Label lblSignUpAs = new Label {
-				HorizontalTextAlignment = TextAlignment.Start,
-				VerticalTextAlignment = TextAlignment.Center,
-				Text = "Sign Up",
-				FontSize = 19,
-				HeightRequest = 60,
+
+            Button btnEditMC = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+            edtMC = new TrukmanEditor { 
+                Style = (Style)App.Current.Resources ["entryRadiusStyle"],
+                Placeholder = Localization.getString(Localization.LocalStrings.MC)
+            };
+
+			btnSubmit = new TrukmanButton {
+				Text = Localization.getString(Localization.LocalStrings.SUBMIT)
 			};
 
-			edtName = new TrukmanEditor {
-				Placeholder = Localization.getString(Localization.LocalStrings.FULL_NAME)
-			};
-			edtPhone = new TrukmanEditor {
-				Placeholder = Localization.getString(Localization.LocalStrings.PHONE)
-			};
-			edtMC = new TrukmanEditor {
-				Placeholder = Localization.getString(Localization.LocalStrings.MC)
-			};
-
-			TrukmanButton btnEnter = new TrukmanButton {
-				Text = Localization.getString(Localization.LocalStrings.ENTER)
-			};
-
-			Label lblTerms = new Label {
-				Text = Localization.getString(Localization.LocalStrings.BY_CLICKING_ENTER_YOU_AGREE_TO_THE),
-				FontSize = 11,
-				VerticalTextAlignment = TextAlignment.Center
-			};
-
-			Button btnTerms = new Button {
-				Text = Localization.getString(Localization.LocalStrings.TERMS_AND_CONDITIONS),
-				BackgroundColor = Color.FromRgba (0, 0, 0, 0),
-				FontSize = 11
-			};
-
-			RelativeLayout relativeTermsLayout = new RelativeLayout {
-				HorizontalOptions = LayoutOptions.Fill
-			};
-			relativeTermsLayout.Children.Add (lblTerms, Constraint.RelativeToParent ((parent) => {
-				return 0;
-			}), Constraint.RelativeToParent ((parent) => {
-				return 0;
-			}), null, 
-				Constraint.RelativeToParent ((parent) => {
-					return 50;
-				}));
-
-			relativeTermsLayout.Children.Add (btnTerms, 
-				Constraint.RelativeToView (lblTerms, (parent, sibling) => {
-					return lblTerms.Width;
-			}), null, null, 
-				Constraint.RelativeToView (lblTerms, (parent, sibling) => {
-					return lblTerms.Height;
-			}));
-
-			btnEnter.Clicked += buttonClicked;
+            RelativeLayout userInfoLayout = new RelativeLayout ();
+            userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            userInfoLayout.Children.Add (btnEditMC, 
+                Constraint.RelativeToParent (parent => 0),
+                Constraint.RelativeToParent (parent => 0),
+                Constraint.RelativeToParent (parent => parent.Width)
+            );
+            userInfoLayout.Children.Add (edtMC, 
+                Constraint.RelativeToView (btnEditMC, (parent, View) => View.X + Constants.ViewsPadding / 2),
+                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Y),
+                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Width - Constants.ViewsPadding),
+                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Height)
+            );
+			btnSubmit.Clicked += buttonClicked;
 
 			// TODO: для тестирования, удалить потом
-			/*edtName.Text = "DKG";
-			edtMC.Text = "158851";*/
+//			edtName.Text = "DKG";
+//			edtMC.Text = "158851";
 
-			Content = new StackLayout { 
-				Spacing = Constants.StackLayoutDefaultSpacing,
-				Padding = new Thickness (Constants.ViewsPadding),
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Children = {
-					lblTitle,
-					lblSignUpAs,
-					edtName,
-					edtPhone,
-					edtMC,
-					relativeTermsLayout,
-					btnEnter
-				}
-			};
+            StackLayout stackLayout = new StackLayout {
+                Spacing = Constants.StackLayoutDefaultSpacing,
+                Padding = new Thickness(Constants.ViewsPadding),
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Children = {
+                    userInfoLayout,
+                    btnSubmit
+                }
+            };
+
+            RelativeLayout relativeLayout = new RelativeLayout ();
+
+            relativeLayout.Children.Add (backgroundImage, 
+                Constraint.RelativeToParent (parent => 0),
+                Constraint.RelativeToParent (parent => 0),
+                Constraint.RelativeToParent (parent => parent.Width),
+                Constraint.RelativeToParent (parent => parent.Height)
+            );
+            relativeLayout.Children.Add (lblSignup, 
+                Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
+                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
+            );
+            relativeLayout.Children.Add (hamburgerImage, 
+                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+                Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2),
+                Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2)
+            );
+            relativeLayout.Children.Add (stackLayout,
+                Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
+                Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
+                Constraint.RelativeToParent (parent => parent.Width)
+            );
+
+            Content = relativeLayout;
 		}
 
 		async void buttonClicked (object sender, EventArgs e) {
 			try
 			{
-				await App.ServerManager.Register(edtName.Text, edtMC.Text, UserRole.UserRoleOwner);
+                await App.ServerManager.Register(edtMC.Text, edtMC.Text, UserRole.UserRoleOwner);
 
 				await Navigation.PushAsync(new SignUpCompanyPage());
 			}
