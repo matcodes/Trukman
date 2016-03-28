@@ -34,7 +34,7 @@ namespace Trukman.Droid
 		static string ServerDriver = "Driver";
 		static string ServerCreateDispatcher = "createDispatcher";
 		static string ServerCompleted = "Completed";
-	
+
 		static string ServerCompanyName = "CompanyName";
 
 		Timer timerForRequst;
