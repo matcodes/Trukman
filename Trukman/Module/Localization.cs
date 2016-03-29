@@ -47,7 +47,11 @@ namespace Trukman
 			OWNER,
 			SUBMIT,
 			SIGN_UP,
-			HAVE_ACCOUNT_QUESTION
+			HAVE_ACCOUNT_QUESTION,
+			CANCEL_AUTHORIZATION_REQUEST,
+			WAITING_FOR_COMPANY_TO_AUTHORIZE,
+			AUTHORIZED_BY_COMPANY,
+			CONTINUE
 		};
 
 		static string[] engStrings = {
@@ -59,7 +63,7 @@ namespace Trukman
 			"FULL NAME",
 			"First Name",
 			"Last Name",
-			"PHONE",
+			"Phone",
 			"Company Name",
 			"MC #",
 			"ENTER",
@@ -86,7 +90,11 @@ namespace Trukman
 			"O/O",
 			"Submit",
 			"Sign up",
-			"Already have an account?"
+			"Already have an account?",
+			"Cancel Authorization Request",
+			"Waiting for {0} to authorize you",
+			"Tou have been authorized by {0}",
+			"Continue"
 		};
 
 		static string[] espStrings = {
@@ -98,7 +106,7 @@ namespace Trukman
 			"NOMBRE COMPLETO",
 			"First Name",
 			"Last Name",
-			"TELEFONO",
+			"Telefono",
 			"EMPRESA PARA LA QUE TRABAJA",
 			"Numero de MC ",
 			"ENTAR",
@@ -126,7 +134,11 @@ namespace Trukman
 			"O/O",
 			"Submit",
 			"Sign up",
-			"Already have an account?"
+			"Already have an account?",
+			"Cancel Authorization Request",
+			"Waiting for {0} to authorize you",
+			"Tou have been authorized by {0}",
+			"Continue"
 		};
 
 

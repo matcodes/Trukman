@@ -36,7 +36,9 @@
     <Compile Include="CustomViews\SegmentedControl.cs" />
     <Compile Include="CustomViews\TrukmanEditor.cs" />
     <Compile Include="Pages\SignUpCompanyPage.cs" />
-    <Compile Include="Pages\SignUpDriverPage.cs" />
+    <Compile Include="Pages\SignUpDriverPage.cs">
+      <LogicalName>authorize.png</LogicalName>
+    </Compile>
     <Compile Include="Pages\SignUpFleetSizePage.cs" />
     <Compile Include="Pages\SignUpTypePage.cs" />
     <Compile Include="Module\AlertHandler.cs" />
@@ -58,6 +60,10 @@
     <Compile Include="App.cs" />
     <Compile Include="Module\ILocationService.cs" />
     <Compile Include="Module\Model.cs" />
+    <Compile Include="Pages\PendingAuthorizPage.cs" />
+    <Compile Include="CustomViews\TrukmanLabel.cs" />
+    <Compile Include="Pages\SignupFrozenPage.cs" />
+    <Compile Include="Pages\AuthorizedPage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -103,6 +109,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Image\background.png">
       <LogicalName>background.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\authorize.png">
+      <LogicalName>authorize.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\authorized.png">
+      <LogicalName>authorized.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

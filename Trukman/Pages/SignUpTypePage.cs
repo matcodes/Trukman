@@ -7,6 +7,8 @@ namespace Trukman
 	{
 		Label lblSignUpAs;
 		SegmentedControl segment;
+		Button btnEng;
+		Button btnEsp;
 
 		protected override void OnAppearing ()
 		{
@@ -17,10 +19,28 @@ namespace Trukman
 
 		public SignUpTypePage ()
 		{
+			// TODO: добавить сюда кнопки переключения языка
+
 			Image logoImage = new Image { Source = ImageSource.FromResource ("logo.png"), Aspect = Aspect.AspectFit };
 
 			Image backgroundImage = new Image{ Source = ImageSource.FromResource("background.png"), Aspect = Aspect.Fill};
 			//BackgroundImage = "background.png"; не работает
+
+			btnEng = new Button {
+				Text = "ENG",
+				TextColor = Color.FromHex (Constants.SelectedFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12,
+			};
+			btnEng.Text = "ENG";
+			btnEsp = new Button {
+				Text = "ESP",
+				TextColor = Color.FromHex (Constants.RegularFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12
+			};
+			btnEng.Clicked += btnLan_Clicked;
+			btnEsp.Clicked += btnLan_Clicked;
 
 			lblSignUpAs = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
@@ -39,6 +59,8 @@ namespace Trukman
 				}
 			};
 			segment.ValueChanged += Segment_ValueChanged;
+			//segment.WidthRequest = 255;
+			//segment.MinimumWidthRequest = 85;
 
 			StackLayout stackLayout = new StackLayout { 
 				Spacing = Constants.StackLayoutDefaultSpacing,
@@ -59,6 +81,16 @@ namespace Trukman
 				Constraint.RelativeToParent (parent => parent.Width),
 				Constraint.RelativeToParent (parent => parent.Height)
 			);
+			relativeLayout.Children.Add (btnEsp,
+				Constraint.RelativeToParent (parent => parent.Width - btnEsp.Width),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 50)
+			);
+			relativeLayout.Children.Add (btnEng, 
+				Constraint.RelativeToView (btnEsp, (parent, view) => parent.Width - view.Width - btnEng.Width),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 50)
+			);
 			relativeLayout.Children.Add (stackLayout,
 				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
 				Constraint.RelativeToParent (parent => parent.Height / 2 - stackLayout.Height / 2),
@@ -72,12 +104,25 @@ namespace Trukman
 			);
 
 			Content = relativeLayout;
-			updateText ();
+			UpdateText ();
 		}
 
-		void updateText(){
-			Localization.language = Localization.Languages.ENGLISH;
+		void btnLan_Clicked (object sender, EventArgs e)
+		{
+			if ((Button)sender == btnEng) {
+				Localization.language = Localization.Languages.ENGLISH;
+				btnEng.TextColor = Color.FromHex (Constants.SelectedFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.RegularFontColor);
+			} else if ((Button)sender == btnEsp) {
+				Localization.language = Localization.Languages.ESPANIOL;
+				btnEng.TextColor = Color.FromHex (Constants.RegularFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.SelectedFontColor);;
+			}
 
+			UpdateText ();
+		}
+
+		void UpdateText(){
 			lblSignUpAs.Text = Localization.getString (Localization.LocalStrings.SIGN_UP_AS).ToUpper ();
 			segment.Children [0].Text = Localization.getString (Localization.LocalStrings.DISPATCH);
 			segment.Children [1].Text = Localization.getString (Localization.LocalStrings.DRIVER);

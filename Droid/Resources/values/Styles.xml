@@ -14,6 +14,12 @@
         <item name="android:textSize">@dimen/segmented_control_text_size</item>
 <!--        <item name="android:textStyle">bold</item>-->
         <item name="android:stretchColumns">0</item>
+        <!---
+        <item name="android:layout_marginLeft">12dip</item>
+        <item name="android:layout_marginRight">12dip</item>
+        <item name="android:layout_marginTop">12dip</item>
+        <item name="android:layout_marginBottom">12dip</item>
+        <item name="android:padding">1dip</item> -->
 
         <item name="lineColor">@null</item>
         <item name="lineHeightUnselected">0dp</item>

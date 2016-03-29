@@ -10,6 +10,7 @@ namespace Trukman
 		TrukmanEditor edtFirstName;
 		TrukmanEditor edtLastName;
 		TrukmanEditor edtCompany;
+		TrukmanEditor edtPhone;
 		TrukmanButton btnSubmit;
 		Label lblHaveAccount;
 		Button btnEng;
@@ -17,6 +18,8 @@ namespace Trukman
 
 		public SignUpDriverPage ()
 		{
+			// TODO: для контрола edtCompany добавить фильтрацию списка компаний и выбор компании из этого списка
+
 			NavigationPage.SetHasNavigationBar (this, false);
 
 			Image backgroundImage = new Image{ Source = ImageSource.FromResource ("background.png"), Aspect = Aspect.Fill };
@@ -25,14 +28,14 @@ namespace Trukman
 
 			btnEng = new Button {
 				Text = "ENG",
-				TextColor = Color.FromHex ("E3EBEB"), 
+				TextColor = Color.FromHex (Constants.SelectedFontColor), 
 				BackgroundColor = Color.Transparent,
 				FontSize = 12,
 			};
 			btnEng.Text = "ENG";
 			btnEsp = new Button {
 				Text = "ESP",
-				TextColor = Color.FromHex ("FF8F8E"), 
+				TextColor = Color.FromHex (Constants.RegularFontColor), 
 				BackgroundColor = Color.Transparent,
 				FontSize = 12
 			};
@@ -41,14 +44,14 @@ namespace Trukman
 
 			lblSignup = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
-				TextColor = Color.FromHex ("F5FFFF"),
+				TextColor = Color.FromHex (Constants.SignUpFontColor),
 				FontSize = 33
 			};
 
 			lblUserRole = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				FontSize = 18,
-				TextColor = Color.FromHex ("FF8F8E")
+				TextColor = Color.FromHex (Constants.RegularFontColor)
 			};
 
 			var btnFirstName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
@@ -57,6 +60,8 @@ namespace Trukman
 			edtLastName = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
 			var btnCompany = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 			edtCompany = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			var btnPhone = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtPhone = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
 
 			RelativeLayout userInfoLayout = new RelativeLayout ();
 			userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -73,7 +78,7 @@ namespace Trukman
 			);				
 			userInfoLayout.Children.Add (btnLastName, 
 				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToView(btnFirstName, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToView(edtFirstName, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => parent.Width)
 			);
 			userInfoLayout.Children.Add (edtLastName, 
@@ -82,9 +87,20 @@ namespace Trukman
 				Constraint.RelativeToView (btnLastName, (parent, View) => View.Width - Constants.ViewsPadding),
 				Constraint.RelativeToView (btnLastName, (parent, View) => View.Height)
 			);				
+			userInfoLayout.Children.Add (btnPhone, 
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToView(edtLastName, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width)
+			);
+			userInfoLayout.Children.Add (edtPhone, 
+				Constraint.RelativeToView (btnPhone, (parent, View) => View.X + Constants.ViewsPadding / 2),
+				Constraint.RelativeToView (btnPhone, (parent, View) => View.Y),
+				Constraint.RelativeToView (btnPhone, (parent, View) => View.Width - Constants.ViewsPadding),
+				Constraint.RelativeToView (btnPhone, (parent, View) => View.Height)
+			);
 			userInfoLayout.Children.Add (btnCompany, 
 				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToView(btnLastName, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToView(edtPhone, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => parent.Width)
 			);
 			userInfoLayout.Children.Add (edtCompany, 
@@ -165,12 +181,12 @@ namespace Trukman
 		{
 			if ((Button)sender == btnEng) {
 				Localization.language = Localization.Languages.ENGLISH;
-				btnEng.TextColor = Color.FromHex ("E3EBEB");
-				btnEsp.TextColor = Color.FromHex ("FF8F8E");
+				btnEng.TextColor = Color.FromHex (Constants.SelectedFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.RegularFontColor);
 			} else if ((Button)sender == btnEsp) {
 				Localization.language = Localization.Languages.ESPANIOL;
-				btnEng.TextColor = Color.FromHex ("FF8F8E");
-				btnEsp.TextColor = Color.FromHex ("E3EBEB");;
+				btnEng.TextColor = Color.FromHex (Constants.RegularFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.SelectedFontColor);;
 			}
 
 			UpdateText ();
@@ -182,6 +198,7 @@ namespace Trukman
 			lblUserRole.Text = Localization.getString (Localization.LocalStrings.DRIVER).ToUpper();
 			edtFirstName.Placeholder = Localization.getString (Localization.LocalStrings.FIRST_NAME);
 			edtLastName.Placeholder = Localization.getString (Localization.LocalStrings.LAST_NAME);
+			edtPhone.Placeholder = Localization.getString (Localization.LocalStrings.PHONE);
 			edtCompany.Placeholder = Localization.getString (Localization.LocalStrings.COMPANY_YOU_WORK_FOR);
 			btnSubmit.Text = Localization.getString (Localization.LocalStrings.SUBMIT);
 			lblHaveAccount.Text = Localization.getString (Localization.LocalStrings.HAVE_ACCOUNT_QUESTION);
@@ -192,21 +209,23 @@ namespace Trukman
 				/*bool findCompany = await App.ServerManager.FindCompany (edtCompany.Text);
 				if (!findCompany)
 					await AlertHandler.ShowCheckCompany (edtCompany.Text);
-				else {
-				string username = string.Format('{0} {1}', edtFirstName, edtLastName);
+				else { */
+
+				string username = string.Format ("{0} {1}", edtFirstName.Text.Trim (), edtLastName.Text.Trim ());
 				await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
-					bool isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-					if (isJoinCompany)
-						await Navigation.PushModalAsync (new RootPage ());
-					else{
-						await AlertHandler.ShowAlert (string.Format ("The owner of the company {0} has not yet added you to the company", edtCompany.Text));
-						await App.ServerManager.LogOut();
-					}
-				}*/
+				bool isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+				if (isJoinCompany)
+					await Navigation.PushAsync (new RootPage ());
+				else {
+					await Navigation.PushAsync (new PendingAuthorizPage ());
+					//await AlertHandler.ShowAlert (string.Format ("The owner of the company {0} has not yet added you to the company", edtCompany.Text));
+					//await App.ServerManager.LogOut();
+				}
+				//}
 			} catch (Exception exc) {
 				await AlertHandler.ShowAlert (exc.Message);
 			}
-		}			
+		}
 	}
 }
 

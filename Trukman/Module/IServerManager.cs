@@ -25,6 +25,7 @@ namespace Trukman
 		Task<bool> FindCompany(string name);
 		UserRole GetCurrentUserRole();
 		string GetCurrentUserName();
+		string GetCurrentCompanyName();
 		bool IsOwner();
 		Task<bool> IsUserJoinedToCompany (string companyName = "");
 
