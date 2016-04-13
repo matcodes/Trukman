@@ -51,7 +51,14 @@ namespace Trukman
 			CANCEL_AUTHORIZATION_REQUEST,
 			WAITING_FOR_COMPANY_TO_AUTHORIZE,
 			AUTHORIZED_BY_COMPANY,
-			CONTINUE
+			CONTINUE,
+            DBA,
+            PHYS_ADDRESS,
+            FLEET_SIZE,
+            EMAIL,
+            NAME,
+            FAILED_OWNER_MC,
+            OWNER_or_OPERATOR
 		};
 
 		static string[] engStrings = {
@@ -94,7 +101,14 @@ namespace Trukman
 			"Cancel Authorization Request",
 			"Waiting for {0} to authorize you",
 			"Tou have been authorized by {0}",
-			"Continue"
+			"Continue",
+            "DBA",
+            "Physical Address",
+            "Fleet size",
+            "Email",
+            "Name",
+            "Sorry you are having trouble signing up. Please email help@trukman.com for assistance.",
+            "Owner/Operator"
 		};
 
 		static string[] espStrings = {
@@ -138,7 +152,14 @@ namespace Trukman
 			"Cancel Authorization Request",
 			"Waiting for {0} to authorize you",
 			"Tou have been authorized by {0}",
-			"Continue"
+			"Continue",
+            "DBA",
+            "Physical Address",
+            "Fleet size",
+            "Email",
+            "Name",
+            "Sorry you are having trouble signing up. Please email help@trukman.com for assistance.",
+            "Owner/Operator"
 		};
 
 

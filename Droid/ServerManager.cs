@@ -82,7 +82,7 @@ namespace Trukman.Droid
 			}
 		}
 
-		public async Task AddCompany (string name) {
+        public async Task AddCompany (string name, string DBA, string address, string phone, string email, string fleetSize) {
 			// Добавление наименования компании в текущие настройки (для владельца компании)
 			SettingsService.AddOrUpdateSetting(ServerCompanyName, name);
 

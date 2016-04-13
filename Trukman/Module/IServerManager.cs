@@ -18,7 +18,7 @@ namespace Trukman
 		Task LogOut();
 		bool IsAuthorized ();
 		Task Register (string name, string pass, UserRole role);
-		Task AddCompany (string name);
+        Task AddCompany (string name, string DBA, string address, string phone, string email, string fleetSize);
 		Task<bool> RequestToJoinCompany (string name);
 		void StartTimerForRequest ();
 

@@ -57,15 +57,42 @@ namespace Trukman
 			};
 			var buttonForEntryRadiusStyle = new Style (typeof(TrukmanButton)) {
 				Setters = {
-					new Setter{ Property = TrukmanButton.TextColorProperty, Value = Color.FromHex ("000000") },
-					new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.FromHex ("FFFFFF") },
+					new Setter{ Property = TrukmanButton.TextColorProperty, Value = Color.Black },
+					new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.White },
 					new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 },
 				}
 			};
 
+            var disabledEntryStyle = new Style (typeof(TrukmanEditor)) {
+                Setters = {
+                    new Setter{ Property = TrukmanEditor.TextColorProperty, Value = Color.Black },
+                    new Setter{ Property = TrukmanEditor.BackgroundColorProperty, Value = Color.Transparent },
+                }
+            };
+
+            var disabledButtonForEntryRadiusStyle = new Style (typeof(TrukmanButton)) {
+                Setters = {
+                    new Setter{ Property = TrukmanButton.TextColorProperty, Value = Color.FromHex ("7A7474") },
+                    new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.FromHex ("EAD2D2") },
+                    new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 }
+                }
+            };
+
+            var buttonTransparentEntry = new Style(typeof(TrukmanButton)) {
+                Setters = {
+                    new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.Transparent },
+                    new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 },
+                    new Setter{ Property = TrukmanButton.BorderColorProperty, Value = Color.White },
+                    new Setter{ Property = TrukmanButton.BorderWidthProperty, Value = 1.5 }
+                }
+            };
+
 			Resources = new ResourceDictionary ();
 			Resources.Add ("entryRadiusStyle", entryRadiusStyle);
 			Resources.Add ("buttonForEntryRadiusStyle", buttonForEntryRadiusStyle);
+            Resources.Add ("disabledEntryStyle", disabledEntryStyle);
+            Resources.Add ("disabledButtonForEntryRadiusStyle", disabledButtonForEntryRadiusStyle);
+            Resources.Add ("buttonTransparentEntry", buttonTransparentEntry);
 		}
 
 		protected override void OnStart ()

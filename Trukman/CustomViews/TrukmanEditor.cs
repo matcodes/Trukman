@@ -3,11 +3,11 @@ using Xamarin.Forms;
 
 namespace Trukman
 {
-	public class TrukmanEditor : Entry
-	{
-		public TrukmanEditor ()
-		{
-		}
-	}
+    public class TrukmanEditor : Entry
+    {
+        public TrukmanEditor ()
+        {
+        }
+    }
 }
 
