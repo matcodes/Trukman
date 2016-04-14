@@ -4,9 +4,9 @@ using Xamarin.Forms;
 
 namespace Trukman.Droid.Helpers
 {
-	public static class SettingsService
+	public class SettingsService: ISettingsService
 	{
-		static ISharedPreferences preferences;
+		ISharedPreferences preferences;
 
 		//=====DON'T MODIFY THESE VALUES AFTER PUBLISHING APP! =========================|
 		/*private const string initVector = "random_code_here";
@@ -14,12 +14,12 @@ namespace Trukman.Droid.Helpers
 		private const int keysize = 256;*/
 		//==============================================================================|
 
-		static SettingsService()
+		public SettingsService()
 		{
 			preferences = Forms.Context.GetSharedPreferences("trukman.settings", FileCreationMode.Private);
 		}
 
-		public static void AddOrUpdateSetting<T>(string key, T value)
+		public void AddOrUpdateSetting<T>(string key, T value)
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new ArgumentNullException("key");
@@ -30,7 +30,7 @@ namespace Trukman.Droid.Helpers
 			editor.Apply();
 		}
 
-		public static T GetSetting<T>(string key, T defaultValue = default(T))
+		public T GetSetting<T>(string key, T defaultValue = default(T))
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new ArgumentNullException("key");

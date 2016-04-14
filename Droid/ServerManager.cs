@@ -17,7 +17,7 @@ namespace Trukman.Droid
 	public class ServerManager : IServerManager
 	{
 		static string ServerCompany = "Company";
-		static string ServerUser = "_User";
+		//static string ServerUser = "_User";
 		static string ServerName = "name";
 		static string ServerUserName = "username";
 		static string ServerRequesting = "requesting";
@@ -26,19 +26,40 @@ namespace Trukman.Droid
 		static string ServerDispatchers = "dispatchers";
 		static string ServerDrivers = "drivers";
 		static string ServerLocation = "Location";
+		//static string ServerDispatch = "Dispatch";
 		static string ServerJobClass = "Job";
 
+		static string ServerObjectId = "objectId";
 		static string ServerDescription = "description";
-		static string ServerShipperAddrress = "ShipperAddress";
-		static string ServerReceivedAddress = "ReceivedAddress";
+		static string ServerFromAddress = "FromAddress";
+		static string ServerToAddress = "ToAddress";
 		static string ServerDriver = "Driver";
 		static string ServerCreateDispatcher = "createDispatcher";
-		static string ServerCompleted = "Completed";
+		static string ServerJobCompleted = "JobCompleted";
+		static string ServerPickupDatetime = "PickupDatetime";
+		static string ServerDeliveryDatettime = "DeliveryDatetime";
+		//static string ServerDriverOnTimePuckup = "DriverOnTimePuckup";
+		//static string ServerDriverOnTimeDelivery = "DriverOnTimeDelivery";
+		static string ServerJobPrice = "Price";
+		//static string ServerDriverAccepted = "DriverAccepted";
+		//static string ServerDeclineReason = "DeclineReason";
+		static string ServerJobCancelled = "JobCancelled";
 
-		static string ServerCompanyName = "CompanyName";
-		static string RejectedCounter = "RejectedCounter";
+		static string ServerComcheckRequest = "ComcheckRequest";
+		static string ServerState = "State";
+		static string ServerRequestDatetime = "RequestDatetime";
+		static string ServerRequestType = "RequestType";
+		static string ServerComcheck = "Comcheck";
 
-		Timer timerForRequst;
+		//static string CompanyName = "CompanyName";
+		//static string RejectedCounter = "RejectedCounter";
+		//static string LastRejectedTime = "LastRejectedTime";
+		//static string CurrentJobId = "CurrentJobId";
+		//static string FuelId = "FuelId";
+		//static string Lumper = "Lumper";
+		//static int MaxRejectedRequestCount = 3;
+
+		Timer timerForRequest;
 
 		public ServerManager ()
 		{
@@ -57,9 +78,9 @@ namespace Trukman.Droid
 			await ParseUser.LogOutAsync ();
 		}
 
-		public bool IsAuthorized()
+		public bool IsAuthorizedUser()
 		{
-			return ParseUser.CurrentUser != null;
+			return (ParseUser.CurrentUser != null);
 		}
 
 		async Task<ParseUser> GetUser(string name)
@@ -68,7 +89,8 @@ namespace Trukman.Droid
 			return await query.FirstOrDefaultAsync ();
 		}
 
-		public async Task Register(string name, string pass, UserRole role) {
+		public async Task Register(string name, string pass, UserRole role) 
+		{
 			ParseUser _user = await GetUser(name);
 			if (_user == null) {
 				ParseUser user = new ParseUser {
@@ -80,11 +102,13 @@ namespace Trukman.Droid
 			} else {
 				await this.LogIn (name, pass);
 			}
+
 		}
 
-		public async Task AddCompany (string name) {
+		public async Task AddCompany (string name, string DBA, string address, string phone, string email, string fleetSize) 
+		{
 			// Добавление наименования компании в текущие настройки (для владельца компании)
-			SettingsService.AddOrUpdateSetting(ServerCompanyName, name);
+			//SettingsService.AddOrUpdateSetting(CompanyName, name);
 
 			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
 			ParseObject company = await query.FirstOrDefaultAsync ();
@@ -97,7 +121,7 @@ namespace Trukman.Droid
 				await Task.FromResult (false);
 		}
 
-		private async Task<ParseObject> GetCompany(string name)
+		async Task<ParseObject> GetCompany(string name)
 		{
 			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
 			return await query.FirstOrDefaultAsync ();
@@ -108,7 +132,7 @@ namespace Trukman.Droid
 			return await GetCompany(name) != null;
 		}
 
-		static async Task<bool> IsUserCompanyInternal (ParseObject company)
+		async Task<bool> IsUserJoinedToCompany (ParseObject company)
 		{
 			UserRole role = (UserRole)ParseUser.CurrentUser.Get<int> (ServerRole);
 			ParseRelation<ParseUser> companyUsers = null;
@@ -121,18 +145,69 @@ namespace Trukman.Droid
 			return (companyUser != null);
 		}
 
-		public async Task<bool> IsUserJoinedToCompany(string companyName = "")
+		async Task<bool> IsUserRequestingCompany(ParseObject company)
 		{
-			if (string.IsNullOrEmpty(companyName))
-				companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
-
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
-			var company = await query.FirstOrDefaultAsync ();
-
-			return await IsUserCompanyInternal (company);
+			ParseRelation<ParseUser> requesting = company.GetRelation<ParseUser> (ServerRequesting);
+			var requestingUser = await requesting.Query.WhereEqualTo (ServerUserName, ParseUser.CurrentUser.Username).FirstOrDefaultAsync();
+			return (requestingUser != null);
 		}
 
-		static async void AddUserToRequesting (ParseObject company)
+		/*public bool IsFrozenAuthorization()
+		{
+			int counterValue = SettingsService.GetSetting<int> (RejectedCounter, 0);
+			DateTime lastRejectedTime = SettingsService.GetSetting<DateTime> (LastRejectedTime, DateTime.MinValue);
+			int hours = (DateTime.Now - lastRejectedTime).Hours;
+
+			// Последняя неудачная попытка была более 24-х часов назад, обнуляем счетчик
+			if (hours >= 24) {
+				counterValue = 0;
+				SettingsService.AddOrUpdateSetting<int> (RejectedCounter, counterValue);
+			}
+
+			// Вход для пользователя заморожен
+			if (counterValue >= MaxRejectedRequestCount)
+				return true;
+
+			return false;
+		}*/
+
+		public async Task<AuthorizationRequestStatus> GetAuthorizationStatus(string companyName)
+		{
+			//int counterValue = SettingsService.GetSetting<int> (RejectedCounter, 0);
+
+			//if (string.IsNullOrEmpty(companyName))
+			//	companyName = SettingsService.GetSetting<string> (CompanyName, "");
+
+			//var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
+			var company = await GetCompany(companyName); // query.FirstOrDefaultAsync ();
+
+			if (await IsUserJoinedToCompany (company)) {
+				//counterValue = 0;
+				//SettingsService.AddOrUpdateSetting (RejectedCounter, counterValue);
+
+				return AuthorizationRequestStatus.Authorized;
+			}
+			else {
+				if (await IsUserRequestingCompany (company))
+					return AuthorizationRequestStatus.Pending;
+				// Отклонена авторизация
+				else {
+					//counterValue++;
+					//SettingsService.AddOrUpdateSetting (RejectedCounter, counterValue);
+					//SettingsService.AddOrUpdateSetting (LastRejectedTime, DateTime.Now);
+
+					/*if (counterValue >= MaxRejectedRequestCount)
+						return AuthorizationRequestStatus.Frozen;
+					else {
+						SettingsService.AddOrUpdateSetting (LastRejectedTime, DateTime.Now);
+					*/
+						return AuthorizationRequestStatus.Declined;
+					//}
+				}
+			}
+		}
+
+		async void AddUserToRequesting (ParseObject company)
 		{
 			ParseRelation<ParseUser> companyRequesting = company.GetRelation<ParseUser> (ServerRequesting);
 			companyRequesting.Add (ParseUser.CurrentUser);
@@ -141,23 +216,15 @@ namespace Trukman.Droid
 
 		public async Task<bool> RequestToJoinCompany (string name) {
 			// Добавление наименования компании в текущие настройки (для диспетчеров и водителей)
-			SettingsService.AddOrUpdateSetting (ServerCompanyName, name);
+			//SettingsService.AddOrUpdateSetting (CompanyName, name);
 
 			var company = await GetCompany (name);
 
-			var joined = await IsUserCompanyInternal(company);
+			var joined = await IsUserJoinedToCompany(company);
 			// Если пользователь еще не был добавлен к компании
 			// Прикрепляем НОВОГО пользователя (диспетчера/водителя) к указанной компании
 			if (!joined) {
-				/*int counter = SettingsService.GetSetting<int> (RejectedCounter, 0);
-				if (counter >= 3) {
-					// lock user
-				} else {
-					counter++;
-					SettingsService.AddOrUpdateSetting (RejectedCounter, counter);
-				*/
-					AddUserToRequesting (company);
-				//}
+				AddUserToRequesting (company);
 			}
 
 			return joined;
@@ -188,8 +255,13 @@ namespace Trukman.Droid
 							driverRelation.Add (user);
 							await company.SaveAsync ();
 						}
-					} else {
+					} 
+					// Отклонена авторизация
+					else {
+						// Удаляем пользователя из класса User
+						await user.DeleteAsync();
 						requestRelation.Remove (user);
+						await company.SaveAsync();
 					}
 				});
 			}
@@ -201,7 +273,7 @@ namespace Trukman.Droid
 
 		public void StartTimerForRequest () {
 			TimerCallback callback = new TimerCallback (TimerForRequestFires);
-			timerForRequst = new Timer (callback, null, 0, 15000);
+			timerForRequest = new Timer (callback, null, 0, 5* 15000);
 		}
 
 		public UserRole GetCurrentUserRole()
@@ -214,10 +286,10 @@ namespace Trukman.Droid
 			return ParseUser.CurrentUser.Username;
 		}
 
-		public string GetCurrentCompanyName()
+		/*public string GetCurrentCompanyName()
 		{
-			return SettingsService.GetSetting<string> (ServerCompanyName, "");
-		}
+			return SettingsService.GetSetting<string> (CompanyName, "");
+		}*/
 
 		public bool IsOwner()
 		{
@@ -225,59 +297,97 @@ namespace Trukman.Droid
 		}
 
 		public async Task SaveJob(string name, string description, string shipperAddress, 
-			string receiveAddress, string driverName)
+			string receiveAddress, string driverName, string company)
 		{
 			var job = new ParseObject (ServerJobClass);
 			job [ServerName] = name;
 			job [ServerDescription] = description;
-			job [ServerShipperAddrress] = shipperAddress;
-			job [ServerReceivedAddress] = receiveAddress;
-			job [ServerCompleted] = false;
+			job [ServerFromAddress] = shipperAddress;
+			job [ServerToAddress] = receiveAddress;
+			job [ServerJobCompleted] = false;
 
 			ParseUser driver = await GetUser (driverName);
 			job [ServerDriver] = driver;
 
-			string companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
-			job [ServerCompany] = await GetCompany (companyName);
+			//string companyName = SettingsService.GetSetting<string> (CompanyName, "");
+			job [ServerCompany] = await GetCompany (company);
 
 			job [ServerCreateDispatcher] = ParseUser.CurrentUser;
 			await job.SaveAsync();
 		}
 
-		public async Task<IList<Job>> GetJobList(string driverName = "")
+		public async Task<IList<Job>> GetJobList(string company)
 		{
-			var companyName = SettingsService.GetSetting<string>(ServerCompanyName, "");
-			var compQuery = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerCompanyName, companyName);
-			ParseObject company = await compQuery.FirstOrDefaultAsync ();
+			//var companyName = SettingsService.GetSetting<string>(CompanyName, "");
+			ParseObject companyData = await GetCompany (company);
 
 			var query = ParseObject.GetQuery (ServerJobClass);
 			// Фильтруем работы по компании
-			if (company != null)
+			if (companyData != null)
 				query = query.WhereEqualTo (ServerCompany, company);
 			
-			if (GetCurrentUserRole()  == UserRole.UserRoleDriver)
+			if (GetCurrentUserRole () == UserRole.UserRoleDriver)
 				query = query.WhereEqualTo (ServerDriver, ParseUser.CurrentUser);
 
-			var parseJobs = await query.FindAsync();
+			var parseList = await query.FindAsync();
 
 			ObservableCollection<Job> resultList = new ObservableCollection<Job> ();
-			foreach (var parseObj in parseJobs) 
+			foreach (var parseData in parseList) 
 			{
-				//ParseObject parseObj = jobEnum.Current;
-				Job job = new Job ();
-				job.Name = (string)parseObj[ServerName];
-				job.Description = (string)parseObj [ServerDescription];
-/*				job [ServerShipperAddrress] = shipperAddress;
-				job [ServerReceivedAddress] = receiveAddress;
-				job [ServerCompleted] = false;
-				job [ServerDriver] = this.FindUser (driver);
-				//string company = (string)ParseUser.CurrentUser [ServerCompany];
-				//job [ServerCompany] = this.GetCompany (company);
-				job [ServerCreateDispatcher] = ParseUser.CurrentUser;*/
+				var job = ConvertParseJob (parseData);
 				resultList.Add (job);
 			}
 			return resultList;
 		}
+
+		Job ConvertParseJob (ParseObject parseData)
+		{
+			Job job = new Job ();
+			job.Id = parseData.ObjectId;
+			job.Name = (string)parseData [ServerName];
+			job.Description = (string)parseData [ServerDescription];
+			job.ShipperAddress = (string)parseData [ServerFromAddress];
+			job.ReceiverAddress = (string)parseData [ServerToAddress];
+			job.PickupDateTime = (DateTime)parseData [ServerPickupDatetime];
+			job.DeliveryDateTime = (DateTime)parseData [ServerDeliveryDatettime];
+			job.Price = (int)parseData [ServerJobPrice];
+			job.Cancelled = (bool)parseData [ServerJobCancelled];
+			//job [ServerDriver] = this.FindUser (driver);
+			return job;
+		}
+
+		/*public async Task<Job> GetCurrentDriverJob(string currentJobId)
+		{
+			//string currentJobId = SettingsService.GetSetting<string> (CurrentJobId, "");
+			ParseObject parseData;
+			if (string.IsNullOrEmpty (currentJobId)) {
+				var query = ParseObject.GetQuery (ServerJobClass);
+				if (GetCurrentUserRole () == UserRole.UserRoleDriver)
+					query = query.WhereEqualTo (ServerDriver, ParseUser.CurrentUser);
+				// Берем ближайшую по времени запись из Job, не принятую, не отмененную 
+				parseData = await query.WhereEqualTo (ServerDriverAccepted, false)
+					.WhereEqualTo (ServerJobCancelled, false)
+					.WhereGreaterThan (ServerPickupDatetime, DateTime.Now)
+					.OrderBy (ServerPickupDatetime)
+					.FirstOrDefaultAsync ();
+
+				currentJobId = parseData.ObjectId;
+				SettingsService.AddOrUpdateSetting (CurrentJobId, currentJobId);
+			}
+			else
+			{
+				parseData = await ParseObject.GetQuery (ServerJobClass)
+					.WhereEqualTo (ServerObjectId, currentJobId)
+					.FirstOrDefaultAsync ();
+			}
+
+			var job = ConvertParseJob (parseData);
+			if (job.Cancelled) {
+				SettingsService.AddOrUpdateSetting<string> (CurrentJobId, null);
+			}
+
+			return job;
+		}*/
 
 		public async Task SaveDriverLocation(UserLocation location)
 		{
@@ -290,11 +400,11 @@ namespace Trukman.Droid
 				await Task.FromResult (false);
 		}
 
-		async Task<IEnumerable<ParseUser>> GetUserList (UserRole requestRole)
+		async Task<IEnumerable<ParseUser>> GetUserList (string companyName, UserRole requestRole)
 		{
-			string companyName = SettingsService.GetSetting<string> (ServerCompanyName, "");
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
-			var company = await query.FirstOrDefaultAsync ();
+			//string companyName = SettingsService.GetSetting<string> (CompanyName, "");
+			//var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, companyName);
+			var company = await GetCompany(companyName); // await query.FirstOrDefaultAsync ();
 			ParseRelation<ParseUser> userRelation;
 			if (requestRole == UserRole.UserRoleDispatch)
 				userRelation = company.GetRelation<ParseUser> (ServerDispatchers);
@@ -306,9 +416,9 @@ namespace Trukman.Droid
 			return userEnum;
 		}
 
-		public async Task<IList<Trukman.User>> GetDispatchList()
+		public async Task<IList<Trukman.User>> GetDispatchList(string companyName)
 		{
-			var dispatchEnum = await GetUserList (UserRole.UserRoleDispatch);
+			var dispatchEnum = await GetUserList (companyName, UserRole.UserRoleDispatch);
 
 			ObservableCollection<Trukman.User> userList = new ObservableCollection<User> (); // new List<User> ();
 			foreach (var dispatch in dispatchEnum) {
@@ -323,9 +433,9 @@ namespace Trukman.Droid
 			return userList;
 		}
 
-		public async Task<IList<Trukman.User>> GetDriverList()
+		public async Task<IList<Trukman.User>> GetDriverList(string companyName)
 		{
-			var driverEnum = await GetUserList (UserRole.UserRoleDriver);
+			var driverEnum = await GetUserList (companyName, UserRole.UserRoleDriver);
 
 			ObservableCollection<Trukman.User> userList = new ObservableCollection<User> ();
 			foreach (var driver in driverEnum) {
@@ -348,9 +458,9 @@ namespace Trukman.Droid
 			return userList;
 		}
 
-		public async Task RemoveCompanyUser (User _user)
+		public async Task RemoveCompanyUser (string companyName, User _user)
 		{
-			var companyName = SettingsService.GetSetting<string> (ServerCompanyName);
+			//var companyName = SettingsService.GetSetting<string> (CompanyName);
 			var company = await GetCompany (companyName);
 			ParseRelation<ParseUser> relation;
 			if (_user.Role == UserRole.UserRoleDispatch)
@@ -361,6 +471,55 @@ namespace Trukman.Droid
 			ParseUser user = await GetUser (_user.UserName);
 			relation.Remove (user);
 			await company.SaveAsync ();
+		}
+
+		public async Task SendComcheckRequest(ComcheckRequestType RequestType)
+		{
+			ParseObject parseData = new ParseObject (ServerComcheckRequest);
+			parseData [ServerDriver] = ParseUser.CurrentUser;
+			//parseData[ServerDispatch] = 
+			parseData [ServerState] = (int)ComcheckRequestState.Requested;
+			parseData [ServerRequestDatetime] = DateTime.Now;
+			parseData [ServerRequestType] = (int)RequestType;
+
+			await parseData.SaveAsync ();
+
+			string id = parseData.ObjectId;
+			//SettingsService.AddOrUpdateSetting<string> (FuelId, id);
+		}
+
+		public async Task<ComcheckRequest> GetComcheckRequest (ComcheckRequestType RequestType)
+		{
+			string id = "";
+			/*if (RequestType == ComcheckRequestType.FuelAdvance)
+				id = SettingsService.GetSetting<string> (FuelId, "");
+			else if (RequestType == ComcheckRequestType.Lumper)
+				id = SettingsService.GetSetting<string> (Lumper, "");
+			*/
+			if (!string.IsNullOrEmpty (id)) {
+				var data = await ParseObject.GetQuery (ServerComcheckRequest)
+					.WhereEqualTo (ServerObjectId, id)
+					.FirstOrDefaultAsync ();
+
+				ComcheckRequest request = ConvertComcheckRequest(data);
+
+				return request;
+			} else
+				return null;
+		}
+
+		ComcheckRequest ConvertComcheckRequest(ParseObject parseData)
+		{
+			var request = new ComcheckRequest ();
+			//request.Driver
+			//request.Dispatch
+			request.State = (ComcheckRequestState)((int)parseData[ServerState]);
+			request.RequestDatetime = (DateTime)parseData[ServerRequestDatetime];
+			request.RequestType = (ComcheckRequestType)((int)parseData [ServerRequestType]);
+			if (request.State == ComcheckRequestState.Visible)
+				request.Comcheck = (string)parseData [ServerComcheck];
+
+			return request;
 		}
 	}
 }

@@ -9,11 +9,11 @@ using Android.Widget;
 using Android.Preferences;
 
 using Android.OS;
-using Android.Locations;
 using System.Linq;
 using System.Collections.Generic;
 using Trukman.Droid.Services;
 using Android.Net;
+using Trukman.Droid.Helpers;
 
 namespace Trukman.Droid
 {
@@ -22,13 +22,17 @@ namespace Trukman.Droid
 	{
 		protected override void OnCreate (Bundle bundle)
 		{
-			//LocationClient 
-
 			base.OnCreate (bundle);
 
 			Xamarin.FormsMaps.Init (this, bundle);
 
 			global::Xamarin.Forms.Forms.Init (this, bundle);
+
+			var platformHelper = new AndroidPlatformHelper(this);
+			PlatformHelper.Initialize(platformHelper);
+
+			var settingsService = new SettingsService ();
+			SettingsServiceHelper.Initialize (settingsService);
 
 			LoadApplication (new App ());
 
@@ -38,35 +42,33 @@ namespace Trukman.Droid
 
 			NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
 			bool isOnline = (activeConnection != null) && activeConnection.IsConnected;*/
-
-			LocationServiceStarter.Current.LocationServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
-				LocationServiceStarter.Current.LocationService.LocationChanged += HandleLocationChanged;
-				//LocationServiceStarter.Current.LocationService.OnProviderDisabled += HandleProviderDisabled;
-				//LocationServiceStarter.Current.LocationService.OnProviderEnabled += HandleProviderEnabled;
-				//LocationServiceStarter.Current.LocationService.OnStatusChanged += HandleStatusChanged;
-			};
 		}
 
-		#region Android Location Service methods
-		public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+		protected override void OnStart ()
 		{
-			Android.Locations.Location location = e.Location;
-			App.ServerManager.SaveDriverLocation (new UserLocation{ Longitude = location.Longitude, Latitude = location.Latitude });
+			base.OnStart ();
 		}
 
-		public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)
+		protected override void OnResume ()
 		{
+			base.OnResume ();
 		}
 
-		public void HandleProviderEnabled(object sender, ProviderEnabledEventArgs e)
+		protected override void OnPause ()
 		{
+			base.OnPause ();
 		}
 
-		public void HandleStatusChanged(object sender, StatusChangedEventArgs e)
+		protected override void OnStop ()
 		{
+			base.OnStop ();
 		}
 
-		#endregion
+		protected override void OnDestroy ()
+		{
+			base.OnDestroy ();
+		}
+
 	}
 }
 

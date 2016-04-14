@@ -47,7 +47,8 @@ namespace Trukman
 		{
 			var tableView = (Content as TableView);
 			var section = (TableSection)(tableView.Root[0]);
-			var jobList = await App.ServerManager.GetJobList ("");
+			string company = SettingsServiceHelper.GetCompany ();
+			var jobList = await App.ServerManager.GetJobList (company);
 			foreach(var job in jobList)
 			{
 				Device.BeginInvokeOnMainThread( () =>

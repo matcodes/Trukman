@@ -43,7 +43,6 @@
     <Compile Include="Pages\SignUpTypePage.cs" />
     <Compile Include="Module\AlertHandler.cs" />
     <Compile Include="Module\IServerManager.cs" />
-    <Compile Include="Pages\MenuList.cs" />
     <Compile Include="Pages\RootPage.cs" />
     <Compile Include="Module\Localization.cs" />
     <Compile Include="Pages\BasePage.cs" />
@@ -55,15 +54,69 @@
     <Compile Include="Pages\EditJobPage.cs" />
     <Compile Include="Pages\ConstructPage.cs" />
     <Compile Include="Module\TrukmanTimer.cs" />
-    <Compile Include="Pages\CustomCell.cs" />
     <Compile Include="Pages\DispatchListPage.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Module\ILocationService.cs" />
     <Compile Include="Module\Model.cs" />
-    <Compile Include="Pages\PendingAuthorizPage.cs" />
     <Compile Include="CustomViews\TrukmanLabel.cs" />
     <Compile Include="Pages\SignupFrozenPage.cs" />
     <Compile Include="Pages\AuthorizedPage.cs" />
+    <Compile Include="CustomViews\PopupLayout.cs" />
+    <Compile Include="Pages\PendingAuthorizationPage.cs" />
+    <Compile Include="Pages\AuthorizationDeclinedPage.cs" />
+    <Compile Include="Pages\HomePage.cs" />
+    <Compile Include="CustomViews\WaitingLayout.cs" />
+    <Compile Include="CustomViews\MenuItemCell.cs" />
+    <Compile Include="CustomViews\MenuList.cs" />
+    <Compile Include="Pages\LumperPage.cs" />
+    <Compile Include="Pages\TripPage.cs" />
+    <Compile Include="Pages\TrukmanPage.cs" />
+    <Compile Include="BaseClasses\BaseViewModel.cs" />
+    <Compile Include="BaseClasses\BaseData.cs" />
+    <Compile Include="CustomViews\TitleBar.cs" />
+    <Compile Include="Helpers\PlatformHelper.cs" />
+    <Compile Include="CustomViews\ToolButton.cs" />
+    <Compile Include="CustomViews\NavBar.cs" />
+    <Compile Include="ViewModels\Pages\HomeViewModel.cs" />
+    <Compile Include="Pages\FuelAdvancePage.cs" />
+    <Compile Include="ViewModels\Pages\FuelAdvanceViewModel.cs" />
+    <Compile Include="ViewModels\Pages\PageViewModel.cs" />
+    <Compile Include="Messages\LanguageSelectedMessage.cs" />
+    <Compile Include="Messages\PopPageMessage.cs" />
+    <Compile Include="Messages\PopToRootPageMessage.cs" />
+    <Compile Include="Messages\ShowFuelAdvancePageMessage.cs" />
+    <Compile Include="Messages\ShowReceiverInfoMessage.cs" />
+    <Compile Include="Messages\ShowShipperInfoPageMessage.cs" />
+    <Compile Include="Data\Classes\Contractor.cs" />
+    <Compile Include="Data\Classes\MainData.cs" />
+    <Compile Include="Data\Classes\Receiver.cs" />
+    <Compile Include="Data\Classes\Shipper.cs" />
+    <Compile Include="Data\Interfaces\IContractor.cs" />
+    <Compile Include="Data\Interfaces\IMainData.cs" />
+    <Compile Include="Data\Interfaces\IReceiver.cs" />
+    <Compile Include="Data\Interfaces\IShipper.cs" />
+    <Compile Include="BaseClasses\VisualCommand.cs" />
+    <Compile Include="Languages\AppLanguage.cs" />
+    <Compile Include="Languages\AppLanguages.cs" />
+    <Compile Include="Languages\EnglishAppLanguage.cs" />
+    <Compile Include="Pages\ShipperInfoPage.cs" />
+    <Compile Include="Pages\ContractorInfoPage.cs" />
+    <Compile Include="Pages\ReceiverInfoPage.cs" />
+    <Compile Include="ViewModels\Pages\ContractorInfoViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ReceiverInfoViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ShipperInfoViewModel.cs" />
+    <Compile Include="Converters\FuelAdvanceStateToImageConverter.cs" />
+    <Compile Include="CustomViews\AppButton.cs" />
+    <Compile Include="Messages\ShowDriverListMessage.cs" />
+    <Compile Include="Helpers\SettingsServiceHelper.cs" />
+    <Compile Include="Messages\StartLocationServiceMessage.cs" />
+    <Compile Include="Helpers\LocationServiceHelper.cs" />
+    <Compile Include="ViewModels\Pages\SignUpEmployeeViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SignUpDriverViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SignUpDispatchViewModel.cs" />
+    <Compile Include="ViewModels\Pages\DriverListViewModel.cs" />
+    <Compile Include="Module\MCQuery.cs" />
+    <Compile Include="ViewModels\Pages\SignUpOwnerViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SignUpCompanyViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6495\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -85,6 +138,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net45+wp80+win8+wpa81+dnxcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -96,25 +158,29 @@
     <Folder Include="Module\" />
     <Folder Include="Resource\" />
     <Folder Include="Resource\Image\" />
+    <Folder Include="BaseClasses\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Pages\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Messages\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\Classes\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Languages\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resource\Image\pika.png">
       <LogicalName>pika.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Image\hamburger.png">
-      <LogicalName>hamburger.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Image\logo.png">
-      <LogicalName>logo.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Image\background.png">
-      <LogicalName>background.png</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Image\authorize.png">
       <LogicalName>authorize.png</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Image\authorized.png">
       <LogicalName>authorized.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Image\lock-transparent.png">
+      <LogicalName>lock-transparent.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

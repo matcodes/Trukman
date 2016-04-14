@@ -58,7 +58,8 @@ namespace Trukman
 			var view = section [0];
 			section.Clear ();
 			section.Add (view);
-			var jobList = await App.ServerManager.GetJobList ();
+			string company = SettingsServiceHelper.GetCompany ();
+			var jobList = await App.ServerManager.GetJobList (company);
 
 			foreach(var job in jobList)
 			{

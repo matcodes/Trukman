@@ -69,6 +69,7 @@ namespace Trukman
 				else
 				{
 					await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
+					SettingsServiceHelper.SaveCompany(edtCompany.Text);
 					bool isJoinToCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 					if (isJoinToCompany)
 						await Navigation.PushAsync (new RootPage ());
@@ -80,7 +81,7 @@ namespace Trukman
 				}
 			}
 			catch(Exception exc) {
-				await AlertHandler.ShowAlert (exc.Message);
+				AlertHandler.ShowAlert (exc.Message);
 			}
 		}
 	}

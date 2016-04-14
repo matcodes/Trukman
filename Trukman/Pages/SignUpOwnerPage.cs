@@ -1,107 +1,268 @@
 ﻿using System;
 
 using Xamarin.Forms;
+using Trukman.ViewModels.Pages;
 
 namespace Trukman
 {
-	public class SignUpOwnerPage : BasePage
+	public class SignUpOwnerPage : TrukmanPage
 	{
-        Label lblSignup;
-
+		Label lblSignup;
+		Label lblUserRole;
 		TrukmanEditor edtMC;
-        TrukmanButton btnSubmit;
+		TrukmanButton failedMCLabel;
+		TrukmanButton btnSubmit;
+		Button btnEng;
+		Button btnEsp;
+
+		StackLayout stackLayout;
+		RelativeLayout failedMCLayout;
+
+		int failedAttempts;
+		int maxFailAttempts = 3;
+		ActivityIndicator busyIndicator;
 
 		public SignUpOwnerPage ()
 		{
-            NavigationPage.SetHasNavigationBar (this, false);
-            Localization.language = Localization.Languages.ENGLISH;
-
-            Image backgroundImage = new Image{ Source = ImageSource.FromResource ("background.png"), Aspect = Aspect.Fill };
-            Image hamburgerImage = new Image{ Source = ImageSource.FromResource ("hamburger.png"), Aspect = Aspect.Fill };
-
-            lblSignup = new Label {
-				HorizontalTextAlignment = TextAlignment.Center,
-                Text = Localization.getString(Localization.LocalStrings.SIGN_UP).ToUpper(),
-                TextColor = Color.FromHex (Constants.SignUpFontColor),
-				FontSize = 33
-			};
-
-            Button btnEditMC = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-            edtMC = new TrukmanEditor { 
-                Style = (Style)App.Current.Resources ["entryRadiusStyle"],
-                Placeholder = Localization.getString(Localization.LocalStrings.MC)
-            };
-
-			btnSubmit = new TrukmanButton {
-				Text = Localization.getString(Localization.LocalStrings.SUBMIT)
-			};
-
-            RelativeLayout userInfoLayout = new RelativeLayout ();
-            userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
-            userInfoLayout.Children.Add (btnEditMC, 
-                Constraint.RelativeToParent (parent => 0),
-                Constraint.RelativeToParent (parent => 0),
-                Constraint.RelativeToParent (parent => parent.Width)
-            );
-            userInfoLayout.Children.Add (edtMC, 
-                Constraint.RelativeToView (btnEditMC, (parent, View) => View.X + Constants.ViewsPadding / 2),
-                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Y),
-                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Width - Constants.ViewsPadding),
-                Constraint.RelativeToView (btnEditMC, (parent, View) => View.Height)
-            );
-			btnSubmit.Clicked += buttonClicked;
-
-			// TODO: для тестирования, удалить потом
-//			edtName.Text = "DKG";
-//			edtMC.Text = "158851";
-
-            StackLayout stackLayout = new StackLayout {
-                Spacing = Constants.StackLayoutDefaultSpacing,
-                Padding = new Thickness(Constants.ViewsPadding),
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Children = {
-                    userInfoLayout,
-                    btnSubmit
-                }
-            };
-
-            RelativeLayout relativeLayout = new RelativeLayout ();
-
-            relativeLayout.Children.Add (backgroundImage, 
-                Constraint.RelativeToParent (parent => 0),
-                Constraint.RelativeToParent (parent => 0),
-                Constraint.RelativeToParent (parent => parent.Width),
-                Constraint.RelativeToParent (parent => parent.Height)
-            );
-            relativeLayout.Children.Add (lblSignup, 
-                Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
-                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
-            );
-            relativeLayout.Children.Add (hamburgerImage, 
-                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-                Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-                Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2),
-                Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2)
-            );
-            relativeLayout.Children.Add (stackLayout,
-                Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
-                Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
-                Constraint.RelativeToParent (parent => parent.Width)
-            );
-
-            Content = relativeLayout;
+			this.BindingContext = new SignUpOwnerViewModel ();
 		}
 
-		async void buttonClicked (object sender, EventArgs e) {
+		protected override View CreateContent ()
+		{
+			//Localization.language = Localization.Languages.ENGLISH;
+			/*var titleBar = new TitleBar();
+			titleBar.SetBinding (TitleBar.TitleProperty, "Title", BindingMode.OneWay);
+			titleBar.SetBinding (TitleBar.LeftCommandProperty, "LeftCommand", BindingMode.OneWay);*/
+
+			failedAttempts = 0;
+			var btnLeft = new ToolButton ();
+			btnLeft.ImageSourceName = PlatformHelper.LeftImageSource;
+			btnLeft.SetBinding(ToolButton.CommandProperty, "ShowPrevPageCommand", BindingMode.OneWay);
+			//btnLeft.SetBinding(ToolButton.ImageSourceNameProperty, new Binding("LeftIcon", BindingMode.OneWay, null, null, null, this));
+			//Image leftImage = new Image{ Source = ImageSource.FromFile ("left.png"), Aspect = Aspect.Fill };
+
+			Image logoImage = new Image 
+			{ 
+				Source = ImageSource.FromFile ("logo.png"), 
+				Aspect = Aspect.AspectFit,
+				HorizontalOptions = LayoutOptions.Center
+			};
+
+			btnEng = new Button {
+				Text = "ENG",
+				TextColor = Color.FromHex (Constants.SelectedFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12,
+			};
+			btnEng.Text = "ENG";
+			btnEsp = new Button {
+				Text = "ESP",
+				TextColor = Color.FromHex (Constants.RegularFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12
+			};
+			btnEng.Clicked += btnLan_Clicked;
+			btnEsp.Clicked += btnLan_Clicked;
+
+			lblSignup = new Label {
+				HorizontalTextAlignment = TextAlignment.Center,
+				TextColor = Color.FromHex (Constants.TitleFontColor),
+				FontSize = 33
+			};
+			lblSignup.SetBinding (Label.TextProperty, "Title", BindingMode.OneWay);
+
+			lblUserRole = new Label {
+				HorizontalTextAlignment = TextAlignment.Center,
+				FontSize = 18,
+				TextColor = Color.FromHex (Constants.RegularFontColor),
+				HorizontalOptions = LayoutOptions.Center
+			};
+			failedMCLabel = new TrukmanButton {
+				Text = "MC# not found",
+				FontSize = 18,
+				BackgroundColor = Color.Transparent,
+				TextColor = Color.White,
+				Style = (Style)App.Current.Resources ["buttonTransparentEntry"]
+			};
+
+			Button btnEditMC = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtMC = new TrukmanEditor { 
+				Style = (Style)App.Current.Resources ["entryRadiusStyle"]
+			};
+
+			btnSubmit = new TrukmanButton();
+
+			RelativeLayout userInfoLayout = new RelativeLayout ();
+			userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+			userInfoLayout.Children.Add (btnEditMC, 
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => parent.Width)
+			);
+			userInfoLayout.Children.Add (edtMC, 
+				Constraint.RelativeToView (btnEditMC, (parent, View) => View.X + Constants.ViewsPadding / 2),
+				Constraint.RelativeToView (btnEditMC, (parent, View) => View.Y),
+				Constraint.RelativeToView (btnEditMC, (parent, View) => View.Width - Constants.ViewsPadding),
+				Constraint.RelativeToView (btnEditMC, (parent, View) => View.Height)
+			);
+
+			failedMCLayout = new RelativeLayout();
+			failedMCLayout.Children.Add(failedMCLabel,
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => parent.Width)
+			);
+
+			btnSubmit.Clicked += buttonClicked;
+
+			//busyIndicator.SetBinding (ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
+
+			stackLayout = new StackLayout {
+				Spacing = Constants.StackLayoutDefaultSpacing,
+				Padding = new Thickness(Constants.ViewsPadding),
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				HorizontalOptions = LayoutOptions.CenterAndExpand,
+				Children = {
+					logoImage,
+					lblUserRole,
+					userInfoLayout,
+					btnSubmit
+					//busyIndicator
+				}
+			};
+
+			RelativeLayout relativeLayout = new RelativeLayout () {
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand
+			};
+
+			/*relativeLayout.Children.Add (backgroundImage, 
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => parent.Width),
+				Constraint.RelativeToParent (parent => parent.Height)
+			);*/
+			relativeLayout.Children.Add (lblSignup, 
+				Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
+			);
+			relativeLayout.Children.Add (btnLeft, 
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToView (lblSignup, (parent, View) => lblSignup.Height / 2),
+				Constraint.RelativeToView (lblSignup, (parent, View) => lblSignup.Height / 2)
+			);
+			relativeLayout.Children.Add (btnEsp,
+				Constraint.RelativeToParent (parent => parent.Width - btnEsp.Width),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 50)
+			);
+			relativeLayout.Children.Add (btnEng, 
+				Constraint.RelativeToView (btnEsp, (parent, view) => parent.Width - view.Width - btnEng.Width),
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToParent (parent => 50)
+			);
+			/*relativeLayout.Children.Add (logoImage,
+				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
+				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding)
+			);
+			relativeLayout.Children.Add (lblUserRole,
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToView (logoImage, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent(parent => parent.Width)
+			);*/
+			relativeLayout.Children.Add (stackLayout,
+				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
+				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height),
+				Constraint.RelativeToParent (parent => parent.Width)
+			);
+			/*relativeLayout.Children.Add (busyIndicator, 
+				Constraint.RelativeToParent (parent => parent.Width / 2 - busyIndicator.Width / 2),
+				Constraint.RelativeToView (stackLayout, (Parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding)
+			);*/
+
+			/*relativeLayout.HorizontalOptions = LayoutOptions.CenterAndExpand;
+			relativeLayout.VerticalOptions = LayoutOptions.CenterAndExpand;*/
+
+			busyIndicator = new ActivityIndicator {
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.Center
+			};
+
+			var pageContent = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0
+			};
+			pageContent.Children.Add (relativeLayout);
+			pageContent.Children.Add (busyIndicator);
+
+			UpdateText ();
+
+			//relativeLayout.ForceLayout ();
+			//relativeLayout.ForceLayout ();
+			return relativeLayout;
+		}
+
+		void btnLan_Clicked (object sender, EventArgs e)
+		{
+			if ((Button)sender == btnEng) {
+				Localization.language = Localization.Languages.ENGLISH;
+				btnEng.TextColor = Color.FromHex (Constants.SelectedFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.RegularFontColor);
+			} else if ((Button)sender == btnEsp) {
+				Localization.language = Localization.Languages.ESPANIOL;
+				btnEng.TextColor = Color.FromHex (Constants.RegularFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.SelectedFontColor);;
+			}
+
+			UpdateText ();
+		}
+
+		void UpdateText()
+		{
+			lblUserRole.Text = Localization.getString(Localization.LocalStrings.OWNER_or_OPERATOR).ToUpper();
+			//lblSignup.Text = Localization.getString (Localization.LocalStrings.SIGN_UP).ToUpper();
+			edtMC.Placeholder = Localization.getString (Localization.LocalStrings.MC);
+			btnSubmit.Text = Localization.getString (Localization.LocalStrings.BTN_SUBMIT);
+		}
+
+		async void buttonClicked (object sender, EventArgs e) 
+		{
 			try
 			{
-                await App.ServerManager.Register(edtMC.Text, edtMC.Text, UserRole.UserRoleOwner);
+				/*
+				MCResponse data = new MCResponse{
+					mcCode = edtMC.Text,
+					success = true
+				};
+				*/
+				this.IsBusy = true;
+				MCResponse data = await MCQuery.verifyMC(edtMC.Text);
 
-				await Navigation.PushAsync(new SignUpCompanyPage());
+				this.IsBusy = false;
+				if(data.success) {
+					await Navigation.PushAsync(new SignUpCompanyPage(data));
+				} else {
+					throw new Exception("Didn't found company with this MC");
+				}
 			}
 			catch(Exception exc) {
-				await AlertHandler.ShowAlert (exc.Message);
+				failedAttempts++;
+				if (failedAttempts >= maxFailAttempts)
+				{
+					// TODO: не понятно почему дома не компилиться...
+					DisplayAlert("", 
+						Localization.getString(Localization.LocalStrings.FAILED_OWNER_MC), 
+						Localization.getString(Localization.LocalStrings.CONTINUE)).Wait();
+					Navigation.PushAsync(new SignUpOwnerPage()).Wait();
+				}
+				else if(failedAttempts == 1)
+				{
+					// Insert before submit button
+					stackLayout.Children.Insert(1, failedMCLayout);
+				}
 			}
 		}
 	}

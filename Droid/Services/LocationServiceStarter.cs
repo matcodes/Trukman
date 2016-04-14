@@ -12,6 +12,7 @@ namespace Trukman.Droid.Services
 
 		public static LocationServiceStarter Current {
 			get;
+			private set;
 		} 
 
 		public LocationService LocationService

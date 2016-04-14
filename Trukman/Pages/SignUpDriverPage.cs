@@ -1,9 +1,11 @@
 ﻿using System;
 using Xamarin.Forms;
+using System.Threading.Tasks;
+using Trukman.ViewModels.Pages;
 
 namespace Trukman
 {
-	public class SignUpDriverPage : BasePage
+	public class SignUpDriverPage : TrukmanPage
 	{
 		Label lblSignup;
 		Label lblUserRole;
@@ -13,38 +15,41 @@ namespace Trukman
 		TrukmanEditor edtPhone;
 		TrukmanButton btnSubmit;
 		Label lblHaveAccount;
-		Button btnEng;
-		Button btnEsp;
+		ActivityIndicator indicator;
 
 		public SignUpDriverPage ()
 		{
+			this.BindingContext = new SignUpDriverViewModel ();
+		}
+
+		protected override View CreateContent ()
+		{
 			// TODO: для контрола edtCompany добавить фильтрацию списка компаний и выбор компании из этого списка
+			// TODO: доделать проверку ввода confirmation code
 
-			NavigationPage.SetHasNavigationBar (this, false);
+			// TODO: для popuplayout: закруглить края окна и нарисовать линии как на макете
+			// TODO: После проверки confirmation code, добавить popup'ы "Success" и "Invalid code"
 
-			Image backgroundImage = new Image{ Source = ImageSource.FromResource ("background.png"), Aspect = Aspect.Fill };
-			Image hamburgerImage = new Image{ Source = ImageSource.FromResource ("hamburger.png"), Aspect = Aspect.Fill };
-			Image logoImage = new Image{ Source = ImageSource.FromResource ("logo.png"), Aspect = Aspect.AspectFit };
-
-			btnEng = new Button {
-				Text = "ENG",
-				TextColor = Color.FromHex (Constants.SelectedFontColor), 
-				BackgroundColor = Color.Transparent,
-				FontSize = 12,
+			var btnLeft = new ToolButton ();
+			btnLeft.ImageSourceName = PlatformHelper.LeftImageSource;
+			btnLeft.SetBinding(ToolButton.CommandProperty, "ShowPrevPageCommand", BindingMode.OneWay);
+			Image logoImage = new Image { 
+				Source = ImageSource.FromFile ("logo.png"), 
+				Aspect = Aspect.AspectFit,
+				HorizontalOptions = LayoutOptions.Center,
 			};
-			btnEng.Text = "ENG";
-			btnEsp = new Button {
-				Text = "ESP",
-				TextColor = Color.FromHex (Constants.RegularFontColor), 
-				BackgroundColor = Color.Transparent,
-				FontSize = 12
+
+			var segmentLan = new SegmentedControl {
+				Children = {
+					new SegmentedControlOption{ Text = "ENG" },
+					new SegmentedControlOption{ Text = "ESP"}
+				}
 			};
-			btnEng.Clicked += btnLan_Clicked;
-			btnEsp.Clicked += btnLan_Clicked;
+			segmentLan.ValueChanged += SegmentLan_ValueChanged;
 
 			lblSignup = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
-				TextColor = Color.FromHex (Constants.SignUpFontColor),
+				TextColor = Color.FromHex (Constants.TitleFontColor),
 				FontSize = 33
 			};
 
@@ -115,79 +120,73 @@ namespace Trukman
 
 			lblHaveAccount = new Label { HorizontalOptions = LayoutOptions.Center };
 
-			StackLayout stackLayout = new StackLayout {
+			indicator = new ActivityIndicator {
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.Center
+			};
+
+			var stackLayout = new StackLayout {
 				Spacing = Constants.StackLayoutDefaultSpacing,
-				Padding = new Thickness(Constants.ViewsPadding),
+				Padding = new Thickness(Constants.ViewsPadding, Constants.ViewsBottomPadding, Constants.ViewsPadding, Constants.ViewsBottomPadding),
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				Children = {
+					logoImage,
+					lblUserRole,
 					userInfoLayout,
 					btnSubmit,
-					new BoxView { HeightRequest = 10 },
-					lblHaveAccount
+					//new BoxView { HeightRequest = 10 },
+					lblHaveAccount,
 				}
 			};
 
 			RelativeLayout relativeLayout = new RelativeLayout ();
 
-			relativeLayout.Children.Add (backgroundImage, 
-				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToParent (parent => parent.Width),
-				Constraint.RelativeToParent (parent => parent.Height)
-			);
 			relativeLayout.Children.Add (lblSignup, 
 				Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
 			);
-			relativeLayout.Children.Add (hamburgerImage, 
+			relativeLayout.Children.Add (btnLeft, 
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2),
-				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2)
+				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2),
+				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2)
 			);
-			relativeLayout.Children.Add (btnEsp,
-				Constraint.RelativeToParent (parent => parent.Width - btnEsp.Width),
-				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToParent (parent => 50)
+			relativeLayout.Children.Add (segmentLan, 
+				Constraint.RelativeToParent (parent => parent.Width - segmentLan.Width),
+				Constraint.RelativeToParent (parent => 0)
 			);
-			relativeLayout.Children.Add (btnEng, 
-				Constraint.RelativeToView (btnEsp, (parent, view) => parent.Width - view.Width - btnEng.Width),
-				Constraint.RelativeToParent (parent => 0),
-				Constraint.RelativeToParent (parent => 50)
+			/*relativeLayout.Children.Add (logoImage,
+				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
+				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding)
 			);
 			relativeLayout.Children.Add (lblUserRole,
 				Constraint.RelativeToParent (parent => 0), //parent.Width / 2 - lblUserRole.Width / 2),
-				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToView (logoImage, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent(Parent => Parent.Width)
-			);
-			relativeLayout.Children.Add (logoImage,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
-				Constraint.RelativeToView (lblUserRole, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding)
-			);
+			);*/
 			relativeLayout.Children.Add (stackLayout,
 				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
 				//Constraint.RelativeToParent (parent => parent.Height / 2 - stackLayout.Height / 2),
-				Constraint.RelativeToView (logoImage, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => parent.Width)
 			);
 
-			Content = relativeLayout;
+			var popupLayout = new PopupLayout () {
+				Content = relativeLayout
+			};
 
 			UpdateText ();
+
+			return popupLayout;
 		}
 
-		void btnLan_Clicked (object sender, EventArgs e)
+		void SegmentLan_ValueChanged (object sender, EventArgs e)
 		{
-			if ((Button)sender == btnEng) {
+			if (((SegmentedControl)sender).SelectedValue == ((SegmentedControl)sender).Children [0].Text)
 				Localization.language = Localization.Languages.ENGLISH;
-				btnEng.TextColor = Color.FromHex (Constants.SelectedFontColor);
-				btnEsp.TextColor = Color.FromHex (Constants.RegularFontColor);
-			} else if ((Button)sender == btnEsp) {
+			else if (((SegmentedControl)sender).SelectedValue == ((SegmentedControl)sender).Children [1].Text)
 				Localization.language = Localization.Languages.ESPANIOL;
-				btnEng.TextColor = Color.FromHex (Constants.RegularFontColor);
-				btnEsp.TextColor = Color.FromHex (Constants.SelectedFontColor);;
-			}
 
 			UpdateText ();
 		}
@@ -200,16 +199,163 @@ namespace Trukman
 			edtLastName.Placeholder = Localization.getString (Localization.LocalStrings.LAST_NAME);
 			edtPhone.Placeholder = Localization.getString (Localization.LocalStrings.PHONE);
 			edtCompany.Placeholder = Localization.getString (Localization.LocalStrings.COMPANY_YOU_WORK_FOR);
-			btnSubmit.Text = Localization.getString (Localization.LocalStrings.SUBMIT);
+			btnSubmit.Text = Localization.getString (Localization.LocalStrings.BTN_SUBMIT);
 			lblHaveAccount.Text = Localization.getString (Localization.LocalStrings.HAVE_ACCOUNT_QUESTION);
 		}
 
-		async void btnSubmit_Clicked (object sender, EventArgs e) {
+		View CreatePopup(PopupLayout popupLayout)
+		{
+			Label lblText = new Label {
+				Text = Localization.getString (Localization.LocalStrings.REQUEST_CONFIRMATION_CODE),
+				TextColor = Color.FromHex(Constants.GreyText)
+			};
+
+			var btnConfirmCode = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			var edtConfirmCode = new TrukmanEditor { 
+				Placeholder = Localization.getString (Localization.LocalStrings.CONFIRMATION_CODE),
+				Style = (Style)App.Current.Resources ["entryRadiusStyle"]
+			};
+
+			var btnCancel = new Button {
+				Text = Localization.getString (Localization.LocalStrings.BTN_CANCEL),
+				TextColor = Color.FromHex(Constants.BlueText),
+				BackgroundColor = Color.Transparent
+			};
+			btnCancel.Clicked += delegate(object sender, EventArgs e) {
+				popupLayout.DismissPopup();
+			};
+			var btnResend = new Button {
+				Text = Localization.getString (Localization.LocalStrings.BTN_RESEND),
+				TextColor = Color.FromHex(Constants.BlueText),
+				BackgroundColor = Color.Transparent
+			};
+			btnResend.Clicked += delegate(object sender, EventArgs e) {
+				popupLayout.DismissPopup();
+			};
+			var btnSubmitCode = new TrukmanButton {
+				Text = Localization.getString (Localization.LocalStrings.BTN_SUBMIT)
+			};
+			btnSubmitCode.Clicked += async (object sender, EventArgs e) => 
+			{
+				// Подтверждаем confirmation code
+				popupLayout.DismissPopup();
+
+				await RegisterUser();
+			};
+
+			RelativeLayout relaviteLayout = new RelativeLayout {
+				BackgroundColor = Color.FromHex(Constants.PopupBackgroud),
+			
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Center,
+			};
+			relaviteLayout.Children.Add (lblText, 
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width - Constants.ViewsBottomPadding * 2)
+			);
+			relaviteLayout.Children.Add (btnConfirmCode, 
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToView(lblText, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width - Constants.ViewsBottomPadding * 2)
+			);
+			relaviteLayout.Children.Add (edtConfirmCode, 
+				Constraint.RelativeToView(btnConfirmCode, (parent, View) => View.X + Constants.ViewsPadding / 2),
+				Constraint.RelativeToView (btnConfirmCode, (parent, View) => View.Y),
+				Constraint.RelativeToView (btnConfirmCode, (parent, View) => View.Width - Constants.ViewsPadding)
+			);				
+			relaviteLayout.Children.Add (btnSubmitCode, 
+				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
+				Constraint.RelativeToView (edtConfirmCode, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width - Constants.ViewsBottomPadding * 2)
+			);
+			relaviteLayout.Children.Add (btnCancel, 
+				Constraint.RelativeToParent (parent => 0),
+				Constraint.RelativeToView (btnSubmitCode, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width / 2)
+			);
+			relaviteLayout.Children.Add (btnResend, 
+				Constraint.RelativeToParent (parent => parent.Width / 2),
+				Constraint.RelativeToView (btnSubmitCode, (parent, View) => View.Y + View.Height + Constants.ViewsBottomPadding),
+				Constraint.RelativeToParent (parent => parent.Width / 2)
+			);
+
+			relaviteLayout.Opacity = 0.95;
+
+			return relaviteLayout;
+		}
+
+		bool IsFrozenAuthorization()
+		{
+			int counterValue = SettingsServiceHelper.GetRejectCounter ();
+			DateTime lastRejectedTime = SettingsServiceHelper.GetLastRejectTime ();
+			int hours = (DateTime.Now - lastRejectedTime).Hours;
+
+			// Последняя неудачная попытка была более 24-х часов назад, обнуляем счетчик
+			if (hours >= 24) {
+				SettingsServiceHelper.SaveRejectedCounter (0);
+			}
+
+			// Вход для пользователя заморожен
+			if (counterValue >= SettingsServiceHelper.MaxRejectedRequestCount)
+				return true;
+
+			return false;
+		}
+
+		async Task RegisterUser ()
+		{
+			string username = string.Format ("{0} {1}", (edtFirstName.Text ?? "").Trim(), (edtLastName.Text ?? "").Trim ()).Trim();
+			bool isJoinCompany;
+			indicator.IsRunning = true;
+			try
+			{
+				await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
+				SettingsServiceHelper.SaveCompany(edtCompany.Text);
+				isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+			}
+			finally {
+				indicator.IsRunning = false;
+			}
+			if (isJoinCompany)
+				await Navigation.PushAsync (new HomePage ());
+			else {
+				//App.ServerManager.LogOut ();
+				if (this.IsFrozenAuthorization ()) {
+					await App.ServerManager.LogOut ();
+					await Navigation.PushAsync (new SignupFrozenPage ());
+
+				}
+				else
+					await Navigation.PushAsync (new PendingAuthorizationPage ());
+			}
+		}
+
+		async void btnSubmit_Clicked (object sender, EventArgs e)
+		{
 			try {
+				await RegisterUser();
+
+				/*var popupLayout = this.Content as PopupLayout;
+
+				if (popupLayout.IsPopupActive) {
+					popupLayout.DismissPopup ();
+				} else {
+					var popup = CreatePopup (popupLayout);
+
+					popupLayout.ShowPopup (popup, 
+						Constraint.RelativeToParent(parent => Constants.ViewsPadding),
+						Constraint.RelativeToParent(parent => parent.Height / 2 - popup.Height / 2),
+						Constraint.RelativeToParent(parent => parent.Width - Constants.ViewsPadding * 2)
+					);
+				}
+				*/
+
+				// Old version
 				/*bool findCompany = await App.ServerManager.FindCompany (edtCompany.Text);
 				if (!findCompany)
 					await AlertHandler.ShowCheckCompany (edtCompany.Text);
-				else { */
+				else { 
 
 				string username = string.Format ("{0} {1}", edtFirstName.Text.Trim (), edtLastName.Text.Trim ());
 				await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
@@ -221,9 +367,9 @@ namespace Trukman
 					//await AlertHandler.ShowAlert (string.Format ("The owner of the company {0} has not yet added you to the company", edtCompany.Text));
 					//await App.ServerManager.LogOut();
 				}
-				//}
+				}*/
 			} catch (Exception exc) {
-				await AlertHandler.ShowAlert (exc.Message);
+				AlertHandler.ShowAlert (exc.Message);
 			}
 		}
 	}

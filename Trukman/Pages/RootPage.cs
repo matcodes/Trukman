@@ -99,7 +99,7 @@ namespace Trukman
 
 		void OnItemSelected (object sender, SelectedItemChangedEventArgs e)
 		{
-			var item = e.SelectedItem as Trukman.MenuList.ItemsMenu;
+			var item = e.SelectedItem as MenuList.ItemsMenu;
 			if (item != null)
 			{
 				if (item.TargetType != null)

@@ -15,9 +15,9 @@ namespace Trukman
 
 			Title = "Dispatchers";
 
-			var template = new DataTemplate (typeof(CustomCell));
-			template.SetBinding (CustomCell.UserNameProperty, "UserName");
-			template.SetBinding (CustomCell.EmailProperty, "Email");
+			var template = new DataTemplate (typeof(MenuItemCell));
+			template.SetBinding (MenuItemCell.UserNameProperty, "UserName");
+			template.SetBinding (MenuItemCell.EmailProperty, "Email");
 
 			listView = new ListView ();
 			listView.Header = new StackLayout {
@@ -58,14 +58,15 @@ namespace Trukman
 
 		async void LoadDispatcherList ()
 		{
-			dispatchList = await App.ServerManager.GetDispatchList ();
+			string companyName = SettingsServiceHelper.GetCompany ();
+			dispatchList = await App.ServerManager.GetDispatchList (companyName);
 
 			Device.BeginInvokeOnMainThread (() =>
 				{
 					listView.ItemsSource = dispatchList;
 				
 					// TODO: убрать потом, когда переделаю на Command'ы
-					CustomCell.SourceList = dispatchList;
+					MenuItemCell.SourceList = dispatchList;
 				});
 		}
 	}

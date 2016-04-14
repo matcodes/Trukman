@@ -30,7 +30,7 @@ namespace Trukman.Droid
 
 		LocationManager _locationManager = (LocationManager)Android.App.Application.Context.GetSystemService (Context.LocationService);
 		string _locationProvider;
-		long minTime = 5*60*1000;
+		long minTime = 15*1000; // Каждые 15 сек.
 		float minDistance = 100;
 
 		public override void OnCreate()
@@ -92,6 +92,8 @@ namespace Trukman.Droid
 		public override void OnDestroy ()
 		{
 			base.OnDestroy ();
+
+			_locationManager.RemoveUpdates (this);
 		}
 
 		#region ILocationListener implementation

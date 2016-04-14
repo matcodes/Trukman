@@ -10,8 +10,8 @@ using Android.Graphics.Drawables;
 using Trukman;
 using Trukman.Droid;
 
-[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Droid.SegmentedControlRenderer))]
-namespace Trukman.Droid
+[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Droid.Renders.SegmentedControlRenderer))]
+namespace Trukman.Droid.Renders
 {
 	public class SegmentedControlRenderer : ViewRenderer<SegmentedControl, RadioGroup>
 	{
@@ -39,6 +39,7 @@ namespace Trukman.Droid
 				}
 			};
 
+			try{
 			for (var i = 0; i < e.NewElement.Children.Count; i++) {
 				var o = e.NewElement.Children [i];
 				var v = (SegmentedControlButton)layoutInflater.Inflate (Resource.Layout.SegmentedControl, null);
@@ -48,6 +49,9 @@ namespace Trukman.Droid
 				else if (i == e.NewElement.Children.Count - 1)
 					v.SetBackgroundResource (Resource.Drawable.segmented_control_last_background);
 				g.AddView (v);
+			}
+			}
+			catch(Exception ) {
 			}
 
 			SetNativeControl (g);

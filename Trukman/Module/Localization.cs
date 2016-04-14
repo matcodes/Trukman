@@ -27,7 +27,7 @@ namespace Trukman
 			BY_CLICKING_ENTER_YOU_AGREE_TO_THE,
 			TERMS_AND_CONDITIONS,
 			SIGN_UP_AS,
-			OWNER_or_OPERATOR_OR_FLEET,
+			OWNER_or_OPERATOR,
 			DISPATCH,
 			DRIVER,
 			NEXT,
@@ -45,13 +45,31 @@ namespace Trukman
 			BTN_CANCEL,
 			CAMBIAR_A_ESPANOL,
 			OWNER,
-			SUBMIT,
+			BTN_SUBMIT,
 			SIGN_UP,
 			HAVE_ACCOUNT_QUESTION,
 			CANCEL_AUTHORIZATION_REQUEST,
 			WAITING_FOR_COMPANY_TO_AUTHORIZE,
 			AUTHORIZED_BY_COMPANY,
-			CONTINUE
+			CONTINUE,
+			REQUEST_CONFIRMATION_CODE,
+			CONFIRMATION_CODE,
+			BTN_RESEND,
+			DECLINE_AUTHORIZED_BY_COMPANY,
+			FROZEN_AUTHORIZATION,
+			LUMPER,
+			NO_LUMPER,
+			REQUEST_LUMPER,
+			REQUESTED,
+			LUMPER_RECEIVED,
+			FAILED_OWNER_MC,
+
+			DBA,
+			PHYS_ADDRESS,
+			NAME,
+			EMAIL,
+			FLEET_SIZE
+
 		};
 
 		static string[] engStrings = {
@@ -63,14 +81,14 @@ namespace Trukman
 			"FULL NAME",
 			"First Name",
 			"Last Name",
-			"Phone",
+			"Tel#",
 			"Company Name",
 			"MC #",
 			"ENTER",
 			"By clicking Enter you agree to the",
 			"Terms and Conditions",
 			"SIGN IN AS", // "Sign Up As",
-			"OWNER/OPERATOR OR FLEET",
+			"OWNER/OPERATOR",
 			"Dispatch",
 			"Driver",
 			"Next",
@@ -93,8 +111,24 @@ namespace Trukman
 			"Already have an account?",
 			"Cancel Authorization Request",
 			"Waiting for {0} to authorize you",
-			"Tou have been authorized by {0}",
-			"Continue"
+			"You have been authorized by {0}",
+			"Continue",
+			"We have sent you a confirmation code by SMS. Please enter it here.",
+			"Confirmation code",
+			"Resent",
+			"{0} has declined your authorization request",
+			"You have had 3 authorization requests declined today. You must wait 24 hours before submitting another request.",
+			"Lumper",
+			"No Lumper Comcheck Issue",
+			"Request Lumper Comcheck",
+			"Requested",
+			"Lumper Comcheck Received",
+			"Sorry you are having trouble signing up. Please email help@trukman.com for assistance.",
+			"DBA",
+			"Physical Address",
+			"Name",
+			"Email",
+			"Fleet size"
 		};
 
 		static string[] espStrings = {
@@ -106,7 +140,7 @@ namespace Trukman
 			"NOMBRE COMPLETO",
 			"First Name",
 			"Last Name",
-			"Telefono",
+			"Tel#", //"Telefono", 
 			"EMPRESA PARA LA QUE TRABAJA",
 			"Numero de MC ",
 			"ENTAR",
@@ -137,11 +171,25 @@ namespace Trukman
 			"Already have an account?",
 			"Cancel Authorization Request",
 			"Waiting for {0} to authorize you",
-			"Tou have been authorized by {0}",
-			"Continue"
+			"You have been authorized by {0}",
+			"Continue",
+			"We have sent you a confirmation code by SMS. Please enter it here.",
+			"Confirmation code",
+			"Resent",
+			"{0} has declined your authorization request",
+			"You have had 3 authorization requests declined today. You must wait 24 hours before submitting another request.",
+			"Lumper",
+			"No Lumper Comcheck Issue",
+			"Request Lumper Comcheck",
+			"Requested",
+			"Lumper Comcheck Received",
+			"Sorry you are having trouble signing up. Please email help@trukman.com for assistance.",
+			"DBA",
+			"Physical Address",
+			"Name",
+			"Email",
+			"Fleet size"
 		};
-
-
 
 		public static string getString(LocalStrings name) {
 			if (language == Languages.ENGLISH) {

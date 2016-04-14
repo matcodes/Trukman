@@ -7,7 +7,7 @@ namespace Trukman
 	{
 		public BasePage ()
 		{
-			//BackgroundImage = "background.png";
+			BackgroundImage = "background.png";
 		}
 	}
 }
