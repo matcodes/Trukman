@@ -1382,35 +1382,35 @@ namespace KAS.Trukman.Views.Pages
             var smallerContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(10, 20, 10, 20),
+                Padding = new Thickness(10, 20, 10, 40),
                 Content = smallerLabel
             };
 
-            var cancelButton = new AppButton
+            var cancelButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
                 AppStyle = AppButtonStyle.Left
             };
-            cancelButton.SetBinding(AppButton.TextProperty, new Binding("HomeGPSPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "GPSPopupCancelCommand");
 
-            var settingsButton = new AppButton
+            var settingsButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
                 AppStyle = AppButtonStyle.Right
             };
-            settingsButton.SetBinding(AppButton.TextProperty, new Binding("HomeGPSPopupSettingsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            settingsButton.SetBinding(AppButton.CommandProperty, "GPSPopupSettingsCommand");
+            settingsButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupSettingsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            settingsButton.SetBinding(AppPopupButton.CommandProperty, "GPSPopupSettingsCommand");
 
             var buttons = new Grid
             {
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
-                ColumnSpacing = 1,
-                Padding = new Thickness(0, 20, 0, 0),
+                ColumnSpacing = 0,
+                Padding = new Thickness(0, 1, 0, 0),
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }

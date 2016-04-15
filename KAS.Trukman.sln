@@ -9,8 +9,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KAS.Trukman", "KAS.Trukman\
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		KAS.Trukman\KAS.Trukman\KAS.Truckman.projitems*{56b53d95-7970-4381-a11d-0c236699ae63}*SharedItemsImports = 13
-		KAS.Trukman\KAS.Trukman\KAS.Truckman.projitems*{26436e4e-3507-4868-ac91-3b91b51c5803}*SharedItemsImports = 4
+		KAS.Trukman\KAS.Truckman.projitems*{56b53d95-7970-4381-a11d-0c236699ae63}*SharedItemsImports = 13
+		KAS.Trukman\KAS.Truckman.projitems*{26436e4e-3507-4868-ac91-3b91b51c5803}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
