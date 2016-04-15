@@ -91,6 +91,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ShipperInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\TripPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\TrukmanPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IServerManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationServiceHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IUserLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\UserLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SettingsServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Helpers;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -100,6 +101,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 else if (this.State == HomeStates.TripPropesed)
                 {
+					this.StopWaitToTripTimer ();
                     this.StartTripProposedTimer();
                 }
                 else if (this.State == HomeStates.TripAccepted)
@@ -163,11 +165,11 @@ namespace KAS.Trukman.ViewModels.Pages
                 _waitForTripTimer = new System.Timers.Timer { Interval = 10000 };
                 _waitForTripTimer.Elapsed += (sender, args) =>
                 {
-                    this.StopWaitToTripTimer();
-                    this.CheckNewTrip();
+					this.StopWaitToTripTimer();
+					this.CheckNewTrip();
                 };
             }
-            _waitForTripTimer.Start();
+			_waitForTripTimer.Start ();
         }
 
         private void StopWaitToTripTimer()
@@ -212,8 +214,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private void SetCurrentTime()
         {
             var now = DateTime.Now;
-            this.IsTimeOver = (now > this.Trip.Time);
-            var time = (this.IsTimeOver ? now - this.Trip.Time : this.Trip.Time - now);
+			this.IsTimeOver = (now > this.Trip.DeliveryDatetime);
+			var time = (this.IsTimeOver ? now - this.Trip.DeliveryDatetime : this.Trip.DeliveryDatetime - now);
             this.CurrentTime = String.Format("{0}:{1}:{2}", time.Hours.ToString().PadLeft(2, '0'), time.Minutes.ToString().PadLeft(2, '0'), time.Seconds.ToString().PadLeft(2, '0'));
         }
 
@@ -261,51 +263,35 @@ namespace KAS.Trukman.ViewModels.Pages
                 _checkGPSTimer.Stop();
         }
 
-        private void CheckNewTrip()
-        {
-            Task.Run(() => 
-            {
-                this.IsBusy = true;
-                this.DisableCommands();
-                try
-                {
-                    Thread.Sleep(1000);
+		private async void CheckNewTrip()
+		{
+			this.IsBusy = true;
+			this.DisableCommands ();
+			try {
+				// Ищем новую работу
+				var trip = (await App.ServerManager.GetCurrentTrip () as Trip);
+				//var trip = (t.Result as Trip);
 
-                    this.Trip = new Trip
-                    {
-                        Shipper = new Shipper
-                        {
-                            Name = "ACME Shipping, Inc.",
-                            Phone = "123-456-789",
-                            Fax = "123-456-789",
-                            AddressLineFirst = "466 Witmer St",
-                            AddressLineSecond = "Los Angeles, California"
-                        },
-                        Receiver = new Receiver
-                        {
-                            Name = "ACME Shipping, Inc.",
-                            Phone = "123-456-789",
-                            Fax = "123-456-789",
-                            AddressLineFirst = "301 Robin Hood Ln",
-                            AddressLineSecond = "Costa Mesa, California"
-                        },
-                        Points = 500,
-                        Time = DateTime.Now.AddMinutes(5)
-                    };
-                    this.State = HomeStates.TripPropesed;
-                }
-                catch (Exception exception)
-                {
-                    // To do: Show error message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.EnabledCommands();
-                    this.IsBusy = false;
-                }
-            });
-        }
+				if (trip != null) 
+				{
+					// Работа отменена диспетчером или владельцем
+					if (trip.JobCancelled)
+						this.State = HomeStates.TripCanceled;
+					else
+						this.State = HomeStates.TripPropesed;
+
+					SettingsServiceHelper.SaveTripId (trip.ID);
+				} 
+			} 
+			catch (Exception exception) {
+				// To do: Show error message
+				Console.WriteLine (exception);
+			} 
+			finally {
+				this.EnabledCommands ();
+				this.IsBusy = false;
+			}
+		}
 
         private void CheckTripCanceled()
         {
@@ -358,7 +344,7 @@ namespace KAS.Trukman.ViewModels.Pages
             base.Localize();
 
             this.Title = AppLanguages.CurrentLanguage.AppName;
-            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.Time) : "");
+            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.DeliveryDatetime) : "");
             this.TripPoints = (this.Trip != null ? String.Format(AppLanguages.CurrentLanguage.HomePointsLabel, this.Trip.Points) : "");
             this.TotalPointsText = String.Format(AppLanguages.CurrentLanguage.HomeTotalPointsLabel, this.TotalPoints);
         }

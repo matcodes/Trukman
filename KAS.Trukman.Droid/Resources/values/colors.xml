@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Colors for text -->
+    <color name="normal">#FF8F8E</color>
+    <color name="light">#E3EBEB</color>
+    <color name="dark">#222222</color>
+    <color name="highlight">#B54D50</color>
+    <!--
+    <color name="checked">@color/highlight</color> 
+    <color name="unchecked">@color/highlight</color>
+     -->
+    <color name="checked">#00000000</color> 
+    <color name="unchecked">#00000000</color> 
+    <color name="primary_color">#1C87C1</color>
+
+    <color name="ListViewSelected">#96BCE3</color>
+  	<color name="ListViewHighlighted">#E39696</color>
+</resources>
