@@ -49,7 +49,9 @@ namespace Trukman.Helpers
 
 		Task SaveJob (string name, string description, string shipperAddress, 
 			string receiveAddress, string driver, string company);
-		Task<ITrip> GetCurrentTrip(string currentTripId = "");
+		Task<ITrip> GetNewOrCurrentTrip(string currentTripId = "");
+		Task AcceptTrip (string TripId);
+		Task DeclineTrip (string TripId, string reason);
 		Task<IList<ITrip>> GetTripList(string company);
 		Task SaveDriverLocation(IUserLocation location);
 		//Task<Job> GetCurrentDriverJob ();

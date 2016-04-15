@@ -322,23 +322,35 @@ namespace Trukman.Droid.Helpers
 			await job.SaveAsync();
 		}
 
-		public async Task<ITrip> GetCurrentTrip(string currentTripId = "")
+		private T GetField<T>(ParseObject data, string field)
+		{
+			if (data.Keys.Contains (field))
+				return (T)data [field];
+			else
+				return default(T);
+		}
+
+		private async Task<ParseObject> GetTrip (string TripId)
+		{
+			var parseData = await ParseObject.GetQuery (ServerJobClass).WhereEqualTo (ServerObjectId, TripId).FirstOrDefaultAsync ();
+			return parseData;
+		}
+
+		public async Task<ITrip> GetNewOrCurrentTrip(string currentTripId = "")
 		{
 			ParseObject parseData;
 			if (string.IsNullOrEmpty (currentTripId)) {			
 				var query = ParseObject.GetQuery (ServerJobClass);
 				if (GetCurrentUserRole () == UserRole.UserRoleDriver)
 					query = query.WhereEqualTo (ServerDriver, ParseUser.CurrentUser);
-				// Берем ближайшую по времени запись из Job, не принятую, не отмененную 
-				parseData = await query.WhereNotEqualTo (ServerDriverAccepted, true)
+				// Берем ближайшую по времени запись из Job, не принятую, не отмененную
+				parseData = await query//.WhereNotEqualTo (ServerDriverAccepted, true)
 					.WhereNotEqualTo (ServerJobCancelled, true)
-					/*.WhereGreaterThan (ServerPickupDatetime, DateTime.Now)
-					.OrderBy (ServerPickupDatetime)*/
+					.WhereGreaterThan (ServerPickupDatetime, DateTime.Now)
+					.OrderBy (ServerPickupDatetime)
 					.FirstOrDefaultAsync ();
 			} else {
-				parseData = await ParseObject.GetQuery (ServerJobClass)
-					.WhereEqualTo (ServerObjectId, currentTripId)
-					.FirstOrDefaultAsync ();
+				parseData = await GetTrip (currentTripId);
 			}
 			
 			Trip trip = null;
@@ -353,24 +365,45 @@ namespace Trukman.Droid.Helpers
 			var trip = new Trip ();
 			trip.ID = parseData.ObjectId;
 			trip.Shipper = new Shipper {
-					AddressLineFirst = (string)parseData [ServerFromAddress]
+				AddressLineFirst = GetField<string>(parseData, ServerFromAddress)
 			};
 			trip.Receiver = new Receiver {
-					AddressLineFirst = (string)parseData [ServerToAddress]
+				AddressLineFirst = GetField<string>(parseData, ServerToAddress)
 			};
 			//trip.Time = (string)parseData [ServerToAddress];
-			trip.PickupDatetime = (DateTime)parseData [ServerPickupDatetime];
-			trip.DeliveryDatetime = (DateTime)parseData [ServerDeliveryDatettime];
-			//trip.DriverOnTimePickup = (int)parseData [ServerDriverOnTimePickup];
-			//trip.DriverOnTimeDelivery = (int)parseData [ServerDriverOnTimeDelivery];
-			trip.JobCompleted = (bool)parseData [ServerJobCompleted];
-			trip.Points = (int)parseData [ServerJobPrice];
-			trip.DriverAccepted = (bool)parseData [ServerDriverAccepted];
-			trip.DeclineReason = (string)parseData [ServerDriverAccepted];
-			trip.JobCancelled = (bool)parseData [ServerJobCancelled];
-				//job [ServerDriver] = this.FindUser (driver);
+			trip.PickupDatetime = GetField<DateTime>(parseData, ServerPickupDatetime);
+			trip.DeliveryDatetime = GetField<DateTime>(parseData, ServerDeliveryDatettime);
+			trip.DriverOnTimePickup = (int)(GetField<long>(parseData, ServerDriverOnTimePickup));
+			trip.DriverOnTimeDelivery = (int)(GetField<long>(parseData, ServerDriverOnTimeDelivery));
+			trip.JobCompleted = GetField<bool>(parseData, ServerJobCompleted);
+			trip.Points = (int)(GetField<long> (parseData, ServerJobPrice));
+			trip.DriverAccepted = GetField<bool?>(parseData, ServerDriverAccepted);
+			trip.DeclineReason = GetField<string>(parseData, ServerDeclineReason);
+			trip.JobCancelled = GetField<bool>(parseData, ServerJobCancelled);
+			//job [ServerDriver] = this.FindUser (driver);
 
 			return trip;
+		}
+
+		public async Task AcceptTrip(string TripId)
+		{
+			var data = await GetTrip (TripId);
+			if (data != null) 
+			{
+				data [ServerDriverAccepted] = true;
+				await data.SaveAsync ();
+			}
+		}
+
+		public async Task DeclineTrip(string TripId, string reason)
+		{
+			var data = await GetTrip (TripId);
+			if (data != null) 
+			{
+				data [ServerDriverAccepted] = false;
+				data [ServerDeclineReason] = reason;
+				await data.SaveAsync ();
+			}
 		}
 
 		public async Task<IList<ITrip>> GetTripList(string company)

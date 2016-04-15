@@ -32,7 +32,7 @@ namespace KAS.Trukman.Droid.Renderers
                     resource = Resource.Drawable.apppopupbutton_right;
 
                 this.Control.SetBackgroundResource(resource);
-                this.Control.SetTextColor(Forms.Context.Resources.GetColor(Resource.Color.apppopupbutton_textcolor));
+				this.Control.SetTextColor(Forms.Context.Resources.GetColor(Resource.Color.apppopupbutton_textcolor));
             }
         }
     }

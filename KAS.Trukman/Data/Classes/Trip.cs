@@ -66,9 +66,9 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue("JobCompleted", value); }
 		}
 
-		public bool DriverAccepted 
+		public bool? DriverAccepted 
 		{
-			get { return (bool)this.GetValue("DriverAccepted", false); }
+			get { return (bool?)this.GetValue("DriverAccepted", null); }
 			set { this.SetValue("DriverAccepted", value); }
 		}
 

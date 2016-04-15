@@ -25,7 +25,7 @@ namespace KAS.Trukman.Data.Interfaces
 
 		bool JobCompleted { get; set; }
 
-		bool DriverAccepted { get; set; }
+		bool? DriverAccepted { get; set; }
 
 		string DeclineReason { get; set; }
 
