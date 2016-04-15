@@ -99,6 +99,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\UserLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SettingsServiceHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppPopupButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

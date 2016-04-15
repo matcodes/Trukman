@@ -123,6 +123,7 @@
     <Compile Include="Services\LocationServiceConnection.cs" />
     <Compile Include="Services\LocationServiceStarter.cs" />
     <Compile Include="Services\ServiceConnectedEventArgs.cs" />
+    <Compile Include="Renderers\AppPopupButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -165,6 +166,15 @@
     <AndroidResource Include="Resources\Drawable\segmented_control_first_background.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_control_last_background.xml" />
     <AndroidResource Include="Resources\Drawable\width_resizer.png" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_left.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_left_focused.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_left_normal.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_left_pressed.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_right.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_right_focused.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_right_normal.xml" />
+    <AndroidResource Include="Resources\drawable\apppopupbutton_right_pressed.xml" />
+    <AndroidResource Include="Resources\color\apppopupbutton_textcolor.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\icon.png" />

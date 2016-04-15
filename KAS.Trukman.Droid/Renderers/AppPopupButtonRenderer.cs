@@ -27,7 +27,7 @@ namespace KAS.Trukman.Droid.Renderers
             if (this.Control != null)
             {
                 var appButton = (this.Element as AppButton);
-                var resource = Resource.Drawable.apppopupbutton_left;
+				var resource = Resource.Drawable.apppopupbutton_left;
                 if (appButton.AppStyle == AppButtonStyle.Right)
                     resource = Resource.Drawable.apppopupbutton_right;
 
