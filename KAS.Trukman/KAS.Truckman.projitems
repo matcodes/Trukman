@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppPopupButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TappedLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TitleBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ToolButton.cs" />
