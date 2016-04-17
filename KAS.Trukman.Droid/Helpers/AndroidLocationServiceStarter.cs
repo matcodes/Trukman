@@ -5,7 +5,7 @@ using Android.Locations;
 using Trukman.Helpers;
 using Trukman.Droid.Services;
 using KAS.Trukman;
-using Trukman.Classes;
+using Xamarin.Forms.Maps;
 
 [assembly: Dependency(typeof(AndroidLocationServiceStarter))]
 
@@ -13,14 +13,18 @@ namespace Trukman.Droid
 {
 	public class AndroidLocationServiceStarter: ILocationServicePlatformStarter
 	{
+		object tag = null;
+
 		public AndroidLocationServiceStarter ()
 		{
 		}
 
 		#region ILocationServicePlatformStarter implementation
 
-		public void StartService ()
+		public void StartService (object _tag)
 		{
+			tag = _tag;
+
 			LocationServiceStarter.Current.LocationServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
 				LocationServiceStarter.Current.LocationService.LocationChanged += HandleLocationChanged;
 				LocationServiceStarter.Current.LocationService.ProviderDisabled += HandleProviderDisabled;
@@ -29,13 +33,19 @@ namespace Trukman.Droid
 			};
 		}
 
+		public void StopService()
+		{
+			LocationServiceStarter.StopLocationService ();
+		}
+
 		#endregion
 
 		#region Android Location Service methods
 		public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			Android.Locations.Location location = e.Location;
-			App.ServerManager.SaveDriverLocation (new UserLocation{ Longitude = location.Longitude, Latitude = location.Latitude });
+			string TripId = (tag != null ? (string)tag : null);
+			if (!string.IsNullOrEmpty (TripId))
+				App.ServerManager.SaveDriverLocation (TripId, new Position (e.Location.Latitude, e.Location.Longitude));
 		}
 
 		public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)

@@ -64,6 +64,9 @@ namespace KAS.Trukman.Languages
             this.HomeGPSPopupSmallerLabel = "Trukman needs your location to work properly";
             this.HomeGPSPopupSettingsButtonText = "Settings";
             this.HomeGPSPopupCancelButtonText = "Cancel";
+
+			this.HomeCongratulations = "Congratulations!";
+			this.HomeRewardsButtonText = "Rewards";
             #endregion
 
             #region Trip page

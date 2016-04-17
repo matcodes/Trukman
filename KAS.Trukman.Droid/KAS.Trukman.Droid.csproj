@@ -125,6 +125,7 @@
     <Compile Include="Services\LocationServiceStarter.cs" />
     <Compile Include="Services\ServiceConnectedEventArgs.cs" />
     <Compile Include="Renderers\AppPopupButtonRenderer.cs" />
+    <Compile Include="ParseClasses\Alerts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

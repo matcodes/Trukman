@@ -74,6 +74,9 @@ namespace KAS.Trukman.Languages
                 this.HomeGPSPopupSmallerLabel = appLanguage.HomeGPSPopupSmallerLabel;
                 this.HomeGPSPopupSettingsButtonText = appLanguage.HomeGPSPopupSettingsButtonText;
                 this.HomeGPSPopupCancelButtonText = appLanguage.HomeGPSPopupCancelButtonText;
+
+				this.HomeCongratulations = appLanguage.HomeCongratulations;
+				this.HomeRewardsButtonText = appLanguage.HomeRewardsButtonText;
                 #endregion
 
                 #region Trip page
@@ -423,6 +426,18 @@ namespace KAS.Trukman.Languages
             get { return (string)this.GetValue("HomeGPSPopupSettingsButtonText"); }
             set { this.SetValue("HomeGPSPopupSettingsButtonText", value); }
         }
+
+		public string HomeCongratulations
+		{
+			get { return (string)this.GetValue ("HomeCongratulations"); }
+			set { this.SetValue ("HomeCongratulations", value); }
+		}
+
+		public string HomeRewardsButtonText
+		{
+			get { return (string)this.GetValue ("HomeRewardsButtonText"); }
+			set { this.SetValue ("HomeRewardsButtonText", value); }
+		}
         #endregion
 
         #region Trip page

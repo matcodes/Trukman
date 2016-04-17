@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using KAS.Trukman.Data.Interfaces;
 
 namespace KAS.Trukman.Messages
 {
@@ -11,9 +12,9 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowDelayEmergencyPageMessage";
 
-        public static void Send()
+		public static void Send(ITrip trip)
         {
-            var message = new ShowDelayEmergencyPageMessage();
+			var message = new ShowDelayEmergencyPageMessage(trip);
             MessagingCenter.Send<ShowDelayEmergencyPageMessage>(message, MESSAGE_KEY);
         }
 
@@ -28,9 +29,11 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowDelayEmergencyPageMessage()
+        public ShowDelayEmergencyPageMessage(ITrip trip)
         {
         }
+
+		public ITrip Trip { get; private set; }
     }
     #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms.Maps;
 
 namespace Trukman.Interfaces
 {
@@ -13,7 +14,7 @@ namespace Trukman.Interfaces
 		string UserName { get; set; }
 		string Email { get; set; }
 		UserRole Role{ get; set; }
-		IUserLocation location { get; set; }
+		Position position { get; set; }
 	}
 }
 

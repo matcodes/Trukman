@@ -13,6 +13,12 @@ namespace KAS.Trukman.Data.Classes
         }
 
         #region ITrip
+		public string TripId
+		{
+			get { return (string)this.GetValue ("TripId"); }
+			set { this.SetValue ("TripId", value); }
+		}
+
         public IReceiver Receiver
         {
             get { return (this.GetValue("Receiver") as IReceiver); }

@@ -10,6 +10,8 @@ using Android.Provider;
 using Android.App;
 using Android.OS;
 using Trukman.Helpers;
+using Trukman.Interfaces;
+using Xamarin.Forms.Maps;
 
 [assembly: Dependency(typeof(LocationService))]
 
@@ -31,7 +33,6 @@ namespace Trukman.Droid
 
 		LocationManager _locationManager = (LocationManager)Android.App.Application.Context.GetSystemService (Context.LocationService);
 		string _locationProvider;
-		long minTime = 5*60*1000;
 		float minDistance = 100;
 
 		public override void OnCreate()
@@ -50,26 +51,26 @@ namespace Trukman.Droid
 			return StartCommandResult.Sticky;
 		}
 
-		public bool IsTurnOnGPSLocation()
+		/*public bool CheckGPS()
 		{
 			return _locationManager.IsProviderEnabled (LocationManager.GpsProvider);
-		}
-
-		/*public UserLocation GetCurrentLocation()
+		}*/
+		
+		public Position GetCurrentLocation()
 		{
 			LocationManager locationManager = (LocationManager)Forms.Context.GetSystemService (Context.LocationService);
 			Location location = locationManager.GetLastKnownLocation (LocationManager.GpsProvider);
 			if (location != null)
-				return new Location{ Latitude = location.Latitude, Longitude = location.Longitude };
+				return new Position (location.Latitude, location.Longitude);
 			else
-				return new Location{ };
-		}*/
+				return new Position();
+		}
 
-		public void TryTurnOnGps()
+		/*public void TryTurnOnGps()
 		{
 			Intent gpsSettingIntent = new Intent (Settings.ActionLocationSourceSettings);
 			Forms.Context.StartActivity (gpsSettingIntent);
-		}
+		}*/
 
 		public void StartLocationUpdates()
 		{
@@ -100,7 +101,6 @@ namespace Trukman.Droid
 		#region ILocationListener implementation
 		public void OnLocationChanged (Location location)
 		{
-			//App.ServerManager.SaveDriverLocation (new UserLocation{ Longitude = location.Longitude, Latitude = location.Latitude });
 			this.LocationChanged (this, new LocationChangedEventArgs (location));
 		}
 

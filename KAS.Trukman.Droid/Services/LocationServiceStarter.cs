@@ -50,6 +50,14 @@ namespace Trukman.Droid.Services
 
 			} ).Start ();
 		}
+
+		public static void StopLocationService()
+		{
+			if (Current.locationServiceConnection != null)
+				Android.App.Application.Context.UnbindService (Current.locationServiceConnection);
+			if (Current.LocationService != null)
+				Current.LocationService.StopSelf ();
+		}
 	}
 }
 

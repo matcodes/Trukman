@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using Trukman.Messages;
 
 namespace KAS.Trukman.Views.Pages
 {
@@ -79,6 +80,8 @@ namespace KAS.Trukman.Views.Pages
             ShowFuelAdvancePageMessage.Subscribe(this, this.ShowFuelAdvancePage);
             ShowLumperPageMessage.Subscribe(this, this.ShowLumperPage);
             ShowDelayEmergencyPageMessage.Subscribe(this, this.ShowDelayEmergencyPage);
+			StartLocationServiceMessage.Subscribe (this, this.StartLocationService);
+			StopLocationServiceMessage.Subscribe (this, this.StopLocationService);
             ShowRoutePageMessage.Subscribe(this, this.ShowRoutePage);
         }
 
@@ -95,6 +98,8 @@ namespace KAS.Trukman.Views.Pages
             ShowFuelAdvancePageMessage.Unsubscribe(this);
             ShowLumperPageMessage.Unsubscribe(this);
             ShowDelayEmergencyPageMessage.Unsubscribe(this);
+			StartLocationServiceMessage.Unsubscribe (this);
+			StopLocationServiceMessage.Unsubscribe (this);
             ShowRoutePageMessage.Unsubscribe(this);
         }
 
@@ -149,6 +154,7 @@ namespace KAS.Trukman.Views.Pages
         private void ShowAdvancesPage(ShowAdvancesPageMessage message)
         {
             var advancesPage = new AdvancesPage();
+			advancesPage.ViewModel.Initialize (message.Trip);
             this.PushPage(advancesPage);
         }
 
@@ -172,6 +178,16 @@ namespace KAS.Trukman.Views.Pages
             delayEmergencyPage.ViewModel.Initialize();
             this.PushPage(delayEmergencyPage);
         }
+
+		private void StartLocationService(StartLocationServiceMessage message)
+		{
+			App.LocationServiceStarter.StartService (message.tag);
+		}
+
+		private void StopLocationService(StopLocationServiceMessage message)
+		{
+			App.LocationServiceStarter.StopService ();
+		}
 
         public MainViewModel ViewModel
         {

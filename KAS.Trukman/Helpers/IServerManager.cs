@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using Trukman.Interfaces;
 using KAS.Trukman.Data.Interfaces;
+using Xamarin.Forms.Maps;
 
 namespace Trukman.Helpers
 {
@@ -53,14 +54,20 @@ namespace Trukman.Helpers
 		Task AcceptTrip (string TripId);
 		Task DeclineTrip (string TripId, string reason);
 		Task<IList<ITrip>> GetTripList(string company);
-		Task SaveDriverLocation(IUserLocation location);
+		Task SaveDriverLocation(string TripId, Position position);
+		Task SetDriverPickupOnTime (string TripId, bool isOnTime);
+		Task SetDriverDestinationOnTime (string TripId, bool isOnTime);
+		Task<bool> IsCompletedTrip (string TripId);
 		//Task<Job> GetCurrentDriverJob ();
 
 		Task<IList<IUser>> GetDriverList (string companyName);
 		Task<IList<IUser>> GetDispatchList(string companyName);
 		Task RemoveCompanyUser (string companyName, IUser _user);
 
-		Task SendComcheckRequest(ComcheckRequestType RequestType);
-		//Task<ComcheckRequest> GetComcheckRequest(ComcheckRequestType RequestType);
+		Task SendComcheckRequest (string TripId, ComcheckRequestType RequestType);
+		Task CancelComcheckRequest (string TripId, ComcheckRequestType RequestType);
+		Task<ComcheckRequestState> GetComcheckState (string TripId, ComcheckRequestType RequestType);
+		Task<string> GetComcheck (string TripId, ComcheckRequestType RequestType);
+		//Task SendJobAlert (ParseObject alert, string tripId);
 	}
 }

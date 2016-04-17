@@ -7,6 +7,8 @@ namespace KAS.Trukman.Data.Interfaces
     #region ITrip
     public interface ITrip
     {
+		string TripId { get; set; }
+
         IShipper Shipper { get; set; }
 
         IReceiver Receiver { get; set; }

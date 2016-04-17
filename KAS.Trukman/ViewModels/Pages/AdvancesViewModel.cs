@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using KAS.Trukman.Data.Interfaces;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -35,11 +37,14 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            // To do: get fuel comcheck
-            this.LumperComcheck = "";
+			ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
+			this.Trip = trip;
+
+			// To do: get fuel comcheck
+			this.GetFuelComcheck ();
 
             // To do: get lumper comcheck
-            this.LumperComcheck = "";
+			this.GetLumperComcheck ();
         }
 
         public override void Appering()
@@ -123,6 +128,16 @@ namespace KAS.Trukman.ViewModels.Pages
             });
         }
 
+		private void GetLumperComcheck ()
+		{
+			Task.Run (() => this.CheckLumperComcheck ());		
+		}
+
+		private void GetFuelComcheck()
+		{
+			Task.Run (() => this.CheckFuelComcheck ());
+		}
+
         private void FuelSetStateText()
         {
             var stateText = "";
@@ -163,12 +178,12 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void FuelRequest(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    Thread.Sleep(2000);
+					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
                     this.FuelState = FuelAdvanceStates.Requested;
                     this.FuelStartRequestedTimer();
                 }
@@ -187,16 +202,18 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void FuelResend(object parameter)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                this.FuelStopRequestedTimer();
-
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    // To do: Resend request
-                    Thread.Sleep(2000);
+					this.FuelStopRequestedTimer();
+					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					
+					this.FuelState = FuelAdvanceStates.Requested;
+					this.FuelStartRequestedTimer();
                 }
                 catch (Exception exception)
                 {
@@ -209,24 +226,25 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.EnabledCommands();
                 }
 
-                this.FuelState = FuelAdvanceStates.Requested;
-                this.FuelStartRequestedTimer();
             });
         }
 
         private void FuelCancel(object parameter)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                this.FuelStopRequestedTimer();
+                //this.FuelStopRequestedTimer();
 
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
                     // To do: Cancel request
-                    Thread.Sleep(2000);
-                }
+                    //Thread.Sleep(2000);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					this.FuelState = FuelAdvanceStates.None;
+					this.FuelStopRequestedTimer();
+				}
                 catch (Exception exception)
                 {
                     // To do: Show exception message
@@ -237,42 +255,115 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-
-                this.FuelState = FuelAdvanceStates.None;
             });
         }
 
-        private void FuelStartRequestedTimer()
+        private  void FuelStartRequestedTimer()
         {
-            _fuelRequestedTimer = new System.Timers.Timer { Interval = 5000 };
-            _fuelRequestedTimer.Elapsed += (sender, args) =>
-            {
-                this.FuelStopRequestedTimer();
-
-                // To do: check receive
-                this.DisableCommands();
-                this.IsBusy = true;
-                try
-                {
-                    Thread.Sleep(2000);
-                }
-                catch (Exception exception)
-                {
-                    // To do: show exception message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.IsBusy = false;
-                    this.EnabledCommands();
-                }
-
-                this.FuelState = FuelAdvanceStates.Received;
-
-                this.FuelStartReceivedTimer();
-            };
+			if (_fuelRequestedTimer == null) {
+				_fuelRequestedTimer = new System.Timers.Timer { Interval = 5000 };
+				_fuelRequestedTimer.Elapsed += (sender, args) => {
+					this.CheckFuelComcheck ();
+				};
+			}
             _fuelRequestedTimer.Start();
         }
+
+		private async void CheckFuelComcheck ()
+		{
+			this.DisableCommands();
+			this.IsBusy = true;
+			try
+			{
+				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+				if (comcheckState == ComcheckRequestState.None)
+				{
+					this.FuelStopRequestedTimer();
+					this.FuelStopReceivedTimer();
+					this.FuelState = FuelAdvanceStates.None;
+				}
+				if (comcheckState == ComcheckRequestState.Received) {
+					this.FuelStopRequestedTimer ();
+					this.FuelState = FuelAdvanceStates.Received;
+					this.FuelStartReceivedTimer ();
+				}
+				else if (comcheckState == ComcheckRequestState.Requested)
+				{
+					//this.FuelStopReceivedTimer();
+					this.FuelState = FuelAdvanceStates.Requested;
+					this.FuelStartRequestedTimer ();
+				}
+				else if (comcheckState == ComcheckRequestState.Visible)
+				{
+					var comcheck = await App.ServerManager.GetComcheck(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					if (!string.IsNullOrEmpty(comcheck))
+					{
+						this.FuelStopReceivedTimer ();
+						this.FuelState = FuelAdvanceStates.Completed;
+						this.FuelComcheck = comcheck;
+					}
+				}
+			}
+			catch (Exception exception)
+			{
+				// To do: show exception message
+				Console.WriteLine(exception);
+			}
+			finally
+			{
+				this.IsBusy = false;
+				this.EnabledCommands();
+			}
+		}
+
+		private async void CheckLumperComcheck ()
+		{
+			this.DisableCommands();
+			this.IsBusy = true;
+			try
+			{
+				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.TripId, ComcheckRequestType.Lumper);
+				if (comcheckState == ComcheckRequestState.None)
+				{
+					this.LumperStopRequestedTimer();
+					this.LumperStopReceivedTimer();
+					this.LumperState = LumperStates.None;
+				}
+				if (comcheckState == ComcheckRequestState.Received) {
+					this.LumperStopRequestedTimer ();
+					this.LumperState = LumperStates.Received;
+					this.LumperStartReceivedTimer ();
+				}
+				else if (comcheckState == ComcheckRequestState.Requested)
+				{
+					//this.LumperStopReceivedTimer();
+					this.LumperState = LumperStates.Requested;
+					this.LumperStartRequestedTimer ();
+				}
+				else if (comcheckState == ComcheckRequestState.Visible)
+				{
+					var comcheck = await App.ServerManager.GetComcheck(this.Trip.TripId, ComcheckRequestType.Lumper);
+					if (!string.IsNullOrEmpty(comcheck))
+					{
+						this.LumperStopReceivedTimer ();
+						this.LumperState = LumperStates.Completed;
+						this.LumperComcheck = comcheck;
+					}
+				}
+			}
+			catch (Exception exception)
+			{
+				// To do: show exception message
+				Console.WriteLine(exception);
+			}
+			finally
+			{
+				this.IsBusy = false;
+				this.EnabledCommands();
+			}
+
+			//this.FuelStartReceivedTimer();
+		}
 
         private void FuelStopRequestedTimer()
         {
@@ -282,33 +373,42 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void FuelStartReceivedTimer()
         {
-            _fuelReceivedTimer = new System.Timers.Timer { Interval = 5000 };
-            _fuelReceivedTimer.Elapsed += (sender, args) => {
-                this.FuelStopReceivedTimer();
+			if (_fuelReceivedTimer == null) {
+				_fuelReceivedTimer = new System.Timers.Timer { Interval = 5000 };
+				_fuelReceivedTimer.Elapsed += (sender, args) => {
 
-                // To do: Check completed
-                this.DisableCommands();
-                this.IsBusy = true;
-                try
-                {
-                    Thread.Sleep(2000);
-                }
-                catch (Exception exception)
-                {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.IsBusy = false;
-                    this.EnabledCommands();
-                }
-
-                this.FuelComcheck = "0123456789";
-                this.FuelState = FuelAdvanceStates.Completed;
-            };
+					// To do: Check completed
+					//Thread.Sleep(2000);
+					CheckFuelComcheck ();
+				};
+			}
             _fuelReceivedTimer.Start();
         }
+
+		/*private async void CheckComcheck ()
+		{
+			this.DisableCommands();
+			this.IsBusy = true;
+			try
+			{
+				var comcheck = await App.ServerManager.GetComcheck (this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+				if (!string.IsNullOrEmpty (comcheck)) {
+					this.FuelStopReceivedTimer ();
+					this.FuelComcheck = comcheck;
+					this.FuelState = FuelAdvanceStates.Completed;
+				}
+			}
+			catch (Exception exception)
+			{
+				// To do: Show exception message
+				Console.WriteLine(exception);
+			}
+			finally
+			{
+				this.IsBusy = false;
+				this.EnabledCommands();
+			}
+		}*/
 
         private void FuelStopReceivedTimer()
         {
@@ -346,14 +446,14 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void LumperRequest(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    Thread.Sleep(2000);
-                    this.LumperState = LumperStates.Requested;
-                    this.LumperStartRequestedTimer();
+					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					this.LumperState = LumperStates.Requested;
+					this.LumperStartRequestedTimer();
                 }
                 catch (Exception exception)
                 {
@@ -370,17 +470,19 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void LumperResend(object parameter)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                this.LumperStopRequestedTimer();
-
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    // To do: Resend request
-                    Thread.Sleep(2000);
-                }
+					this.LumperStopRequestedTimer();
+					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+
+					this.LumperState = LumperStates.Requested;
+					this.LumperStartRequestedTimer();
+				}
                 catch (Exception exception)
                 {
                     // To do: Show exception message
@@ -391,24 +493,20 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-
-                this.LumperState = LumperStates.Requested;
-                this.LumperStartRequestedTimer();
-            });
-        }
+			});
+		}
 
         private void LumperCancel(object parameter)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                this.LumperStopRequestedTimer();
-
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    // To do: Cancel request
-                    Thread.Sleep(2000);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					this.LumperState = LumperStates.None;
+					this.LumperStopRequestedTimer();
                 }
                 catch (Exception exception)
                 {
@@ -420,40 +518,17 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-
-                this.LumperState = LumperStates.None;
-            });
+			});
         }
 
         private void LumperStartRequestedTimer()
         {
-            _lumperRequestedTimer = new System.Timers.Timer { Interval = 5000 };
-            _lumperRequestedTimer.Elapsed += (sender, args) =>
-            {
-                this.LumperStopRequestedTimer();
-
-                // To do: check receive
-                this.DisableCommands();
-                this.IsBusy = true;
-                try
-                {
-                    Thread.Sleep(2000);
-                }
-                catch (Exception exception)
-                {
-                    // To do: show exception message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.IsBusy = false;
-                    this.EnabledCommands();
-                }
-
-                this.LumperState = LumperStates.Received;
-
-                this.LumperStartReceivedTimer();
-            };
+			if (_lumperRequestedTimer == null) {
+				_lumperRequestedTimer = new System.Timers.Timer { Interval = 5000 };
+				_lumperRequestedTimer.Elapsed += (sender, args) => {
+					this.CheckLumperComcheck();
+				};
+			}
             _lumperRequestedTimer.Start();
         }
 
@@ -465,31 +540,12 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void LumperStartReceivedTimer()
         {
-            _lumperReceivedTimer = new System.Timers.Timer { Interval = 5000 };
-            _lumperReceivedTimer.Elapsed += (sender, args) => {
-                this.LumperStopReceivedTimer();
-
-                // To do: Check completed
-                this.DisableCommands();
-                this.IsBusy = true;
-                try
-                {
-                    Thread.Sleep(2000);
-                }
-                catch (Exception exception)
-                {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.IsBusy = false;
-                    this.EnabledCommands();
-                }
-
-                this.LumperComcheck = "0123456789";
-                this.LumperState = LumperStates.Completed;
-            };
+			if (_lumperReceivedTimer == null) {
+				_lumperReceivedTimer = new System.Timers.Timer { Interval = 5000 };
+				_lumperReceivedTimer.Elapsed += (sender, args) => {
+					this.CheckLumperComcheck();
+				};
+			}
             _lumperReceivedTimer.Start();
         }
 
@@ -498,6 +554,8 @@ namespace KAS.Trukman.ViewModels.Pages
             if (_lumperReceivedTimer != null)
                 _lumperReceivedTimer.Stop();
         }
+
+		public ITrip Trip { get; private set; }
 
         public string FuelComcheck
         {

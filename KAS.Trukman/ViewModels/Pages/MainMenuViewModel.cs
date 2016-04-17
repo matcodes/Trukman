@@ -98,13 +98,13 @@ namespace KAS.Trukman.ViewModels.Pages
         private void ShowAdvancesPage(object parameter)
         {
             if (_trip != null)
-                ShowAdvancesPageMessage.Send();
+                ShowAdvancesPageMessage.Send(_trip);
         }
 
         private void ShowDelayEmergencyPage(object parameter)
         {
             if (_trip != null)
-                ShowDelayEmergencyPageMessage.Send();
+				ShowDelayEmergencyPageMessage.Send(_trip);
         }
 
         private void ShowRoutePage(object parameter)

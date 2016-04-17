@@ -95,7 +95,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShowDelayEmergency(object parameter)
         {
-            ShowDelayEmergencyPageMessage.Send();
+			//ShowDelayEmergencyPageMessage.Send();
         }
 
         public VisualCommand ShowTripCommand { get; private set; }

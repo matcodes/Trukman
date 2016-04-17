@@ -14,6 +14,8 @@ using System.Timers;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Helpers;
 using Trukman.Helpers;
+using Trukman.Messages;
+using Trukman.Interfaces;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -24,8 +26,9 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _tripProposedTimer = null;
         private System.Timers.Timer _currentTimeTimer = null;
         private System.Timers.Timer _checkGPSTimer = null;
-
-		string currentJobId = "";
+		private System.Timers.Timer _driverOnPickupTimer = null;
+		private System.Timers.Timer _driverOnDeliveryTimer = null;
+		private System.Timers.Timer _tripCompletedTimer = null;
 
         public HomeViewModel() 
             : base()
@@ -37,10 +40,12 @@ namespace KAS.Trukman.ViewModels.Pages
             this.SelectDeclinedReasonCommand = new VisualCommand(this.SelectDeclinedReason);
             this.ContinueCommand = new VisualCommand(this.Continue);
             this.SelectContractorCommand = new VisualCommand(this.SelectContractor);
-            this.ArrivedCommand = new VisualCommand(this.Arrived);
+            //this.ArrivedCommand = new VisualCommand(this.Arrived);
             this.ShowGPSPreferencesCommand = new VisualCommand(this.ShowGPSPreferences);
             this.GPSPopupSettingsCommand = new VisualCommand(this.GPSPopupSettings);
             this.GPSPopupCancelCommand = new VisualCommand(this.GPSPopupCancel);
+			this.ShowCameraCommand = new VisualCommand (this.ShowCamera);
+			this.RewardsCommand = new VisualCommand (this.ShowRewards);
         }
 
         public override void Initialize(params object[] parameters)
@@ -92,6 +97,7 @@ namespace KAS.Trukman.ViewModels.Pages
 					this.OtherReasonText = "";
 					this.SelectedDeclinedReason = DeclinedReasonItems.Reason_1;
 				} else if (this.State == HomeStates.WaitingForTrip) {
+					this.StopTripCompletedTimer (); // Останавливаем таймер окончания работы от предыдущей итерации
 					this.Trip = null;
 					this.StartWaitForTripTimer ();
 				} else if (this.State == HomeStates.TripCanceled) {
@@ -101,23 +107,38 @@ namespace KAS.Trukman.ViewModels.Pages
 					this.StartTripProposedTimer ();
 				} else if (this.State == HomeStates.TripAccepted) {
 					this.StopTripProposedTimer ();
-
 					TripChangedMessage.Send (this.Trip);
-
 					this.SelectedContractor = ContractorItems.Origin;
 					this.SetContractorAddress ();
 					this.SetCurrentTime ();
+
+					this.StartDriverOnPickupTimer ();
 					this.StartCurrentTimeTimer ();
-				} else if (this.State == HomeStates.ArrivedAsPickupOnTime) {
+				} else if (this.State == HomeStates.ArrivedAtPickupOnTime) {
 					this.StopCurrentTimeTimer ();
-					TripChangedMessage.Send (null);
+					this.StopDriverOnPickupTimer ();
+					//TripChangedMessage.Send (null);
+					this.SetCurrentTime ();
 					this.SetArrivedAddress ();
-					this.TotalPoints = 1234;
-				} else if (this.State == HomeStates.ArrivedAsPickupLate) {
+					this.TotalPoints = this.Trip.Points;
+					this.StartDriverOnDeliveryTimer ();
+				} else if (this.State == HomeStates.ArrivedAtPickupLate) {
 					this.StopCurrentTimeTimer ();
-					TripChangedMessage.Send (null);
+					this.StopDriverOnPickupTimer ();
+					//TripChangedMessage.Send (null);
+					this.SetCurrentTime ();
 					this.SetArrivedAddress ();
-					this.TotalPoints = 1198;
+					this.TotalPoints = this.Trip.Points;
+					this.StartDriverOnDeliveryTimer ();
+				} else if (this.State == HomeStates.ArrivedAtDestinationOnTime) {
+					this.StopDriverOnDeliveryTimer ();
+					this.SetArrivedAddress ();
+				} else if (this.State == HomeStates.ArrivedAtDestinationLate) {
+					this.StopDriverOnDeliveryTimer ();
+					this.SetArrivedAddress ();
+				} else if (this.State == HomeStates.TripComleted) {
+					this.StartTripCompletedTimer ();
+					//this.StopTripCompletedTimer ();
 				}
 			} else if (propertyName == "SelectedContractor") {
 				this.SetContractorAddress ();
@@ -138,8 +159,13 @@ namespace KAS.Trukman.ViewModels.Pages
         private void SetArrivedAddress()
         {
             IContractor contractor = null;
-            if (this.Trip != null)
-                contractor = this.Trip.Receiver;
+			if (this.Trip != null) {
+				// Адрес грузоотправителя или грузополучателя
+				if (this.State == HomeStates.TripAccepted)
+					contractor = this.Trip.Shipper;
+				else if (this.State == HomeStates.ArrivedAtPickupLate || this.State == HomeStates.ArrivedAtPickupOnTime)
+					contractor = this.Trip.Receiver;
+			}
             if (contractor != null)
                 this.FindAddress(contractor);
         }
@@ -199,9 +225,16 @@ namespace KAS.Trukman.ViewModels.Pages
         private void SetCurrentTime()
         {
             var now = DateTime.Now;
-			this.IsTimeOver = (now > this.Trip.DeliveryDatetime);
-			var time = (this.IsTimeOver ? now - this.Trip.DeliveryDatetime : this.Trip.DeliveryDatetime - now);
-            this.CurrentTime = String.Format("{0}:{1}:{2}", time.Hours.ToString().PadLeft(2, '0'), time.Minutes.ToString().PadLeft(2, '0'), time.Seconds.ToString().PadLeft(2, '0'));
+			DateTime arrivedTime = DateTime.MinValue;
+			if (this.State == HomeStates.TripAccepted)
+				arrivedTime = this.Trip.PickupDatetime;
+			else if (this.State == HomeStates.ArrivedAtPickupOnTime || this.State == HomeStates.ArrivedAtPickupLate)
+				arrivedTime = this.Trip.DeliveryDatetime;
+
+			this.IsTimeOver = (now > arrivedTime);
+			var time = (this.IsTimeOver ? now - arrivedTime : arrivedTime - now);
+			int hours = time.Days * 24 + time.Hours;
+			this.CurrentTime = String.Format ("{0}:{1}:{2}", hours.ToString ().PadLeft (2, '0'), time.Minutes.ToString ().PadLeft (2, '0'), time.Seconds.ToString ().PadLeft (2, '0'));
         }
 
         private void StopCurrentTimeTimer()
@@ -226,8 +259,8 @@ namespace KAS.Trukman.ViewModels.Pages
                         else
                         {
                             if ((this.State == HomeStates.TripAccepted) ||
-                                (this.State == HomeStates.ArrivedAsPickupLate) ||
-                                (this.State == HomeStates.ArrivedAsPickupOnTime))
+                                (this.State == HomeStates.ArrivedAtPickupLate) ||
+                                (this.State == HomeStates.ArrivedAtPickupOnTime))
                                 this.GPSState = GPSStates.OffWarning;
                             else
                                 this.GPSState = GPSStates.Off;
@@ -248,13 +281,96 @@ namespace KAS.Trukman.ViewModels.Pages
                 _checkGPSTimer.Stop();
         }
 
+		private void StartDriverOnPickupTimer()
+		{
+			if (_driverOnPickupTimer == null) 
+			{
+				_driverOnPickupTimer = new System.Timers.Timer (10000);
+				_driverOnPickupTimer.Elapsed += (object sender, ElapsedEventArgs e) => 
+				{
+					if (this.State != HomeStates.ArrivedAtPickupLate || this.State != HomeStates.ArrivedAtPickupOnTime) 
+						this.CheckArrived();
+				};
+			}
+			_driverOnPickupTimer.Start ();
+		}
+
+		private void StartDriverOnDeliveryTimer()
+		{
+			if (_driverOnDeliveryTimer == null) 
+			{
+				_driverOnDeliveryTimer = new System.Timers.Timer (10000);
+				_driverOnDeliveryTimer.Elapsed += (object sender, ElapsedEventArgs e) => 
+				{
+					if (this.State != HomeStates.ArrivedAtDestinationOnTime || this.State != HomeStates.ArrivedAtDestinationLate) 
+						this.CheckArrived();
+				};
+			}
+			_driverOnDeliveryTimer.Start ();
+		}
+
+		private void StartTripCompletedTimer ()
+		{
+			if (_tripCompletedTimer == null) {
+				_tripCompletedTimer = new System.Timers.Timer (10000);
+				_tripCompletedTimer.Elapsed += (object sender, ElapsedEventArgs e) => 
+				{
+					this.CheckComplitedTrip();					
+				};
+			}
+			_tripCompletedTimer.Start ();
+		}
+
+		private async void CheckComplitedTrip()
+		{
+			bool isCompleted = await App.ServerManager.IsCompletedTrip (this.Trip.TripId);
+			if (isCompleted) {
+				StopTripCompletedTimer ();
+				this.State = HomeStates.WaitingForTrip;
+			}
+		}
+
+		private void StopTripCompletedTimer()
+		{
+			if (_tripCompletedTimer != null)
+				_tripCompletedTimer.Stop ();
+		}
+
+		private void StopDriverOnDeliveryTimer()
+		{
+			if (_driverOnDeliveryTimer != null)
+				_driverOnDeliveryTimer.Stop ();
+		}
+
+		private void CheckArrived ()
+		{
+			Position currentPosition = App.LocManager.GetCurrentLocation ();
+			// Считаем расстояние в милях
+			Position destPosition = this.AddressPosition;
+			if (this.State == HomeStates.ArrivedAtPickupLate || this.State == HomeStates.ArrivedAtPickupOnTime)
+				destPosition = this.ArrivedPosition;
+			
+			double distanceInMiles = currentPosition.DistanceFrom (destPosition) * 0.00062136994937697;
+			// TODO: дистанция меньше 1 мили
+			if (distanceInMiles <= 1) 
+			{
+				this.Arrived (null);
+			}
+		}
+
+		private void StopDriverOnPickupTimer()
+		{
+			if (_driverOnPickupTimer != null)
+				_driverOnPickupTimer.Stop ();
+		}
+
 		private async void CheckNewTrip()
 		{
 			this.IsBusy = true;
 			this.DisableCommands ();
 			try {
 				// Ищем новую работу
-				this.Trip = (await App.ServerManager.GetNewOrCurrentTrip () as Trip);
+				this.Trip = await App.ServerManager.GetNewOrCurrentTrip ();
 
 				// На всякий случай проверяем state, чтобы повторно не выполнить код
 				if (this.Trip != null && this.State == HomeStates.WaitingForTrip) 
@@ -290,8 +406,8 @@ namespace KAS.Trukman.ViewModels.Pages
 				// Проверяем this.Trip, чтобы повторно не выполнить код из-за таймера
 				if (this.Trip != null)
 				{
-					var trip = await App.ServerManager.GetNewOrCurrentTrip(((Trip)this.Trip).ID);
-					if (trip != null && (trip as Trip).JobCancelled)
+					var trip = await App.ServerManager.GetNewOrCurrentTrip(this.Trip.TripId);
+					if (trip != null && trip.JobCancelled)
 					{
 						this.State = HomeStates.TripCanceled;
 					}
@@ -315,12 +431,11 @@ namespace KAS.Trukman.ViewModels.Pages
 			this.IsBusy = true;
 			this.DisableCommands ();
 			try {
-				string TripId = (this.Trip as Trip).ID;
 				string reason = this.SelectedDeclinedReason.ToString();
 				if (!string.IsNullOrEmpty(this.OtherReasonText))
 					reason = string.Format("{0}: {1}", reason, this.OtherReasonText);
 
-				await App.ServerManager.DeclineTrip(TripId, reason);
+				await App.ServerManager.DeclineTrip(this.Trip.TripId, reason);
 				//Thread.Sleep (1000);
 				this.State = HomeStates.WaitingForTrip;
 			} catch (Exception exception) {
@@ -337,7 +452,7 @@ namespace KAS.Trukman.ViewModels.Pages
             base.Localize();
 
             this.Title = AppLanguages.CurrentLanguage.AppName;
-            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.DeliveryDatetime) : "");
+            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.PickupDatetime) : "");
             this.TripPoints = (this.Trip != null ? String.Format(AppLanguages.CurrentLanguage.HomePointsLabel, this.Trip.Points) : "");
             this.TotalPointsText = String.Format(AppLanguages.CurrentLanguage.HomeTotalPointsLabel, this.TotalPoints);
         }
@@ -346,25 +461,23 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             if (contractor != null)
             {
-                Task.Run(async () =>
-                {
-                    var geocoder = new Geocoder();
-                    var locations = await geocoder.GetPositionsForAddressAsync(contractor.AddressLineFirst + " " + contractor.AddressLineSecond);
+				Task.Run (async () => {
+					var geocoder = new Geocoder ();
+					var locations = await geocoder.GetPositionsForAddressAsync (contractor.AddressLineFirst + " " + contractor.AddressLineSecond);
 
-                    var location = locations.FirstOrDefault();
-                    if ((location.Latitude == 0) && (location.Longitude == 0))
-                    {
-                        locations = await geocoder.GetPositionsForAddressAsync(contractor.AddressLineSecond);
-                        location = locations.FirstOrDefault();
-                    }
+					var location = locations.FirstOrDefault ();
+					if ((location.Latitude == 0) && (location.Longitude == 0) && !string.IsNullOrEmpty (contractor.AddressLineSecond)) {
+						locations = await geocoder.GetPositionsForAddressAsync (contractor.AddressLineSecond);
+						location = locations.FirstOrDefault ();
+					}
 
-                    if (this.State == HomeStates.TripPropesed)
-                        this.AddressPosition = location;
-                    else if ((this.State == HomeStates.ArrivedAsPickupLate) || (this.State == HomeStates.ArrivedAsPickupOnTime))
-                        this.ArrivedPosition = location;
-                    else
-                        this.ContractorPosition = location;
-                });
+					if (this.State == HomeStates.TripPropesed)
+						this.AddressPosition = location;
+					else if ((this.State == HomeStates.ArrivedAtPickupLate) || (this.State == HomeStates.ArrivedAtPickupOnTime))
+						this.ArrivedPosition = location;
+					else
+						this.ContractorPosition = location;
+				});
             }
         }
 
@@ -384,7 +497,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
 		private void AcceptTrip ()
 		{
-			App.ServerManager.AcceptTrip ((this.Trip as Trip).ID);
+			App.ServerManager.AcceptTrip (this.Trip.TripId);
+			StartLocationServiceMessage.Send (this.Trip.TripId);
 		}
 
         private void Accept(object parameter)
@@ -428,8 +542,28 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Arrived(object parameter)
         {
-            this.State = (this.IsTimeOver ? HomeStates.ArrivedAsPickupLate : HomeStates.ArrivedAsPickupOnTime);
-        }
+			// Водитель добрался до пункта загрузки
+			if (this.State == HomeStates.TripAccepted) {
+				this.State = (this.IsTimeOver ? HomeStates.ArrivedAtPickupLate : HomeStates.ArrivedAtPickupOnTime);
+				App.ServerManager.SetDriverPickupOnTime (this.Trip.TripId, this.State == HomeStates.ArrivedAtPickupOnTime);
+			} 
+			//Водитель добрался до пункта разгрузки
+			else if (this.State == HomeStates.ArrivedAtPickupOnTime || this.State == HomeStates.ArrivedAtPickupLate) {
+				this.State = (this.IsTimeOver ? HomeStates.ArrivedAtDestinationLate : HomeStates.ArrivedAtDestinationOnTime);
+				App.ServerManager.SetDriverDestinationOnTime (this.Trip.TripId, this.State == HomeStates.ArrivedAtDestinationOnTime);
+
+				// TODO: запускаем таймер на 10 сек. и после ставим статус TripCompleted
+				var task = new Task (() => {
+					Thread.Sleep (10000);
+					this.State = HomeStates.TripComleted;
+				});
+				task.Start();
+			}
+		}
+
+		private void ArrivedDestination(object parameter)
+		{
+		}
 
         private void GPSPopupSettings(object parameter)
         {
@@ -441,6 +575,15 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             this.GPSPopupVisible = false;
         }
+
+		private void ShowCamera(object parameter)
+		{
+			ShowCameraMessage.Send ();
+		}
+
+		private void ShowRewards(object parameter)
+		{
+		}
 
         public HomeStates State
         {
@@ -577,6 +720,10 @@ namespace KAS.Trukman.ViewModels.Pages
         public VisualCommand GPSPopupSettingsCommand { get; private set; }
 
         public VisualCommand GPSPopupCancelCommand { get; private set; }
+
+		public VisualCommand ShowCameraCommand { get; private set; }
+
+		public VisualCommand RewardsCommand { get; private set; }
     }
     #endregion
 
@@ -588,8 +735,11 @@ namespace KAS.Trukman.ViewModels.Pages
         TripDeclined = 2,
         TripCanceled = 3,
         TripAccepted = 4,
-        ArrivedAsPickupOnTime = 5,
-        ArrivedAsPickupLate = 6
+        ArrivedAtPickupOnTime = 5,
+        ArrivedAtPickupLate = 6,
+		ArrivedAtDestinationOnTime = 7,
+		ArrivedAtDestinationLate = 8,
+		TripComleted = 9
     }
     #endregion
 

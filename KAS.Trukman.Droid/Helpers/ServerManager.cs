@@ -13,7 +13,7 @@ using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Classes;
 using Trukman.Droid.Helpers;
 using KAS.Trukman;
-using Trukman.Classes;
+using Xamarin.Forms.Maps;
 
 [assembly: Dependency(typeof(ServerManager))]
 
@@ -54,8 +54,13 @@ namespace Trukman.Droid.Helpers
 		static string ServerState = "State";
 		static string ServerRequestDatetime = "RequestDatetime";
 		static string ServerRequestType = "RequestType";
+
+		static string ServerGeoLocation = "GeoLocation";
+		static string ServerPointCreatedAt = "PointCreatedAt";
+		static string ServerLocationHistory = "LocationHistory";
+
+		static string ServerComcheckDispatch = "Dispatch";
 		static string ServerComcheck = "Comcheck";
-        static string ServerComcheckDispatch = "Dispatch";
 		//static string CompanyName = "CompanyName";
 		//static string RejectedCounter = "RejectedCounter";
 		//static string LastRejectedTime = "LastRejectedTime";
@@ -332,8 +337,11 @@ namespace Trukman.Droid.Helpers
 
 		private async Task<ParseObject> GetTrip (string TripId)
 		{
-			var parseData = await ParseObject.GetQuery (ServerJobClass).WhereEqualTo (ServerObjectId, TripId).FirstOrDefaultAsync ();
-			return parseData;
+			if (!string.IsNullOrEmpty (TripId)) {
+				var parseData = await ParseObject.GetQuery (ServerJobClass).WhereEqualTo (ServerObjectId, TripId).FirstOrDefaultAsync ();
+				return parseData;
+			} else
+				return null;
 		}
 
 		public async Task<ITrip> GetNewOrCurrentTrip(string currentTripId = "")
@@ -346,7 +354,8 @@ namespace Trukman.Droid.Helpers
 				// Берем ближайшую по времени запись из Job, не принятую, не отмененную
 				parseData = await query//.WhereNotEqualTo (ServerDriverAccepted, true)
 					.WhereNotEqualTo (ServerJobCancelled, true)
-					.WhereGreaterThan (ServerPickupDatetime, DateTime.Now)
+					.WhereNotEqualTo (ServerJobCompleted, true)
+					.WhereGreaterThan (ServerDeliveryDatettime, DateTime.Now)
 					.OrderBy (ServerPickupDatetime)
 					.FirstOrDefaultAsync ();
 			} else {
@@ -363,12 +372,14 @@ namespace Trukman.Droid.Helpers
 		ITrip ConvertTrip (ParseObject parseData)
 		{
 			var trip = new Trip ();
-			trip.ID = parseData.ObjectId;
+			trip.TripId = parseData.ObjectId;
 			trip.Shipper = new Shipper {
-				AddressLineFirst = GetField<string>(parseData, ServerFromAddress)
+				AddressLineFirst = GetField<string>(parseData, ServerFromAddress),
+				//AddressLineSecond = GetField<string>(parseData, ServerFromAddress)
 			};
 			trip.Receiver = new Receiver {
-				AddressLineFirst = GetField<string>(parseData, ServerToAddress)
+				AddressLineFirst = GetField<string>(parseData, ServerToAddress),
+				//AddressLineSecond = GetField<string>(parseData, ServerFromAddress)
 			};
 			//trip.Time = (string)parseData [ServerToAddress];
 			trip.PickupDatetime = GetField<DateTime>(parseData, ServerPickupDatetime);
@@ -406,6 +417,32 @@ namespace Trukman.Droid.Helpers
 			}
 		}
 
+		public async Task SetDriverPickupOnTime (string TripId, bool isOnTime)
+		{
+			var data = await GetTrip (TripId);
+			if (data != null) 
+			{
+				data [ServerDriverOnTimePickup] = (isOnTime ? 1 : 0);
+				await data.SaveAsync ();
+			}
+		}
+
+		public async Task SetDriverDestinationOnTime (string TripId, bool isOnTime)
+		{
+			var data = await GetTrip (TripId);
+			if (data != null) 
+			{
+				data [ServerDriverOnTimeDelivery] = (isOnTime ? 1 : 0);
+				await data.SaveAsync ();
+			}
+		}
+
+		public async Task<bool> IsCompletedTrip (string TripId)
+		{
+			var data = await GetTrip (TripId);
+			return (bool)data [ServerJobCompleted];
+		}
+
 		public async Task<IList<ITrip>> GetTripList(string company)
 		{
 			//var companyName = SettingsService.GetSetting<string>(CompanyName, "");
@@ -430,13 +467,31 @@ namespace Trukman.Droid.Helpers
 			return resultList;
 		}
 
-		public async Task SaveDriverLocation(IUserLocation location)
+		private async Task<ParseObject> SaveGeoLocation(Position position)
 		{
-			if (ParseUser.CurrentUser != null && this.GetCurrentUserRole() == UserRole.UserRoleDriver) {
-				var point = new ParseGeoPoint (location.Latitude, location.Longitude);
-				var user = ParseUser.CurrentUser;
-				user [ServerLocation] = point;
-				await user.SaveAsync ();
+			ParseObject pointData = new ParseObject (ServerGeoLocation);
+			ParseGeoPoint point = new ParseGeoPoint (position.Latitude, position.Longitude);
+			pointData [ServerLocation] = point;
+			pointData [ServerPointCreatedAt] = DateTime.Now;
+			await pointData.SaveAsync ();
+
+			return pointData;
+		}
+
+		public async Task SaveDriverLocation(string TripId, Position position)
+		{
+			if (ParseUser.CurrentUser != null) // && this.GetCurrentUserRole() == UserRole.UserRoleDriver) 
+			{
+				var tripData = await GetTrip (TripId);
+				if (tripData != null) {
+					var point = new ParseGeoPoint (position.Latitude, position.Longitude);
+					tripData [ServerLocation] = point;
+
+					var geoLocationData = await SaveGeoLocation (position);
+					var historyRelation = tripData.GetRelation<ParseObject> (ServerLocationHistory);
+					historyRelation.Add (geoLocationData);
+					await tripData.SaveAsync ();
+				}
 			} else
 				await Task.FromResult (false);
 		}
@@ -487,11 +542,8 @@ namespace Trukman.Droid.Helpers
 				if (driver.Keys.Contains (ServerLocation)) {
 					ParseGeoPoint point = (ParseGeoPoint)driver[ServerLocation]; 
 					if (point.Longitude != 0 || point.Latitude != 0)
-						user.location = new UserLocation {
-						Latitude = point.Latitude,
-						Longitude = point.Longitude,
+						user.position = new Position (point.Latitude, point.Longitude);
 						//updatedAt = driver.UpdatedAt.GetValueOrDefault ()
-					};
 				}
 				userList.Add (user);
 			}
@@ -514,37 +566,27 @@ namespace Trukman.Droid.Helpers
 			await company.SaveAsync ();
 		}
 
-        public async Task SendComcheckRequest(ComcheckRequestType RequestType)
-        {
-            await Task.Run(() => { });
-        }
-        /*
-        KAS закоментировал
-
 		public async Task SendComcheckRequest(string TripId, ComcheckRequestType RequestType)
 		{
 			ParseObject comcheck = new ParseObject (ServerComcheckRequest);
 			comcheck [ServerDriver] = ParseUser.CurrentUser;
-			//parseData[ServerDispatch] = 
 			comcheck [ServerState] = (int)ComcheckRequestState.Requested;
 			comcheck [ServerRequestDatetime] = DateTime.Now;
 			comcheck [ServerRequestType] = (int)RequestType;
 
-			if (RequestType.FuelAdvance) {
+			if (RequestType == ComcheckRequestType.FuelAdvance) {
 				comcheck [ServerComcheck] = "fuel advance";
 			} else {
 				comcheck [ServerComcheck] = "lumper advance";
 			};
 		
-			//string id = comcheck.ObjectId;
-
 			var trip = await GetTrip (TripId);
 			if (trip != null) {
-				comcheck [ServerJobClass] = true;
-				comcheck [ServerComcheckDispatch] = trip ["Dispatcher"];
+				//comcheck [ServerJobClass] = true;
+				comcheck [ServerComcheckDispatch] = GetField<ParseObject>(trip, "Dispatcher");
 				await comcheck.SaveAsync ();
 
-				var advances = trip.GetRelation ("Advances");
+				var advances = trip.GetRelation<ParseObject> ("Advances");
 				advances.Add (comcheck);
 
 				await trip.SaveAsync ();
@@ -553,19 +595,47 @@ namespace Trukman.Droid.Helpers
 			}
 			//SettingsService.AddOrUpdateSetting<string> (FuelId, id);
 		}
-		public async Task GetComcheckState(string TripId, ComcheckRequestType RequestType)
+
+		public async Task CancelComcheckRequest (string TripId, ComcheckRequestType RequestType)
+		{
+			var trip = await GetTrip (TripId);
+			var relation = trip.GetRelation <ParseObject>("Advances");
+
+			var relationQuery = relation.Query.OrderByDescending ("createdAt").WhereEqualTo(ServerRequestType, (int)RequestType);
+			var comcheckData = await relationQuery.FirstAsync ();
+			relation.Remove (comcheckData);
+			await trip.SaveAsync ();
+			await comcheckData.DeleteAsync ();
+		}
+
+		public async Task<ComcheckRequestState> GetComcheckState(string TripId, ComcheckRequestType RequestType)
 		{
 			var trip = await GetTrip (TripId);
 			var relation = trip.GetRelation <ParseObject>("Advances");
 
 			var relationQuery = relation.Query.OrderByDescending ("createdAt").WhereEqualTo(ServerRequestType, (int)RequestType);
 		 
-			var comcheck = await relationQuery.FirstAsync ();
-			if (comcheck != null) {
-                return comcheck[ServerState];
+			var comcheckData = await relationQuery.FirstAsync ();
+			if (comcheckData != null) {
+				var state = GetField<long>(comcheckData, ServerState);
+				return (ComcheckRequestState)state;
 			} else {
-                return ComcheckRequestState.None;
+				return ComcheckRequestState.None;
 			};
+		}
+
+		public async Task<string> GetComcheck (string TripId, ComcheckRequestType RequestType)
+		{
+			var trip = await GetTrip (TripId);
+			var relation = trip.GetRelation <ParseObject>("Advances");
+
+			var relationQuery = relation.Query.OrderByDescending ("createdAt").WhereEqualTo(ServerRequestType, (int)RequestType);
+
+			var comcheckData = await relationQuery.FirstAsync ();
+			if (comcheckData != null)
+				return (string)comcheckData [ServerComcheck];
+			else
+				return null;
 		}
 
 		public async Task SendJobAlert(ParseObject alert, string tripId)
@@ -576,45 +646,16 @@ namespace Trukman.Droid.Helpers
 			await jobAlert.SaveAsync ();
 
 			var trip = await GetTrip (tripId);
-			var jobAlerts = trip.GetRelation ("JobAlerts");
-            jobAlerts.Add(jobAlert);
+			var jobAlerts = trip.GetRelation<ParseObject> ("JobAlerts");
+			jobAlerts.Add (jobAlert);
 
-			trip.SaveAsync();
+			await trip.SaveAsync();
 		}
 
 		public async Task GetPossibleAlerts()
 		{
-			var parseData = await ParseObject.GetQuery ("Alerts").FindAsync();
-			return parseData;
+			/*var parseData = await ParseObject.GetQuery ("Alerts").FindAsync;
+			return parseData;*/
 		}
-		/*public async Task<ComcheckRequest> GetComcheckRequest (ComcheckRequestType RequestType)
-		{
-			string id = "";
-			if (!string.IsNullOrEmpty (id)) {
-				var data = await ParseObject.GetQuery (ServerComcheckRequest)
-					.WhereEqualTo (ServerObjectId, id)
-					.FirstOrDefaultAsync ();
-
-				ComcheckRequest request = ConvertComcheckRequest(data);
-
-				return request;
-			} else
-				return null;
-		}
-
-		ComcheckRequest ConvertComcheckRequest(ParseObject parseData)
-		{
-			var request = new ComcheckRequest ();
-			//request.Driver
-			//request.Dispatch
-			request.State = (ComcheckRequestState)((int)parseData[ServerState]);
-			request.RequestDatetime = (DateTime)parseData[ServerRequestDatetime];
-			request.RequestType = (ComcheckRequestType)((int)parseData [ServerRequestType]);
-			if (request.State == ComcheckRequestState.Visible)
-				request.Comcheck = (string)parseData [ServerComcheck];
-
-			return request;
-		}*/
-    }
-
+	}
 }
