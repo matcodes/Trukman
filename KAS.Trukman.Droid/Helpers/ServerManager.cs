@@ -14,6 +14,8 @@ using KAS.Trukman.Data.Classes;
 using Trukman.Droid.Helpers;
 using KAS.Trukman;
 using Xamarin.Forms.Maps;
+using Trukman.Droid.ParseClasses;
+using System.Linq;
 
 [assembly: Dependency(typeof(ServerManager))]
 
@@ -73,6 +75,7 @@ namespace Trukman.Droid.Helpers
 
 		public ServerManager ()
 		{
+			ParseObject.RegisterSubclass<Alerts> ();
 			ParseClient.Initialize ("NsNjjvCGhqVKOZqCro2WOEr6gZHGTC9YlVB5jZqe", "WvSfa6MIvTb9L6BucGIiCQgV1zBc4OCR0UTS7D2L");
 		}
 
@@ -638,24 +641,27 @@ namespace Trukman.Droid.Helpers
 				return null;
 		}
 
-		public async Task SendJobAlert(ParseObject alert, string tripId)
+		public async Task SendJobAlert(string alert, string tripId)
 		{
 			ParseObject jobAlert = new ParseObject ("JobAlert");
-			jobAlert ["AlertText"] = alert ["AlertText"];
-			jobAlert ["Alert"] = alert;
+			jobAlert ["AlertText"] = alert; // alert ["AlertText"];
+			//jobAlert ["Alert"] = alert;
 			await jobAlert.SaveAsync ();
 
 			var trip = await GetTrip (tripId);
 			var jobAlerts = trip.GetRelation<ParseObject> ("JobAlerts");
 			jobAlerts.Add (jobAlert);
 
-			await trip.SaveAsync();
+			await trip.SaveAsync ();
 		}
 
-		public async Task GetPossibleAlerts()
+		public async Task<IEnumerable<IAlerts>> GetPossibleAlerts()
 		{
-			/*var parseData = await ParseObject.GetQuery ("Alerts").FindAsync;
-			return parseData;*/
+			var parseQuery = new ParseQuery<Alerts> ();
+			/*var parseQuery = from alerts in new ParseQuery<Alerts>()
+				select alerts;*/
+			var data = await parseQuery.FindAsync ();
+			return data;
 		}
 	}
 }

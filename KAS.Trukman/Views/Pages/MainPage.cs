@@ -175,7 +175,7 @@ namespace KAS.Trukman.Views.Pages
         private void ShowDelayEmergencyPage(ShowDelayEmergencyPageMessage message)
         {
             var delayEmergencyPage = new DelayEmergencyPage();
-            delayEmergencyPage.ViewModel.Initialize();
+			delayEmergencyPage.ViewModel.Initialize(message.Trip);
             this.PushPage(delayEmergencyPage);
         }
 

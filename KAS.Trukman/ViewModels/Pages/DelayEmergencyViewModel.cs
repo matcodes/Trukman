@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using KAS.Trukman.Data.Interfaces;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -25,6 +26,9 @@ namespace KAS.Trukman.ViewModels.Pages
         public override void Initialize(params object[] parameters)
         {
             base.Initialize(parameters);
+
+			ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
+			this.Trip = trip;
         }
 
         public override void Appering()
@@ -91,7 +95,11 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.IsBusy = true;
                 try
                 {
-                    Thread.Sleep(2000);
+					string alert = this.SelectedItem.ToString();
+					if (!string.IsNullOrEmpty(this.Comments))
+						alert = string.Format("{0}: {1}", alert, this.Comments);
+					App.ServerManager.SendJobAlert(alert, this.Trip.TripId);
+                    //Thread.Sleep(2000);
 
                     this.ShowPrevPage(null);
                 }
@@ -107,6 +115,8 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
             });
         }
+
+		public ITrip Trip { get; private set; }
 
         public DelayEmergencyItems SelectedItem
         {
