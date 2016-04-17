@@ -51,6 +51,7 @@ namespace KAS.Trukman.Controls
             var titleLabel = new Label {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
                 FontSize = PlatformHelper.TitleBarFontSize,
                 TextColor = Color.White
             };

@@ -31,6 +31,9 @@ namespace KAS.Trukman.Languages
                 this.LumperPageName = appLanguage.LumperPageName;
                 this.DelayEmergencyPageName = appLanguage.DelayEmergencyPageName;
                 this.RoutePageName = appLanguage.RoutePageName;
+                this.PointsAndRewardsPageName = appLanguage.PointsAndRewardsPageName;
+                this.SettingsPageName = appLanguage.SettingsPageName;
+                this.HelpPageName = appLanguage.HelpPageName;
                 #endregion
 
                 #region Main menu
@@ -205,6 +208,24 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("RoutePageName"); }
             set { this.SetValue("RoutePageName", value); }
+        }
+
+        public string PointsAndRewardsPageName
+        {
+            get { return (string)this.GetValue("PointsAndRewardsPageName"); }
+            set { this.SetValue("PointsAndRewardsPageName", value); }
+        }
+
+        public string SettingsPageName
+        {
+            get { return (string)this.GetValue("SettingsPageName"); }
+            set { this.SetValue("SettingsPageName", value); }
+        }
+
+        public string HelpPageName
+        {
+            get { return (string)this.GetValue("HelpPageName"); }
+            set { this.SetValue("HelpPageName", value); }
         }
         #endregion
 

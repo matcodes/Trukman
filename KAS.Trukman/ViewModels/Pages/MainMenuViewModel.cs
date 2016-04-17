@@ -87,6 +87,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShowHomePage(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void ShowTripPage(object parameter)
@@ -115,14 +116,17 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShowPointsAndRewardsPage(object parameter)
         {
+            ShowPointsAndRewardsPageMessage.Send();
         }
 
         private void ShowSettingsPage(object parameter)
         {
+            ShowSettingsPageMessage.Send();
         }
 
         private void ShowHelpPage(object parameter)
         {
+            ShowHelpPageMessage.Send();
         }
 
         public MenuItem SelectedItem

@@ -21,6 +21,9 @@ namespace KAS.Trukman.Languages
             this.LumperPageName = "LUMPER";
             this.DelayEmergencyPageName = "DELAY/EMERGENCY";
             this.RoutePageName = "ROUTE";
+            this.PointsAndRewardsPageName = "POINTS & REWARDS";
+            this.SettingsPageName = "SETTINGS";
+            this.HelpPageName = "HELP";
             #endregion
 
             #region Main menu
