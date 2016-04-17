@@ -572,6 +572,8 @@ namespace Trukman.Droid.Helpers
 			var trip = await GetTrip (tripId);
 			var jobAlerts = trip.GetRelation ("JobAlerts");
 			jobAlerts.Add(jobAlert)
+
+			trip.SaveAsync();
 		}
 
 		public async Task GetPossibleAlerts()
