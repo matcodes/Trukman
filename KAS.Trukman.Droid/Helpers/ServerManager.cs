@@ -55,7 +55,7 @@ namespace Trukman.Droid.Helpers
 		static string ServerRequestDatetime = "RequestDatetime";
 		static string ServerRequestType = "RequestType";
 		static string ServerComcheck = "Comcheck";
-
+		static string ServerComcheckDispatch = "Dispatch"
 		//static string CompanyName = "CompanyName";
 		//static string RejectedCounter = "RejectedCounter";
 		//static string LastRejectedTime = "LastRejectedTime";
@@ -514,21 +514,71 @@ namespace Trukman.Droid.Helpers
 			await company.SaveAsync ();
 		}
 
-		public async Task SendComcheckRequest(ComcheckRequestType RequestType)
+		public async Task SendComcheckRequest(string TripId, ComcheckRequestType RequestType)
 		{
-			ParseObject parseData = new ParseObject (ServerComcheckRequest);
-			parseData [ServerDriver] = ParseUser.CurrentUser;
+			ParseObject comcheck = new ParseObject (ServerComcheckRequest);
+			comcheck [ServerDriver] = ParseUser.CurrentUser;
 			//parseData[ServerDispatch] = 
-			parseData [ServerState] = (int)ComcheckRequestState.Requested;
-			parseData [ServerRequestDatetime] = DateTime.Now;
-			parseData [ServerRequestType] = (int)RequestType;
+			comcheck [ServerState] = (int)ComcheckRequestState.Requested;
+			comcheck [ServerRequestDatetime] = DateTime.Now;
+			comcheck [ServerRequestType] = (int)RequestType;
 
-			await parseData.SaveAsync ();
+			if (RequestType.FuelAdvance) {
+				comcheck [ServerComcheck] = "fuel advance";
+			} else {
+				comcheck [ServerComcheck] = "lumper advance";
+			};
+		
+			//string id = comcheck.ObjectId;
 
-			string id = parseData.ObjectId;
+			var trip = await GetTrip (TripId);
+			if (trip != null) {
+				comcheck [ServerJobClass] = true;
+				comcheck [ServerComcheckDispatch] = trip ["Dispatcher"];
+				await comcheck.SaveAsync ();
+
+				var advances = trip.GetRelation ("Advances");
+				advances.Add (comcheck);
+
+				await trip.SaveAsync ();
+			} else {
+				
+			}
 			//SettingsService.AddOrUpdateSetting<string> (FuelId, id);
 		}
 
+		public async Task GetComcheckState(string TripId, ComcheckRequestType RequestType)
+		{
+			var trip = await GetTrip (TripId);
+			var relation = trip.GetRelation <ParseObject>("Advances");
+
+			var relationQuery = relation.Query.OrderByDescending ("createdAt").WhereEqualTo(ServerRequestType, (int)RequestType);
+		 
+			var comcheck = await relationQuery.FirstAsync ();
+			if (comcheck != null) {
+				return comcheck[ServerState]
+			} else {
+				return ComcheckRequestState.None
+			};
+		}
+
+		public async Task SendJobAlert(ParseObject alert, string tripId)
+		{
+			ParseObject jobAlert = new ParseObject ("JobAlert");
+			jobAlert ["AlertText"] = alert ["AlertText"];
+			jobAlert ["Alert"] = alert;
+			jobAlert.SaveAsync ();
+
+			var trip = await GetTrip (tripId);
+			var jobAlerts = trip.GetRelation ("JobAlerts");
+			jobAlerts.Add(jobAlert)
+		}
+
+		public async Task GetPossibleAlerts()
+		{
+			var parseData = await ParseObject.GetQuery ("Alerts").FindAsync;
+			return parseData;
+		}
 		/*public async Task<ComcheckRequest> GetComcheckRequest (ComcheckRequestType RequestType)
 		{
 			string id = "";
@@ -558,4 +608,5 @@ namespace Trukman.Droid.Helpers
 			return request;
 		}*/
 	}
+
 }
