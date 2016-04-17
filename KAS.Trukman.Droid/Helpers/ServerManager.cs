@@ -55,7 +55,7 @@ namespace Trukman.Droid.Helpers
 		static string ServerRequestDatetime = "RequestDatetime";
 		static string ServerRequestType = "RequestType";
 		static string ServerComcheck = "Comcheck";
-		static string ServerComcheckDispatch = "Dispatch"
+        static string ServerComcheckDispatch = "Dispatch";
 		//static string CompanyName = "CompanyName";
 		//static string RejectedCounter = "RejectedCounter";
 		//static string LastRejectedTime = "LastRejectedTime";
@@ -514,6 +514,13 @@ namespace Trukman.Droid.Helpers
 			await company.SaveAsync ();
 		}
 
+        public async Task SendComcheckRequest(ComcheckRequestType RequestType)
+        {
+            await Task.Run(() => { });
+        }
+        /*
+        KAS закоментировал
+
 		public async Task SendComcheckRequest(string TripId, ComcheckRequestType RequestType)
 		{
 			ParseObject comcheck = new ParseObject (ServerComcheckRequest);
@@ -546,7 +553,6 @@ namespace Trukman.Droid.Helpers
 			}
 			//SettingsService.AddOrUpdateSetting<string> (FuelId, id);
 		}
-
 		public async Task GetComcheckState(string TripId, ComcheckRequestType RequestType)
 		{
 			var trip = await GetTrip (TripId);
@@ -556,9 +562,9 @@ namespace Trukman.Droid.Helpers
 		 
 			var comcheck = await relationQuery.FirstAsync ();
 			if (comcheck != null) {
-				return comcheck[ServerState]
+                return comcheck[ServerState];
 			} else {
-				return ComcheckRequestState.None
+                return ComcheckRequestState.None;
 			};
 		}
 
@@ -567,18 +573,18 @@ namespace Trukman.Droid.Helpers
 			ParseObject jobAlert = new ParseObject ("JobAlert");
 			jobAlert ["AlertText"] = alert ["AlertText"];
 			jobAlert ["Alert"] = alert;
-			jobAlert.SaveAsync ();
+			await jobAlert.SaveAsync ();
 
 			var trip = await GetTrip (tripId);
 			var jobAlerts = trip.GetRelation ("JobAlerts");
-			jobAlerts.Add(jobAlert)
+            jobAlerts.Add(jobAlert);
 
 			trip.SaveAsync();
 		}
 
 		public async Task GetPossibleAlerts()
 		{
-			var parseData = await ParseObject.GetQuery ("Alerts").FindAsync;
+			var parseData = await ParseObject.GetQuery ("Alerts").FindAsync();
 			return parseData;
 		}
 		/*public async Task<ComcheckRequest> GetComcheckRequest (ComcheckRequestType RequestType)
@@ -609,6 +615,6 @@ namespace Trukman.Droid.Helpers
 
 			return request;
 		}*/
-	}
+    }
 
 }
