@@ -8,8 +8,7 @@ namespace KAS.Trukman.Controls
     #region AppEntry
     public class AppEntry : Entry
     {
-        public AppEntry() 
-            : base()
+        public AppEntry() : base()
         {
         }
     }

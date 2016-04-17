@@ -140,7 +140,11 @@ namespace KAS.Trukman.Languages
                 this.TimeAM = appLanguage.TimeAM;
                 this.TimePM = appLanguage.TimePM;
                 #endregion
-            }
+            
+				#region Sign up
+				this.SignUpLabel = appLanguage.SignUpLabel;
+				#endregion
+			}
         }
 
         public string DisplayName { get; private set; }
@@ -686,6 +690,14 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("TimePM", value); }
         }
         #endregion
+
+		#region Sign up
+		public string SignUpLabel
+		{
+			get { return (string)this.GetValue ("SignUp"); }
+			set { this.SetValue ("SignUp", value); }
+		}
+		#endregion
     }
     #endregion
 }

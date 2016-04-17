@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Helpers;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -23,6 +24,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _tripProposedTimer = null;
         private System.Timers.Timer _currentTimeTimer = null;
         private System.Timers.Timer _checkGPSTimer = null;
+
+		string currentJobId = "";
 
         public HomeViewModel() 
             : base()
@@ -76,66 +79,51 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.DoPropertyChanged(propertyName);
 
-            if (propertyName == "Trip")
-            {
-                if ((this.Trip != null) && (this.Trip.Shipper != null))
-                    this.FindAddress(this.Trip.Shipper);
+			if (propertyName == "Trip") {
+				if ((this.Trip != null) && (this.Trip.Shipper != null))
+					this.FindAddress (this.Trip.Shipper);
 
-                this.TripOrigin = (this.Trip != null && this.Trip.Shipper != null ? this.Trip.Shipper.AddressLineFirst + " " + this.Trip.Shipper.AddressLineSecond : "");
-                this.TripDestination = (this.Trip != null && this.Trip.Receiver != null ? this.Trip.Receiver.AddressLineFirst + " " + this.Trip.Receiver.AddressLineSecond : "");
+				this.TripOrigin = (this.Trip != null && this.Trip.Shipper != null ? this.Trip.Shipper.AddressLineFirst + " " + this.Trip.Shipper.AddressLineSecond : "");
+				this.TripDestination = (this.Trip != null && this.Trip.Receiver != null ? this.Trip.Receiver.AddressLineFirst + " " + this.Trip.Receiver.AddressLineSecond : "");
 
-                this.Localize();
-            }
-            else if (propertyName == "State")
-            {
-                if (this.State == HomeStates.TripDeclined)
-                {
-                    this.OtherReasonText = "";
-                    this.SelectedDeclinedReason = DeclinedReasonItems.Reason_1;
-                }
-                else if (this.State == HomeStates.WaitingForTrip)
-                {
-                    this.Trip = null;
-                    this.StartWaitForTripTimer();
-                }
-                else if (this.State == HomeStates.TripPropesed)
-                {
-                    this.StartTripProposedTimer();
-                }
-                else if (this.State == HomeStates.TripAccepted)
-                {
-                    this.StopTripProposedTimer();
+				this.Localize ();
+			} else if (propertyName == "State") {
+				if (this.State == HomeStates.TripDeclined) {
+					this.OtherReasonText = "";
+					this.SelectedDeclinedReason = DeclinedReasonItems.Reason_1;
+				} else if (this.State == HomeStates.WaitingForTrip) {
+					this.Trip = null;
+					this.StartWaitForTripTimer ();
+				} else if (this.State == HomeStates.TripCanceled) {
+					this.StopTripProposedTimer ();
+				} else if (this.State == HomeStates.TripPropesed) {
+					this.StopWaitToTripTimer ();
+					this.StartTripProposedTimer ();
+				} else if (this.State == HomeStates.TripAccepted) {
+					this.StopTripProposedTimer ();
 
-                    TripChangedMessage.Send(this.Trip);
+					TripChangedMessage.Send (this.Trip);
 
-                    this.SelectedContractor = ContractorItems.Origin;
-                    this.SetContractorAddress();
-                    this.SetCurrentTime();
-                    this.StartCurrentTimeTimer();
-                }
-                else if (this.State == HomeStates.ArrivedAsPickupOnTime)
-                {
-                    this.StopCurrentTimeTimer();
-                    TripChangedMessage.Send(null);
-                    this.SetArrivedAddress();
-                    this.TotalPoints = 1234;
-                }
-                else if (this.State == HomeStates.ArrivedAsPickupLate)
-                {
-                    this.StopCurrentTimeTimer();
-                    TripChangedMessage.Send(null);
-                    this.SetArrivedAddress();
-                    this.TotalPoints = 1198;
-                }
-            }
-            else if (propertyName == "SelectedContractor")
-            {
-                this.SetContractorAddress();
-            }
-            else if (propertyName == "TotalPoints")
-            {
-                this.Localize();
-            }
+					this.SelectedContractor = ContractorItems.Origin;
+					this.SetContractorAddress ();
+					this.SetCurrentTime ();
+					this.StartCurrentTimeTimer ();
+				} else if (this.State == HomeStates.ArrivedAsPickupOnTime) {
+					this.StopCurrentTimeTimer ();
+					TripChangedMessage.Send (null);
+					this.SetArrivedAddress ();
+					this.TotalPoints = 1234;
+				} else if (this.State == HomeStates.ArrivedAsPickupLate) {
+					this.StopCurrentTimeTimer ();
+					TripChangedMessage.Send (null);
+					this.SetArrivedAddress ();
+					this.TotalPoints = 1198;
+				}
+			} else if (propertyName == "SelectedContractor") {
+				this.SetContractorAddress ();
+			} else if (propertyName == "TotalPoints") {
+				this.Localize ();
+			}
         }
 
         private void SetContractorAddress()
@@ -163,11 +151,11 @@ namespace KAS.Trukman.ViewModels.Pages
                 _waitForTripTimer = new System.Timers.Timer { Interval = 10000 };
                 _waitForTripTimer.Elapsed += (sender, args) =>
                 {
-                    this.StopWaitToTripTimer();
-                    this.CheckNewTrip();
+					//this.StopWaitToTripTimer();
+					this.CheckNewTrip();
                 };
             }
-            _waitForTripTimer.Start();
+			_waitForTripTimer.Start ();
         }
 
         private void StopWaitToTripTimer()
@@ -183,7 +171,6 @@ namespace KAS.Trukman.ViewModels.Pages
                 _tripProposedTimer = new System.Timers.Timer { Interval = 10000 };
                 _tripProposedTimer.Elapsed += (sender, args) => 
                 {
-                    this.StopTripProposedTimer();
                     this.CheckTripCanceled();
                 };
             }
@@ -212,8 +199,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private void SetCurrentTime()
         {
             var now = DateTime.Now;
-            this.IsTimeOver = (now > this.Trip.Time);
-            var time = (this.IsTimeOver ? now - this.Trip.Time : this.Trip.Time - now);
+			this.IsTimeOver = (now > this.Trip.DeliveryDatetime);
+			var time = (this.IsTimeOver ? now - this.Trip.DeliveryDatetime : this.Trip.DeliveryDatetime - now);
             this.CurrentTime = String.Format("{0}:{1}:{2}", time.Hours.ToString().PadLeft(2, '0'), time.Minutes.ToString().PadLeft(2, '0'), time.Seconds.ToString().PadLeft(2, '0'));
         }
 
@@ -261,61 +248,55 @@ namespace KAS.Trukman.ViewModels.Pages
                 _checkGPSTimer.Stop();
         }
 
-        private void CheckNewTrip()
-        {
-            Task.Run(() => 
-            {
-                this.IsBusy = true;
-                this.DisableCommands();
-                try
-                {
-                    Thread.Sleep(1000);
+		private async void CheckNewTrip()
+		{
+			this.IsBusy = true;
+			this.DisableCommands ();
+			try {
+				// Ищем новую работу
+				this.Trip = (await App.ServerManager.GetNewOrCurrentTrip () as Trip);
 
-                    this.Trip = new Trip
-                    {
-                        Shipper = new Shipper
-                        {
-                            Name = "ACME Shipping, Inc.",
-                            Phone = "123-456-789",
-                            Fax = "123-456-789",
-                            AddressLineFirst = "466 Witmer St",
-                            AddressLineSecond = "Los Angeles, California"
-                        },
-                        Receiver = new Receiver
-                        {
-                            Name = "ACME Shipping, Inc.",
-                            Phone = "123-456-789",
-                            Fax = "123-456-789",
-                            AddressLineFirst = "301 Robin Hood Ln",
-                            AddressLineSecond = "Costa Mesa, California"
-                        },
-                        Points = 500,
-                        Time = DateTime.Now.AddMinutes(5)
-                    };
-                    this.State = HomeStates.TripPropesed;
-                }
-                catch (Exception exception)
-                {
-                    // To do: Show error message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.EnabledCommands();
-                    this.IsBusy = false;
-                }
-            });
-        }
+				// На всякий случай проверяем state, чтобы повторно не выполнить код
+				if (this.Trip != null && this.State == HomeStates.WaitingForTrip) 
+				{
+					// Работа отменена диспетчером или владельцем
+					if (this.Trip.JobCancelled)
+						this.State = HomeStates.TripCanceled;
+					else
+						this.State = HomeStates.TripPropesed;
 
-        private void CheckTripCanceled()
+					// TODO: сохранить job id в сервис
+					//SettingsServiceHelper.SaveTripId (trip.ID);
+				} 
+			} 
+			catch (Exception exception) {
+				// To do: Show error message
+				Console.WriteLine (exception);
+			} 
+			finally {
+				this.EnabledCommands ();
+				this.IsBusy = false;
+			}
+		}
+
+        private async void CheckTripCanceled()
         {
             this.IsBusy = true;
             this.DisableCommands();
             try
             {
-                // To do: Check trip canceled
-                Thread.Sleep(1000);
-                this.State = HomeStates.TripCanceled;
+                // Check trip canceled
+				// Thread.Sleep(1000);
+				// Проверяем this.Trip, чтобы повторно не выполнить код из-за таймера
+				if (this.Trip != null)
+				{
+					var trip = await App.ServerManager.GetNewOrCurrentTrip(((Trip)this.Trip).ID);
+					if (trip != null && (trip as Trip).JobCancelled)
+					{
+						this.State = HomeStates.TripCanceled;
+					}
+				}
+
             }
             catch (Exception exception)
             {
@@ -329,36 +310,34 @@ namespace KAS.Trukman.ViewModels.Pages
             }
         }
 
-        private void DeclineTrip()
+        private async void DeclineTrip()
         {
-            Task.Run(() => 
-            {
-                this.IsBusy = true;
-                this.DisableCommands();
-                try
-                {
-                    Thread.Sleep(1000);
-                    this.State = HomeStates.WaitingForTrip;
-                }
-                catch (Exception exception)
-                {
-                    // To do: Show error message
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this.EnabledCommands();
-                    this.IsBusy = false;
-                }
-            });
-        }
+			this.IsBusy = true;
+			this.DisableCommands ();
+			try {
+				string TripId = (this.Trip as Trip).ID;
+				string reason = this.SelectedDeclinedReason.ToString();
+				if (!string.IsNullOrEmpty(this.OtherReasonText))
+					reason = string.Format("{0}: {1}", reason, this.OtherReasonText);
+
+				await App.ServerManager.DeclineTrip(TripId, reason);
+				//Thread.Sleep (1000);
+				this.State = HomeStates.WaitingForTrip;
+			} catch (Exception exception) {
+				// To do: Show error message
+				Console.WriteLine (exception);
+			} finally {
+				this.EnabledCommands ();
+				this.IsBusy = false;
+			}
+		}
 
         protected override void Localize()
         {
             base.Localize();
 
             this.Title = AppLanguages.CurrentLanguage.AppName;
-            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.Time) : "");
+            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString(this.Trip.DeliveryDatetime) : "");
             this.TripPoints = (this.Trip != null ? String.Format(AppLanguages.CurrentLanguage.HomePointsLabel, this.Trip.Points) : "");
             this.TotalPointsText = String.Format(AppLanguages.CurrentLanguage.HomeTotalPointsLabel, this.TotalPoints);
         }
@@ -403,18 +382,25 @@ namespace KAS.Trukman.ViewModels.Pages
             this.State = HomeStates.TripDeclined; 
         }
 
+		private void AcceptTrip ()
+		{
+			App.ServerManager.AcceptTrip ((this.Trip as Trip).ID);
+		}
+
         private void Accept(object parameter)
         {
             this.StopTripProposedTimer();
+			this.AcceptTrip ();
             this.State = HomeStates.TripAccepted;
         }
 
         private void DeclinedSubmit(object parameter)
         {
-            if ((this.SelectedDeclinedReason == DeclinedReasonItems.Other) && (String.IsNullOrEmpty(this.OtherReasonText)))
-                ShowToastMessage.Send(AppLanguages.CurrentLanguage.HomeDeclinedSubmitErrorText);
-            else
-                this.DeclineTrip();
+			if ((this.SelectedDeclinedReason == DeclinedReasonItems.Other) && (String.IsNullOrEmpty (this.OtherReasonText)))
+				ShowToastMessage.Send (AppLanguages.CurrentLanguage.HomeDeclinedSubmitErrorText);
+			else {
+				this.DeclineTrip ();
+			}
         }
 
         private void SelectDeclinedReason(object parameter)
@@ -549,7 +535,7 @@ namespace KAS.Trukman.ViewModels.Pages
         public string OtherReasonText
         {
             get { return (string)this.GetValue("OtherReasonText"); }
-            set { this.GetValue("OtherReasonText", value); }
+            set { this.SetValue("OtherReasonText", value); }
         }
 
         public GPSStates GPSState
