@@ -31,6 +31,7 @@ namespace KAS.Trukman.Messages
 
         public ShowDelayEmergencyPageMessage(ITrip trip)
         {
+			Trip = trip;
         }
 
 		public ITrip Trip { get; private set; }

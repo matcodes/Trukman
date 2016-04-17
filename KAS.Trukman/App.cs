@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Trukman.Helpers;
+using Trukman;
 
 namespace KAS.Trukman
 {
@@ -47,7 +48,14 @@ namespace KAS.Trukman
 
 		public App ()
 		{
-			this.MainPage = new MainPage ();
+			var _navigationPage = new NavigationPage ();
+			if (!App.ServerManager.IsAuthorizedUser ())
+				_navigationPage = new NavigationPage (new SignUpTypePage ());
+			else
+				this.MainPage = new MainPage ();;
+
+
+			//this.MainPage = new MainPage ();
 		}
 
         protected override void OnStart ()

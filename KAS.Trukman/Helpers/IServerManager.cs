@@ -68,6 +68,7 @@ namespace Trukman.Helpers
 		Task CancelComcheckRequest (string TripId, ComcheckRequestType RequestType);
 		Task<ComcheckRequestState> GetComcheckState (string TripId, ComcheckRequestType RequestType);
 		Task<string> GetComcheck (string TripId, ComcheckRequestType RequestType);
-		//Task SendJobAlert (ParseObject alert, string tripId);
+		Task SendJobAlert(string alert, string tripId);
+		Task<IEnumerable<IAlerts>> GetPossibleAlerts();
 	}
 }

@@ -121,6 +121,28 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StartLocationServiceMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopLocationServiceMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PositionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IAlerts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IJobAlert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpCompanyPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpDispatchPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpDriverPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpFleetSizePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignupFrozenPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpOwnerPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpTypePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpCompanyViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpDispatchViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpDriverViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpEmployeeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpOwnerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Languages\Localization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\SegmentedControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PopupLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\PendingAuthorizationPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanTimer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizationDeclinedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizedPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />
