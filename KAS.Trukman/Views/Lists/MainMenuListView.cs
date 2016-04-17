@@ -11,6 +11,7 @@ namespace KAS.Trukman.Views.Lists
     public class MainMenuListView : BaseListView
     {
         public MainMenuListView()
+            : base()
         {
             this.BackgroundColor = Color.Transparent;
 

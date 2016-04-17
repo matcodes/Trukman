@@ -54,6 +54,8 @@ namespace KAS.Trukman.Helpers
         Color DelayEmergencyItemColor { get; }
 
         Color DelayEmergencySelectedItemColor { get; }
+
+        Color RouteTextColor { get; }
         #endregion
 
         #region Image sources
@@ -104,6 +106,12 @@ namespace KAS.Trukman.Helpers
         string GpsOffImageSource { get; }
 
         string GpsOffWarningImageSource { get; }
+
+        string TurnLeftImageSource { get; }
+
+        string TurnRightImageSource { get; }
+        
+        string TurnNoneImageSource { get; }
         #endregion
     }
     #endregion
@@ -230,6 +238,11 @@ namespace KAS.Trukman.Helpers
         {
             get { return (_platformHelper != null ? _platformHelper.DelayEmergencySelectedItemColor : Color.White); }
         }
+
+        public static Color RouteTextColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.RouteTextColor : Color.White); }
+        }
         #endregion
 
         #region Image sources
@@ -351,6 +364,21 @@ namespace KAS.Trukman.Helpers
         public static string GpsOffWarningImageSource
         {
             get { return (_platformHelper != null ? _platformHelper.GpsOffWarningImageSource : "gps_off_warning"); }
+        }
+
+        public static string TurnLeftImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.TurnLeftImageSource : "turn_left"); }
+        }
+
+        public static string TurnRightImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.TurnRightImageSource : "turn_right"); }
+        }
+
+        public static string TurnNoneImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.TurnNoneImageSource : "turn_none"); }
         }
         #endregion
     }

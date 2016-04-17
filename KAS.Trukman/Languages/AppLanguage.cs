@@ -30,6 +30,7 @@ namespace KAS.Trukman.Languages
                 this.FuelAdvancePageName = appLanguage.FuelAdvancePageName;
                 this.LumperPageName = appLanguage.LumperPageName;
                 this.DelayEmergencyPageName = appLanguage.DelayEmergencyPageName;
+                this.RoutePageName = appLanguage.RoutePageName;
                 #endregion
 
                 #region Main menu
@@ -191,6 +192,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("DelayEmergencyPageName"); }
             set { this.SetValue("DelayEmergencyPageName", value); }
+        }
+
+        public string RoutePageName
+        {
+            get { return (string)this.GetValue("RoutePageName"); }
+            set { this.SetValue("RoutePageName", value); }
         }
         #endregion
 

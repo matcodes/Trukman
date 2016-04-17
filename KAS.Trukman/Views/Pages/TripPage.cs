@@ -34,8 +34,6 @@ namespace KAS.Trukman.Views.Pages
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            this.MapLocateAddress(_map, this.ViewModel.ContractorPosition);
         }
 
         protected override View CreateContent()
@@ -373,6 +371,8 @@ namespace KAS.Trukman.Views.Pages
             content.Children.Add(titleBar, 0, 0);
             content.Children.Add(info, 0, 1);
             content.Children.Add(_map, 0, 2);
+
+            this.MapLocateAddress(_map, this.ViewModel.ContractorPosition);
 
             return content;
         }

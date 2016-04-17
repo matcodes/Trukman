@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppPopupButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TappedLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TitleBar.cs" />
@@ -32,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\HomeTripTimeToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\LumperStateToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\MainMenuEnabledToColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\RouteStepTurnToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
@@ -43,7 +45,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IReceiver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IShipper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ITrip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\AddressInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\CarInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\RouteStepInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\Route.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteBounds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteLeg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RoutePoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RoutePolyline.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteStep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RouteHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\EnglishAppLanguage.cs" />
@@ -58,6 +73,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowReceiverInfoMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowRoutePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowShipperInfoPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowToastMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTripPageMessage.cs" />
@@ -74,11 +90,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\PageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ReceiverInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\RouteViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ShipperInfoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\TripViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Commands\PageCommandsView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\BaseListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\MainMenuListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\RouteStepsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AdvancesPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ContractorInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\DelayEmergencyPage.cs" />
@@ -89,6 +107,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\NavBarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ReceiverInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\RoutePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ShipperInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\TripPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\TrukmanPage.cs" />

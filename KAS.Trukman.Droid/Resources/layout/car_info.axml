@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/car" />
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="0dp">
+        <TableRow
+            android:padding="2dp">
+            <TextView
+                android:id="@+id/durationValue"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFC938"
+                android:textSize="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="30 min"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:padding="2dp">
+            <TextView
+                android:id="@+id/distanceValue"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="17,7 miles"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

@@ -143,6 +143,11 @@ namespace KAS.Trukman.Droid
         {
             get { return Xamarin.Forms.Color.White; }
         }
+
+        public Xamarin.Forms.Color RouteTextColor
+        {
+            get { return Xamarin.Forms.Color.White; }
+        }
         #endregion
 
         #region Image sources
@@ -264,6 +269,21 @@ namespace KAS.Trukman.Droid
         public string GpsOffWarningImageSource
         {
             get { return "gps_off_warning"; }
+        }
+
+        public string TurnLeftImageSource
+        {
+            get { return "turn_left"; }
+        }
+
+        public string TurnRightImageSource
+        {
+            get { return "turn_right"; }
+        }
+
+        public string TurnNoneImageSource
+        {
+            get { return "turn_none"; }
         }
         #endregion
         #endregion

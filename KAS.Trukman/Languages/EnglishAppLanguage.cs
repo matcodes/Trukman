@@ -20,6 +20,7 @@ namespace KAS.Trukman.Languages
             this.FuelAdvancePageName = "FUEL ADVANCE";
             this.LumperPageName = "LUMPER";
             this.DelayEmergencyPageName = "DELAY/EMERGENCY";
+            this.RoutePageName = "ROUTE";
             #endregion
 
             #region Main menu

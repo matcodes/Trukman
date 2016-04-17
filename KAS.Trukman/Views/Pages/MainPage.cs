@@ -79,6 +79,7 @@ namespace KAS.Trukman.Views.Pages
             ShowFuelAdvancePageMessage.Subscribe(this, this.ShowFuelAdvancePage);
             ShowLumperPageMessage.Subscribe(this, this.ShowLumperPage);
             ShowDelayEmergencyPageMessage.Subscribe(this, this.ShowDelayEmergencyPage);
+            ShowRoutePageMessage.Subscribe(this, this.ShowRoutePage);
         }
 
         private void UnsubscribeMessages()
@@ -94,6 +95,7 @@ namespace KAS.Trukman.Views.Pages
             ShowFuelAdvancePageMessage.Unsubscribe(this);
             ShowLumperPageMessage.Unsubscribe(this);
             ShowDelayEmergencyPageMessage.Unsubscribe(this);
+            ShowRoutePageMessage.Unsubscribe(this);
         }
 
         private void PopPage(PopPageMessage message)
@@ -135,6 +137,13 @@ namespace KAS.Trukman.Views.Pages
             var receiverInfoPage = new ReceiverInfoPage();
             receiverInfoPage.ViewModel.Initialize(message.Receiver);
             this.PushPage(receiverInfoPage);
+        }
+
+        private void ShowRoutePage(ShowRoutePageMessage message)
+        {
+            var routePage = new RoutePage();
+            routePage.ViewModel.Initialize(message.Trip);
+            this.PushPage(routePage);
         }
 
         private void ShowAdvancesPage(ShowAdvancesPageMessage message)

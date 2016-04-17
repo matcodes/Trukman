@@ -109,6 +109,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShowRoutePage(object parameter)
         {
+            if (_trip != null)
+                ShowRoutePageMessage.Send(_trip);
         }
 
         private void ShowPointsAndRewardsPage(object parameter)
