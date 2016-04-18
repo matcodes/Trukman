@@ -110,15 +110,25 @@ namespace KAS.Trukman
 		}
 
         protected override void OnStart ()
+		{			
+			base.OnStart ();
+
+			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
+		}
+
+		private void ShowMainMenu(ShowMainPageMessage message)
 		{
-        }
+			this.MainPage = new MainPage ();
+		}
 
 		protected override void OnSleep ()
 		{
+			ShowMainPageMessage.Unsubscribe (this);
         }
 
         protected override void OnResume ()
-		{
+		{	
+			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 		}
 	}
     #endregion

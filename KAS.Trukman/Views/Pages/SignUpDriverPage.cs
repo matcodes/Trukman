@@ -367,7 +367,8 @@ namespace Trukman
 				indicator.IsRunning = false;
 			}
 			if (isJoinCompany) {
-				await Navigation.PushAsync (new MainPage ());
+				ShowMainPageMessage.Send ();
+				//await Navigation.PushAsync (new MainPage ());
 			}
 			else {
 				//App.ServerManager.LogOut ();
