@@ -366,14 +366,14 @@ namespace Trukman
 			finally {
 				indicator.IsRunning = false;
 			}
-			if (isJoinCompany)
-				await Navigation.PushAsync (new HomePage ());
+			if (isJoinCompany) {
+				await Navigation.PushAsync (new MainPage ());
+			}
 			else {
 				//App.ServerManager.LogOut ();
 				if (this.IsFrozenAuthorization ()) {
 					await App.ServerManager.LogOut ();
 					await Navigation.PushAsync (new SignupFrozenPage ());
-
 				}
 				else
 					await Navigation.PushAsync (new PendingAuthorizationPage ());
