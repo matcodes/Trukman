@@ -156,6 +156,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainPageMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />
