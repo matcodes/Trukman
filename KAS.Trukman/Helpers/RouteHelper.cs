@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Route;
 using Newtonsoft.Json;
+using Parse;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -30,6 +31,7 @@ namespace KAS.Trukman.Helpers
             if ((!String.IsNullOrEmpty(origin)) && (!String.IsNullOrEmpty(destination)))
             {
                 var resultData = "";
+                /*
                 using (var client = new WebClient())
                 {
                     try
@@ -44,6 +46,23 @@ namespace KAS.Trukman.Helpers
                         // To do: Show exception message
                     }
                 }
+                */
+
+                var par = new Dictionary<string, object>();
+                par.Add("origin", origin);
+                par.Add("destination", destination);
+
+                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t => {
+                    try
+                    {
+                        resultData = t.Result["text"].ToString();
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        // To do: Show exception message
+                    }
+                });
 
                 if (!String.IsNullOrEmpty(resultData))
                     try
