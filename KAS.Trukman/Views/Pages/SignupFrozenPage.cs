@@ -1,36 +1,27 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using KAS.Trukman.Views.Pages;
-using KAS.Trukman.Controls;
+using KAS.Trukman.Helpers;
 
 namespace Trukman
 {
-	public class SignupFrozenPage : TrukmanPage
+	public class SignupFrozenPage : BasePage
 	{
 		Label lblSignup;
 		Label lblUserRole;
-		AppButton btnContinue;
+		TrukmanButton btnContinue;
 		Label lblDecline;
 
 		public SignupFrozenPage ()
 		{
 			NavigationPage.SetHasNavigationBar (this, false);
 
-			Image leftImage = new Image{ Source = ImageSource.FromFile ("left.png"), Aspect = Aspect.Fill };
-			Image authorizationImage = new Image{ Source = ImageSource.FromResource ("lock-transparent.png"), Aspect = Aspect.Fill };
-			Image logoImage = new Image{ Source = ImageSource.FromResource ("logo.png"), Aspect = Aspect.AspectFit };
+			Image leftImage = new Image{ Source = "left.png", Aspect = Aspect.Fill };
 
 			lblSignup = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				TextColor = Color.FromHex (Constants.TitleFontColor),
 				FontSize = 33
-			};
-
-			lblUserRole = new Label {
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = 18,
-				TextColor = Color.FromHex (Constants.RegularFontColor)
 			};
 
 			var segmentLan = new SegmentedControl {
@@ -41,54 +32,100 @@ namespace Trukman
 			};
 			segmentLan.ValueChanged += SegmentLan_ValueChanged;
 
-			lblDecline = new AppLabel ();
-			//lblAuthorized.FontSize = 18;
+			var titleGrid = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) }
+				}
+			};
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight, GridUnitType.Absolute) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (1, GridUnitType.Star) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight * 2, GridUnitType.Absolute) });
+			titleGrid.Children.Add (leftImage, 0, 0);
+			titleGrid.Children.Add (lblSignup, 1, 0);
+			titleGrid.Children.Add (segmentLan, 2, 0);
 
-			btnContinue = new AppButton ();
+			Image logoImage = new Image 
+			{ 
+				Source = "logo.png", 
+				Aspect = Aspect.AspectFit,
+				HorizontalOptions = LayoutOptions.Center
+			};
+
+			var logoContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 20, 20, 20),
+				Content = logoImage
+			};
+
+			lblUserRole = new Label {
+				HorizontalTextAlignment = TextAlignment.Center,
+				FontSize = 18,
+				TextColor = Color.FromHex (Constants.RegularFontColor)
+			};
+
+			var roleContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 20, 20, 20),
+				Content = lblUserRole
+			};
+
+			Image frozenImage = new Image{ Source = "lock_transparent.png" };
+			var frozenImageContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 20, 20, 20),
+				Content = frozenImage
+			};
+
+			lblDecline = new TrukmanLabel {
+				HorizontalOptions = LayoutOptions.Center
+			};
+			var frozenContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 20, 20, 20),
+				Content = lblDecline
+			};
+
+			btnContinue = new TrukmanButton ();
 			btnContinue.Clicked += (async (sender, e) => await Navigation.PopToRootAsync ());
+			var buttonContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 20, 20, 20),
+				Content = btnContinue
+			};
 
-			var relativeLayout = new RelativeLayout ();
+			var content = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Star) }
+				}
+			};
 
-			relativeLayout.Children.Add (lblSignup, 
-				Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
-			);
-			relativeLayout.Children.Add (leftImage, 
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2)
-			);
-			relativeLayout.Children.Add (segmentLan, 
-				Constraint.RelativeToParent (parent => parent.Width - segmentLan.Width),
-				Constraint.RelativeToParent (parent => 0)
-			);
-			relativeLayout.Children.Add (logoImage,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
-				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding)
-			);
-			relativeLayout.Children.Add (lblUserRole,
-				Constraint.RelativeToParent (parent => 0), //parent.Width / 2 - lblUserRole.Width / 2),
-				Constraint.RelativeToView (logoImage, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent(Parent => Parent.Width)
-			);
-			relativeLayout.Children.Add (authorizationImage,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - authorizationImage.Width / 2),
-				Constraint.RelativeToView (lblUserRole, (parent, view) => view.Y + view.Height + Constants.ViewsPadding)
-			);
-			relativeLayout.Children.Add (lblDecline,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - lblDecline.Width / 2),
-				Constraint.RelativeToView (authorizationImage, (parent, view) => view.Y + view.Height + Constants.ViewsPadding),
-				Constraint.RelativeToParent(parent => parent.Width - Constants.ViewsPadding)
-			);
-			relativeLayout.Children.Add (btnContinue, 
-				Constraint.RelativeToParent (parent => parent.Width / 2 - btnContinue.Width / 2),
-				Constraint.RelativeToView (lblDecline, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent(parent => parent.Width - Constants.ViewsPadding)
-			);
+			content.Children.Add (titleGrid, 0, 0);
+			content.Children.Add (logoContent, 0, 1);
+			content.Children.Add (roleContent, 0, 2);
+			content.Children.Add (frozenImageContent, 0, 3);
+			content.Children.Add (frozenContent, 0, 4);
+			content.Children.Add (buttonContent, 0, 5);
 
-			Content = relativeLayout;
-
+			Content = content;
 			UpdateText ();
 		}
 

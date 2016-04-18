@@ -1,13 +1,15 @@
 ﻿using System;
 using Xamarin.Forms;
-using KAS.Trukman.Views.Pages;
+using KAS.Trukman.Helpers;
 
 namespace Trukman
 {
-	public class SignUpTypePage : TrukmanPage
+	public class SignUpTypePage : BasePage
 	{
 		Label lblSignUpAs;
 		SegmentedControl segment;
+		Button btnEng;
+		Button btnEsp;
 
 		protected override void OnAppearing ()
 		{
@@ -18,14 +20,64 @@ namespace Trukman
 
 		public SignUpTypePage ()
 		{
-			Image logoImage = new Image { Source = ImageSource.FromFile ("logo.png"), Aspect = Aspect.AspectFit };
+			btnEng = new Button {
+				Text = "ENG",
+				TextColor = Color.FromHex (Constants.SelectedFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12,
+			};
+			btnEng.Text = "ENG";
+			btnEsp = new Button {
+				Text = "ESP",
+				TextColor = Color.FromHex (Constants.RegularFontColor), 
+				BackgroundColor = Color.Transparent,
+				FontSize = 12
+			};
+			btnEng.Clicked += btnLan_Clicked;
+			btnEsp.Clicked += btnLan_Clicked;
+
+			var titleGrid = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) }
+				}
+			};
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (1, GridUnitType.Star) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight, GridUnitType.Absolute) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight, GridUnitType.Absolute) });
+			titleGrid.Children.Add (btnEng, 1, 0);
+			titleGrid.Children.Add (btnEsp, 2, 0);
+
+			Image logoImage = new Image { 
+				Source = "logo.png", 
+				Aspect = Aspect.AspectFit,
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Center
+			};
+
+			var logoContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 0),
+				Content = logoImage
+			};
 
 			lblSignUpAs = new Label {
 				HorizontalTextAlignment = TextAlignment.Center,
 				VerticalTextAlignment = TextAlignment.Center,
-				TextColor = Color.FromHex("F5FFFF"),
-				FontSize = 19,
+				TextColor = Color.FromHex ("F5FFFF"),
+				FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Xamarin.Forms.Label)),
 				HeightRequest = 60,
+			};
+
+			var labelContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 0),
+				Content = lblSignUpAs
 			};
 
 			segment = new SegmentedControl {
@@ -37,43 +89,52 @@ namespace Trukman
 				}
 			};
 			segment.ValueChanged += Segment_ValueChanged;
-
-			var segmentLan = new SegmentedControl {
-				Children = {
-					new SegmentedControlOption{ Text = "ENG" },
-					new SegmentedControlOption{ Text = "ESP"}
-				}
-			};
-			segmentLan.ValueChanged += SegmentLan_ValueChanged;
-
-			StackLayout stackLayout = new StackLayout { 
-				Spacing = Constants.StackLayoutDefaultSpacing,
-				Padding = new Thickness(Constants.ViewsPadding),
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				Children = {
-					lblSignUpAs,
-					segment, 
-				}
+			
+			var segmentContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 0),
+				Content = segment
 			};
 
-			RelativeLayout relativeLayout = new RelativeLayout ();
+			var content = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Star) }
+				}
+			};
 
-			relativeLayout.Children.Add (segmentLan, 
-				Constraint.RelativeToParent (parent => parent.Width - segmentLan.Width),
-				Constraint.RelativeToParent (parent => 0)
-			);
-			relativeLayout.Children.Add (stackLayout,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
-				Constraint.RelativeToParent (parent => parent.Height / 2 - stackLayout.Height / 2),
-				Constraint.RelativeToParent (parent => parent.Width)
-			);
-			relativeLayout.Children.Add (logoImage,  
-				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
-				Constraint.RelativeToView (stackLayout, (parent, view) => ((parent.Height - view.Height) / 2 - logoImage.Height) / 2 + Constants.ViewsBottomPadding)
-			);
+			content.Children.Add (titleGrid, 0, 0);
+			content.Children.Add (logoContent, 0, 1);
+			content.Children.Add (new BoxView{ HeightRequest = 20 }, 0, 2);
+			content.Children.Add (labelContent, 0, 3);
+			content.Children.Add (segmentContent, 0, 4);
+			//pageContent.Children.Add (busyIndicator);
 
-			Content = relativeLayout;
+			Content = content;
+			UpdateText ();
+		}
+
+		void btnLan_Clicked (object sender, EventArgs e)
+		{
+			if ((Button)sender == btnEng) {
+				Localization.language = Localization.Languages.ENGLISH;
+				btnEng.TextColor = Color.FromHex (Constants.SelectedFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.RegularFontColor);
+			} else if ((Button)sender == btnEsp) {
+				Localization.language = Localization.Languages.ESPANIOL;
+				btnEng.TextColor = Color.FromHex (Constants.RegularFontColor);
+				btnEsp.TextColor = Color.FromHex (Constants.SelectedFontColor);;
+			}
+
 			UpdateText ();
 		}
 

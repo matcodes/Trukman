@@ -8,7 +8,7 @@
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<application android:label="TRUKMAN" android:icon="@drawable/icon">
+	<application android:label="TRUKMAN" android:largeHeap="true" android:icon="@drawable/icon">
 		<activity android:name="com.trukman.ui.pdfactivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -23,11 +23,11 @@
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyA5b9e81IjCy-vTwMxX_1dRyICC5LkNQ9s" /> -->
 		<!-- DKG map key -->
 		<!-- Ключ для debug версии -->
-		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBMQ-Lvsvw3ogHchfLH7AI57ug0muLz-Q8" /> -->
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBMQ-Lvsvw3ogHchfLH7AI57ug0muLz-Q8" />
 		<!-- Ключ для release-версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCvqWDeNEC01qBaZUGFHM0JZvZBGTIbYTg" /> -->
 		<!-- Ключ для HOME debug версии -->
-		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB4EtT7xP1tvXqqI9CQIhrDWpE2Xoe0YYQ" />
+		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB4EtT7xP1tvXqqI9CQIhrDWpE2Xoe0YYQ" /> -->
 		<!-- Ключ для HOME release версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAJ1rediA1KBZAytTLifchS11542xoSA58" /> -->
 	</application>

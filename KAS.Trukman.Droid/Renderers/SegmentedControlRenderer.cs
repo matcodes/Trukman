@@ -9,9 +9,10 @@ using Android.Views;
 using Android.Graphics.Drawables;
 using Trukman;
 using Trukman.Droid;
+using KAS.Trukman.Droid.Renderers;
 
-[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(Trukman.Droid.Renders.SegmentedControlRenderer))]
-namespace Trukman.Droid.Renders
+[assembly:ExportRenderer (typeof(Trukman.SegmentedControl), typeof(SegmentedControlRenderer))]
+namespace KAS.Trukman.Droid.Renderers
 {
 	public class SegmentedControlRenderer : ViewRenderer<SegmentedControl, RadioGroup>
 	{
@@ -42,7 +43,7 @@ namespace Trukman.Droid.Renders
 			try{
 			for (var i = 0; i < e.NewElement.Children.Count; i++) {
 				var o = e.NewElement.Children [i];
-				var v = (SegmentedControlButton)layoutInflater.Inflate (Resource.Layout.SegmentedControl, null);
+					var v = (SegmentedControlButton)layoutInflater.Inflate (Resource.Layout.SegmentedControl, null);
 				v.Text = o.Text;
 				if (i == 0)
 					v.SetBackgroundResource (Resource.Drawable.segmented_control_first_background);
@@ -51,7 +52,7 @@ namespace Trukman.Droid.Renders
 				g.AddView (v);
 			}
 			}
-			catch(Exception ) {
+			catch(Exception exc) {
 			}
 
 			SetNativeControl (g);
@@ -80,9 +81,9 @@ namespace Trukman.Droid.Renders
 
 		private void Initialize (IAttributeSet attributes, int defStyle)
 		{
-			var a = this.Context.ObtainStyledAttributes (attributes, Trukman.Droid.Resource.Styleable.SegmentedControlOption, defStyle, Trukman.Droid.Resource.Style.SegmentedControlOption);
+			var a = this.Context.ObtainStyledAttributes (attributes, Resource.Styleable.SegmentedControlOption, defStyle, Resource.Style.SegmentedControlOption);
 
-			var lineColor = a.GetColor (Trukman.Droid.Resource.Styleable.SegmentedControlOption_lineColor, 0);
+			var lineColor = a.GetColor (Resource.Styleable.SegmentedControlOption_lineColor, 0);
 			linePaint = new Paint ();
 			linePaint.Color = lineColor;
 

@@ -1,19 +1,15 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using KAS.Trukman.Views.Pages;
-using KAS.Trukman.Controls;
 using KAS.Trukman;
-using Trukman.Helpers;
-using Trukman.Interfaces;
 
 namespace Trukman
 {
-	public class SignUpDispatchPage : TrukmanPage
+	public class SignUpDispatchPage : BasePage
 	{
-		AppEntry edtName;
-		AppEntry edtPhone;
-		AppEntry edtCompany;
+		TrukmanEditor edtName;
+		TrukmanEditor edtPhone;
+		TrukmanEditor edtCompany;
 
 		public SignUpDispatchPage ()
 		{
@@ -25,21 +21,21 @@ namespace Trukman
 				FontSize = 33
 			};
 
-			AppButton btnSend = new AppButton {
+			TrukmanButton btnSend = new TrukmanButton {
 				Text = Localization.getString(Localization.LocalStrings.SEND)
 			};
 
 			btnSend.Clicked += sendButtonPressed;
 
-			edtName = new AppEntry {
+			edtName = new TrukmanEditor {
 				Placeholder = Localization.getString(Localization.LocalStrings.FULL_NAME)
 			};
 
-			edtPhone = new AppEntry {
+			edtPhone = new TrukmanEditor {
 				Placeholder = Localization.getString(Localization.LocalStrings.PHONE)
 			};
 
-			edtCompany = new AppEntry {
+			edtCompany = new TrukmanEditor {
 				Placeholder = Localization.getString(Localization.LocalStrings.COMPANY_YOU_WORK_FOR)
 			};
 
@@ -67,23 +63,27 @@ namespace Trukman
 		}
 
 		async void sendButtonPressed (object sender, EventArgs e) {
-/*			try{
-				bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
+			try{
+				/*bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
+				if (!findCompany)
+					await AlertHandler.ShowCheckCompany (edtCompany.Text);
+				else
+				{
 					await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
 					SettingsServiceHelper.SaveCompany(edtCompany.Text);
 					bool isJoinToCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 					if (isJoinToCompany)
-					await Navigation.PushAsync (new MainPage ());
+						await Navigation.PushAsync (new RootPage ());
 					else
 					{
 						await AlertHandler.ShowAlert (string.Format ("The owner of the company {0} has not yet added you to the company", edtCompany.Text));
 						await App.ServerManager.LogOut();
 					}
+				}*/
 			}
 			catch(Exception exc) {
 				//AlertHandler.ShowAlert (exc.Message);
-				throw exc;
-			}*/
+			}
 		}
 	}
 }

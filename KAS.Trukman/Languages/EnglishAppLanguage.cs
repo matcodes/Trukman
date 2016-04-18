@@ -136,7 +136,11 @@ namespace KAS.Trukman.Languages
             this.TimeAM = "AM";
             this.TimePM = "PM";
             #endregion
-        }
+     
+			#region Sign up
+			this.SignUpLabel = "Sign up";
+			#endregion
+		}
     }
     #endregion
 }

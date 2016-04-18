@@ -15,18 +15,18 @@ namespace Trukman
 	{
 		StackLayout stackLayout;
 
-		AppEntry edtCompName;
-		AppEntry edtDBA;
-		AppEntry edtCompAddress;
-		AppEntry edtPhone;
-		AppEntry edtEmail;
-		AppEntry edtFleetSize;
+		TrukmanEditor edtCompName;
+		TrukmanEditor edtDBA;
+		TrukmanEditor edtCompAddress;
+		TrukmanEditor edtPhone;
+		TrukmanEditor edtEmail;
+		TrukmanEditor edtFleetSize;
 
 		Label lblSignup;
 		Label lblUserRole;
 
-		AppButton btnSubmit;
-		AppButton errorLabel;
+		TrukmanButton btnSubmit;
+		TrukmanButton errorLabel;
 
 		Button btnEng;
 		Button btnEsp;
@@ -85,36 +85,36 @@ namespace Trukman
 				TextColor = Color.FromHex (Constants.RegularFontColor)
 			};
 
-			edtCompName = new AppEntry {
+			edtCompName = new TrukmanEditor {
 				//IsEnabled = false,
-				//Style = (Style)App.Current.Resources ["disabledEntryStyle"]
+				Style = (Style)App.Current.Resources ["disabledEntryStyle"]
 			};
-			Button btnEdtCompName = new Button { };
+			Button btnEdtCompName = new Button { Style = (Style)App.Current.Resources ["disabledButtonForEntryRadiusStyle"] };
 
-			edtDBA = new AppEntry { 
+			edtDBA = new TrukmanEditor { 
 				//IsEnabled = false,
 				TextColor = Color.Black,
-				//Style = (Style)App.Current.Resources ["disabledEntryStyle"]
+				Style = (Style)App.Current.Resources ["disabledEntryStyle"]
 			};
-			Button btnEdtDBA = new Button {  };
+			Button btnEdtDBA = new Button { Style = (Style)App.Current.Resources ["disabledButtonForEntryRadiusStyle"] };
 
-			edtCompAddress = new AppEntry { };
-			Button btnEdtCompAddress = new Button {  };
+			edtCompAddress = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			Button btnEdtCompAddress = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 
-			edtPhone = new AppEntry {  };
-			Button btnEdtPhone = new Button {  };
+			edtPhone = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			Button btnEdtPhone = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 
-			edtEmail = new AppEntry { Text = ""};
-			Button btnEdtEmail = new Button {  };
+			edtEmail = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"], Text = ""};
+			Button btnEdtEmail = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 
-			edtFleetSize = new AppEntry {  };
-			Button btnEdtFleetSize = new Button { };
+			edtFleetSize = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"], Text = "" };
+			Button btnEdtFleetSize = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 
-			errorLabel = new AppButton {
+			errorLabel = new TrukmanButton {
 				FontSize = 18,
 				BackgroundColor = Color.Transparent,
 				TextColor = Color.White,
-				//Style = (Style)App.Current.Resources["buttonTransparentEntry"] 
+				Style = (Style)App.Current.Resources["buttonTransparentEntry"] 
 			};
 			if (companyData.success)
 			{
@@ -193,7 +193,7 @@ namespace Trukman
 				Constraint.RelativeToView (btnEdtFleetSize, (parent, View) => View.Height)
 			);
 
-			btnSubmit = new AppButton {  };
+			btnSubmit = new TrukmanButton {  };
 
 			btnSubmit.Clicked += proceedPressed;
 
@@ -216,8 +216,8 @@ namespace Trukman
 			relativeLayout.Children.Add (btnLeft, 
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2)
+				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2),
+				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2)
 			);
 			relativeLayout.Children.Add (btnEsp,
 				Constraint.RelativeToParent (parent => parent.Width - btnEsp.Width),

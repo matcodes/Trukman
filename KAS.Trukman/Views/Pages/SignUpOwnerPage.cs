@@ -5,6 +5,7 @@ using Trukman.ViewModels.Pages;
 using KAS.Trukman.Views.Pages;
 using KAS.Trukman.Controls;
 using KAS.Trukman.Helpers;
+using KAS.Trukman;
 using Trukman.Helpers;
 
 namespace Trukman
@@ -13,9 +14,9 @@ namespace Trukman
 	{
 		Label lblSignup;
 		Label lblUserRole;
-		AppEntry edtMC;
-		AppButton failedMCLabel;
-		AppButton btnSubmit;
+		TrukmanEditor edtMC;
+		TrukmanButton failedMCLabel;
+		TrukmanButton btnSubmit;
 		Button btnEng;
 		Button btnEsp;
 
@@ -80,20 +81,20 @@ namespace Trukman
 				FontSize = 18,
 				TextColor = Color.FromHex (Constants.RegularFontColor)
 			};
-			failedMCLabel = new AppButton {
+			failedMCLabel = new TrukmanButton {
 				Text = "MC# not found",
 				FontSize = 18,
 				BackgroundColor = Color.Transparent,
 				TextColor = Color.White,
-				//Style = (Style)App.Current.Resources ["buttonTransparentEntry"]
+				Style = (Style)App.Current.Resources ["buttonTransparentEntry"]
 			};
 
-			AppButton btnEditMC = new AppButton { };
-			edtMC = new AppEntry { 
-				//Style = (Style)App.Current.Resources ["entryRadiusStyle"]
+			Button btnEditMC = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtMC = new TrukmanEditor { 
+				Style = (Style)App.Current.Resources ["entryRadiusStyle"]
 			};
 
-			btnSubmit = new AppButton();
+			btnSubmit = new TrukmanButton();
 
 			RelativeLayout userInfoLayout = new RelativeLayout ();
 			userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -147,8 +148,8 @@ namespace Trukman
 			relativeLayout.Children.Add (btnLeft, 
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
 				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2)
+				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2),
+				Constraint.RelativeToView (lblSignup, (parent, lblSignup) => lblSignup.Height / 2)
 			);
 			relativeLayout.Children.Add (btnEsp,
 				Constraint.RelativeToParent (parent => parent.Width - btnEsp.Width),
@@ -249,10 +250,10 @@ namespace Trukman
 				failedAttempts++;
 				if (failedAttempts >= maxFailAttempts)
 				{
-					DisplayAlert("", 
+					await DisplayAlert("", 
 						Localization.getString(Localization.LocalStrings.FAILED_OWNER_MC), 
 						Localization.getString(Localization.LocalStrings.CONTINUE));
-					Navigation.PushAsync(new SignUpOwnerPage());
+					await Navigation.PushAsync(new SignUpOwnerPage());
 				}
 				else if(failedAttempts == 1)
 				{

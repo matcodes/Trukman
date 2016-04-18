@@ -152,6 +152,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizationDeclinedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

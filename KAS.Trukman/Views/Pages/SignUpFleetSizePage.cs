@@ -1,11 +1,10 @@
 ﻿using System;
 using Xamarin.Forms;
 using KAS.Trukman.Views.Pages;
-using KAS.Trukman.Controls;
 
 namespace Trukman
 {
-	public class SignUpFleetSizePage : TrukmanPage
+	public class SignUpFleetSizePage : BasePage
 	{
 
 		RelativeLayout relativeLayout = new RelativeLayout ();
@@ -116,7 +115,7 @@ namespace Trukman
 					return parent.Width;
 				}));
 
-			AppButton btnNext = new AppButton {
+			TrukmanButton btnNext = new TrukmanButton {
 				Text = Localization.getString(Localization.LocalStrings.NEXT)
 			};
 

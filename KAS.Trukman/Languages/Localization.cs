@@ -87,7 +87,7 @@ namespace Trukman
 			"ENTER",
 			"By clicking Enter you agree to the",
 			"Terms and Conditions",
-			"SIGN IN AS", // "Sign Up As",
+			"SIGN UP AS", // "Sign Up As",
 			"OWNER/OPERATOR",
 			"Dispatch",
 			"Driver",

@@ -15,11 +15,11 @@ namespace Trukman
 	{
 		Label lblSignup;
 		Label lblUserRole;
-		AppEntry edtFirstName;
-		AppEntry edtLastName;
-		AppEntry edtCompany;
-		AppEntry edtPhone;
-		AppButton btnSubmit;
+		TrukmanEditor edtFirstName;
+		TrukmanEditor edtLastName;
+		TrukmanEditor edtCompany;
+		TrukmanEditor edtPhone;
+		TrukmanButton btnSubmit;
 		Label lblHaveAccount;
 		ActivityIndicator indicator;
 
@@ -39,7 +39,11 @@ namespace Trukman
 			var btnLeft = new ToolButton ();
 			btnLeft.ImageSourceName = PlatformHelper.LeftImageSource;
 			btnLeft.SetBinding(ToolButton.CommandProperty, "ShowPrevPageCommand", BindingMode.OneWay);
-			Image logoImage = new Image{ Source = ImageSource.FromFile ("logo.png"), Aspect = Aspect.AspectFit };
+			lblSignup = new Label {
+				HorizontalTextAlignment = TextAlignment.Center,
+				TextColor = Color.FromHex (Constants.TitleFontColor),
+				FontSize = 33
+			};
 
 			var segmentLan = new SegmentedControl {
 				Children = {
@@ -49,10 +53,34 @@ namespace Trukman
 			};
 			segmentLan.ValueChanged += SegmentLan_ValueChanged;
 
-			lblSignup = new Label {
-				HorizontalTextAlignment = TextAlignment.Center,
-				TextColor = Color.FromHex (Constants.TitleFontColor),
-				FontSize = 33
+			var titleGrid = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) }
+				}
+			};
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight, GridUnitType.Absolute) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (1, GridUnitType.Star) });
+			titleGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (PlatformHelper.ActionBarHeight * 2, GridUnitType.Absolute) });
+			titleGrid.Children.Add (btnLeft, 0, 0);
+			titleGrid.Children.Add (lblSignup, 1, 0);
+			titleGrid.Children.Add (segmentLan, 2, 0);
+
+			Image logoImage = new Image 
+			{ 
+				Source = ImageSource.FromFile ("logo.png"), 
+				Aspect = Aspect.AspectFit,
+				HorizontalOptions = LayoutOptions.Center
+			};
+
+			var logoContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 10, 20, 0),
+				Content = logoImage
 			};
 
 			lblUserRole = new Label {
@@ -61,17 +89,27 @@ namespace Trukman
 				TextColor = Color.FromHex (Constants.RegularFontColor)
 			};
 
-			var btnFirstName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-			edtFirstName = new AppEntry { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
-			var btnLastName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-			edtLastName = new AppEntry { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
-			var btnCompany = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-			edtCompany = new AppEntry { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
-			var btnPhone = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-			edtPhone = new AppEntry { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			var roleContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 10, 20, 10),
+				Content = lblUserRole
+			};
 
-			RelativeLayout userInfoLayout = new RelativeLayout ();
-			userInfoLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+			var btnFirstName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtFirstName = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			var btnLastName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtLastName = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			var btnCompany = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtCompany = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+			var btnPhone = new Button{ Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
+			edtPhone = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
+
+			RelativeLayout userInfoLayout = new RelativeLayout {
+				HorizontalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 10)
+			};
+
 			userInfoLayout.Children.Add (btnFirstName, 
 				Constraint.RelativeToParent (parent => 0),
 				Constraint.RelativeToParent (parent => 0),
@@ -117,68 +155,79 @@ namespace Trukman
 				Constraint.RelativeToView (btnCompany, (parent, View) => View.Height)
 			);				
 
-			btnSubmit = new AppButton ();
+			var userGrid = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) }
+				}
+			};
+			userGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (20, GridUnitType.Absolute) });
+			userGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (1, GridUnitType.Star) });
+			userGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (20, GridUnitType.Absolute) });
+			userGrid.Children.Add (userInfoLayout, 1, 0);
+
+			btnSubmit = new TrukmanButton ();
 			btnSubmit.Clicked += btnSubmit_Clicked;
 
+			var buttonContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 10),
+				Content = btnSubmit
+			};
+
 			lblHaveAccount = new Label { HorizontalOptions = LayoutOptions.Center };
+			var lblAccContent = new ContentView {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness (20, 0, 20, 0),
+				Content = lblHaveAccount
+			};
+
 
 			indicator = new ActivityIndicator {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.Center
 			};
 
-			var stackLayout = new StackLayout {
-				Spacing = Constants.StackLayoutDefaultSpacing,
-				Padding = new Thickness(Constants.ViewsPadding, Constants.ViewsBottomPadding, Constants.ViewsPadding, Constants.ViewsBottomPadding),
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				Children = {
-					userInfoLayout,
-					btnSubmit,
-					//new BoxView { HeightRequest = 10 },
-					lblHaveAccount,
+			var content = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0,
+				RowDefinitions = {
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength (1, GridUnitType.Star) }
 				}
 			};
 
-			RelativeLayout relativeLayout = new RelativeLayout ();
+			content.Children.Add (titleGrid, 0, 0);
+			content.Children.Add (logoContent, 0, 1);
+			content.Children.Add (roleContent, 0, 2);
+			content.Children.Add (userGrid, 0, 3);
+			content.Children.Add (buttonContent, 0, 4);
+			content.Children.Add (lblAccContent, 0, 5);
 
-			relativeLayout.Children.Add (lblSignup, 
-				Constraint.RelativeToParent (parent => parent.Width / 2 - lblSignup.Width / 2),
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding)
-			);
-			relativeLayout.Children.Add (btnLeft, 
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent (parent => Constants.ViewsBottomPadding),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2),
-				Constraint.RelativeToView (lblSignup, (parent, View) => View.Height / 2)
-			);
-			relativeLayout.Children.Add (segmentLan, 
-				Constraint.RelativeToParent (parent => parent.Width - segmentLan.Width),
-				Constraint.RelativeToParent (parent => 0)
-			);
-			relativeLayout.Children.Add (logoImage,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - logoImage.Width / 2),
-				Constraint.RelativeToView (lblSignup, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding)
-			);
-			relativeLayout.Children.Add (lblUserRole,
-				Constraint.RelativeToParent (parent => 0), //parent.Width / 2 - lblUserRole.Width / 2),
-				Constraint.RelativeToView (logoImage, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent(Parent => Parent.Width)
-			);
-			relativeLayout.Children.Add (stackLayout,
-				Constraint.RelativeToParent (parent => parent.Width / 2 - stackLayout.Width / 2),
-				//Constraint.RelativeToParent (parent => parent.Height / 2 - stackLayout.Height / 2),
-				Constraint.RelativeToView (lblUserRole, (parent, view) => view.Y + view.Height + Constants.ViewsBottomPadding),
-				Constraint.RelativeToParent (parent => parent.Width)
-			);
-
-			var popupLayout = new PopupLayout () {
-				Content = relativeLayout
+			var pageContent = new Grid {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				RowSpacing = 0,
+				ColumnSpacing = 0
 			};
+			pageContent.Children.Add (content);
+			pageContent.Children.Add (indicator);
 
 			UpdateText ();
 
-			return popupLayout;
+			return content;
 		}
 
 		void SegmentLan_ValueChanged (object sender, EventArgs e)
@@ -211,7 +260,7 @@ namespace Trukman
 			};
 
 			var btnConfirmCode = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
-			var edtConfirmCode = new AppEntry { 
+			var edtConfirmCode = new TrukmanEditor { 
 				Placeholder = Localization.getString (Localization.LocalStrings.CONFIRMATION_CODE),
 				Style = (Style)App.Current.Resources ["entryRadiusStyle"]
 			};
@@ -232,7 +281,7 @@ namespace Trukman
 			btnResend.Clicked += delegate(object sender, EventArgs e) {
 				popupLayout.DismissPopup();
 			};
-			var btnSubmitCode = new AppButton {
+			var btnSubmitCode = new TrukmanButton {
 				Text = Localization.getString (Localization.LocalStrings.BTN_SUBMIT)
 			};
 			btnSubmitCode.Clicked += async (object sender, EventArgs e) => 
@@ -369,8 +418,8 @@ namespace Trukman
 				}
 				}*/
 			} catch (Exception exc) {
-				//AlertHandler.ShowAlert (exc.Message);
 				throw exc;
+				//AlertHandler.ShowAlert (exc.Message);
 			}
 		}
 	}

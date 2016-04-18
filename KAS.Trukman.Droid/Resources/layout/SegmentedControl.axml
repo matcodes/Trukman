@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Trukman.Droid.Renders.SegmentedControlButton
+<KAS.Trukman.Droid.Renderers.SegmentedControlButton
     style="@style/SegmentedControlOption" />
