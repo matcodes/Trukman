@@ -21,9 +21,6 @@ namespace KAS.Trukman.Views.Pages
 
         protected override View CreateContent()
         {
-			// TODO: для отладки
-			App.ServerManager.LogIn("Alex", "123");
-
             var mainMenuListView = new MainMenuListView
             {
             };

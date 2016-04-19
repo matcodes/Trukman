@@ -3,6 +3,7 @@
 using Xamarin.Forms;
 using Trukman.Helpers;
 using KAS.Trukman.Helpers;
+using KAS.Trukman;
 
 namespace Trukman
 {
@@ -132,9 +133,10 @@ namespace Trukman
 			UpdateText ();
 		}
 
-		async void BtnContinue_Clicked (object sender, EventArgs e)
+		void BtnContinue_Clicked (object sender, EventArgs e)
 		{
-			await Navigation.PopToRootAsync ();
+			//await Navigation.PopToRootAsync ();
+			ShowTopPageMessage.Send();
 		}
 
 		void SegmentLan_ValueChanged (object sender, EventArgs e)

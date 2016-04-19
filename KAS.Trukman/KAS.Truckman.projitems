@@ -157,6 +157,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTopPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ICompany.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Company.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

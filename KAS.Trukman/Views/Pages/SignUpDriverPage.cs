@@ -8,6 +8,7 @@ using KAS.Trukman.Helpers;
 using KAS.Trukman;
 using Trukman.Helpers;
 using Trukman.Interfaces;
+using KAS.Trukman.Messages;
 
 namespace Trukman
 {
@@ -187,7 +188,7 @@ namespace Trukman
                 PlaceholderColor = PlatformHelper.EntryPlaceholderColor
             };
             edtPhone = new AppEntry {
-                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor,
             };
             edtCompany = new AppEntry {
                 PlaceholderColor = PlatformHelper.EntryPlaceholderColor
@@ -408,37 +409,56 @@ namespace Trukman
 
 		async Task RegisterUser ()
 		{
-			string username = string.Format ("{0} {1}", (edtFirstName.Text ?? "").Trim(), (edtLastName.Text ?? "").Trim ()).Trim();
-			bool isJoinCompany;
+			string username = string.Format ("{0} {1}", (edtFirstName.Text ?? "").Trim (), (edtLastName.Text ?? "").Trim ()).Trim ();
+			bool isJoinCompany = false;
 			indicator.IsRunning = true;
-			try
-			{
-				await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
-				SettingsServiceHelper.SaveCompany(edtCompany.Text);
-				isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-			}
-			finally {
-				indicator.IsRunning = false;
-			}
-			if (isJoinCompany) {
-				ShowMainPageMessage.Send ();
-				//await Navigation.PushAsync (new MainPage ());
-			}
-			else {
-				//App.ServerManager.LogOut ();
-				if (this.IsFrozenAuthorization ()) {
-					await App.ServerManager.LogOut ();
-					await Navigation.PushAsync (new SignupFrozenPage ());
+			try {
+				try {
+					await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
+
+					bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
+					if (!findCompany)
+						throw new Exception(string.Format("Company {0} doesn't register in Trukman", edtCompany.Text));
+
+					var company = await App.ServerManager.GetUserCompany();
+					if (company != null && string.Compare(company.Name, edtCompany.Text, true) != 0)
+						throw new Exception(string.Format("Your are approved to company {0}", company.Name));						
+					else if (company == null)
+						isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
+					else if (company != null && string.Compare(company.Name, edtCompany.Text, true) == 0)
+						isJoinCompany = true;
+
+					SettingsServiceHelper.SaveCompany (edtCompany.Text);
+				} finally {
+					indicator.IsRunning = false;
 				}
-				else
-					await Navigation.PushAsync (new PendingAuthorizationPage ());
+				if (isJoinCompany) {
+					ShowMainPageMessage.Send ();
+					//await Navigation.PushAsync (new MainPage ());
+				} else {
+					//App.ServerManager.LogOut ();
+					if (this.IsFrozenAuthorization ()) {
+						await App.ServerManager.LogOut ();
+						await Navigation.PushAsync (new SignupFrozenPage ());
+					} else
+						await Navigation.PushAsync (new PendingAuthorizationPage ());
+				}
+			} catch (Exception exc) {
+				ShowToastMessage.Send (exc.Message);
 			}
 		}
 
 		async void btnSubmit_Clicked (object sender, EventArgs e)
 		{
 			try {
-				await RegisterUser();
+				if (string.IsNullOrEmpty(edtFirstName.Text) && string.IsNullOrEmpty(edtLastName.Text))
+					ShowToastMessage.Send("Enter First Name or Last Name");
+				else if (string.IsNullOrEmpty(edtPhone.Text))
+					ShowToastMessage.Send("Enter Tel#");
+				else if (string.IsNullOrEmpty(edtCompany.Text))
+					ShowToastMessage.Send("Enter Company name");
+				else
+					await RegisterUser();
 
 				/*var popupLayout = this.Content as PopupLayout;
 

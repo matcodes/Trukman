@@ -2,6 +2,7 @@
 
 using Xamarin.Forms;
 using KAS.Trukman.Helpers;
+using KAS.Trukman;
 
 namespace Trukman
 {
@@ -94,7 +95,7 @@ namespace Trukman
 			};
 
 			btnContinue = new TrukmanButton ();
-			btnContinue.Clicked += (async (sender, e) => await Navigation.PopToRootAsync ());
+			btnContinue.Clicked += ((sender, e) => ShowTopPageMessage.Send());
 			var buttonContent = new ContentView {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,

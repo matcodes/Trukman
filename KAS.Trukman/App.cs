@@ -48,15 +48,6 @@ namespace KAS.Trukman
 
 		public App ()
 		{
-			var _navigationPage = new NavigationPage ();
-			if (!App.ServerManager.IsAuthorizedUser ()) {
-				this.MainPage = new NavigationPage (new SignUpTypePage ());
-			} else {
-				this.MainPage = new MainPage ();
-			}
-
-
-			//this.MainPage = new MainPage ();
 			CreateStyles ();
 		}
 
@@ -114,6 +105,9 @@ namespace KAS.Trukman
 			base.OnStart ();
 
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
+			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
+
+			ShowTopPageMessage.Send ();
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
@@ -124,11 +118,35 @@ namespace KAS.Trukman
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
+			ShowTopPageMessage.Unsubscribe (this);
         }
 
         protected override void OnResume ()
 		{	
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
+			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
+		}
+
+		private void ShowTopPage(ShowTopPageMessage message)
+		{
+			Device.BeginInvokeOnMainThread (async () => {
+				//var _navigationPage = new NavigationPage ();
+				//SettingsServiceHelper.SaveRejectedCounter(0);
+
+				string companyName = SettingsServiceHelper.GetCompany ();
+
+				if (!App.ServerManager.IsAuthorizedUser () || string.IsNullOrEmpty (companyName)) {
+					this.MainPage = new NavigationPage (new SignUpTypePage ());
+				} else {
+					var status = await App.serverManager.GetAuthorizationStatus (companyName);
+					if (status == AuthorizationRequestStatus.Authorized)
+						this.MainPage = new MainPage ();
+					else if (status == AuthorizationRequestStatus.Pending)
+						this.MainPage = new NavigationPage (new PendingAuthorizationPage ());
+					else if (status == AuthorizationRequestStatus.Declined)
+						this.MainPage = new NavigationPage (new SignUpTypePage ());
+				}
+			});
 		}
 	}
     #endregion

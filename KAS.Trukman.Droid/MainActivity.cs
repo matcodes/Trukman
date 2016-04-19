@@ -10,6 +10,8 @@ using KAS.Trukman.Helpers;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using Android.Content;
+using Trukman.Helpers;
+using Trukman.Droid.Helpers;
 
 namespace KAS.Trukman.Droid
 {
@@ -24,10 +26,10 @@ namespace KAS.Trukman.Droid
             var platformHelper = new AndroidPlatformHelper(this);
 
             PlatformHelper.Initialize(platformHelper);
-
 			global::Xamarin.Forms.Forms.Init (this, bundle);
             Xamarin.Forms.Forms.SetTitleBarVisibility(Xamarin.Forms.AndroidTitleBarVisibility.Never);
 
+			SettingsServiceHelper.Initialize (new SettingsService ());
             Xamarin.FormsMaps.Init(this, bundle);
 
 			LoadApplication (new KAS.Trukman.App ());

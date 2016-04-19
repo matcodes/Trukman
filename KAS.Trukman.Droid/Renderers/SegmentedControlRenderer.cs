@@ -52,7 +52,7 @@ namespace KAS.Trukman.Droid.Renderers
 				g.AddView (v);
 			}
 			}
-			catch(Exception exc) {
+			catch(Exception ) {
 			}
 
 			SetNativeControl (g);

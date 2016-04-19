@@ -12,8 +12,8 @@ namespace Trukman.Helpers
 	{
 		Authorized,
 		Pending,
-		Declined,
-		Frozen
+		Declined
+		//Frozen
 	}
 
 	public enum ComcheckRequestType
@@ -70,5 +70,7 @@ namespace Trukman.Helpers
 		Task<string> GetComcheck (string TripId, ComcheckRequestType RequestType);
 		Task SendJobAlert(string alert, string tripId);
 		Task<IEnumerable<IAlerts>> GetPossibleAlerts();
+
+		Task<ICompany> GetUserCompany ();
 	}
 }
