@@ -8,6 +8,7 @@ using KAS.Trukman.Controls;
 using KAS.Trukman.Helpers;
 using KAS.Trukman;
 using Trukman.Interfaces;
+using KAS.Trukman.Messages;
 
 namespace Trukman
 {
@@ -509,6 +510,10 @@ namespace Trukman
 					await App.ServerManager.AddCompany(edtCompName.Text, edtDBA.Text, 
 						edtCompAddress.Text, edtPhone.Text, edtEmail.Text, edtFleetSize.Text);
 					App.ServerManager.StartTimerForRequest();
+
+					PopToRootPageMessage.Send();
+				} catch (Exception exc) {
+					ShowToastMessage.Send (exc.Message);
 				}
 				finally
 				{

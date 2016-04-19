@@ -369,21 +369,26 @@ namespace KAS.Trukman.ViewModels.Pages
 			this.IsBusy = true;
 			this.DisableCommands ();
 			try {
-				// Ищем новую работу
+				var tripId = SettingsServiceHelper.GetTripId ();
+
+				// Ищем новую/текущую работу
 				this.Trip = await App.ServerManager.GetNewOrCurrentTrip ();
 
 				// На всякий случай проверяем state, чтобы повторно не выполнить код
 				if (this.Trip != null && this.State == HomeStates.WaitingForTrip) 
 				{
-					// Работа отменена диспетчером или владельцем
-					if (this.Trip.JobCancelled)
-						this.State = HomeStates.TripCanceled;
+					if (this.Trip.DriverAccepted.GetValueOrDefault())
+						this.State = HomeStates.TripAccepted;
 					else
-						this.State = HomeStates.TripPropesed;
-
-					// TODO: сохранить job id в сервис
-					//SettingsServiceHelper.SaveTripId (trip.ID);
-				} 
+					{
+						// Работа отменена диспетчером или владельцем
+						if (this.Trip.JobCancelled)
+							this.State = HomeStates.TripCanceled;
+						else 
+							this.State = HomeStates.TripPropesed;
+					}
+					SettingsServiceHelper.SaveTripId (this.Trip.TripId);
+				}
 			} 
 			catch (Exception exception) {
 				// To do: Show error message

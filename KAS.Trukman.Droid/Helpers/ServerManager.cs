@@ -320,18 +320,20 @@ namespace Trukman.Droid.Helpers
 
 		public async Task<ITrip> GetNewOrCurrentTrip(string currentTripId = "")
 		{
+			//if (GetCurrentUserRole () == UserRole.UserRoleDriver)
+
 			ParseObject parseData;
 			if (string.IsNullOrEmpty (currentTripId)) {			
-				var query = ParseObject.GetQuery (ServerJobClass);
-				if (GetCurrentUserRole () == UserRole.UserRoleDriver)
-					query = query.WhereEqualTo (ServerDriver, ParseUser.CurrentUser);
+				var query = ParseObject.GetQuery (ServerJobClass)
+					.WhereEqualTo (ServerDriver, ParseUser.CurrentUser)
 				// Берем ближайшую по времени запись из Job, не принятую, не отмененную
-				parseData = await query//.WhereNotEqualTo (ServerDriverAccepted, true)
+					//parseData = await query
+					.WhereNotEqualTo (ServerDriverAccepted, false)
 					.WhereNotEqualTo (ServerJobCancelled, true)
 					.WhereNotEqualTo (ServerJobCompleted, true)
 					.WhereGreaterThan (ServerDeliveryDatettime, DateTime.Now)
-					.OrderBy (ServerPickupDatetime)
-					.FirstOrDefaultAsync ();
+					.OrderBy (ServerPickupDatetime);
+				parseData = await query.FirstOrDefaultAsync ();
 			} else {
 				parseData = await GetTrip (currentTripId);
 			}

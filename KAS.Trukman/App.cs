@@ -48,8 +48,10 @@ namespace KAS.Trukman
 
 		public App ()
 		{
-			//if (App.ServerManager.IsAuthorizedUser())
-			this.MainPage = new SignUpTypePage();	
+			//if (!App.ServerManager.IsAuthorizedUser()) 
+			this.MainPage = new ContentPage(); // NavigationPage (new SignUpTypePage ());
+			/*else
+				this.MainPage = new MainPage();*/
 
 			CreateStyles ();
 		}
@@ -109,14 +111,15 @@ namespace KAS.Trukman
 
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
+			PopToRootPageMessage.Subscribe (this, this.PopToRootPage);
+            PopPageMessage.Subscribe(this, this.PopPage);
 
 			ShowTopPageMessage.Send ();
-            PopPageMessage.Subscribe(this, this.PopPage);
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
 		{
-			this.MainPage = new NavigationPage (new SignUpTypePage ());
+			this.MainPage = new MainPage ();
 		}
 
         private async void PopPage(PopPageMessage message)
@@ -125,11 +128,18 @@ namespace KAS.Trukman
                 await (this.MainPage as NavigationPage).PopAsync();
         }
 
+		private async void PopToRootPage(PopToRootPageMessage message)
+		{
+			if (this.MainPage is NavigationPage)
+				await (this.MainPage as NavigationPage).PopToRootAsync();
+		}
+
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
 			ShowTopPageMessage.Unsubscribe (this);
             PopPageMessage.Unsubscribe(this);
+			PopToRootPageMessage.Unsubscribe (this);
         }
 
         protected override void OnResume ()
@@ -137,6 +147,7 @@ namespace KAS.Trukman
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 			PopPageMessage.Subscribe(this, this.PopPage);
+			PopToRootPageMessage.Subscribe (this, this.PopToRootPage);
 		}
 
 		private void ShowTopPage(ShowTopPageMessage message)
@@ -144,19 +155,22 @@ namespace KAS.Trukman
 			Device.BeginInvokeOnMainThread (async () => {
 				//var _navigationPage = new NavigationPage ();
 				//SettingsServiceHelper.SaveRejectedCounter(0);
+				if (App.ServerManager.IsAuthorizedUser () && App.serverManager.GetCurrentUserRole () == global::Trukman.Interfaces.UserRole.UserRoleOwner) {
+				} 
+				else {
+					string companyName = SettingsServiceHelper.GetCompany ();
 
-				string companyName = SettingsServiceHelper.GetCompany ();
-
-				if (!App.ServerManager.IsAuthorizedUser () || string.IsNullOrEmpty (companyName)) {
-					this.MainPage = new NavigationPage (new SignUpTypePage ());
-				} else {
-					var status = await App.serverManager.GetAuthorizationStatus (companyName);
-					if (status == AuthorizationRequestStatus.Authorized)
-						this.MainPage = new MainPage ();
-					else if (status == AuthorizationRequestStatus.Pending)
-						this.MainPage = new NavigationPage (new PendingAuthorizationPage ());
-					else if (status == AuthorizationRequestStatus.Declined)
+					if (!App.ServerManager.IsAuthorizedUser () || string.IsNullOrEmpty (companyName)) {
 						this.MainPage = new NavigationPage (new SignUpTypePage ());
+					} else {
+						var status = await App.serverManager.GetAuthorizationStatus (companyName);
+						if (status == AuthorizationRequestStatus.Authorized)
+							this.MainPage = new MainPage ();
+						else if (status == AuthorizationRequestStatus.Pending)
+							this.MainPage = new NavigationPage (new PendingAuthorizationPage ());
+						else if (status == AuthorizationRequestStatus.Declined)
+							this.MainPage = new NavigationPage (new SignUpTypePage ());
+					}
 				}
 			});
 		}
