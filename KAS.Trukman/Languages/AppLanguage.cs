@@ -158,6 +158,15 @@ namespace KAS.Trukman.Languages
                 this.DriverAuthorizationAuthorizeButtonText = appLanguage.DriverAuthorizationAuthorizeButtonText;
                 this.DriverAuthorizationDeclineButtonText = appLanguage.DriverAuthorizationDeclineButtonText;
                 #endregion
+
+                #region SignUpOwnerWelcome page
+                this.SignUpOwnerWelcomeLabel = appLanguage.SignUpOwnerWelcomeLabel;
+                this.SignUpOwnerWelcomeContinueButtonText = appLanguage.SignUpOwnerWelcomeContinueButtonText;
+                #endregion
+
+                #region SignUp user roles
+                this.SignUpUserRoleOwnerOperator = appLanguage.SignUpUserRoleOwnerOperator;
+                #endregion
             }
         }
 
@@ -772,6 +781,28 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("DriverAuthorizationDeclineButtonText"); }
             set { this.SetValue("DriverAuthorizationDeclineButtonText", value); }
+        }
+        #endregion
+
+        #region SignUpOwnerWelcome page
+        public string SignUpOwnerWelcomeLabel
+        {
+            get { return (string)this.GetValue("SignUpOwnerWelcomeLabel"); }
+            set { this.SetValue("SignUpOwnerWelcomeLabel", value); }
+        }
+
+        public string SignUpOwnerWelcomeContinueButtonText
+        {
+            get { return (string)this.GetValue("SignUpOwnerWelcomeContinueButtonText"); }
+            set { this.SetValue("SignUpOwnerWelcomeContinueButtonText", value); }
+        }
+        #endregion
+
+        #region SignUp user roles
+        public string SignUpUserRoleOwnerOperator
+        {
+            get { return (string)this.GetValue("SignUpUserRoleOwnerOperator"); }
+            set { this.SetValue("SignUpUserRoleOwnerOperator", value); }
         }
         #endregion
     }

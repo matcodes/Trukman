@@ -148,6 +148,15 @@ namespace KAS.Trukman.Languages
             this.DriverAuthorizationAuthorizeButtonText = "Authorize";
             this.DriverAuthorizationDeclineButtonText = "Decline";
             #endregion
+
+            #region SignUpOwnerWelcome page
+            this.SignUpOwnerWelcomeLabel = "Welcome to {0}!";
+            this.SignUpOwnerWelcomeContinueButtonText = "Continue";
+            #endregion
+
+            #region SignUp user roles
+            this.SignUpUserRoleOwnerOperator = "OWNER/OPERATOR";
+            #endregion
         }
     }
     #endregion
