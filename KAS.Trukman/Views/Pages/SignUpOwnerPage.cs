@@ -390,10 +390,10 @@ namespace Trukman
 				failedAttempts++;
 				if (failedAttempts >= maxFailAttempts)
 				{
-					DisplayAlert("", 
+					await DisplayAlert("", 
 						Localization.getString(Localization.LocalStrings.FAILED_OWNER_MC), 
 						Localization.getString(Localization.LocalStrings.CONTINUE));
-					Navigation.PushAsync(new SignUpOwnerPage());
+					await Navigation.PushAsync(new SignUpOwnerPage());
 				}
 				else if(failedAttempts == 1)
 				{
