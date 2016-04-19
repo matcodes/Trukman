@@ -614,6 +614,47 @@ namespace Trukman.Droid.Helpers
 				return null;
 		}
 
+		public async Task<IUser> GetRequestForCompany(string CompanyName) 
+		{
+			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, CompanyName.ToLower());
+			query.Include ("requesting");
+
+			var companyData = await query.FirstOrDefaultAsync ();
+			if (companyData != null) {
+				IEnumerable<ParseUser> userEnum = companyData["requesting"];
+				var user = userEnum.First ();
+				if (user != null) {
+					User _user = User ();
+					_user.Email = user.Email;
+					_user.Role = UserRole.UserRoleDriver;
+					_user.UserName = user.Username;
+					return _user;
+				}
+			}
+
+			return null
+		}
+
+		public async Task AcceptUserToCompany(string CompanyName, IUser _user)
+		{
+			var company = await GetCompany (CompanyName.ToLower());
+			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> (ServerDrivers);
+
+			ParseUser user = await GetUser (_user.UserName);
+			relation.Add (user);
+			await company.SaveAsync ();
+		}
+		public async Task DeclineUserFromCompany(string CompanyName, IUser _user)
+		{
+			var company = await GetCompany (CompanyName.ToLower());
+			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("requesting");
+
+			ParseUser user = await GetUser (_user.UserName);
+			relation.Add (user);
+			await company.SaveAsync ();
+		}
+
+
 		public async Task SendJobAlert(string alert, string tripId)
 		{
 			ParseObject jobAlert = new ParseObject ("JobAlert");
