@@ -15,12 +15,21 @@ namespace Trukman
 	{
 		Label lblSignup;
 		Label lblUserRole;
+        /*
 		TrukmanEditor edtFirstName;
 		TrukmanEditor edtLastName;
 		TrukmanEditor edtCompany;
 		TrukmanEditor edtPhone;
 		TrukmanButton btnSubmit;
-		Label lblHaveAccount;
+        */
+        AppEntry edtFirstName;
+        AppEntry edtLastName;
+        AppEntry edtCompany;
+        AppEntry edtPhone;
+        AppButton btnSubmit;
+
+
+        Label lblHaveAccount;
 		ActivityIndicator indicator;
 
 		public SignUpDriverPage ()
@@ -96,6 +105,7 @@ namespace Trukman
 				Content = lblUserRole
 			};
 
+            /*
 			var btnFirstName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
 			edtFirstName = new TrukmanEditor { Style = (Style)App.Current.Resources ["entryRadiusStyle"] };
 			var btnLastName = new Button { Style = (Style)App.Current.Resources ["buttonForEntryRadiusStyle"] };
@@ -168,8 +178,52 @@ namespace Trukman
 			userGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (1, GridUnitType.Star) });
 			userGrid.ColumnDefinitions.Add (new ColumnDefinition { Width = new GridLength (20, GridUnitType.Absolute) });
 			userGrid.Children.Add (userInfoLayout, 1, 0);
+            */
 
-			btnSubmit = new TrukmanButton ();
+            edtFirstName = new AppEntry {
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+            };
+            edtLastName = new AppEntry {
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+            };
+            edtPhone = new AppEntry {
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+            };
+            edtCompany = new AppEntry {
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+            };
+
+            edtFirstName.Completed += (sender, args) => {
+                edtLastName.Focus();
+            };
+            edtLastName.Completed += (sender, args) => {
+                edtPhone.Focus();
+            };
+            edtPhone.Completed += (sender, args) => {
+                edtCompany.Focus();
+            };
+
+            var userGrid = new Grid {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                RowSpacing = 5,
+                ColumnSpacing = 0,
+                Padding = new Thickness(20, 0, 20, 10),
+                RowDefinitions = {
+                    new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength (1, GridUnitType.Auto) }
+                }
+            };
+            userGrid.Children.Add(edtFirstName, 0, 0);
+            userGrid.Children.Add(edtLastName, 0, 1);
+            userGrid.Children.Add(edtPhone, 0, 2);
+            userGrid.Children.Add(edtCompany, 0, 3);
+           
+
+            //btnSubmit = new TrukmanButton ();
+            btnSubmit = new AppButton();
 			btnSubmit.Clicked += btnSubmit_Clicked;
 
 			var buttonContent = new ContentView {
