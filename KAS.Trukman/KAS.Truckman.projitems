@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowShipperInfoPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowToastMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTripPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TakePhotoFromCameraMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TripChangedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Commands\PageCommandsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\AdvancesViewModel.cs" />

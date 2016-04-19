@@ -119,7 +119,7 @@ namespace KAS.Trukman.ViewModels.Commands
             this.DisableCommands();
             try
             {
-                // To do: Show camera page
+                TakePhotoFromCameraMessage.Send();
             }
             catch (Exception exception)
             {
