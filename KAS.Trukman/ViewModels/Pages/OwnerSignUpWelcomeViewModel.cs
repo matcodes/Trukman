@@ -4,12 +4,16 @@ using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region OwnerSignUpWelcomeViewModel
     public class OwnerSignUpWelcomeViewModel : PageViewModel
     {
+        private System.Timers.Timer _checkDriversTimer = null;
+
         public OwnerSignUpWelcomeViewModel() 
             : base()
         {
@@ -27,10 +31,14 @@ namespace KAS.Trukman.ViewModels.Pages
         public override void Appering()
         {
             base.Appering();
+
+            this.CheckDrivers();
         }
 
         public override void Disappering()
         {
+            this.StopCheckDriversTimer();
+
             base.Disappering();
         }
 
@@ -50,6 +58,48 @@ namespace KAS.Trukman.ViewModels.Pages
             base.DoPropertyChanged(propertyName);
         }
 
+        private void StartCheckDriversTimer()
+        {
+            if (_checkDriversTimer == null)
+            {
+                _checkDriversTimer = new System.Timers.Timer { Interval = 10000 };
+                _checkDriversTimer.Elapsed += (sender, args) => {
+                    this.CheckDrivers();
+                };
+            }
+            _checkDriversTimer.Start();
+        }
+
+        private void StopCheckDriversTimer()
+        {
+            if (_checkDriversTimer != null)
+                _checkDriversTimer.Stop();
+        }
+
+        private void CheckDrivers()
+        {
+            Task.Run(() => {
+                this.IsBusy = true;
+                this.DisableCommands();
+                try
+                {
+                    Thread.Sleep(2000);
+                    ShowDriverAuthorizationPageMessage.Send(null);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    // To do: Show exception message
+                }
+                finally
+                {
+                    this.EnabledCommands();
+                    this.IsBusy = false;
+                }
+
+                this.StartCheckDriversTimer();
+            });
+        }
 
         private void PopPage(object parameter)
         {

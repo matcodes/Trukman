@@ -114,6 +114,7 @@ namespace KAS.Trukman
 			PopToRootPageMessage.Subscribe (this, this.PopToRootPage);
             PopPageMessage.Subscribe(this, this.PopPage);
             ShowOwnerSignUpWelcomePageMessage.Subscribe(this, this.ShowOwnerSignUpWelcomePage);
+            ShowDriverAuthorizationPageMessage.Subscribe(this, this.ShowDriverAuthorizationPage);
 
             ShowTopPageMessage.Send ();
 		}
@@ -145,6 +146,17 @@ namespace KAS.Trukman
             }
         }
 
+        private void ShowDriverAuthorizationPage(ShowDriverAuthorizationPageMessage message)
+        {
+            if (this.MainPage is NavigationPage)
+                Device.BeginInvokeOnMainThread(async () => 
+                {
+                    var page = new DriverAuthorizationPage();
+                    page.ViewModel.Initialize(message.Driver);
+                    await (this.MainPage as NavigationPage).PushAsync(page);
+                });
+        }
+
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
@@ -152,6 +164,7 @@ namespace KAS.Trukman
             PopPageMessage.Unsubscribe(this);
 			PopToRootPageMessage.Unsubscribe (this);
             ShowOwnerSignUpWelcomePageMessage.Unsubscribe(this);
+            ShowDriverAuthorizationPageMessage.Unsubscribe(this);
         }
 
         protected override void OnResume ()
@@ -161,6 +174,7 @@ namespace KAS.Trukman
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 			PopPageMessage.Subscribe(this, this.PopPage);
 			PopToRootPageMessage.Subscribe (this, this.PopToRootPage);
+            ShowDriverAuthorizationPageMessage.Subscribe(this, this.ShowDriverAuthorizationPage);
 		}
 
 		private void ShowTopPage(ShowTopPageMessage message)

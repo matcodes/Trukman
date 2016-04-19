@@ -7,30 +7,30 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.Messages
 {
-    #region ShowDriverAuthorizePageMessage
-    public class ShowDriverAuthorizePageMessage
+    #region ShowDriverAuthorizationPageMessage
+    public class ShowDriverAuthorizationPageMessage
     {
         #region Static members
-        private static readonly string MESSAGE_KEY = "ShowDriverAuthorizePageMessage";
+        private static readonly string MESSAGE_KEY = "ShowDriverAuthorizationPageMessage";
 
         public static void Send(IUser driver)
         {
-            var message = new ShowDriverAuthorizePageMessage(driver);
-            MessagingCenter.Send<ShowDriverAuthorizePageMessage>(message, MESSAGE_KEY);
+            var message = new ShowDriverAuthorizationPageMessage(driver);
+            MessagingCenter.Send<ShowDriverAuthorizationPageMessage>(message, MESSAGE_KEY);
         }
 
-        public static void Subscribe(object subscriber, Action<ShowDriverAuthorizePageMessage> action)
+        public static void Subscribe(object subscriber, Action<ShowDriverAuthorizationPageMessage> action)
         {
-            MessagingCenter.Subscribe<ShowDriverAuthorizePageMessage>(subscriber, MESSAGE_KEY, action);
+            MessagingCenter.Subscribe<ShowDriverAuthorizationPageMessage>(subscriber, MESSAGE_KEY, action);
         }
 
         public static void Unsubscribe(object subscriber)
         {
-            MessagingCenter.Unsubscribe<ShowDriverAuthorizePageMessage>(subscriber, MESSAGE_KEY);
+            MessagingCenter.Unsubscribe<ShowDriverAuthorizationPageMessage>(subscriber, MESSAGE_KEY);
         }
         #endregion
 
-        public ShowDriverAuthorizePageMessage(IUser driver)
+        public ShowDriverAuthorizationPageMessage(IUser driver)
         {
             this.Driver = driver;
         }

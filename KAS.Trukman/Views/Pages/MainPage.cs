@@ -83,6 +83,9 @@ namespace KAS.Trukman.Views.Pages
 			StartLocationServiceMessage.Subscribe (this, this.StartLocationService);
 			StopLocationServiceMessage.Subscribe (this, this.StopLocationService);
             ShowRoutePageMessage.Subscribe(this, this.ShowRoutePage);
+            ShowPointsAndRewardsPageMessage.Subscribe(this, this.ShowPointsAndRewardsPage);
+            ShowSettingsPageMessage.Subscribe(this, this.ShowSettingsPage);
+            ShowHelpPageMessage.Subscribe(this, this.ShowHelpPage);
         }
 
         private void UnsubscribeMessages()
@@ -101,6 +104,9 @@ namespace KAS.Trukman.Views.Pages
 			StartLocationServiceMessage.Unsubscribe (this);
 			StopLocationServiceMessage.Unsubscribe (this);
             ShowRoutePageMessage.Unsubscribe(this);
+            ShowPointsAndRewardsPageMessage.Unsubscribe(this);
+            ShowSettingsPageMessage.Unsubscribe(this);
+            ShowHelpPageMessage.Unsubscribe(this);
         }
 
         private void PopPage(PopPageMessage message)
@@ -177,6 +183,24 @@ namespace KAS.Trukman.Views.Pages
             var delayEmergencyPage = new DelayEmergencyPage();
 			delayEmergencyPage.ViewModel.Initialize(message.Trip);
             this.PushPage(delayEmergencyPage);
+        }
+
+        private void ShowPointsAndRewardsPage(ShowPointsAndRewardsPageMessage message)
+        {
+            var page = new PointsAndRewardsPage();
+            this.PushPage(page);
+        }
+
+        private void ShowSettingsPage(ShowSettingsPageMessage message)
+        {
+            var page = new SettingsPage();
+            this.PushPage(page);
+        }
+
+        private void ShowHelpPage(ShowHelpPageMessage message)
+        {
+            var page = new HelpPage();
+            this.PushPage(page);
         }
 
 		private void StartLocationService(StartLocationServiceMessage message)
