@@ -107,7 +107,8 @@ namespace KAS.Trukman
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 
-			ShowTopPageMessage.Send ();
+			//ShowTopPageMessage.Send ();
+            PopPageMessage.Subscribe(this, this.PopPage);
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
@@ -115,16 +116,24 @@ namespace KAS.Trukman
 			this.MainPage = new MainPage ();
 		}
 
+        private async void PopPage(PopPageMessage message)
+        {
+            if (this.MainPage is NavigationPage)
+                await (this.MainPage as NavigationPage).PopAsync();
+        }
+
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
 			ShowTopPageMessage.Unsubscribe (this);
+            PopPageMessage.Unsubscribe(this);
         }
 
         protected override void OnResume ()
 		{	
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
+			PopPageMessage.Subscribe(this, this.PopPage);
 		}
 
 		private void ShowTopPage(ShowTopPageMessage message)

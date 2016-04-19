@@ -34,6 +34,7 @@ namespace KAS.Trukman.Languages
                 this.PointsAndRewardsPageName = appLanguage.PointsAndRewardsPageName;
                 this.SettingsPageName = appLanguage.SettingsPageName;
                 this.HelpPageName = appLanguage.HelpPageName;
+                this.DriverAuthorizePageName = appLanguage.DriverAuthorizePageName;
                 #endregion
 
                 #region Main menu
@@ -149,8 +150,15 @@ namespace KAS.Trukman.Languages
             
 				#region Sign up
 				this.SignUpLabel = appLanguage.SignUpLabel;
-				#endregion
-			}
+                #endregion
+
+                #region Driver authorization page
+                this.DriverAuthorizationCommonLabel = appLanguage.DriverAuthorizationCommonLabel;
+                this.DriverAuthorizationAssignIDNumberPlaceholder = appLanguage.DriverAuthorizationAssignIDNumberPlaceholder;
+                this.DriverAuthorizationAuthorizeButtonText = appLanguage.DriverAuthorizationAuthorizeButtonText;
+                this.DriverAuthorizationDeclineButtonText = appLanguage.DriverAuthorizationDeclineButtonText;
+                #endregion
+            }
         }
 
         public string DisplayName { get; private set; }
@@ -226,6 +234,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("HelpPageName"); }
             set { this.SetValue("HelpPageName", value); }
+        }
+
+        public string DriverAuthorizePageName
+        {
+            get { return (string)this.GetValue("DriverAuthorizePageName"); }
+            set { this.SetValue("DriverAuthorizePageName", value); }
         }
         #endregion
 
@@ -733,7 +747,33 @@ namespace KAS.Trukman.Languages
 			get { return (string)this.GetValue ("SignUp"); }
 			set { this.SetValue ("SignUp", value); }
 		}
-		#endregion
+        #endregion
+
+        #region Driver authorization page
+        public string DriverAuthorizationCommonLabel
+        {
+            get { return (string)this.GetValue("DriverAuthorizationCommonLabel"); }
+            set { this.SetValue("DriverAuthorizationCommonLabel", value); }
+        }
+
+        public string DriverAuthorizationAssignIDNumberPlaceholder
+        {
+            get { return (string)this.GetValue("DriverAuthorizationAssignIDNumberPlaceholder"); }
+            set { this.SetValue("DriverAuthorizationAssignIDNumberPlaceholder", value); }
+        }
+
+        public string DriverAuthorizationAuthorizeButtonText
+        {
+            get { return (string)this.GetValue("DriverAuthorizationAuthorizeButtonText"); }
+            set { this.SetValue("DriverAuthorizationAuthorizeButtonText", value); }
+        }
+
+        public string DriverAuthorizationDeclineButtonText
+        {
+            get { return (string)this.GetValue("DriverAuthorizationDeclineButtonText"); }
+            set { this.SetValue("DriverAuthorizationDeclineButtonText", value); }
+        }
+        #endregion
     }
     #endregion
 }

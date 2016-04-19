@@ -148,6 +148,11 @@ namespace KAS.Trukman.Droid
         {
             get { return Xamarin.Forms.Color.White; }
         }
+
+        public Xamarin.Forms.Color DriverAuthorizationTextColor
+        {
+            get { return Xamarin.Forms.Color.White; }
+        }
         #endregion
 
         #region Image sources
@@ -284,6 +289,16 @@ namespace KAS.Trukman.Droid
         public string TurnNoneImageSource
         {
             get { return "turn_none"; }
+        }
+
+        public string LockImageSource
+        {
+            get { return "lock"; }
+        }
+
+        public string LogoImageSource
+        {
+            get { return "logo"; }
         }
         #endregion
         #endregion
