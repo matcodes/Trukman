@@ -56,6 +56,8 @@ namespace KAS.Trukman.Helpers
         Color DelayEmergencySelectedItemColor { get; }
 
         Color RouteTextColor { get; }
+
+        Color DriverAuthorizationTextColor { get; }
         #endregion
 
         #region Image sources
@@ -112,6 +114,8 @@ namespace KAS.Trukman.Helpers
         string TurnRightImageSource { get; }
         
         string TurnNoneImageSource { get; }
+
+        string LockImageSource { get; }
         #endregion
     }
     #endregion
@@ -242,6 +246,11 @@ namespace KAS.Trukman.Helpers
         public static Color RouteTextColor
         {
             get { return (_platformHelper != null ? _platformHelper.RouteTextColor : Color.White); }
+        }
+
+        public static Color DriverAuthorizationTextColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.DriverAuthorizationTextColor : Color.White); }
         }
         #endregion
 
@@ -379,6 +388,11 @@ namespace KAS.Trukman.Helpers
         public static string TurnNoneImageSource
         {
             get { return (_platformHelper != null ? _platformHelper.TurnNoneImageSource : "turn_none"); }
+        }
+
+        public static string LockImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.LockImageSource : "lock"); }
         }
         #endregion
     }

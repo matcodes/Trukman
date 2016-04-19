@@ -31,5 +31,17 @@ namespace KAS.Trukman
 			get { return (Position)this.GetValue ("position", default(Position)); }
 			set { this.SetValue ("position", value); }
 		}
+
+        public string FirstName
+        {
+            get { return (string)this.GetValue("FirstName"); }
+            set { this.SetValue("FirstName", value); }
+        }
+
+        public string LastName
+        {
+            get { return (string)this.GetValue("LastName"); }
+            set { this.SetValue("LastName", value); }
+        }
 	}
 }

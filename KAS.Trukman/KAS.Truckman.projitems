@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\PopToRootPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowAdvancesPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDelayEmergencyPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDriverAuthorizePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowGPSSettingsMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowHelpPageMessage.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\AdvancesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ContractorInfoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\DelayEmergencyViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\DriverAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\FuelAdvanceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\HelpViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\HomeViewModel.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AdvancesPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ContractorInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\DelayEmergencyPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\DriverAuthorizationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\FuelAdvancePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\HelpPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\HomePage.cs" />
