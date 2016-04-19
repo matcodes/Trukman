@@ -12,6 +12,7 @@ using KAS.Trukman.Messages;
 using Android.Content;
 using Trukman.Helpers;
 using Trukman.Droid.Helpers;
+using Android.Provider;
 
 namespace KAS.Trukman.Droid
 {
@@ -41,12 +42,14 @@ namespace KAS.Trukman.Droid
 
             ShowToastMessage.Subscribe(this, this.ShowToast);
             ShowGPSSettingsMessage.Subscribe(this, this.ShowGPSSettings);
+            TakePhotoFromCameraMessage.Subscribe(this, this.TakePhotoFromCamera);
         }
 
         protected override void OnPause()
         {
             ShowToastMessage.Unsubscribe(this);
             ShowGPSSettingsMessage.Unsubscribe(this);
+            TakePhotoFromCameraMessage.Unsubscribe(this);
 
             base.OnPause();
         }
@@ -62,6 +65,13 @@ namespace KAS.Trukman.Droid
         {
             Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
             this.StartActivity(callGPSSettingIntent);
+        }
+
+
+        private void TakePhotoFromCamera(TakePhotoFromCameraMessage message)
+        {
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            StartActivityForResult(intent, 0);
         }
     }
     #endregion
