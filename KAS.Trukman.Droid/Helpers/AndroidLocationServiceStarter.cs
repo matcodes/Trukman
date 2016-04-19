@@ -44,8 +44,11 @@ namespace Trukman.Droid
 		public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
 		{
 			string TripId = (tag != null ? (string)tag : null);
-			if (!string.IsNullOrEmpty (TripId))
+			if (!string.IsNullOrEmpty (TripId)) {
 				App.ServerManager.SaveDriverLocation (TripId, new Position (e.Location.Latitude, e.Location.Longitude));
+
+				ChangeLocationMessage.Send (new Position (e.Location.Latitude, e.Location.Longitude));
+			}
 		}
 
 		public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)
