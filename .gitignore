@@ -18,6 +18,7 @@ UpgradeLog.*
 *.userprefs
 *.usertasks
 *.user
+*.apk
 
 # ReSharper
 *_Resharper.*
