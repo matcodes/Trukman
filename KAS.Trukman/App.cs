@@ -113,8 +113,9 @@ namespace KAS.Trukman
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 			PopToRootPageMessage.Subscribe (this, this.PopToRootPage);
             PopPageMessage.Subscribe(this, this.PopPage);
+            ShowOwnerSignUpWelcomePageMessage.Subscribe(this, this.ShowOwnerSignUpWelcomePage);
 
-			ShowTopPageMessage.Send ();
+            ShowTopPageMessage.Send ();
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
@@ -134,16 +135,28 @@ namespace KAS.Trukman
 				await (this.MainPage as NavigationPage).PopToRootAsync();
 		}
 
+        private async void ShowOwnerSignUpWelcomePage(ShowOwnerSignUpWelcomePageMessage message)
+        {
+            if (this.MainPage is NavigationPage)
+            {
+                var page = new OwnerSignUpWelcomePage();
+                page.ViewModel.Initialize(message.CompanyName);
+                await (this.MainPage as NavigationPage).PushAsync(page);
+            }
+        }
+
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
 			ShowTopPageMessage.Unsubscribe (this);
             PopPageMessage.Unsubscribe(this);
 			PopToRootPageMessage.Unsubscribe (this);
+            ShowOwnerSignUpWelcomePageMessage.Unsubscribe(this);
         }
 
         protected override void OnResume ()
-		{	
+		{
+            ShowOwnerSignUpWelcomePageMessage.Subscribe(this, this.ShowOwnerSignUpWelcomePage);
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 			PopPageMessage.Subscribe(this, this.PopPage);

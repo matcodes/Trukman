@@ -80,6 +80,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowHelpPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerSignUpWelcomePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowPointsAndRewardsPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowReceiverInfoMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowRoutePageMessage.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\OwnerSignUpWelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\PageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\PointsAndRewardsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ReceiverInfoViewModel.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\NavBarPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\OwnerSignUpWelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\PointsAndRewardsPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\ReceiverInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\RoutePage.cs" />

@@ -511,8 +511,9 @@ namespace Trukman
 						edtCompAddress.Text, edtPhone.Text, edtEmail.Text, edtFleetSize.Text);
 					App.ServerManager.StartTimerForRequest();
 
-					PopToRootPageMessage.Send();
-				} catch (Exception exc) {
+                    //					PopToRootPageMessage.Send();
+                    ShowOwnerSignUpWelcomePageMessage.Send(edtCompName.Text);
+                } catch (Exception exc) {
 					ShowToastMessage.Send (exc.Message);
 				}
 				finally
@@ -520,7 +521,7 @@ namespace Trukman
 					busyIndicator.IsRunning = false;
 				}
 
-				await Navigation.PushAsync(new HomePage());
+//				await Navigation.PushAsync(new HomePage());
 			}
 			else
 			{
