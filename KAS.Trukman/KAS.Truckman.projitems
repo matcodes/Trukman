@@ -163,6 +163,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTopPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ICompany.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Company.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ChangeLocationMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

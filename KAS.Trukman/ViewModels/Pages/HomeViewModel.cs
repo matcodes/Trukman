@@ -106,7 +106,11 @@ namespace KAS.Trukman.ViewModels.Pages
 					this.StopWaitToTripTimer ();
 					this.StartTripProposedTimer ();
 				} else if (this.State == HomeStates.TripAccepted) {
+					StartLocationServiceMessage.Send (this.Trip.TripId);
+
 					this.StopTripProposedTimer ();
+
+
 					TripChangedMessage.Send (this.Trip);
 					this.SelectedContractor = ContractorItems.Origin;
 					this.SetContractorAddress ();
@@ -144,6 +148,9 @@ namespace KAS.Trukman.ViewModels.Pages
 				this.SetContractorAddress ();
 			} else if (propertyName == "TotalPoints") {
 				this.Localize ();
+			} else if (propertyName == "CurrentPosition") {
+				if (this.State == HomeStates.TripAccepted || this.State == HomeStates.ArrivedAtPickupLate || this.State == HomeStates.ArrivedAtPickupOnTime)
+					CheckArrived ();
 			}
         }
 
@@ -283,7 +290,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
 		private void StartDriverOnPickupTimer()
 		{
-			if (_driverOnPickupTimer == null) 
+			/*if (_driverOnPickupTimer == null) 
 			{
 				_driverOnPickupTimer = new System.Timers.Timer (10000);
 				_driverOnPickupTimer.Elapsed += (object sender, ElapsedEventArgs e) => 
@@ -292,12 +299,12 @@ namespace KAS.Trukman.ViewModels.Pages
 						this.CheckArrived();
 				};
 			}
-			_driverOnPickupTimer.Start ();
+			_driverOnPickupTimer.Start ();*/
 		}
 
 		private void StartDriverOnDeliveryTimer()
 		{
-			if (_driverOnDeliveryTimer == null) 
+			/*if (_driverOnDeliveryTimer == null) 
 			{
 				_driverOnDeliveryTimer = new System.Timers.Timer (10000);
 				_driverOnDeliveryTimer.Elapsed += (object sender, ElapsedEventArgs e) => 
@@ -306,7 +313,7 @@ namespace KAS.Trukman.ViewModels.Pages
 						this.CheckArrived();
 				};
 			}
-			_driverOnDeliveryTimer.Start ();
+			_driverOnDeliveryTimer.Start ();*/
 		}
 
 		private void StartTripCompletedTimer ()
@@ -503,7 +510,7 @@ namespace KAS.Trukman.ViewModels.Pages
 		private void AcceptTrip ()
 		{
 			App.ServerManager.AcceptTrip (this.Trip.TripId);
-			StartLocationServiceMessage.Send (this.Trip.TripId);
+			//StartLocationServiceMessage.Send (this.Trip.TripId);
 		}
 
         private void Accept(object parameter)
@@ -703,6 +710,12 @@ namespace KAS.Trukman.ViewModels.Pages
             get { return (ContractorItems)this.GetValue("SelectedContractor", ContractorItems.Origin); }
             set { this.SetValue("SelectedContractor", value); }
         }
+
+		public Position CurrentPosition
+		{
+			get { return (Position)this.GetValue ("CurrentPosition"); }
+			set { this.SetValue ("CurrentPosition", value);}
+		}
 
         public VisualCommand ShowMainMenuCommand { get; private set; }
 

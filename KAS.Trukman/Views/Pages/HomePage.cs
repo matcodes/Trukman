@@ -51,6 +51,36 @@ namespace KAS.Trukman.Views.Pages
             this.BindingContext = _viewModel;
         }
 
+		protected override void OnAppearing ()
+		{
+			base.OnAppearing ();
+		
+			this.SubscribeMessages ();
+		}
+
+
+		protected override void OnDisappearing ()
+		{
+			this.UnsubscribeMessages();
+
+			base.OnDisappearing();
+		}
+
+		private void SubscribeMessages()
+		{
+			ChangeLocationMessage.Subscribe(this, this.ChangeLocation);
+		}
+
+		private void UnsubscribeMessages()
+		{   
+			ChangeLocationMessage.Unsubscribe (this);			
+		}
+
+		private void ChangeLocation(ChangeLocationMessage message)
+		{
+			this.ViewModel.CurrentPosition = message.Position;			
+		}
+
         protected override bool OnBackButtonPressed()
         {
             var result = base.OnBackButtonPressed();
@@ -1094,7 +1124,8 @@ namespace KAS.Trukman.Views.Pages
             _arrivedOnTimeMap = new Map
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
+                VerticalOptions = LayoutOptions.Fill,
+				IsVisible = false // TODO: в последнем варианте нет карты
             };
 
             var grid = new Grid
@@ -1326,8 +1357,9 @@ namespace KAS.Trukman.Views.Pages
             _arrivedLateMap = new Map
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
-            };
+                VerticalOptions = LayoutOptions.Fill,
+				IsVisible = false // TODO: в последнем варианте нет карты
+			};
 
             var grid = new Grid
             {
@@ -1571,7 +1603,8 @@ namespace KAS.Trukman.Views.Pages
 			_arrivedOnTimeMap = new Map
 			{
 				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill
+				VerticalOptions = LayoutOptions.Fill,
+				IsVisible = false // TODO: в последнем варианте нет карты
 			};
 
 			var grid = new Grid
@@ -1803,7 +1836,9 @@ namespace KAS.Trukman.Views.Pages
 			_arrivedLateMap = new Map
 			{
 				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill
+				VerticalOptions = LayoutOptions.Fill,
+				IsVisible = false // TODO: в последнем варианте нет карты
+					
 			};
 
 			var grid = new Grid
