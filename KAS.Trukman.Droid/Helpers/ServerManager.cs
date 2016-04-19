@@ -650,7 +650,7 @@ namespace Trukman.Droid.Helpers
 			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("requesting");
 
 			ParseUser user = await GetUser (_user.UserName);
-			relation.Add (user);
+			relation.Remove (user);
 			await company.SaveAsync ();
 		}
 
