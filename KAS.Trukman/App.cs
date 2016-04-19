@@ -48,6 +48,9 @@ namespace KAS.Trukman
 
 		public App ()
 		{
+			//if (App.ServerManager.IsAuthorizedUser())
+			this.MainPage = new SignUpTypePage();	
+
 			CreateStyles ();
 		}
 
@@ -107,13 +110,13 @@ namespace KAS.Trukman
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
 			ShowTopPageMessage.Subscribe (this, this.ShowTopPage);
 
-			//ShowTopPageMessage.Send ();
+			ShowTopPageMessage.Send ();
             PopPageMessage.Subscribe(this, this.PopPage);
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
 		{
-			this.MainPage = new MainPage ();
+			this.MainPage = new NavigationPage (new SignUpTypePage ());
 		}
 
         private async void PopPage(PopPageMessage message)

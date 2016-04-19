@@ -53,7 +53,9 @@ namespace Trukman
 			{ 
 				Source = "logo.png", 
 				Aspect = Aspect.AspectFit,
-				HorizontalOptions = LayoutOptions.Center
+				HorizontalOptions = LayoutOptions.Center,
+				WidthRequest = 100,
+				HeightRequest = 100
 			};
 
 			var logoContent = new ContentView {
