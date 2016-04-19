@@ -139,7 +139,7 @@ namespace KAS.Trukman.Languages
             #endregion
      
 			#region Sign up
-			this.SignUpLabel = "Sign up";
+			this.SignUpLabel = "SIGN UP";
             #endregion
 
             #region Driver authorization page

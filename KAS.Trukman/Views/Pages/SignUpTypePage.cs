@@ -54,6 +54,8 @@ namespace Trukman
 			Image logoImage = new Image { 
 				Source = "logo.png", 
 				Aspect = Aspect.AspectFit,
+                HeightRequest = 100,
+                WidthRequest = 100,
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Center
 			};

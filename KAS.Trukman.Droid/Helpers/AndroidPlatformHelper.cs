@@ -295,6 +295,11 @@ namespace KAS.Trukman.Droid
         {
             get { return "lock"; }
         }
+
+        public string LogoImageSource
+        {
+            get { return "logo"; }
+        }
         #endregion
         #endregion
     }

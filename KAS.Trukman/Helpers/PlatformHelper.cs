@@ -112,10 +112,12 @@ namespace KAS.Trukman.Helpers
         string TurnLeftImageSource { get; }
 
         string TurnRightImageSource { get; }
-        
+
         string TurnNoneImageSource { get; }
 
         string LockImageSource { get; }
+
+        string LogoImageSource { get; }
         #endregion
     }
     #endregion
@@ -393,6 +395,11 @@ namespace KAS.Trukman.Helpers
         public static string LockImageSource
         {
             get { return (_platformHelper != null ? _platformHelper.LockImageSource : "lock"); }
+        }
+
+        public static string LogoImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.LogoImageSource : "logo"); }
         }
         #endregion
     }

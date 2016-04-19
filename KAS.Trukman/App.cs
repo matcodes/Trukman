@@ -114,6 +114,7 @@ namespace KAS.Trukman
 			base.OnStart ();
 
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
+            PopPageMessage.Subscribe(this, this.PopPage);
 		}
 
 		private void ShowMainMenu(ShowMainPageMessage message)
@@ -121,15 +122,23 @@ namespace KAS.Trukman
 			this.MainPage = new MainPage ();
 		}
 
+        private async void PopPage(PopPageMessage message)
+        {
+            if (this.MainPage is NavigationPage)
+                await (this.MainPage as NavigationPage).PopAsync();
+        }
+
 		protected override void OnSleep ()
 		{
 			ShowMainPageMessage.Unsubscribe (this);
+            PopPageMessage.Unsubscribe(this);
         }
 
         protected override void OnResume ()
 		{	
 			ShowMainPageMessage.Subscribe (this, this.ShowMainMenu);
-		}
-	}
+            PopPageMessage.Subscribe(this, this.PopPage);
+        }
+    }
     #endregion
 }

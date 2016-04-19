@@ -13,7 +13,7 @@ namespace Trukman.ViewModels.Pages
 	{
 		public SignUpOwnerViewModel () : base()
 		{
-			this.ShowPrevPageCommand = new VisualCommand (this.ShowPrevPage);
+			this.PopPageCommand = new VisualCommand (this.PopPage);
 		}
 
 		public override void Appering ()
@@ -44,7 +44,7 @@ namespace Trukman.ViewModels.Pages
 
 			Device.BeginInvokeOnMainThread(() => 
 				{
-					this.ShowPrevPageCommand.IsEnabled = false;
+					this.PopPageCommand.IsEnabled = false;
 				});
 		}
 
@@ -54,16 +54,16 @@ namespace Trukman.ViewModels.Pages
 
 			Device.BeginInvokeOnMainThread(() => 
 				{
-					this.ShowPrevPageCommand.IsEnabled = true;
+					this.PopPageCommand.IsEnabled = true;
 				});
 		}
 
-		private void ShowPrevPage(object parameter)
+		private void PopPage(object parameter)
 		{
 			PopPageMessage.Send();
 		}
 
-		public VisualCommand ShowPrevPageCommand { get; private set; }
+		public VisualCommand PopPageCommand { get; private set; }
 	}
 }
 
