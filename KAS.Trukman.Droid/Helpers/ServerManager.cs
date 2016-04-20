@@ -118,13 +118,14 @@ namespace Trukman.Droid.Helpers
 
 		public async Task AddCompany (string name, string DBA, string address, string phone, string email, string fleetSize) 
 		{
-			name = name.ToLower ();
+			var lowerCaseName = name.ToLower ();
 			
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
+			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, lowerCaseName);
 			ParseObject company = await query.FirstOrDefaultAsync ();
 			if (company == null) {
 				company = new ParseObject (ServerCompany);
-				company [ServerName] = name;
+				company [ServerName] = lowerCaseName;
+				company ["displayName"] = name;
 				company [ServerOwner] = ParseUser.CurrentUser;
 				await company.SaveAsync ();
 			} else
