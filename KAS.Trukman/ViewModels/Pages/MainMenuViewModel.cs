@@ -86,21 +86,13 @@ namespace KAS.Trukman.ViewModels.Pages
         private void UpdateUserData()
         {
             Task.Run(async ()=>{
-
                 try
                 {
-                    // To Do: Call function
-                    //var user = App.ServerManager.GetCurrentUser();
+                    var user = await App.ServerManager.GetCurrentUser();
                     var company = await App.ServerManager.GetUserCompany();
 
-                    var user = new User
-                    {
-                        FirstName = "Alex",
-                        LastName = "Flex"
-                    };
-
                     var userName = String.Format("{0} {1}", user.FirstName, user.LastName);
-                    var companyName = company.Name;
+                    var companyName = company.DisplayName;
 
                     this.UserName = userName;
                     this.CompanyName = companyName;

@@ -4,9 +4,9 @@ using Xamarin.Forms.Maps;
 namespace Trukman.Interfaces
 {
 	public enum UserRole {
-		UserRoleOwner,
-		UserRoleDispatch,
-		UserRoleDriver
+		UserRoleOwner = 0,
+		UserRoleDispatch = 1,
+		UserRoleDriver = 2
 	};
 
 	public interface IUser

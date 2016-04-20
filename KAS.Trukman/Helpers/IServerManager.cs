@@ -43,9 +43,9 @@ namespace Trukman.Helpers
 		Task<bool> FindCompany(string name);
 		UserRole GetCurrentUserRole();
 		string GetCurrentUserName ();
-		IUser GetCurrentUser();
-		//string GetCurrentCompanyName();
-		bool IsOwner();
+        Task<IUser> GetCurrentUser();
+        //string GetCurrentCompanyName();
+        bool IsOwner();
 		Task<AuthorizationRequestStatus> GetAuthorizationStatus (string companyName);
 		//bool IsFrozenAuthorization();
 

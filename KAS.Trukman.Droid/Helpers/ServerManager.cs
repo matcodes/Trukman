@@ -30,6 +30,7 @@ namespace Trukman.Droid.Helpers
 		//static string ServerUser = "_User";
 		static string ServerName = "name";
 		static string ServerUserName = "username";
+        static string ServerDisplayName = "displayName";
 		static string ServerRequesting = "requesting";
 		static string ServerOwner = "owner";
 		static string ServerRole = "role";
@@ -102,18 +103,25 @@ namespace Trukman.Droid.Helpers
 			return await query.FirstOrDefaultAsync ();
 		}
 
-		IUser GetCurrentUser() {
-			IUser currentUser = convertParseUser(ParseUser.CurrentUser);
+		public async Task<IUser> GetCurrentUser() {
+			IUser currentUser = await convertParseUser(ParseUser.CurrentUser);
 			return currentUser;
 		}
 
-		public IUser convertParseUser(ParseUser user) 
-		{
-			IUser currentUser = IUser ();
-			currentUser.UserName = user.Username;
-			currentUser.LastName = user ["lastName"];
-			currentUser.FirstName = user ["firstName"];
-			currentUser.Role = (int)user ["role"];
+        public async Task<IUser> convertParseUser(ParseUser user)
+        {
+            var userValues = await ParseUser.CurrentUser.FetchAsync();
+
+            int role = -1;
+            if (!Int32.TryParse(userValues["role"].ToString(), out role))
+                throw new Exception("Invalid user role.");
+
+            IUser currentUser = new User {
+                UserName = userValues.Username,
+                LastName = (string)userValues["LastName"],
+                FirstName = (string)userValues["firstName"],
+                Role = (UserRole)role
+            };
 
 			return currentUser;
 		}
@@ -542,8 +550,8 @@ namespace Trukman.Droid.Helpers
 				var user = new User ();
 				user.UserName = driver.Username;
 				user.Role = UserRole.UserRoleDriver;
-				user.LastName = driver ["lastName"];
-				user.FirstName = driver ["firstName"];
+				user.LastName = (string)driver ["lastName"];
+				user.FirstName = (string)driver ["firstName"];
 				if (driver.Keys.Contains (ServerLocation)) {
 					ParseGeoPoint point = (ParseGeoPoint)driver[ServerLocation]; 
 					if (point.Longitude != 0 || point.Latitude != 0)
@@ -679,11 +687,11 @@ namespace Trukman.Droid.Helpers
 
 		public async Task SaveLadingBill(byte[] data, string TripId) 
 		{
-			var trip = GetTrip (TripId);
+			var trip = await GetTrip (TripId);
 			var file = new ParseFile("LadingBill.jpeg", data);
 			trip ["LadingBill"] = file;
 
-			trip.SaveAsync ();
+			await trip.SaveAsync ();
 		}
 
 		public async Task AcceptUserToCompany(string CompanyName, IUser _user)
@@ -740,7 +748,7 @@ namespace Trukman.Droid.Helpers
 				var company = new Company {
 					ID = GetField<string> (companyData, ServerObjectId),
 					Name = GetField<string> (companyData, ServerName),
-					
+					DisplayName = GetField<string> (companyData, ServerDisplayName)
 				};
 
 				return company;
