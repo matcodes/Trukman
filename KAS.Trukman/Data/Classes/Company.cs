@@ -18,6 +18,11 @@ namespace Trukman.Classes
 			set { this.SetValue ("Name", value); }
 		}
 
+		public string DisplayName {
+			get { return (string)this.GetValue ("displayName"); }
+			set { this.SetValue ("displayName", value); }
+		}
+
 		#endregion
 
 		public Company ()

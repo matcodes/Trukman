@@ -416,11 +416,11 @@ namespace Trukman
 			indicator.IsRunning = true;
 			try {
 				try {
-					await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver);
+					await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver, edtFirstName.Text, edtLastName.Text);
 
 					bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
 					if (!findCompany)
-						throw new Exception(string.Format("Company {0} doesn't register in Trukman", edtCompany.Text));
+						throw new Exception(string.Format("Company {0} is not registered in Trukman", edtCompany.Text));
 
 					var company = await App.ServerManager.GetUserCompany();
 					if (company != null && string.Compare(company.Name, edtCompany.Text, true) != 0)

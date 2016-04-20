@@ -5,6 +5,7 @@ namespace Trukman.Interfaces
 	public interface ICompany
 	{
 		string Name {get; set;}
+		string DisplayName{ get; set;}
 	}
 }
 

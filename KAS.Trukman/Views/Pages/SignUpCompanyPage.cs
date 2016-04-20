@@ -507,7 +507,7 @@ namespace Trukman
 					SettingsServiceHelper.SaveCompany(edtCompName.Text);
 
 					//await App.ServerManager.Register (companyData.mcCode, edtPhone.Text, UserRole.UserRoleOwner);
-					await App.ServerManager.Register (edtCompName.Text, companyData.mcCode, UserRole.UserRoleOwner);
+					await App.ServerManager.Register (edtCompName.Text, companyData.mcCode, UserRole.UserRoleOwner, null, null);
 
 					await App.ServerManager.AddCompany(edtCompName.Text, edtDBA.Text, 
 						edtCompAddress.Text, edtPhone.Text, edtEmail.Text, edtFleetSize.Text);
