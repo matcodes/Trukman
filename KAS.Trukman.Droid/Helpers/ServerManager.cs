@@ -2,6 +2,8 @@
 using Xamarin;
 using System.Threading.Tasks;
 using Parse;
+
+using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 using System.Collections;
@@ -100,7 +102,24 @@ namespace Trukman.Droid.Helpers
 			return await query.FirstOrDefaultAsync ();
 		}
 
-		public async Task Register(string name, string pass, UserRole role) 
+		IUser GetCurrentUser() {
+			IUser currentUser = convertParseUser(ParseUser.CurrentUser);
+			return currentUser;
+		}
+
+		public IUser convertParseUser(ParseUser user) 
+		{
+			IUser currentUser = IUser ();
+			currentUser.UserName = user.Username;
+			currentUser.LastName = user ["lastName"];
+			currentUser.FirstName = user ["firstName"];
+			currentUser.Role = (int)user ["role"];
+
+			return currentUser;
+		}
+
+
+		public async Task Register(string name, string pass, UserRole role, string firstName, string lastName) 
 		{
 			name = name.ToLower ();
 			ParseUser _user = await GetUser(name);
@@ -110,6 +129,14 @@ namespace Trukman.Droid.Helpers
 					Password = pass
 				};
 				user [ServerRole] = (int)role;
+				if (firstName != null) {
+					user ["firstName"] = firstName;
+				}
+
+				if (lastName != null) {
+					user ["lastName"] = lastName;
+				}
+
 				await user.SignUpAsync ();
 			} else {
 				await this.LogIn (name, pass);
@@ -515,7 +542,8 @@ namespace Trukman.Droid.Helpers
 				var user = new User ();
 				user.UserName = driver.Username;
 				user.Role = UserRole.UserRoleDriver;
-
+				user.LastName = driver ["lastName"];
+				user.FirstName = driver ["firstName"];
 				if (driver.Keys.Contains (ServerLocation)) {
 					ParseGeoPoint point = (ParseGeoPoint)driver[ServerLocation]; 
 					if (point.Longitude != 0 || point.Latitude != 0)
@@ -621,20 +649,41 @@ namespace Trukman.Droid.Helpers
             if (company != null)
             {
                 ParseRelation<ParseUser> userRelation = company.GetRelation<ParseUser>("requesting");
+				ParseRelation<ParseUser> driverRelation = company.GetRelation<ParseUser>("drivers");
 
                 IEnumerable<ParseUser> userEnum = await userRelation.Query.FindAsync();
-                var user = userEnum.FirstOrDefault();
-                if (user != null)
-                {
+				IEnumerable<ParseUser> driversEnum = await userRelation.Query.FindAsync();
+
+				foreach (ParseUser requestUser in userEnum) {
+					bool isAlreadyAccepted = false;
+
+					foreach (ParseUser driver in driversEnum) {
+						if (string.Equals(requestUser.ObjectId, driver.ObjectId)) {
+							isAlreadyAccepted = true;
+							break;
+						}
+					}
+				
+					if (isAlreadyAccepted == false) {
                     User _user = new User();
-                    _user.Email = user.Email;
+						_user.Email = requestUser.Email;
                     _user.Role = UserRole.UserRoleDriver;
-                    _user.UserName = user.Username;
+						_user.UserName = requestUser.Username;
                     return _user;
                 }
             }
+            }
 
             return null;
+		}
+
+		public async Task SaveLadingBill(byte[] data, string TripId) 
+		{
+			var trip = GetTrip (TripId);
+			var file = new ParseFile("LadingBill.jpeg", data);
+			trip ["LadingBill"] = file;
+
+			trip.SaveAsync ();
 		}
 
 		public async Task AcceptUserToCompany(string CompanyName, IUser _user)

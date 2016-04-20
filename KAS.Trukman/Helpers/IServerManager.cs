@@ -35,7 +35,7 @@ namespace Trukman.Helpers
 		Task LogIn (string name, string pass);
 		Task LogOut();
 		bool IsAuthorizedUser ();
-		Task Register (string name, string pass, UserRole role);
+		Task Register (string name, string pass, UserRole role, string firstName, string lastName); 
 		Task AddCompany (string name, string DBA, string address, string phone, string email, string fleetSize);
 		Task<bool> RequestToJoinCompany (string name);
 		void StartTimerForRequest ();
@@ -43,6 +43,7 @@ namespace Trukman.Helpers
 		Task<bool> FindCompany(string name);
 		UserRole GetCurrentUserRole();
 		string GetCurrentUserName ();
+		IUser GetCurrentUser();
 		//string GetCurrentCompanyName();
 		bool IsOwner();
 		Task<AuthorizationRequestStatus> GetAuthorizationStatus (string companyName);
@@ -77,5 +78,8 @@ namespace Trukman.Helpers
         Task<IUser> GetRequestForCompany(string CompanyName);
         Task AcceptUserToCompany(string CompanyName, IUser _user);
         Task DeclineUserFromCompany(string CompanyName, IUser _user);
+
+		Task SaveLadingBill (byte[] data, string TripId);
+
     }
 }

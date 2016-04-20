@@ -69,7 +69,7 @@ namespace Trukman
 					await AlertHandler.ShowCheckCompany (edtCompany.Text);
 				else
 				{
-					await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch);
+					await App.ServerManager.Register (edtName.Text, edtPhone.Text, UserRole.UserRoleDispatch, null, null);
 					SettingsServiceHelper.SaveCompany(edtCompany.Text);
 					bool isJoinToCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
 					if (isJoinToCompany)

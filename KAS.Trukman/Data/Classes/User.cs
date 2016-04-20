@@ -34,14 +34,14 @@ namespace KAS.Trukman
 
         public string FirstName
         {
-            get { return (string)this.GetValue("FirstName"); }
-            set { this.SetValue("FirstName", value); }
+            get { return (string)this.GetValue("firstName"); }
+			set { this.SetValue("firstName", value); }
         }
 
         public string LastName
         {
-            get { return (string)this.GetValue("LastName"); }
-            set { this.SetValue("LastName", value); }
+            get { return (string)this.GetValue("lastName"); }
+			set { this.SetValue("lastName", value); }
         }
 	}
 }
