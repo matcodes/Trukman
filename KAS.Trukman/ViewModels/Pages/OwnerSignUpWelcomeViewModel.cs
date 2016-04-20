@@ -25,7 +25,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            this.CompanyName = ((parameters != null) && (parameters.Length > 0) ? parameters[0].ToString() : "");
+            this.CompanyName = ((parameters != null) && (parameters.Length > 0) ? parameters[0].ToString() : "").ToLower();
         }
 
         public override void Appering()
@@ -93,6 +93,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 {
                     Console.WriteLine(exception);
                     // To do: Show exception message
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {

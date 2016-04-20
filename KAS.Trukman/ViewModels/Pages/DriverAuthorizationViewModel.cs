@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Languages;
+using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -53,6 +54,16 @@ namespace KAS.Trukman.ViewModels.Pages
             {
                 this.FirstName = (this.Driver != null ? this.Driver.FirstName : "");
                 this.LastName = (this.Driver != null ? this.Driver.LastName : "");
+
+                // To do: get first and last names from driver object
+                if (((String.IsNullOrEmpty(this.FirstName)) || (String.IsNullOrEmpty(this.LastName))) && (this.Driver != null))
+                {
+                    var names = this.Driver.UserName.Split(' ');
+                    if (String.IsNullOrEmpty(FirstName))
+                        this.FirstName = (names.Length > 0 ? names[0] : "");
+                    if (String.IsNullOrEmpty(this.LastName))
+                        this.LastName = (names.Length > 1 ? names[1] : "");
+                }
             }
             else if ((propertyName == "FirstName") || (propertyName == "LastName"))
                 this.Localize();
@@ -66,17 +77,19 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Authorize(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
                 {
-//                    App.ServerManager.AcceptUserToCompany()
+                    await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
+                    PopPageMessage.Send();
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
                     // To do: Show exception message
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -88,17 +101,19 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Decline(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
                 {
-                    //                    App.ServerManager.AcceptUserToCompany()
+                    await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
+                    PopPageMessage.Send();
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
                     // To do: Show exception message
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {

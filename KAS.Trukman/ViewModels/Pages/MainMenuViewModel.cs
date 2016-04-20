@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -62,6 +63,15 @@ namespace KAS.Trukman.ViewModels.Pages
             }
         }
 
+        public override void Appering()
+        {
+            base.Appering();
+
+            if (String.IsNullOrEmpty(this.UserName) ||
+                (String.IsNullOrEmpty(this.CompanyName)))
+                this.UpdateUserData();
+        }
+
         private void TripChanged(TripChangedMessage message)
         {
             _trip = ((message != null) && (message.Trip != null) ? message.Trip : null);
@@ -71,6 +81,36 @@ namespace KAS.Trukman.ViewModels.Pages
             this.ShowAdvancesPageMenuItem.IsEnabled = enabled;
             this.ShowDelayEmergencyPageMenuItem.IsEnabled = enabled;
             this.ShowRoutePageMenuItem.IsEnabled = enabled;
+        }
+
+        private void UpdateUserData()
+        {
+            Task.Run(async ()=>{
+
+                try
+                {
+                    // To Do: Call function
+                    //var user = App.ServerManager.GetCurrentUser();
+                    var company = await App.ServerManager.GetUserCompany();
+
+                    var user = new User
+                    {
+                        FirstName = "Alex",
+                        LastName = "Flex"
+                    };
+
+                    var userName = String.Format("{0} {1}", user.FirstName, user.LastName);
+                    var companyName = company.Name;
+
+                    this.UserName = userName;
+                    this.CompanyName = companyName;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+            });
         }
 
         private void SelectItem(object parameter)
@@ -133,6 +173,18 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             get { return (this.GetValue("SelectedItem") as MenuItem); }
             set { this.SetValue("SelectedItem", value); }
+        }
+
+        public string UserName
+        {
+            get { return (string)this.GetValue("UserName"); }
+            set { this.SetValue("UserName", value); }
+        }
+
+        public string CompanyName
+        {
+            get { return (string)this.GetValue("CompanyName"); }
+            set { this.SetValue("CompanyName", value); }
         }
 
         public VisualCommand SelectItemCommand { get; private set; }
