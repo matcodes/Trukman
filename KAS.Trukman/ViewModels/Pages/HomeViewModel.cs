@@ -16,6 +16,7 @@ using KAS.Trukman.Helpers;
 using Trukman.Helpers;
 using Trukman.Messages;
 using Trukman.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -29,6 +30,8 @@ namespace KAS.Trukman.ViewModels.Pages
 		private System.Timers.Timer _driverOnPickupTimer = null;
 		private System.Timers.Timer _driverOnDeliveryTimer = null;
 		private System.Timers.Timer _tripCompletedTimer = null;
+
+        private MenuItem _takePhotoFromCameraMenuItem = null;
 
         public HomeViewModel() 
             : base()
@@ -46,6 +49,16 @@ namespace KAS.Trukman.ViewModels.Pages
             this.GPSPopupCancelCommand = new VisualCommand(this.GPSPopupCancel);
 			this.ShowCameraCommand = new VisualCommand (this.ShowCamera);
 			this.RewardsCommand = new VisualCommand (this.ShowRewards);
+
+            this.MenuItemClickCommand = new VisualCommand(this.MenuItemClick);
+            this.TakePhotoFromCameraCommand = new VisualCommand(this.TakePhotoFromCamera);
+
+            _takePhotoFromCameraMenuItem = new MenuItem(this.TakePhotoFromCameraCommand) {
+               
+            };
+
+            this.ArrivedMenuItems = new ObservableCollection<MenuItem>();
+            this.ArrivedMenuItems.Add(_takePhotoFromCameraMenuItem);
         }
 
         public override void Initialize(params object[] parameters)
@@ -597,6 +610,18 @@ namespace KAS.Trukman.ViewModels.Pages
 		{
 		}
 
+        private void MenuItemClick(object parameter)
+        {
+            var menuItem = (parameter as MenuItem);
+            if ((menuItem != null) && (menuItem.Command != null) && (menuItem.Command.CanExecute(parameter)))
+                menuItem.Command.Execute(parameter);
+        }
+
+        private void TakePhotoFromCamera(object parameter)
+        {
+            TakePhotoFromCameraMessage.Send(this.Trip);
+        }
+
         public HomeStates State
         {
             get { return (HomeStates)this.GetValue("State", HomeStates.WaitingForTrip); }
@@ -717,6 +742,8 @@ namespace KAS.Trukman.ViewModels.Pages
 			set { this.SetValue ("CurrentPosition", value);}
 		}
 
+        public ObservableCollection<MenuItem> ArrivedMenuItems { get; private set; }
+
         public VisualCommand ShowMainMenuCommand { get; private set; }
 
         public VisualCommand DeclineCommand { get; private set; }
@@ -742,6 +769,10 @@ namespace KAS.Trukman.ViewModels.Pages
 		public VisualCommand ShowCameraCommand { get; private set; }
 
 		public VisualCommand RewardsCommand { get; private set; }
+
+        public VisualCommand MenuItemClickCommand { get; private set; }
+
+        public VisualCommand TakePhotoFromCameraCommand { get; private set; }
     }
     #endregion
 

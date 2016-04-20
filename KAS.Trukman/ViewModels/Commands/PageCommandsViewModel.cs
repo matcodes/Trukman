@@ -1,4 +1,5 @@
 ﻿using KAS.Trukman.Classes;
+using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace KAS.Trukman.ViewModels.Commands
             this.MapCommand = new VisualCommand(this.Map);
             this.LocationCommand = new VisualCommand(this.Location);
             this.CameraCommand = new VisualCommand(this.Camera);
+
+            TripChangedMessage.Subscribe(this, this.TripChanged);
         }
 
         public void DisableCommands()
@@ -40,6 +43,11 @@ namespace KAS.Trukman.ViewModels.Commands
                 this.LocationCommand.IsEnabled = true;
                 this.CameraCommand.IsEnabled = true;
             });
+        }
+
+        private void TripChanged(TripChangedMessage message)
+        {
+            this.Trip = message.Trip;
         }
 
         private void Home(object parameter)
@@ -119,7 +127,8 @@ namespace KAS.Trukman.ViewModels.Commands
             this.DisableCommands();
             try
             {
-                TakePhotoFromCameraMessage.Send();
+                if (this.Trip != null)
+                    TakePhotoFromCameraMessage.Send(this.Trip);
             }
             catch (Exception exception)
             {
@@ -131,6 +140,8 @@ namespace KAS.Trukman.ViewModels.Commands
                 this.EnableCommands();
             }
         }
+
+        public ITrip Trip { get; private set; }
 
         public VisualCommand HomeCommand { get; private set; }
 

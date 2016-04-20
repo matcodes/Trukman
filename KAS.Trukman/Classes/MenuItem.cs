@@ -23,6 +23,12 @@ namespace KAS.Trukman.Classes
 
         public VisualCommand Command { get; private set; }
 
+        public string Icon
+        {
+            get { return (string)this.GetValue("Icon"); }
+            set { this.SetValue("Icon", value); }
+        }
+
         public string Label
         {
             get { return (string)this.GetValue("Label"); }

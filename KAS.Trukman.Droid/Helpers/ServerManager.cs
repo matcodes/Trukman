@@ -142,7 +142,7 @@ namespace Trukman.Droid.Helpers
 				}
 
 				if (lastName != null) {
-					user ["lastName"] = lastName;
+					user ["LastName"] = lastName;
 				}
 
 				await user.SignUpAsync ();
@@ -659,27 +659,46 @@ namespace Trukman.Droid.Helpers
                 ParseRelation<ParseUser> userRelation = company.GetRelation<ParseUser>("requesting");
 				ParseRelation<ParseUser> driverRelation = company.GetRelation<ParseUser>("drivers");
 
-                IEnumerable<ParseUser> userEnum = await userRelation.Query.FindAsync();
-				IEnumerable<ParseUser> driversEnum = await userRelation.Query.FindAsync();
+                var userEnum = await userRelation.Query.FindAsync();
+				var driversEnum = await driverRelation.Query.FindAsync();
 
-				foreach (ParseUser requestUser in userEnum) {
-					bool isAlreadyAccepted = false;
+                var users = new List<ParseUser>(userEnum);
+                var drivers = new List<ParseUser>(driversEnum);
 
-					foreach (ParseUser driver in driversEnum) {
-						if (string.Equals(requestUser.ObjectId, driver.ObjectId)) {
-							isAlreadyAccepted = true;
-							break;
-						}
-					}
-				
-					if (isAlreadyAccepted == false) {
-                    User _user = new User();
-						_user.Email = requestUser.Email;
-                    _user.Role = UserRole.UserRoleDriver;
-						_user.UserName = requestUser.Username;
-                    return _user;
+                foreach (var user in users)
+                {
+                    var driver = drivers.FirstOrDefault(d => d.ObjectId == user.ObjectId);
+                    if (driver == null)
+                    {
+                        driver = await user.FetchAsync();
+                        User _user = new User();
+                        _user.Email = driver.Email;
+                        _user.Role = UserRole.UserRoleDriver;
+                        _user.UserName = driver.Username;
+                        _user.FirstName = (string)driver["firstName"];
+                        _user.LastName = (string)driver["LastName"];
+                        return _user;
+                    }
                 }
-            }
+
+                /*				foreach (ParseUser requestUser in userEnum) {
+                                    bool isAlreadyAccepted = false;
+
+                                    foreach (ParseUser driver in driversEnum) {
+                                        if (string.Equals(requestUser.ObjectId, driver.ObjectId)) {
+                                            isAlreadyAccepted = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (isAlreadyAccepted == false) {
+                                    User _user = new User();
+                                        _user.Email = requestUser.Email;
+                                    _user.Role = UserRole.UserRoleDriver;
+                                        _user.UserName = requestUser.Username;
+                                    return _user;
+                                }
+                            }*/
             }
 
             return null;

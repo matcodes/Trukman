@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KAS.Trukman.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -11,9 +12,9 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "TakePhotoFromCameraMessage";
 
-        public static void Send()
+        public static void Send(ITrip trip)
         {
-            var message = new TakePhotoFromCameraMessage();
+            var message = new TakePhotoFromCameraMessage(trip);
             MessagingCenter.Send<TakePhotoFromCameraMessage>(message, MESSAGE_KEY);
         }
 
@@ -28,9 +29,12 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public TakePhotoFromCameraMessage()
+        public TakePhotoFromCameraMessage(ITrip trip)
         {
+            this.Trip = trip;
         }
+
+        public ITrip Trip { get; private set; }
     }
     #endregion
 }
