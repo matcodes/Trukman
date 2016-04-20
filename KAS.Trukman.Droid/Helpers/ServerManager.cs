@@ -662,8 +662,14 @@ namespace Trukman.Droid.Helpers
                 var userEnum = await userRelation.Query.FindAsync();
 				var driversEnum = await driverRelation.Query.FindAsync();
 
-                var users = new List<ParseUser>(userEnum);
-                var drivers = new List<ParseUser>(driversEnum);
+                var users = new List<ParseUser>();
+                var drivers = new List<ParseUser>();
+
+                foreach (var user in userEnum)
+                    users.Add(user);
+
+                foreach (var driver in driversEnum)
+                    drivers.Add(driver);
 
                 foreach (var user in users)
                 {

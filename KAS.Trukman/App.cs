@@ -124,16 +124,22 @@ namespace KAS.Trukman
 			this.MainPage = new MainPage ();
 		}
 
-        private async void PopPage(PopPageMessage message)
+        private void PopPage(PopPageMessage message)
         {
             if (this.MainPage is NavigationPage)
-                await (this.MainPage as NavigationPage).PopAsync();
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await (this.MainPage as NavigationPage).PopAsync();
+                });
         }
 
-		private async void PopToRootPage(PopToRootPageMessage message)
+		private void PopToRootPage(PopToRootPageMessage message)
 		{
-			if (this.MainPage is NavigationPage)
-				await (this.MainPage as NavigationPage).PopToRootAsync();
+            if (this.MainPage is NavigationPage)
+                Device.BeginInvokeOnMainThread(async () => 
+                {
+                    await (this.MainPage as NavigationPage).PopToRootAsync();
+                });
 		}
 
         private async void ShowOwnerSignUpWelcomePage(ShowOwnerSignUpWelcomePageMessage message)

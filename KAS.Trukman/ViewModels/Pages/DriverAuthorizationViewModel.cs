@@ -106,7 +106,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.DisableCommands();
                 try
                 {
-                    await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
+                    await App.ServerManager.DeclineUserFromCompany(this.CompanyName, this.Driver);
                     PopPageMessage.Send();
                 }
                 catch (Exception exception)

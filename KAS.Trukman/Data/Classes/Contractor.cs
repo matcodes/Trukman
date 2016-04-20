@@ -8,6 +8,15 @@ namespace KAS.Trukman.Data.Classes
     #region Contractor
     public class Contractor : MainData, IContractor
     {
+        public Contractor()
+        {
+            this.AddressLineFirst = "";
+            this.AddressLineSecond = "";
+            this.Fax = "";
+            this.Name = "";
+            this.Phone = "";
+        }
+
         #region IContractor
         public string AddressLineFirst
         {

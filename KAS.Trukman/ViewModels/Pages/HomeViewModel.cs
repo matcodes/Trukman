@@ -489,9 +489,15 @@ namespace KAS.Trukman.ViewModels.Pages
 				Task.Run (async () => {
 					var geocoder = new Geocoder ();
 					var locations = await geocoder.GetPositionsForAddressAsync (contractor.AddressLineFirst + " " + contractor.AddressLineSecond);
-
 					var location = locations.FirstOrDefault ();
-					if ((location.Latitude == 0) && (location.Longitude == 0) && !string.IsNullOrEmpty (contractor.AddressLineSecond)) {
+
+                    if ((location.Latitude == 0) && (location.Longitude == 0) && !string.IsNullOrEmpty(contractor.AddressLineSecond))
+                    {
+                        locations = await geocoder.GetPositionsForAddressAsync(contractor.AddressLineSecond + " " + contractor.AddressLineFirst);
+                        location = locations.FirstOrDefault();
+                    }
+
+                    if ((location.Latitude == 0) && (location.Longitude == 0) && !string.IsNullOrEmpty (contractor.AddressLineSecond)) {
 						locations = await geocoder.GetPositionsForAddressAsync (contractor.AddressLineSecond);
 						location = locations.FirstOrDefault ();
 					}

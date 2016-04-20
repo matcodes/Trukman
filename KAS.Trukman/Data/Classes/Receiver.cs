@@ -8,6 +8,10 @@ namespace KAS.Trukman.Data.Classes
     #region Receiver
     public class Receiver : Contractor, IReceiver
     {
+        public Receiver()
+            : base()
+        {
+        }
     }
     #endregion
 }

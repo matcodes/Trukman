@@ -8,6 +8,10 @@ namespace KAS.Trukman.Data.Classes
     #region Shipper
     public class Shipper : Contractor, IShipper
     {
+        public Shipper()
+            : base()
+        {
+        }
     }
     #endregion
 }

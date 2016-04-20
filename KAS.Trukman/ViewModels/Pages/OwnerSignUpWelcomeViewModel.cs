@@ -64,7 +64,7 @@ namespace KAS.Trukman.ViewModels.Pages
             {
                 _checkDriversTimer = new System.Timers.Timer { Interval = 10000 };
                 _checkDriversTimer.Elapsed += (sender, args) => {
-//                    this.CheckDrivers();
+                    this.CheckDrivers();
                 };
             }
             _checkDriversTimer.Start();
@@ -87,7 +87,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     if (user != null)
                         ShowDriverAuthorizationPageMessage.Send(this.CompanyName, user);
                     else
-                        this.StartCheckDriversTimer();
+                       this.StartCheckDriversTimer();
                 }
                 catch (Exception exception)
                 {
