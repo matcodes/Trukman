@@ -3,6 +3,7 @@ using KAS.Trukman.Languages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Trukman.Interfaces;
 
 namespace KAS.Trukman.ViewModels.Pages
@@ -22,7 +23,8 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            this.Driver = (parameters != null && parameters.Length > 0 ? (parameters[0] as IUser) : null);
+            this.CompanyName = (parameters != null && parameters.Length > 0 ? (parameters[0].ToString()) : "");
+            this.Driver = (parameters != null && parameters.Length > 1 ? (parameters[1] as IUser) : null);
 
             this.AssignIDNumber = "";
         }
@@ -64,10 +66,52 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Authorize(object parameter)
         {
+            Task.Run(() => {
+                this.IsBusy = true;
+                this.DisableCommands();
+                try
+                {
+//                    App.ServerManager.AcceptUserToCompany()
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    // To do: Show exception message
+                }
+                finally
+                {
+                    this.EnabledCommands();
+                    this.IsBusy = false;
+                }
+            });
         }
 
         private void Decline(object parameter)
         {
+            Task.Run(() => {
+                this.IsBusy = true;
+                this.DisableCommands();
+                try
+                {
+                    //                    App.ServerManager.AcceptUserToCompany()
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    // To do: Show exception message
+                }
+                finally
+                {
+                    this.EnabledCommands();
+                    this.IsBusy = false;
+                }
+            });
+        }
+
+        public string CompanyName
+        {
+            get { return (string)this.GetValue("CompanyName"); }
+            set { this.SetValue("CompanyName", value); }
         }
 
         public IUser Driver

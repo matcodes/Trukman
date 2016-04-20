@@ -152,7 +152,7 @@ namespace KAS.Trukman
                 Device.BeginInvokeOnMainThread(async () => 
                 {
                     var page = new DriverAuthorizationPage();
-                    page.ViewModel.Initialize(message.Driver);
+                    page.ViewModel.Initialize(message.CompanyName, message.Driver);
                     await (this.MainPage as NavigationPage).PushAsync(page);
                 });
         }
@@ -180,12 +180,15 @@ namespace KAS.Trukman
 		private void ShowTopPage(ShowTopPageMessage message)
 		{
 			Device.BeginInvokeOnMainThread (async () => {
-				//var _navigationPage = new NavigationPage ();
-				//SettingsServiceHelper.SaveRejectedCounter(0);
-				if (App.ServerManager.IsAuthorizedUser () && App.serverManager.GetCurrentUserRole () == global::Trukman.Interfaces.UserRole.UserRoleOwner) {
+                //var _navigationPage = new NavigationPage ();
+                //SettingsServiceHelper.SaveRejectedCounter(0);
+                string companyName = SettingsServiceHelper.GetCompany();
+                if (App.ServerManager.IsAuthorizedUser () && App.serverManager.GetCurrentUserRole () == global::Trukman.Interfaces.UserRole.UserRoleOwner) {
+                    var page = new OwnerSignUpWelcomePage();
+                    page.ViewModel.Initialize(companyName);
+                    this.MainPage = new NavigationPage(page);
 				} 
 				else {
-					string companyName = SettingsServiceHelper.GetCompany ();
 
 					if (!App.ServerManager.IsAuthorizedUser () || string.IsNullOrEmpty (companyName)) {
 						this.MainPage = new NavigationPage (new SignUpTypePage ());

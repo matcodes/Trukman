@@ -78,13 +78,16 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void CheckDrivers()
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
                 {
-                    Thread.Sleep(2000);
-                    ShowDriverAuthorizationPageMessage.Send(null);
+                    var user = await App.ServerManager.GetRequestForCompany(this.CompanyName);
+                    if (user != null)
+                        ShowDriverAuthorizationPageMessage.Send(this.CompanyName, user);
+                    else
+                        this.StartCheckDriversTimer();
                 }
                 catch (Exception exception)
                 {
@@ -96,8 +99,6 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.EnabledCommands();
                     this.IsBusy = false;
                 }
-
-                this.StartCheckDriversTimer();
             });
         }
 

@@ -74,7 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\PopToRootPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowAdvancesPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDelayEmergencyPageMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDriverAuthorizePageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDriverAuthorizationPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowGPSSettingsMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowHelpPageMessage.cs" />

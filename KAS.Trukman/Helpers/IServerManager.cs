@@ -72,5 +72,10 @@ namespace Trukman.Helpers
 		Task<IEnumerable<IAlerts>> GetPossibleAlerts();
 
 		Task<ICompany> GetUserCompany ();
-	}
+
+
+        Task<IUser> GetRequestForCompany(string CompanyName);
+        Task AcceptUserToCompany(string CompanyName, IUser _user);
+        Task DeclineUserFromCompany(string CompanyName, IUser _user);
+    }
 }

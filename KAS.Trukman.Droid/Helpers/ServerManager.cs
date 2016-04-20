@@ -133,7 +133,7 @@ namespace Trukman.Droid.Helpers
 
 		private async Task<ParseObject> GetCompany(string name)
 		{
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name);
+			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, name.ToLower());
 			var companyData = await query.FirstOrDefaultAsync ();
 			return companyData;
 		}
@@ -614,25 +614,26 @@ namespace Trukman.Droid.Helpers
 				return null;
 		}
 
-		public async Task<IUser> GetRequestForCompany(string CompanyName) 
-		{
-			var query = ParseObject.GetQuery (ServerCompany).WhereEqualTo (ServerName, CompanyName.ToLower());
-			query.Include ("requesting");
+        public async Task<IUser> GetRequestForCompany(string companyName)
+        {
+            var company = await GetCompany(companyName);
+            if (company != null)
+            {
+                ParseRelation<ParseUser> userRelation = company.GetRelation<ParseUser>("requesting");
 
-			var companyData = await query.FirstOrDefaultAsync ();
-			if (companyData != null) {
-				IEnumerable<ParseUser> userEnum = companyData["requesting"];
-				var user = userEnum.First ();
-				if (user != null) {
-					User _user = User ();
-					_user.Email = user.Email;
-					_user.Role = UserRole.UserRoleDriver;
-					_user.UserName = user.Username;
-					return _user;
-				}
-			}
+                IEnumerable<ParseUser> userEnum = await userRelation.Query.FindAsync();
+                var user = userEnum.FirstOrDefault();
+                if (user != null)
+                {
+                    User _user = new User();
+                    _user.Email = user.Email;
+                    _user.Role = UserRole.UserRoleDriver;
+                    _user.UserName = user.Username;
+                    return _user;
+                }
+            }
 
-			return null
+            return null;
 		}
 
 		public async Task AcceptUserToCompany(string CompanyName, IUser _user)
@@ -644,6 +645,7 @@ namespace Trukman.Droid.Helpers
 			relation.Add (user);
 			await company.SaveAsync ();
 		}
+
 		public async Task DeclineUserFromCompany(string CompanyName, IUser _user)
 		{
 			var company = await GetCompany (CompanyName.ToLower());
