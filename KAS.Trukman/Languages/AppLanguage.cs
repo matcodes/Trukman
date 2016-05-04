@@ -23,6 +23,8 @@ namespace KAS.Trukman.Languages
                 this.AppName = appLanguage.AppName;
 
                 #region Page titles
+                this.SignUpPageName = appLanguage.SignUpPageName;
+                this.OwnerFleetPageName = appLanguage.OwnerFleetPageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
                 this.ReceiverInfoPageName = appLanguage.ReceiverInfoPageName;
@@ -48,6 +50,30 @@ namespace KAS.Trukman.Languages
                 this.MainMenuHelpLabel = appLanguage.MainMenuHelpLabel;
                 #endregion
 
+                #region Owner main menu
+                this.OwnerMainMenuManageDriversLabel = appLanguage.OwnerMainMenuManageDriversLabel;
+                this.OwnerMainMenuManageDispatchersLabel = appLanguage.OwnerMainMenuManageDispatchersLabel;
+                this.OwnerMainMenuManageFleetLabel = appLanguage.OwnerMainMenuManageFleetLabel;
+                this.OwnerMainMenuSettingsLabel = appLanguage.OwnerMainMenuSettingsLabel;
+                this.OwnerMainMenuHelpLabel = appLanguage.OwnerMainMenuHelpLabel;
+                this.OwnerMainMenuSelectLanguageLabel = appLanguage.OwnerMainMenuSelectLanguageLabel;
+                this.OwnerMainMenuSearchTextPlaceholder = appLanguage.OwnerMainMenuSearchTextPlaceholder;
+                #endregion
+
+                #region Owner Home page
+                this.OwnerHomeBrockerListCommandItemLabel = appLanguage.OwnerHomeBrockerListCommandItemLabel;
+                this.OwnerHomeDelayAlertsCommandItem = appLanguage.OwnerHomeDelayAlertsCommandItem;
+                this.OwnerHomeDeliveryUpdateCommandItemLabel = appLanguage.OwnerHomeDeliveryUpdateCommandItemLabel;
+                this.OwnerHomeDispatchDriverCommandItemLabel = appLanguage.OwnerHomeDispatchDriverCommandItemLabel;
+                this.OwnerHomeFuelAdvanceCommandItemLabel = appLanguage.OwnerHomeFuelAdvanceCommandItemLabel;
+                this.OwnerHomeInvoiceCommandItemLabel = appLanguage.OwnerHomeInvoiceCommandItemLabel;
+                this.OwnerHomeLoadConfirmationCommandItemLabel = appLanguage.OwnerHomeLoadConfirmationCommandItemLabel;
+                this.OwnerHomeLumperCommandItemLabel = appLanguage.OwnerHomeLumperCommandItemLabel;
+                this.OwnerHomeRateConfirmationCommandItemLabel = appLanguage.OwnerHomeRateConfirmationCommandItemLabel;
+                this.OwnerHomeReportsCommandItemLabel = appLanguage.OwnerHomeReportsCommandItemLabel;
+                this.OwnerHomeTrackFleetCommandItemLabel = appLanguage.OwnerHomeTrackFleetCommandItemLabel;
+                #endregion
+
                 #region Home page
                 this.HomeWaitingForTripLabel = appLanguage.HomeWaitingForTripLabel;
                 this.HomeNextTripLabel = appLanguage.HomeNextTripLabel;
@@ -59,7 +85,9 @@ namespace KAS.Trukman.Languages
                 this.HomeArrivedOnTimeBonusPointsLabel = appLanguage.HomeArrivedOnTimeBonusPointsLabel;
                 this.HomeArrivedOnTimeBonusPointsMinsLabel = appLanguage.HomeArrivedOnTimeBonusPointsMinsLabel;
                 this.HomeTotalPointsLabel = appLanguage.HomeTotalPointsLabel;
-                this.HomeBonusPointsForPhotoLabel = appLanguage.HomeBonusPointsForPhotoLabel;
+                this.HomeNextStepLabel = appLanguage.HomeNextStepLabel;
+                this.HomeBonusPointsForPickupPhotoLabel = appLanguage.HomeBonusPointsForPickupPhotoLabel;
+                this.HomeBonusPointsForDeliveryPhotoLabel = appLanguage.HomeBonusPointsForDeliveryPhotoLabel;
                 this.HomeBonusPointsForTimeLabel = appLanguage.HomeBonusPointsForTimeLabel;
                 this.HomeArrivedLateLabel = appLanguage.HomeArrivedLateLabel;
                 this.HomeArrivedLateBonusLabel = appLanguage.HomeArrivedLateBonusLabel;
@@ -79,8 +107,8 @@ namespace KAS.Trukman.Languages
                 this.HomeGPSPopupSettingsButtonText = appLanguage.HomeGPSPopupSettingsButtonText;
                 this.HomeGPSPopupCancelButtonText = appLanguage.HomeGPSPopupCancelButtonText;
 
-				this.HomeCongratulations = appLanguage.HomeCongratulations;
-				this.HomeRewardsButtonText = appLanguage.HomeRewardsButtonText;
+                this.HomeCongratulations = appLanguage.HomeCongratulations;
+                this.HomeRewardsButtonText = appLanguage.HomeRewardsButtonText;
                 #endregion
 
                 #region Trip page
@@ -147,9 +175,44 @@ namespace KAS.Trukman.Languages
                 this.TimeAM = appLanguage.TimeAM;
                 this.TimePM = appLanguage.TimePM;
                 #endregion
-            
-				#region Sign up
-				this.SignUpLabel = appLanguage.SignUpLabel;
+
+                #region Sign up
+                this.SignUpEnglishLanguageLabel = appLanguage.SignUpEnglishLanguageLabel;
+                this.SignUpEspanolLanguageLabel = appLanguage.SignUpEspanolLanguageLabel;
+                this.SignUpMainLabel = appLanguage.SignUpMainLabel;
+                this.SignUpDriverLabel = appLanguage.SignUpDriverLabel;
+                this.SignUpDispatcherLabel = appLanguage.SignUpDispatcherLabel;
+                this.SignUpOwnerLabel = appLanguage.SignUpOwnerLabel;
+                this.SignUpDriverPendingLabel = appLanguage.SignUpDriverPendingLabel;
+                this.SignUpDriverDeclinedLabel = appLanguage.SignUpDriverDeclinedLabel;
+                this.SignUpDriverAuthorizedLabel = appLanguage.SignUpDriverAuthorizedLabel;
+
+                this.SignUpLabel = appLanguage.SignUpLabel;
+                this.SignUpSelectCompanyAcceptButtonText = appLanguage.SignUpSelectCompanyAcceptButtonText;
+                this.SignUpSelectCompanyCancelButtonText = appLanguage.SignUpSelectCompanyCancelButtonText;
+                this.SignUpSubmitButtonText = appLanguage.SignUpSubmitButtonText;
+                this.SignUpContinueButtonText = appLanguage.SignUpContinueButtonText;
+                this.SignUpCancelAuthorizationButtonText = appLanguage.SignUpCancelAuthorizationButtonText;
+
+                this.SignUpMCCodePlaceholder = appLanguage.SignUpMCCodePlaceholder;
+                this.SignUpCompanyNamePlaceholder = appLanguage.SignUpCompanyNamePlaceholder;
+                this.SignUpCompanyDBAPlaceholder = appLanguage.SignUpCompanyDBAPlaceholder;
+                this.SignUpCompanyAddressPlaceholder = appLanguage.SignUpCompanyAddressPlaceholder;
+                this.SignUpCompanyPhonePlaceholder = appLanguage.SignUpCompanyPhonePlaceholder;
+                this.SignUpCompanyEMailPlaceholder = appLanguage.SignUpCompanyEMailPlaceholder;
+                this.SignUpCompanyFleetSizePlaceholder = appLanguage.SignUpCompanyFleetSizePlaceholder;
+                this.SignUpSelectCompanySearchPlaceholder = appLanguage.SignUpSelectCompanySearchPlaceholder;
+                this.SignUpDriverFirstNamePlaceholder = appLanguage.SignUpDriverFirstNamePlaceholder;
+                this.SignUpDriverLastNamePlaceholder = appLanguage.SignUpDriverLastNamePlaceholder;
+                this.SignUpDriverPhonePlaceholder = appLanguage.SignUpDriverPhonePlaceholder;
+                this.SignUpDriverCompanyNamePlaceholder = appLanguage.SignUpDriverCompanyNamePlaceholder;
+
+                this.SignUpMCExceededMessageText = appLanguage.SignUpMCExceededMessageText;
+
+                this.SignUpMCNotFoundErrorMessageText = appLanguage.SignUpMCNotFoundErrorMessageText;
+                this.SignUpCompanyPhoneEmptyErrorMessageText = appLanguage.SignUpCompanyPhoneEmptyErrorMessageText;
+                this.SignUpCompanyIncorectEMailErrorMessageText = appLanguage.SignUpCompanyIncorectEMailErrorMessageText;
+                this.SignUpCompanyFleetSizeErrorMessageText = appLanguage.SignUpCompanyFleetSizeErrorMessageText;
                 #endregion
 
                 #region Driver authorization page
@@ -167,6 +230,17 @@ namespace KAS.Trukman.Languages
                 #region SignUp user roles
                 this.SignUpUserRoleOwnerOperator = appLanguage.SignUpUserRoleOwnerOperator;
                 #endregion
+
+                #region Error messages
+                this.CheckInternetConnectionErrorMessage = appLanguage.CheckInternetConnectionErrorMessage;
+                #endregion
+
+                #region System messages
+                this.FindNextTripSystemMessage = appLanguage.FindNextTripSystemMessage;
+                this.TripCancelledSystemMessage = appLanguage.TripCancelledSystemMessage;
+                this.ArrivedToPickupSystemMessage = appLanguage.ArrivedToPickupSystemMessage;
+                this.ArrivedToDeliverySystemMessage = appLanguage.ArrivedToDeliverySystemMessage;
+                #endregion
             }
         }
 
@@ -179,6 +253,18 @@ namespace KAS.Trukman.Languages
         }
 
         #region Page names
+        public string SignUpPageName
+        {
+            get { return (string)this.GetValue("SignUpPageName"); }
+            set { this.SetValue("SignUpPageName", value); }
+        }
+
+        public string OwnerFleetPageName
+        {
+            get { return (string)this.GetValue("OwnerFleetPageName"); }
+            set { this.SetValue("OwnerFleetPageName", value); }
+        }
+
         public string TripPageName
         {
             get { return (string)this.GetValue("TripPageName"); }
@@ -302,6 +388,118 @@ namespace KAS.Trukman.Languages
         }
         #endregion
 
+        #region Owner main menu
+        public string OwnerMainMenuManageDriversLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuManageDriversLabel"); }
+            set { this.SetValue("OwnerMainMenuManageDriversLabel", value); }
+        }
+
+        public string OwnerMainMenuManageDispatchersLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuManageDispatchersLabel"); }
+            set { this.SetValue("OwnerMainMenuManageDispatchersLabel", value); }
+        }
+
+        public string OwnerMainMenuManageFleetLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuManageFleetLabel"); }
+            set { this.SetValue("OwnerMainMenuManageFleetLabel", value); }
+        }
+
+        public string OwnerMainMenuSettingsLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuSettingsLabel"); }
+            set { this.SetValue("OwnerMainMenuSettingsLabel", value); }
+        }
+
+        public string OwnerMainMenuHelpLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuHelpLabel"); }
+            set { this.SetValue("OwnerMainMenuHelpLabel", value); }
+        }
+
+        public string OwnerMainMenuSelectLanguageLabel
+        {
+            get { return (string)this.GetValue("OwnerMainMenuSelectLanguageLabel"); }
+            set { this.SetValue("OwnerMainMenuSelectLanguageLabel", value); }
+        }
+
+        public string OwnerMainMenuSearchTextPlaceholder
+        {
+            get { return (string)this.GetValue("OwnerMainMenuSearchTextPlaceholder"); }
+            set { this.SetValue("OwnerMainMenuSearchTextPlaceholder", value); }
+        }
+        #endregion
+
+        #region Owner Home page
+        public string OwnerHomeRateConfirmationCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeRateConfirmationCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeRateConfirmationCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeDispatchDriverCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeDispatchDriverCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeDispatchDriverCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeLoadConfirmationCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeLoadConfirmationCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeLoadConfirmationCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeBrockerListCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeBrockerListCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeBrockerListCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeFuelAdvanceCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeFuelAdvanceCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeFuelAdvanceCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeTrackFleetCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeTrackFleetCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeTrackFleetCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeLumperCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeLumperCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeLumperCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeInvoiceCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeInvoiceCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeInvoiceCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeReportsCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeReportsCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeReportsCommandItemLabel", value); }
+        }
+
+        public string OwnerHomeDelayAlertsCommandItem
+        {
+            get { return (string)this.GetValue("OwnerHomeDelayAlertsCommandItem"); }
+            set { this.SetValue("OwnerHomeDelayAlertsCommandItem", value); }
+        }
+
+        public string OwnerHomeDeliveryUpdateCommandItemLabel
+        {
+            get { return (string)this.GetValue("OwnerHomeDeliveryUpdateCommandItemLabel"); }
+            set { this.SetValue("OwnerHomeDeliveryUpdateCommandItemLabel", value); }
+        }
+        #endregion
+
         #region Home page
         public string HomeWaitingForTripLabel
         {
@@ -369,10 +567,22 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HomeTotalPointsLabel", value); }
         }
 
-        public string HomeBonusPointsForPhotoLabel
+        public string HomeNextStepLabel
         {
-            get { return (string)this.GetValue("HomeBonusPointsForPhotoLabel"); }
-            set { this.SetValue("HomeBonusPointsForPhotoLabel", value); }
+            get { return (string)this.GetValue("HomeNextStepLabel"); }
+            set { this.SetValue("HomeNextStepLabel", value); }
+        }
+
+        public string HomeBonusPointsForPickupPhotoLabel
+        {
+            get { return (string)this.GetValue("HomeBonusPointsForPickupPhotoLabel"); }
+            set { this.SetValue("HomeBonusPointsForPickupPhotoLabel", value); }
+        }
+
+        public string HomeBonusPointsForDeliveryPhotoLabel
+        {
+            get { return (string)this.GetValue("HomeBonusPointsForDeliveryPhotoLabel"); }
+            set { this.SetValue("HomeBonusPointsForDeliveryPhotoLabel", value); }
         }
 
         public string HomeBonusPointsForTimeLabel
@@ -471,17 +681,17 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HomeGPSPopupSettingsButtonText", value); }
         }
 
-		public string HomeCongratulations
-		{
-			get { return (string)this.GetValue ("HomeCongratulations"); }
-			set { this.SetValue ("HomeCongratulations", value); }
-		}
+        public string HomeCongratulations
+        {
+            get { return (string)this.GetValue("HomeCongratulations"); }
+            set { this.SetValue("HomeCongratulations", value); }
+        }
 
-		public string HomeRewardsButtonText
-		{
-			get { return (string)this.GetValue ("HomeRewardsButtonText"); }
-			set { this.SetValue ("HomeRewardsButtonText", value); }
-		}
+        public string HomeRewardsButtonText
+        {
+            get { return (string)this.GetValue("HomeRewardsButtonText"); }
+            set { this.SetValue("HomeRewardsButtonText", value); }
+        }
         #endregion
 
         #region Trip page
@@ -750,12 +960,198 @@ namespace KAS.Trukman.Languages
         }
         #endregion
 
-		#region Sign up
-		public string SignUpLabel
-		{
-			get { return (string)this.GetValue ("SignUp"); }
-			set { this.SetValue ("SignUp", value); }
-		}
+        #region Sign up
+        public string SignUpEnglishLanguageLabel
+        {
+            get { return (string)this.GetValue("SignUpEnglishLanguageLabel"); }
+            set { this.SetValue("SignUpEnglishLanguageLabel", value); }
+        }
+
+        public string SignUpEspanolLanguageLabel
+        {
+            get { return (string)this.GetValue("SignUpEspanolLanguageLabel"); }
+            set { this.SetValue("SignUpEspanolLanguageLabel", value); }
+        }
+
+        public string SignUpMainLabel
+        {
+            get { return (string)this.GetValue("SignUpMainLabel"); }
+            set { this.SetValue("SignUpMainLabel", value); }
+        }
+
+        public string SignUpDriverLabel
+        {
+            get { return (string)this.GetValue("SignUpDriverLabel"); }
+            set { this.SetValue("SignUpDriverLabel", value); }
+        }
+
+        public string SignUpDispatcherLabel
+        {
+            get { return (string)this.GetValue("SignUpDispatcherLabel"); }
+            set { this.SetValue("SignUpDispatcherLabel", value); }
+        }
+
+        public string SignUpOwnerLabel
+        {
+            get { return (string)this.GetValue("SignUpOwnerLabel"); }
+            set { this.SetValue("SignUpOwnerLabel", value); }
+        }
+
+        public string SignUpDriverPendingLabel
+        {
+            get { return (string)this.GetValue("SignUpDriverPendingLabel"); }
+            set { this.SetValue("SignUpDriverPendingLabel", value); }
+        }
+
+        public string SignUpDriverDeclinedLabel
+        {
+            get { return (string)this.GetValue("SignUpDriverDeclinedLabel"); }
+            set { this.SetValue("SignUpDriverDeclinedLabel", value); }
+        }
+
+        public string SignUpDriverAuthorizedLabel
+        {
+            get { return (string)this.GetValue("SignUpDriverAuthorizedLabel"); }
+            set { this.SetValue("SignUpDriverAuthorizedLabel", value); }
+        }
+
+        public string SignUpLabel
+        {
+            get { return (string)this.GetValue("SignUp"); }
+            set { this.SetValue("SignUp", value); }
+        }
+
+        public string SignUpSelectCompanyAcceptButtonText
+        {
+            get { return (string)this.GetValue("SignUpSelectCompanyAcceptButtonText"); }
+            set { this.SetValue("SignUpSelectCompanyAcceptButtonText", value); }
+        }
+
+        public string SignUpSelectCompanyCancelButtonText
+        {
+            get { return (string)this.GetValue("SignUpSelectCompanyCancelButtonText"); }
+            set { this.SetValue("SignUpSelectCompanyCancelButtonText", value); }
+        }
+
+        public string SignUpSubmitButtonText
+        {
+            get { return (string)this.GetValue("SignUpSubmitButtonText"); }
+            set { this.SetValue("SignUpSubmitButtonText", value); }
+        }
+
+        public string SignUpContinueButtonText
+        {
+            get { return (string)this.GetValue("SignUpContinueButtonText"); }
+            set { this.SetValue("SignUpContinueButtonText", value); }
+        }
+
+        public string SignUpCancelAuthorizationButtonText
+        {
+            get { return (string)this.GetValue("SignUpCancelAuthorizationButtonText"); }
+            set { this.SetValue("SignUpCancelAuthorizationButtonText", value); }
+        }
+
+        public string SignUpMCCodePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpMCCodePlaceholder"); }
+            set { this.SetValue("SignUpMCCodePlaceholder", value); }
+        }
+
+        public string SignUpCompanyNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyNamePlaceholder"); }
+            set { this.SetValue("SignUpCompanyNamePlaceholder", value); }
+        }
+
+        public string SignUpCompanyDBAPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyDBAPlaceholder"); }
+            set { this.SetValue("SignUpCompanyDBAPlaceholder", value); }
+        }
+
+        public string SignUpCompanyAddressPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyAddressPlaceholder"); }
+            set { this.SetValue("SignUpCompanyAddressPlaceholder", value); }
+        }
+
+        public string SignUpCompanyPhonePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyPhonePlaceholder"); }
+            set { this.SetValue("SignUpCompanyPhonePlaceholder", value); }
+        }
+
+        public string SignUpCompanyEMailPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyEMailPlaceholder"); }
+            set { this.SetValue("SignUpCompanyEMailPlaceholder", value); }
+        }
+
+        public string SignUpCompanyFleetSizePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpCompanyFleetSizePlaceholder"); }
+            set { this.SetValue("SignUpCompanyFleetSizePlaceholder", value); }
+        }
+
+        public string SignUpSelectCompanySearchPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpSelectCompanySearchPlaceholder"); }
+            set { this.SetValue("SignUpSelectCompanySearchPlaceholder", value); }
+        }
+
+        public string SignUpDriverFirstNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDriverFirstNamePlaceholder"); }
+            set { this.SetValue("SignUpDriverFirstNamePlaceholder", value); }
+        }
+
+        public string SignUpDriverLastNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDriverLastNamePlaceholder"); }
+            set { this.SetValue("SignUpDriverLastNamePlaceholder", value); }
+        }
+
+        public string SignUpDriverPhonePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDriverPhonePlaceholder"); }
+            set { this.SetValue("SignUpDriverPhonePlaceholder", value); }
+        }
+
+        public string SignUpDriverCompanyNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDriverCompanyNamePlaceholder"); }
+            set { this.SetValue("SignUpDriverCompanyNamePlaceholder", value); }
+        }
+
+        public string SignUpMCExceededMessageText
+        {
+            get { return (string)this.GetValue("SignUpMCExceededMessageText"); }
+            set { this.SetValue("SignUpMCExceededMessageText", value); }
+        }
+
+        public string SignUpMCNotFoundErrorMessageText
+        {
+            get { return (string)this.GetValue("SignUpMCNotFoundErrorMessageText"); }
+            set { this.SetValue("SignUpMCNotFoundErrorMessageText", value); }
+        }
+
+        public string SignUpCompanyPhoneEmptyErrorMessageText
+        {
+            get { return (string)this.GetValue("SignUpCompanyPhoneEmptyErrorMessageText"); }
+            set { this.SetValue("SignUpCompanyPhoneEmptyErrorMessageText", value); }
+        }
+
+        public string SignUpCompanyIncorectEMailErrorMessageText
+        {
+            get { return (string)this.GetValue("SignUpCompanyIncorectEMailErrorMessageText"); }
+            set { this.SetValue("SignUpCompanyIncorectEMailErrorMessageText", value); }
+        }
+
+        public string SignUpCompanyFleetSizeErrorMessageText
+        {
+            get { return (string)this.GetValue("SignUpCompanyFleetSizeErrorMessageText"); }
+            set { this.SetValue("SignUpCompanyFleetSizeErrorMessageText", value); }
+        }
         #endregion
 
         #region Driver authorization page
@@ -803,6 +1199,40 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("SignUpUserRoleOwnerOperator"); }
             set { this.SetValue("SignUpUserRoleOwnerOperator", value); }
+        }
+        #endregion
+
+        #region Error messages
+        public string CheckInternetConnectionErrorMessage
+        {
+            get { return (string)this.GetValue("CheckInternetConnectionErrorMessage"); }
+            set { this.SetValue("CheckInternetConnectionErrorMessage", value); }
+        }
+        #endregion
+
+        #region System messages
+        public string FindNextTripSystemMessage
+        {
+            get { return (string)this.GetValue("FindNextTripSystemMessage"); }
+            set { this.SetValue("FindNextTripSystemMessage", value); }
+        }
+
+        public string ArrivedToPickupSystemMessage
+        {
+            get { return (string)this.GetValue("ArrivedToPickupSystemMessage"); }
+            set { this.SetValue("ArrivedToPickupSystemMessage", value); }
+        }
+
+        public string ArrivedToDeliverySystemMessage
+        {
+            get { return (string)this.GetValue("ArrivedToDeliverySystemMessage"); }
+            set { this.SetValue("ArrivedToDeliverySystemMessage", value); }
+        }
+
+        public string TripCancelledSystemMessage
+        {
+            get { return (string)this.GetValue("TripCancelledSystemMessage"); }
+            set { this.SetValue("TripCancelledSystemMessage", value); }
         }
         #endregion
     }

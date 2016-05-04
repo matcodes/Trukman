@@ -128,7 +128,7 @@ namespace KAS.Trukman.ViewModels.Commands
             try
             {
                 if (this.Trip != null)
-                    TakePhotoFromCameraMessage.Send(this.Trip);
+                    TakePhotoFromCameraMessage.Send();
             }
             catch (Exception exception)
             {

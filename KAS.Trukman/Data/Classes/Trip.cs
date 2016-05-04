@@ -1,7 +1,9 @@
 ﻿using KAS.Trukman.Data.Interfaces;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms.Maps;
 
 namespace KAS.Trukman.Data.Classes
 {
@@ -13,29 +15,26 @@ namespace KAS.Trukman.Data.Classes
         }
 
         #region ITrip
-		public string TripId
-		{
-			get { return (string)this.GetValue ("TripId"); }
-			set { this.SetValue ("TripId", value); }
-		}
-
-        public IReceiver Receiver
+        [Ignore]
+        public IContractor Receiver
         {
-            get { return (this.GetValue("Receiver") as IReceiver); }
+            get { return (this.GetValue("Receiver") as IContractor); }
             set { this.SetValue("Receiver", value); }
         }
 
-        public IShipper Shipper
+        [Ignore]
+        public IContractor Shipper
         {
-            get { return (this.GetValue("Shipper") as IShipper); }
+            get { return (this.GetValue("Shipper") as IContractor); }
             set { this.SetValue("Shipper", value); }
         }
 
-        /*public DateTime Time
+        [Ignore]
+        public Position Location
         {
-            get { return (DateTime)this.GetValue("Time", DateTime.Now); }
-            set { this.SetValue("Time", value); }
-        }*/
+            get { return (Position)this.GetValue("Location", new Position(0, 0)); }
+            set { this.SetValue("Location", value); }
+        }
 
         public int Points
         {
@@ -54,16 +53,16 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue("DeliveryDatetime", value); }
 			}
 
-		public int DriverOnTimePickup 
-		{
-			get { return (int)this.GetValue("DriverOnTimePickup", 0); }
-			set { this.SetValue("DriverOnTimePickup", value); }
-		}
+        public bool IsPickup
+        {
+            get { return (bool)this.GetValue("IsPickup", false); }
+            set { this.SetValue("IsPickup", value); }
+        }
 
-		public int DriverOnTimeDelivery 
+        public bool IsDelivery 
 		{
-			get { return (int)this.GetValue("DriverOnTimeDelivery", 0); }
-			set { this.SetValue("DriverOnTimeDelivery", value); }
+			get { return (bool)this.GetValue("IsDelivery", false); }
+			set { this.SetValue("IsDelivery", value); }
 		}
 
 		public bool JobCompleted 
@@ -72,9 +71,9 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue("JobCompleted", value); }
 		}
 
-		public bool? DriverAccepted 
+		public bool DriverAccepted 
 		{
-			get { return (bool?)this.GetValue("DriverAccepted", null); }
+			get { return (bool)this.GetValue("DriverAccepted", false); }
 			set { this.SetValue("DriverAccepted", value); }
 		}
 
@@ -89,7 +88,17 @@ namespace KAS.Trukman.Data.Classes
 			get { return (bool)this.GetValue("JobCancelled", false); }
 			set { this.SetValue("JobCancelled", value); }
 		}
+
+        public string DriverDisplayName
+        {
+            get { return (string)this.GetValue("DriverDisplayName"); }
+            set { this.SetValue("DriverDisplayName", value); }
+        }
 		#endregion
+
+        public string ShipperID { get; set; }
+
+        public string ReceiverID { get; set; }
     }
     #endregion
 }

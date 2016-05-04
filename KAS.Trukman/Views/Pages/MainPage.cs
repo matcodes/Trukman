@@ -43,7 +43,6 @@ namespace KAS.Trukman.Views.Pages
             base.OnDisappearing();
         }
 
-
         private void PushPage(Page page)
         {
             Device.BeginInvokeOnMainThread(async () => {

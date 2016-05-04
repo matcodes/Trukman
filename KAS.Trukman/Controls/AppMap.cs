@@ -14,6 +14,7 @@ namespace KAS.Trukman.Controls
     {
         #region Static members
         public static BindableProperty RoutePointsProperty = BindableProperty.Create("RoutePoints", typeof(Position[]), typeof(AppMap), new Position[] { });
+        public static BindableProperty BaseRoutePointsProperty = BindableProperty.Create("BaseRoutePoints", typeof(Position[]), typeof(AppMap), new Position[] { });
         public static BindableProperty RouteRegionProperty = BindableProperty.Create("RouteRegion", typeof(RouteBounds), typeof(AppMap), null);
         public static BindableProperty RouteStartPositionProperty = BindableProperty.Create("RouteStartPosition", typeof(AddressInfo), typeof(AppMap), null);
         public static BindableProperty RouteEndPositionProperty = BindableProperty.Create("RouteEndPosition", typeof(AddressInfo), typeof(AppMap), null);
@@ -60,10 +61,16 @@ namespace KAS.Trukman.Controls
             return new MapSpan(center, latDeg, lonDeg);
         }
 
-        public Position[] RoutePositions
+        public Position[] RoutePoints
         {
             get { return (Position[])this.GetValue(RoutePointsProperty); }
             set { this.SetValue(RoutePointsProperty, value); }
+        }
+
+        public Position[] BaseRoutePoints
+        {
+            get { return (Position[])this.GetValue(BaseRoutePointsProperty); }
+            set { this.SetValue(BaseRoutePointsProperty, value); }
         }
 
         public RouteBounds RouteRegion

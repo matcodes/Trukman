@@ -40,7 +40,7 @@ namespace Trukman.Helpers
 		Task<bool> RequestToJoinCompany (string name);
 		void StartTimerForRequest ();
 
-		Task<bool> FindCompany(string name);
+		Task<bool> _FindCompany(string name);
 		UserRole GetCurrentUserRole();
 		string GetCurrentUserName ();
         Task<IUser> GetCurrentUser();
@@ -72,7 +72,7 @@ namespace Trukman.Helpers
 		Task SendJobAlert(string alert, string tripId);
 		Task<IEnumerable<IAlerts>> GetPossibleAlerts();
 
-		Task<ICompany> GetUserCompany ();
+		Task<ICompany> _GetUserCompany ();
 
 
         Task<IUser> GetRequestForCompany(string CompanyName);
@@ -80,6 +80,7 @@ namespace Trukman.Helpers
         Task DeclineUserFromCompany(string CompanyName, IUser _user);
 
 		Task SaveLadingBill (byte[] data, string TripId);
+        Task<Position> GetPositionByAddress(string address);
 
     }
 }

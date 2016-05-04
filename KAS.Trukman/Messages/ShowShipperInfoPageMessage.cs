@@ -12,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowShipperInfoPageMessage";
 
-        public static void Send(IShipper shipper)
+        public static void Send(IContractor shipper)
         {
             var message = new ShowShipperInfoPageMessage(shipper);
             MessagingCenter.Send<ShowShipperInfoPageMessage>(message, MESSAGE_KEY);
@@ -29,13 +29,13 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowShipperInfoPageMessage(IShipper shipper)
+        public ShowShipperInfoPageMessage(IContractor shipper)
             : base()
         {
             this.Shipper = shipper;
         }
 
-        public IShipper Shipper { get; private set; }
+        public IContractor Shipper { get; private set; }
     }
     #endregion
 }

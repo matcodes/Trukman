@@ -12,9 +12,9 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "TakePhotoFromCameraMessage";
 
-        public static void Send(ITrip trip)
+        public static void Send()
         {
-            var message = new TakePhotoFromCameraMessage(trip);
+            var message = new TakePhotoFromCameraMessage();
             MessagingCenter.Send<TakePhotoFromCameraMessage>(message, MESSAGE_KEY);
         }
 
@@ -29,12 +29,9 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public TakePhotoFromCameraMessage(ITrip trip)
+        public TakePhotoFromCameraMessage()
         {
-            this.Trip = trip;
         }
-
-        public ITrip Trip { get; private set; }
     }
     #endregion
 }

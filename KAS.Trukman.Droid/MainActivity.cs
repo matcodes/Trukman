@@ -18,6 +18,9 @@ using Android.Graphics;
 using System.IO;
 using System.Threading.Tasks;
 using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Droid.Services;
+using KAS.Trukman.Droid.AppContext;
+using Android;
 
 namespace KAS.Trukman.Droid
 {
@@ -27,13 +30,37 @@ namespace KAS.Trukman.Droid
 	{
         #region Static members
         public static readonly int TAKE_PHOTO_REQUEST_CODE = 1;
+
+        public static readonly int REQUEST_LOCATION_ID = 0;
+        public static readonly int REQUEST_WRITE_EXTERNAL_ID = 1;
         #endregion
 
-        private ITrip _trip = null;
+        private readonly string[] _permissionsLocation =
+            {
+                Manifest.Permission.AccessCoarseLocation,
+                Manifest.Permission.AccessFineLocation
+            };
+        private readonly string[] _permissionsWriteExternal= 
+            {
+                Manifest.Permission.WriteExternalStorage
+            };
+
+        private TrukmanServiceHelper _trukmanServiceHelper = null;
 
         protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+
+            if ((int)Build.VERSION.SdkInt >= 23)
+            {
+                var permission = Manifest.Permission.AccessFineLocation;
+                if (this.CheckSelfPermission(permission) == Permission.Denied)
+                    this.RequestPermissions(_permissionsLocation, REQUEST_LOCATION_ID);
+
+                permission = Manifest.Permission.WriteExternalStorage;
+                if (this.CheckSelfPermission(permission) == Permission.Denied)
+                    this.RequestPermissions(_permissionsWriteExternal, REQUEST_WRITE_EXTERNAL_ID);
+            }
 
             var platformHelper = new AndroidPlatformHelper(this);
 
@@ -44,8 +71,35 @@ namespace KAS.Trukman.Droid
 			SettingsServiceHelper.Initialize (new SettingsService ());
             Xamarin.FormsMaps.Init(this, bundle);
 
-			LoadApplication (new KAS.Trukman.App ());
+            TrukmanContext.Initialize();
+
+            _trukmanServiceHelper = new TrukmanServiceHelper(this);
+            _trukmanServiceHelper.OnCreate();
+
+            LoadApplication(new KAS.Trukman.App ());
 		}
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            var message = "";
+            if (requestCode == REQUEST_LOCATION_ID)
+            {
+                if (grantResults[0] == Permission.Granted)
+                    message = "Location permission is available";
+                else
+                    message = "Location permission is denied";
+            }
+            else if (requestCode == REQUEST_WRITE_EXTERNAL_ID)
+            {
+                if (grantResults[0] == Permission.Granted)
+                    message = "Write external storage permission is available";
+                else
+                    message = "Write external storage permission is denied";
+            }
+
+            if (!String.IsNullOrEmpty(message))
+                this.ShowToast(new ShowToastMessage(message));
+        }
 
         protected override void OnResume()
         {
@@ -80,12 +134,8 @@ namespace KAS.Trukman.Droid
 
         private void TakePhotoFromCamera(TakePhotoFromCameraMessage message)
         {
-            if (message.Trip != null)
-            {
-                _trip = message.Trip;
-                Intent intent = new Intent(MediaStore.ActionImageCapture);
-                StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
-            }
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -98,7 +148,7 @@ namespace KAS.Trukman.Droid
                 {
                     var result = data.Data.ToString();
                     this.SavePhotoToStore(result);
-                    ShowAdvancesPageMessage.Send(_trip);
+//                    ShowAdvancesPageMessage.Send(_trip);
                 }
             }
         }
@@ -136,7 +186,7 @@ namespace KAS.Trukman.Droid
 
                     GC.Collect();
 
-                    await App.ServerManager.SaveLadingBill(data, _trip.TripId);
+                    SendPhotoMessage.Send(data);
                 }
                 catch (Exception exception)
                 {

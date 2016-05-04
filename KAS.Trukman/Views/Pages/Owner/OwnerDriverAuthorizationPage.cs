@@ -15,7 +15,7 @@ namespace KAS.Trukman.Views.Pages
         public DriverAuthorizationPage()
             : base()
         {
-            this.BindingContext = new DriverAuthorizationViewModel();
+            this.BindingContext = new OwnerDriverAuthorizationViewModel();
         }
 
         protected override View CreateContent()
@@ -32,7 +32,7 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Center,
                 HeightRequest = 180,
                 WidthRequest = 180,
-                Source = PlatformHelper.LockImageSource
+                Source = PlatformHelper.LockNormalImageSource
             };
 
             var imageContent = new ContentView
@@ -168,9 +168,9 @@ namespace KAS.Trukman.Views.Pages
             return content;
         }
 
-        public new DriverAuthorizationViewModel ViewModel
+        public new OwnerDriverAuthorizationViewModel ViewModel
         {
-            get { return (this.BindingContext as DriverAuthorizationViewModel); }
+            get { return (this.BindingContext as OwnerDriverAuthorizationViewModel); }
         }
     }
     #endregion

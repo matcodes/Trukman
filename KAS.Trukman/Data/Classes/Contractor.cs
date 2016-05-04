@@ -10,24 +10,17 @@ namespace KAS.Trukman.Data.Classes
     {
         public Contractor()
         {
-            this.AddressLineFirst = "";
-            this.AddressLineSecond = "";
+            this.Address = "";
             this.Fax = "";
             this.Name = "";
             this.Phone = "";
         }
 
         #region IContractor
-        public string AddressLineFirst
+        public string Address
         {
             get { return (string)this.GetValue("AddressLineFirst"); }
             set { this.SetValue("AddressLineFirst", value); }
-        }
-
-        public string AddressLineSecond
-        {
-            get { return (string)this.GetValue("AddressLineSecond"); }
-            set { this.SetValue("AddressLineSecond", value); }
         }
 
         public string Fax

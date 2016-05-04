@@ -13,9 +13,7 @@ namespace KAS.Trukman.Data.Interfaces
 
         string Fax { get; set; }
 
-        string AddressLineFirst { get; set; }
-
-        string AddressLineSecond { get; set; }
+        string Address{ get; set; }
     }
     #endregion
 }

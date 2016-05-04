@@ -9,6 +9,8 @@ using KAS.Trukman.Helpers;
 using KAS.Trukman;
 using Trukman.Interfaces;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Languages;
 
 namespace Trukman
 {
@@ -33,7 +35,7 @@ namespace Trukman
 		Button btnEng;
 		Button btnEsp;
 
-		MCResponse companyData;
+		MCInfo companyData;
 		ActivityIndicator busyIndicator;
 
 		public SignUpCompanyPage ()
@@ -43,7 +45,7 @@ namespace Trukman
 			this.BindingContext = new SignUpCompanyViewModel ();
 		}
 
-		public SignUpCompanyPage (MCResponse response) : this()
+		public SignUpCompanyPage (MCInfo response) : this()
 		{
 			companyData = response;
 			//SetupUI();
@@ -432,12 +434,13 @@ namespace Trukman
             content.Children.Add(pageContent);
             content.Children.Add(busyIndicator);
 
-            if (companyData.success)
+
+            if (companyData.Success)
             {
-                edtCompName.Text = companyData.name;
+                edtCompName.Text = companyData.Name;
                 edtDBA.Text = companyData.DBA;
-                edtCompAddress.Text = companyData.address;
-                edtPhone.Text = companyData.phone;
+                edtCompAddress.Text = companyData.Address;
+                edtPhone.Text = companyData.Phone;
             }
 
             this.UpdateText();
@@ -504,17 +507,19 @@ namespace Trukman
 				busyIndicator.IsRunning = true;
 				try
 				{
-					SettingsServiceHelper.SaveCompany(edtCompName.Text);
+                    var companyName = edtCompName.Text.Trim();
+
+					SettingsServiceHelper.SaveCompany(companyName);
 
 					//await App.ServerManager.Register (companyData.mcCode, edtPhone.Text, UserRole.UserRoleOwner);
-					await App.ServerManager.Register (edtCompName.Text, companyData.mcCode, UserRole.UserRoleOwner, null, null);
+					await App.ServerManager.Register (companyName, companyData.MCCode, UserRole.UserRoleOwner, null, null);
 
-					await App.ServerManager.AddCompany(edtCompName.Text, edtDBA.Text, 
+					await App.ServerManager.AddCompany(companyName, edtDBA.Text, 
 						edtCompAddress.Text, edtPhone.Text, edtEmail.Text, edtFleetSize.Text);
 					App.ServerManager.StartTimerForRequest();
 
                     //					PopToRootPageMessage.Send();
-                    ShowOwnerSignUpWelcomePageMessage.Send(edtCompName.Text);
+     //               ShowSignUpOwnerWelcomePageMessage.Send(companyName);
                 } catch (Exception exc) {
 					ShowToastMessage.Send (exc.Message);
 				}

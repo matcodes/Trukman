@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Droid.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -41,9 +42,9 @@ namespace KAS.Trukman.ViewModels.Pages
 
             this.Localize();
 
-            this.TripChanged(null);
+            this.DriverTripContextChanged(null);
 
-            TripChangedMessage.Subscribe(this, this.TripChanged);
+            DriverTripContextChangedMessage.Subscribe(this, this.DriverTripContextChanged);
         }
 
         protected override void Localize()
@@ -72,24 +73,27 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.UpdateUserData();
         }
 
-        private void TripChanged(TripChangedMessage message)
+        private void DriverTripContextChanged(DriverTripContextChangedMessage message)
         {
-            _trip = ((message != null) && (message.Trip != null) ? message.Trip : null);
-            var enabled = (_trip != null);
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => 
+            {
+                _trip = TrukmanContext.Driver.Trip;
+                var enabled = ((_trip != null) && (_trip.DriverAccepted));
 
-            this.ShowTripPageMenuItem.IsEnabled = enabled;
-            this.ShowAdvancesPageMenuItem.IsEnabled = enabled;
-            this.ShowDelayEmergencyPageMenuItem.IsEnabled = enabled;
-            this.ShowRoutePageMenuItem.IsEnabled = enabled;
+                this.ShowTripPageMenuItem.IsEnabled = enabled;
+                this.ShowAdvancesPageMenuItem.IsEnabled = enabled;
+                this.ShowDelayEmergencyPageMenuItem.IsEnabled = enabled;
+                this.ShowRoutePageMenuItem.IsEnabled = enabled;
+            });
         }
 
         private void UpdateUserData()
         {
-            Task.Run(async ()=>{
+            Task.Run(()=>{
                 try
                 {
-                    var user = await App.ServerManager.GetCurrentUser();
-                    var company = await App.ServerManager.GetUserCompany();
+                    var user = TrukmanContext.User;
+                    var company = TrukmanContext.Company;
 
                     var userName = String.Format("{0} {1}", user.FirstName, user.LastName);
                     var companyName = company.DisplayName;
@@ -109,7 +113,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             this.SelectedItem = null;
 
-            MenuItem menuItem = (parameter as MenuItem);
+            Classes.MenuItem menuItem = (parameter as Classes.MenuItem);
             if ((menuItem != null) && (menuItem.Command.CanExecute(parameter)))
             {
                 HideMainMenuMessage.Send();

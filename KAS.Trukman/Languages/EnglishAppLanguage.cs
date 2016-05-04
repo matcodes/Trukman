@@ -13,6 +13,8 @@ namespace KAS.Trukman.Languages
             this.AppName = "TRUKMAN";
 
             #region Page titles
+            this.SignUpPageName = "SIGN UP";
+            this.OwnerFleetPageName = "FLEET";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
             this.ReceiverInfoPageName = "RECEIVER INFO";
@@ -38,6 +40,30 @@ namespace KAS.Trukman.Languages
             this.MainMenuHelpLabel = "Help";
             #endregion
 
+            #region Owner main menu
+            this.OwnerMainMenuManageDriversLabel = "Manage Drivers";
+            this.OwnerMainMenuManageDispatchersLabel = "Manage Dispatchers";
+            this.OwnerMainMenuManageFleetLabel = "Manage Fleet";
+            this.OwnerMainMenuSettingsLabel = "Settings";
+            this.OwnerMainMenuHelpLabel = "Help";
+            this.OwnerMainMenuSelectLanguageLabel = "Cambiar a Espanol";
+            this.OwnerMainMenuSearchTextPlaceholder = "Search";
+            #endregion
+
+            #region Owner Home page
+            this.OwnerHomeBrockerListCommandItemLabel = "Brocker List";
+            this.OwnerHomeDelayAlertsCommandItem = "Delay Alerts";
+            this.OwnerHomeDeliveryUpdateCommandItemLabel = "Delivery Update";
+            this.OwnerHomeDispatchDriverCommandItemLabel = "Dispatch Driver";
+            this.OwnerHomeFuelAdvanceCommandItemLabel = "Fuel Advance";
+            this.OwnerHomeInvoiceCommandItemLabel = "Invoice";
+            this.OwnerHomeLoadConfirmationCommandItemLabel = "Load Confirmation";
+            this.OwnerHomeLumperCommandItemLabel = "Lumper";
+            this.OwnerHomeRateConfirmationCommandItemLabel = "Rate Confirmation";
+            this.OwnerHomeReportsCommandItemLabel = "Reports";
+            this.OwnerHomeTrackFleetCommandItemLabel = "Track Fleet";
+            #endregion
+
             #region Home page
             this.HomeWaitingForTripLabel = "Waiting for your next trip to be assigned to you";
             this.HomeNextTripLabel = "Your Next Trip";
@@ -50,8 +76,10 @@ namespace KAS.Trukman.Languages
             this.HomeArrivedOnTimeBonusPointsLabel = "50 pts";
             this.HomeArrivedOnTimeBonusPointsMinsLabel = "Plus 5 points for arriving 15 mins early";
             this.HomeTotalPointsLabel = "Total Points: {0}";
-            this.HomeBonusPointsForPhotoLabel = "5 Points for photo of bill of lading";
-            this.HomeBonusPointsForTimeLabel = "5 Points for completing load by 4:00 PM";
+            this.HomeNextStepLabel = "Next Step";
+            this.HomeBonusPointsForPickupPhotoLabel = "Send photo of Bill of Lading";
+            this.HomeBonusPointsForDeliveryPhotoLabel = "Send photo of Delivery Proof";
+            this.HomeBonusPointsForTimeLabel = "(5 Points for completing load by 4:00 PM)";
             this.HomeArrivedLateLabel = "You have arrived at the pickup location.";
             this.HomeArrivedLateBonusLabel = "10 points have been deducted for late arrival.";
             this.HomeDeclinedReason_1 = "Reason 1";
@@ -137,9 +165,44 @@ namespace KAS.Trukman.Languages
             this.TimeAM = "AM";
             this.TimePM = "PM";
             #endregion
-     
-			#region Sign up
-			this.SignUpLabel = "SIGN UP";
+
+            #region Sign up
+            this.SignUpEnglishLanguageLabel = "ENG";
+            this.SignUpEspanolLanguageLabel = "ESP";
+            this.SignUpMainLabel = "SIGN UP AS";
+            this.SignUpDriverLabel = "DRIVER";
+            this.SignUpDispatcherLabel = "DISPATCH";
+            this.SignUpOwnerLabel = "OWNER/OPERATOR";
+            this.SignUpDriverPendingLabel = "Waiting for {0} to authorize you";
+            this.SignUpDriverDeclinedLabel = "{0} has declined your authorization request";
+            this.SignUpDriverAuthorizedLabel = "You have been authorized by {0}";
+
+            this.SignUpLabel = "SIGN UP";
+            this.SignUpSelectCompanyAcceptButtonText = "Accept";
+            this.SignUpSelectCompanyCancelButtonText = "Cancel";
+            this.SignUpSubmitButtonText = "Submit";
+            this.SignUpContinueButtonText = "Continue";
+            this.SignUpCancelAuthorizationButtonText = "Cancel Authorization Request";
+
+            this.SignUpMCCodePlaceholder = "MC#";
+            this.SignUpCompanyNamePlaceholder = "Name";
+            this.SignUpCompanyDBAPlaceholder = "DBA";
+            this.SignUpCompanyAddressPlaceholder = "Physical Address";
+            this.SignUpCompanyPhonePlaceholder = "Phone";
+            this.SignUpCompanyEMailPlaceholder = "EMail";
+            this.SignUpCompanyFleetSizePlaceholder = "Fleet Size";
+            this.SignUpSelectCompanySearchPlaceholder = "Search company";
+            this.SignUpDriverFirstNamePlaceholder = "First Name";
+            this.SignUpDriverLastNamePlaceholder = "Last Name";
+            this.SignUpDriverPhonePlaceholder = "Phone";
+            this.SignUpDriverCompanyNamePlaceholder = "Company Name";
+
+            this.SignUpMCExceededMessageText = "Sorry you are having trouble signing up. Please email help@trukman.com for assistance.";
+
+            this.SignUpMCNotFoundErrorMessageText = "MC# not found.";
+            this.SignUpCompanyPhoneEmptyErrorMessageText = "Phone# cannot be blank.";
+            this.SignUpCompanyIncorectEMailErrorMessageText = "Email is incorrect.";
+            this.SignUpCompanyFleetSizeErrorMessageText = "Fleet should be a number.";
             #endregion
 
             #region Driver authorization page
@@ -156,6 +219,17 @@ namespace KAS.Trukman.Languages
 
             #region SignUp user roles
             this.SignUpUserRoleOwnerOperator = "OWNER/OPERATOR";
+            #endregion
+
+            #region Error messages
+            this.CheckInternetConnectionErrorMessage = "Check internet connection.";
+            #endregion
+
+            #region System messages
+            this.FindNextTripSystemMessage = "You have a new job offer";
+            this.TripCancelledSystemMessage = "Job is canceled";
+            this.ArrivedToPickupSystemMessage = "You reached the pick up location";
+            this.ArrivedToDeliverySystemMessage = "You reached the drop off location";
             #endregion
         }
     }

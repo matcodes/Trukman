@@ -183,7 +183,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.IsBusy = true;
                 try
                 {
-					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					await App.ServerManager.SendComcheckRequest(this.Trip.ID, ComcheckRequestType.FuelAdvance);
                     this.FuelState = FuelAdvanceStates.Requested;
                     this.FuelStartRequestedTimer();
                 }
@@ -209,8 +209,8 @@ namespace KAS.Trukman.ViewModels.Pages
                 try
                 {
 					this.FuelStopRequestedTimer();
-					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
-					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.ID, ComcheckRequestType.FuelAdvance);
+					await App.ServerManager.SendComcheckRequest(this.Trip.ID, ComcheckRequestType.FuelAdvance);
 					
 					this.FuelState = FuelAdvanceStates.Requested;
 					this.FuelStartRequestedTimer();
@@ -241,7 +241,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 {
                     // To do: Cancel request
                     //Thread.Sleep(2000);
-					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.ID, ComcheckRequestType.FuelAdvance);
 					this.FuelState = FuelAdvanceStates.None;
 					this.FuelStopRequestedTimer();
 				}
@@ -275,7 +275,7 @@ namespace KAS.Trukman.ViewModels.Pages
 			this.IsBusy = true;
 			try
 			{
-				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.ID, ComcheckRequestType.FuelAdvance);
 				if (comcheckState == ComcheckRequestState.None)
 				{
 					this.FuelStopRequestedTimer();
@@ -295,7 +295,7 @@ namespace KAS.Trukman.ViewModels.Pages
 				}
 				else if (comcheckState == ComcheckRequestState.Visible)
 				{
-					var comcheck = await App.ServerManager.GetComcheck(this.Trip.TripId, ComcheckRequestType.FuelAdvance);
+					var comcheck = await App.ServerManager.GetComcheck(this.Trip.ID, ComcheckRequestType.FuelAdvance);
 					if (!string.IsNullOrEmpty(comcheck))
 					{
 						this.FuelStopReceivedTimer ();
@@ -322,7 +322,7 @@ namespace KAS.Trukman.ViewModels.Pages
 			this.IsBusy = true;
 			try
 			{
-				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.TripId, ComcheckRequestType.Lumper);
+				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.ID, ComcheckRequestType.Lumper);
 				if (comcheckState == ComcheckRequestState.None)
 				{
 					this.LumperStopRequestedTimer();
@@ -342,7 +342,7 @@ namespace KAS.Trukman.ViewModels.Pages
 				}
 				else if (comcheckState == ComcheckRequestState.Visible)
 				{
-					var comcheck = await App.ServerManager.GetComcheck(this.Trip.TripId, ComcheckRequestType.Lumper);
+					var comcheck = await App.ServerManager.GetComcheck(this.Trip.ID, ComcheckRequestType.Lumper);
 					if (!string.IsNullOrEmpty(comcheck))
 					{
 						this.LumperStopReceivedTimer ();
@@ -451,7 +451,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.IsBusy = true;
                 try
                 {
-					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					await App.ServerManager.SendComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
 					this.LumperState = LumperStates.Requested;
 					this.LumperStartRequestedTimer();
                 }
@@ -477,8 +477,8 @@ namespace KAS.Trukman.ViewModels.Pages
                 try
                 {
 					this.LumperStopRequestedTimer();
-					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
-					await App.ServerManager.SendComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
+					await App.ServerManager.SendComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
 
 					this.LumperState = LumperStates.Requested;
 					this.LumperStartRequestedTimer();
@@ -504,7 +504,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.IsBusy = true;
                 try
                 {
-					await App.ServerManager.CancelComcheckRequest(this.Trip.TripId, ComcheckRequestType.Lumper);
+					await App.ServerManager.CancelComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
 					this.LumperState = LumperStates.None;
 					this.LumperStopRequestedTimer();
                 }

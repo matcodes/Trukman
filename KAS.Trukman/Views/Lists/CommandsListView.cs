@@ -36,12 +36,27 @@ namespace KAS.Trukman.Views.Lists
 
             var text = new Label
             {
-                TextColor = Color.White,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 VerticalOptions = LayoutOptions.Center
             };
             text.SetBinding(Label.TextProperty, "Label", BindingMode.OneWay);
             text.SetBinding(Label.TextColorProperty, new Binding("IsEnabled", BindingMode.OneWay, mainMenuEnabledToColorConverter));
+
+            var description = new Label {
+                FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
+                VerticalOptions = LayoutOptions.Center
+            };
+            description.SetBinding(Label.TextProperty, "Description", BindingMode.OneWay);
+            description.SetBinding(Label.TextColorProperty, new Binding("IsEnabled", BindingMode.OneWay, mainMenuEnabledToColorConverter));
+
+            var layout = new StackLayout {
+                Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
+                Spacing = 0
+            };
+            layout.Children.Add(text);
+            layout.Children.Add(description);
 
             var image = new Image
             {
@@ -57,7 +72,7 @@ namespace KAS.Trukman.Views.Lists
                 }
             };
             grid.Children.Add(icon, 0, 0);
-            grid.Children.Add(text, 1, 0);
+            grid.Children.Add(layout, 1, 0);
             grid.Children.Add(image, 2, 0);
 
             var content = new ContentView

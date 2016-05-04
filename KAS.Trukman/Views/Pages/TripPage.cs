@@ -155,31 +155,14 @@ namespace KAS.Trukman.Views.Pages
             shipperAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
             shipperAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
-            var shipperAddressLineFirstValue = new TappedLabel
+            var shipperAddressValue = new TappedLabel
             {
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TapCommandParameter = 0
             };
-            shipperAddressLineFirstValue.SetBinding(TappedLabel.TextProperty, "Shipper.AddressLineFirst");
-            shipperAddressLineFirstValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
-            shipperAddressLineFirstValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
-
-            var shipperAddressLineSecondValue = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 0
-            };
-            shipperAddressLineSecondValue.SetBinding(TappedLabel.TextProperty, "Shipper.AddressLineSecond");
-            shipperAddressLineSecondValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
-            shipperAddressLineSecondValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
-
-            var shipperAddressValue = new StackLayout
-            {
-                Orientation = StackOrientation.Vertical,
-                Spacing = 4
-            };
-            shipperAddressValue.Children.Add(shipperAddressLineFirstValue);
-            shipperAddressValue.Children.Add(shipperAddressLineSecondValue);
+            shipperAddressValue.SetBinding(TappedLabel.TextProperty, "Shipper.Address");
+            shipperAddressValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
+            shipperAddressValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var shipperAddress = new StackLayout
             {
@@ -299,31 +282,14 @@ namespace KAS.Trukman.Views.Pages
             receiverAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
             receiverAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
-            var receiverAddressLineFirstValue = new TappedLabel
+            var receiverAddressValue = new TappedLabel
             {
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TapCommandParameter = 1
             };
-            receiverAddressLineFirstValue.SetBinding(Label.TextProperty, "Receiver.AddressLineFirst");
-            receiverAddressLineFirstValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
-            receiverAddressLineFirstValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
-
-            var receiverAddressLineSecondValue = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 1
-            };
-            receiverAddressLineSecondValue.SetBinding(TappedLabel.TextProperty, "Receiver.AddressLineSecond");
-            receiverAddressLineSecondValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
-            receiverAddressLineSecondValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
-
-            var receiverAddressValue = new StackLayout
-            {
-                Orientation = StackOrientation.Vertical,
-                Spacing = 4
-            };
-            receiverAddressValue.Children.Add(receiverAddressLineFirstValue);
-            receiverAddressValue.Children.Add(receiverAddressLineSecondValue);
+            receiverAddressValue.SetBinding(Label.TextProperty, "Receiver.Address");
+            receiverAddressValue.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
+            receiverAddressValue.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var receiverAddress = new StackLayout
             {
@@ -381,7 +347,13 @@ namespace KAS.Trukman.Views.Pages
         {
             Device.BeginInvokeOnMainThread(() => {
                 if ((map != null) && (this.ViewModel != null))
+                {
                     map.MoveToRegion(new MapSpan(position, 0.5, 0.5));
+                    map.Pins.Clear();
+                    var label = (this.ViewModel.SelectedItem == TripContractorItems.Shipper ? "Shipper" : "Receiver");
+                    map.Pins.Add(new Pin { Type = PinType.Place, Position = position, Label = label });
+                    map.MoveToRegion(new MapSpan(position, 0.5, 0.5));
+                }
             });
         }
 

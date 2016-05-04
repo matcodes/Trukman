@@ -64,7 +64,7 @@ namespace KAS.Trukman.Languages
                 prefix = CurrentLanguage.TimeAM;
 
             var result = String.Format("{0} {1}, {2} {3}:{4} {5}", 
-                GetMonthByIndex(time.Month), time.Day, time.Year, hour, time.Minute, prefix);
+                GetMonthByIndex(time.Month), time.Day, time.Year, hour, time.Minute.ToString().PadLeft(2, '0'), prefix);
             return result;
         }
 

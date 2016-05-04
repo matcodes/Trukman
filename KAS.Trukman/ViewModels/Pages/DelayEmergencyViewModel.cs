@@ -98,7 +98,7 @@ namespace KAS.Trukman.ViewModels.Pages
 					string alert = this.SelectedItem.ToString();
 					if (!string.IsNullOrEmpty(this.Comments))
 						alert = string.Format("{0}: {1}", alert, this.Comments);
-					App.ServerManager.SendJobAlert(alert, this.Trip.TripId);
+					App.ServerManager.SendJobAlert(alert, this.Trip.ID);
                     //Thread.Sleep(2000);
 
                     this.ShowPrevPage(null);

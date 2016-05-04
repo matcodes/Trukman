@@ -1,13 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="kas.apps.trukman" android:installLocation="auto" android:versionCode="1" android:versionName="1.0">
-	<uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="23" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<permission android:protectionLevel="signature" android:name="kas.apps.trukman.permission.C2D_MESSAGE" />
+	<uses-permission android:name="kas.apps.trukman.permission.C2D_MESSAGE" />
 	<application android:label="TRUKMAN" android:largeHeap="true" android:icon="@drawable/icon">
 		<activity android:name="com.trukman.ui.pdfactivity">
 			<intent-filter>
@@ -28,5 +36,13 @@
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB4EtT7xP1tvXqqI9CQIhrDWpE2Xoe0YYQ" /> -->
 		<!-- Ключ для HOME release версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAJ1rediA1KBZAytTLifchS11542xoSA58" /> -->
+		<receiver android:name="parse.ParsePushBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="kas.apps.trukman" />
+			</intent-filter>
+		</receiver>
+		<service android:name="parse.ParsePushService" />
 	</application>
 </manifest>

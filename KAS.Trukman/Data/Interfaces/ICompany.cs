@@ -1,11 +1,14 @@
 ﻿using System;
 
-namespace Trukman.Interfaces
+namespace KAS.Trukman.Data.Interfaces
 {
-	public interface ICompany
+    #region ICompany
+    public interface ICompany : IMainData
 	{
 		string Name {get; set;}
-		string DisplayName{ get; set;}
+
+        string DisplayName{ get; set;}
 	}
+    #endregion
 }
 

@@ -5,6 +5,7 @@ using KAS.Trukman.Helpers;
 using KAS.Trukman.Languages;
 using KAS.Trukman.ViewModels.Pages;
 using KAS.Trukman.Views.Commands;
+using KAS.Trukman.Views.Lists;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace KAS.Trukman.Views.Pages
         private Map _map = null;
         private Map _contractorMap = null;
 //        private Map _arrivedOnTimeMap = null;
-        private Map _arrivedLateMap = null;
+//        private Map _arrivedLateMap = null;
 
         private HomeViewModel _viewModel = null;
 
@@ -34,7 +35,7 @@ namespace KAS.Trukman.Views.Pages
                 if (args.PropertyName == "AddressPosition")
                     this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
                 else if (args.PropertyName == "ContractorPosition")
-                    this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, "Contractor");
+                    this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
                 else if (args.PropertyName == "ArrivedPosition")
                 {
 //                    if (this.ViewModel.State == HomeStates.ArrivedAtPickupOnTime)
@@ -51,15 +52,15 @@ namespace KAS.Trukman.Views.Pages
             this.BindingContext = _viewModel;
         }
 
-		protected override void OnAppearing ()
+        protected override void OnAppearing ()
 		{
 			base.OnAppearing ();
 		
 			this.SubscribeMessages ();
-		}
+        }
 
 
-		protected override void OnDisappearing ()
+        protected override void OnDisappearing ()
 		{
 			this.UnsubscribeMessages();
 
@@ -96,7 +97,7 @@ namespace KAS.Trukman.Views.Pages
 					map.Pins.Clear ();
 					//if (position.Longitude != 0 || position.Latitude != 0)
 					map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
-					map.MoveToRegion (new MapSpan (position, 0.5, 0.5));
+                    map.MoveToRegion(new MapSpan(position, 0.5, 0.5));
 				}
 			});
         }
@@ -422,6 +423,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill
             };
+            this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
 
             var grid = new Grid
             {
@@ -885,6 +887,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill
             };
+            this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ? "Origin" : "Destination"));
 
             var grid = new Grid
             {
@@ -1027,106 +1030,31 @@ namespace KAS.Trukman.Views.Pages
                 Content = totalPointsLabel
             };
 
-   //         var photoBonusImage = new Image {
-   //             VerticalOptions = LayoutOptions.Center,
-   //             HeightRequest = 32,
-   //             WidthRequest = 32,
-   //             Source = PlatformHelper.CameraImageSource
-   //         };
+            var nextStepLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-   //         var photoBonusImageContent = new ContentView {
-   //             VerticalOptions = LayoutOptions.Fill,
-   //             HorizontalOptions = LayoutOptions.Fill,
-   //             Padding = new Thickness(0, 0, 5, 0),
-   //             Content = photoBonusImage
-   //         };
+            var nextStepContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 10, 10, 10),
+                Content = nextStepLabel
+            };
 
-			//var photoBonusLabel = new TappedLabel
-   //         {
-   //             HorizontalOptions = LayoutOptions.Fill,
-   //             VerticalOptions = LayoutOptions.Center,
-   //             HorizontalTextAlignment = TextAlignment.Start,
-   //             FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-   //             TextColor = PlatformHelper.HomeTextColor
-   //         };
-			//photoBonusLabel.SetBinding(TappedLabel.TextProperty, new Binding("HomeBonusPointsForPhotoLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			//photoBonusLabel.SetBinding (TappedLabel.TapCommandProperty, "ShowCameraCommand", BindingMode.OneWay);
-
-   //         var photoBonusContent = new ContentView
-   //         {
-   //             HorizontalOptions = LayoutOptions.Fill,
-   //             VerticalOptions = LayoutOptions.Start,
-   //             Padding = new Thickness(0, 5, 10, 0),
-   //             Content = photoBonusLabel
-   //         };
-
-   //         var photoBonusGrid = new Grid {
-   //             HorizontalOptions = LayoutOptions.Fill,
-   //             ColumnSpacing = 0,
-   //             RowSpacing = 0,
-   //             Padding = new Thickness(10, 0, 10, 5),
-   //             ColumnDefinitions = {
-   //                 new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-   //                 new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-   //             }
-   //         };
-   //         photoBonusGrid.Children.Add(photoBonusImageContent, 0, 0);
-   //         photoBonusGrid.Children.Add(photoBonusContent, 1, 0);
-
-   //         var timeBonusImage = new Image
-   //         {
-   //             VerticalOptions = LayoutOptions.Center,
-   //             HeightRequest = 32,
-   //             WidthRequest = 32,
-   //             Source = PlatformHelper.ClockImageSource
-   //         };
-
-   //         var timeBonusImageContent = new ContentView
-   //         {
-   //             VerticalOptions = LayoutOptions.Fill,
-   //             HorizontalOptions = LayoutOptions.Fill,
-   //             Padding = new Thickness(0, 0, 5, 0),
-   //             Content = timeBonusImage
-   //         };
-
-            //var timeBonusLabel = new Label
-            //{
-            //    HorizontalOptions = LayoutOptions.Fill,
-            //    VerticalOptions = LayoutOptions.Center,
-            //    HorizontalTextAlignment = TextAlignment.Start,
-            //    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-            //    TextColor = PlatformHelper.HomeTextColor
-            //};
-            //timeBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-            //var timeBonusContent = new ContentView
-            //{
-            //    HorizontalOptions = LayoutOptions.Fill,
-            //    VerticalOptions = LayoutOptions.Start,
-            //    Padding = new Thickness(0, 5, 10, 0),
-            //    Content = timeBonusLabel
-            //};
-
-            //var timeBonusGrid = new Grid
-            //{
-            //    HorizontalOptions = LayoutOptions.Fill,
-            //    ColumnSpacing = 0,
-            //    RowSpacing = 0,
-            //    Padding = new Thickness(10, 0, 10, 5),
-            //    ColumnDefinitions = {
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-            //    }
-            //};
-            //timeBonusGrid.Children.Add(timeBonusImageContent, 0, 0);
-            //timeBonusGrid.Children.Add(timeBonusContent, 1, 0);
-
-    //        _arrivedOnTimeMap = new Map
-    //        {
-    //            HorizontalOptions = LayoutOptions.Fill,
-    //            VerticalOptions = LayoutOptions.Fill,
-				//IsVisible = false // TODO: в последнем варианте нет карты
-    //        };
+            var arrivedCommands = new CommandsListView
+            {
+                RowHeight = PlatformHelper.DisplayHeight / 8
+            };
+            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedDeliveryMenuItems", BindingMode.OneWay);
+            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
+            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
 
             var grid = new Grid
             {
@@ -1138,15 +1066,13 @@ namespace KAS.Trukman.Views.Pages
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                 }
             };
             grid.Children.Add(pointsGrid, 0, 0);
             grid.Children.Add(totalPointsContent, 0, 1);
-            //grid.Children.Add(photoBonusGrid, 0, 2);
-            //grid.Children.Add(timeBonusGrid, 0, 3);
-            //grid.Children.Add(_arrivedOnTimeMap, 0, 4);
+            grid.Children.Add(nextStepContent, 0, 2);
+            grid.Children.Add(arrivedCommands, 0, 3);
 
             var content = new ContentView
             {
@@ -1258,108 +1184,31 @@ namespace KAS.Trukman.Views.Pages
                 Content = totalPointsLabel
             };
 
-            var photoBonusImage = new Image
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HeightRequest = 32,
-                WidthRequest = 32,
-                Source = PlatformHelper.CameraImageSource
-            };
-
-            var photoBonusImageContent = new ContentView
-            {
-                VerticalOptions = LayoutOptions.Fill,
-                HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(0, 0, 5, 0),
-                Content = photoBonusImage
-            };
-
-            var photoBonusLabel = new Label
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = PlatformHelper.HomeTextColor
-            };
-            photoBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForPhotoLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-            var photoBonusContent = new ContentView
+            var nextStepLabel = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
-                Padding = new Thickness(0, 5, 10, 0),
-                Content = photoBonusLabel
-            };
-
-            var photoBonusGrid = new Grid
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-                Padding = new Thickness(10, 0, 10, 5),
-                ColumnDefinitions = {
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-                }
-            };
-            photoBonusGrid.Children.Add(photoBonusImageContent, 0, 0);
-            photoBonusGrid.Children.Add(photoBonusContent, 1, 0);
-
-            var timeBonusImage = new Image
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HeightRequest = 32,
-                WidthRequest = 32,
-                Source = PlatformHelper.ClockImageSource
-            };
-
-            var timeBonusImageContent = new ContentView
-            {
-                VerticalOptions = LayoutOptions.Fill,
-                HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(0, 0, 5, 0),
-                Content = timeBonusImage
-            };
-
-            var timeBonusLabel = new Label
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = PlatformHelper.HomeTextColor
             };
-            timeBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var timeBonusContent = new ContentView
+            var nextStepContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
-                Padding = new Thickness(0, 5, 10, 0),
-                Content = timeBonusLabel
+                Padding = new Thickness(10, 10, 10, 10),
+                Content = nextStepLabel
             };
 
-            var timeBonusGrid = new Grid
+            var arrivedCommands = new CommandsListView
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-                Padding = new Thickness(10, 0, 10, 5),
-                ColumnDefinitions = {
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-                }
+                RowHeight = PlatformHelper.DisplayHeight / 8
             };
-            timeBonusGrid.Children.Add(timeBonusImageContent, 0, 0);
-            timeBonusGrid.Children.Add(timeBonusContent, 1, 0);
-
-            _arrivedLateMap = new Map
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-				IsVisible = false // TODO: в последнем варианте нет карты
-			};
+            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedDeliveryMenuItems", BindingMode.OneWay);
+            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
+            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
 
             var grid = new Grid
             {
@@ -1371,15 +1220,13 @@ namespace KAS.Trukman.Views.Pages
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                 }
             };
             grid.Children.Add(pointsGrid, 0, 0);
             grid.Children.Add(totalPointsContent, 0, 1);
-            grid.Children.Add(photoBonusGrid, 0, 2);
-            grid.Children.Add(timeBonusGrid, 0, 3);
-            grid.Children.Add(_arrivedLateMap, 0, 4);
+            grid.Children.Add(nextStepContent, 0, 2);
+            grid.Children.Add(arrivedCommands, 0, 3);
 
             var content = new ContentView
             {
@@ -1498,116 +1345,38 @@ namespace KAS.Trukman.Views.Pages
 			};
 			totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
 
-			var totalPointsContent = new ContentView
-			{
+			var totalPointsContent = new ContentView {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
 				Padding = new Thickness(10, 0, 10, 5),
 				Content = totalPointsLabel
 			};
+            totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
 
-			var photoBonusImage = new Image {
-				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 32,
-				WidthRequest = 32,
-				Source = PlatformHelper.CameraImageSource
-			};
+            var nextStepLabel = new Label {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-			var photoBonusImageContent = new ContentView {
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0, 0, 5, 0),
-				Content = photoBonusImage
-			};
-
-			var photoBonusLabel = new TappedLabel
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			photoBonusLabel.SetBinding(TappedLabel.TextProperty, new Binding("HomeBonusPointsForPhotoLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			photoBonusLabel.SetBinding (TappedLabel.TapCommandProperty, "ShowCameraCommand", BindingMode.OneWay);
-
-			var photoBonusContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
+            var nextStepContent = new ContentView {
+                HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = photoBonusLabel
-			};
+				Padding = new Thickness(10, 10, 10, 10),
+				Content = nextStepLabel
+            };
 
-			var photoBonusGrid = new Grid {
-				HorizontalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				Padding = new Thickness(10, 0, 10, 5),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			photoBonusGrid.Children.Add(photoBonusImageContent, 0, 0);
-			photoBonusGrid.Children.Add(photoBonusContent, 1, 0);
+            var arrivedCommands = new CommandsListView {
+                RowHeight = PlatformHelper.DisplayHeight / 8
+            };
+            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedPickUpMenuItems", BindingMode.OneWay);
+            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
+            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
 
-			var timeBonusImage = new Image
-			{
-				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 32,
-				WidthRequest = 32,
-				Source = PlatformHelper.ClockImageSource
-			};
-
-			var timeBonusImageContent = new ContentView
-			{
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0, 0, 5, 0),
-				Content = timeBonusImage
-			};
-
-			var timeBonusLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			timeBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var timeBonusContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = timeBonusLabel
-			};
-
-			var timeBonusGrid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				Padding = new Thickness(10, 0, 10, 5),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			timeBonusGrid.Children.Add(timeBonusImageContent, 0, 0);
-			timeBonusGrid.Children.Add(timeBonusContent, 1, 0);
-
-			//_arrivedOnTimeMap = new Map
-			//{
-			//	HorizontalOptions = LayoutOptions.Fill,
-			//	VerticalOptions = LayoutOptions.Fill,
-			//	IsVisible = false // TODO: в последнем варианте нет карты
-			//};
-
-			var grid = new Grid
+            var grid = new Grid
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
@@ -1617,15 +1386,13 @@ namespace KAS.Trukman.Views.Pages
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
 				}
 			};
 			grid.Children.Add(pointsGrid, 0, 0);
 			grid.Children.Add(totalPointsContent, 0, 1);
-			grid.Children.Add(photoBonusGrid, 0, 2);
-			grid.Children.Add(timeBonusGrid, 0, 3);
-//			grid.Children.Add(_arrivedOnTimeMap, 0, 4);
+            grid.Children.Add(nextStepContent, 0, 2);
+            grid.Children.Add(arrivedCommands, 0, 3);
 
 			var content = new ContentView
 			{
@@ -1737,131 +1504,51 @@ namespace KAS.Trukman.Views.Pages
 				Content = totalPointsLabel
 			};
 
-			var photoBonusImage = new Image
-			{
-				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 32,
-				WidthRequest = 32,
-				Source = PlatformHelper.CameraImageSource
-			};
+            var nextStepLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-			var photoBonusImageContent = new ContentView
-			{
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0, 0, 5, 0),
-				Content = photoBonusImage
-			};
+            var nextStepContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 10, 10, 10),
+                Content = nextStepLabel
+            };
 
-			var photoBonusLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			photoBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForPhotoLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            var arrivedCommands = new CommandsListView
+            {
+                RowHeight = PlatformHelper.DisplayHeight / 8
+            };
+            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedPickUpMenuItems", BindingMode.OneWay);
+            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
+            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
 
-			var photoBonusContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = photoBonusLabel
-			};
+            var grid = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                ColumnSpacing = 0,
+                RowSpacing = 0,
+                RowDefinitions = {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                }
+            };
+            grid.Children.Add(pointsGrid, 0, 0);
+            grid.Children.Add(totalPointsContent, 0, 1);
+            grid.Children.Add(nextStepContent, 0, 2);
+            grid.Children.Add(arrivedCommands, 0, 3);
 
-			var photoBonusGrid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				Padding = new Thickness(10, 0, 10, 5),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			photoBonusGrid.Children.Add(photoBonusImageContent, 0, 0);
-			photoBonusGrid.Children.Add(photoBonusContent, 1, 0);
-
-			var timeBonusImage = new Image
-			{
-				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 32,
-				WidthRequest = 32,
-				Source = PlatformHelper.ClockImageSource
-			};
-
-			var timeBonusImageContent = new ContentView
-			{
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0, 0, 5, 0),
-				Content = timeBonusImage
-			};
-
-			var timeBonusLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			timeBonusLabel.SetBinding(Label.TextProperty, new Binding("HomeBonusPointsForTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var timeBonusContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = timeBonusLabel
-			};
-
-			var timeBonusGrid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				Padding = new Thickness(10, 0, 10, 5),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			timeBonusGrid.Children.Add(timeBonusImageContent, 0, 0);
-			timeBonusGrid.Children.Add(timeBonusContent, 1, 0);
-
-			_arrivedLateMap = new Map
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				IsVisible = false // TODO: в последнем варианте нет карты
-					
-			};
-
-			var grid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				RowDefinitions = {
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			grid.Children.Add(pointsGrid, 0, 0);
-			grid.Children.Add(totalPointsContent, 0, 1);
-			grid.Children.Add(photoBonusGrid, 0, 2);
-			grid.Children.Add(timeBonusGrid, 0, 3);
-			grid.Children.Add(_arrivedLateMap, 0, 4);
-
-			var content = new ContentView
+            var content = new ContentView
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,

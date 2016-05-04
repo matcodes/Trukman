@@ -377,10 +377,10 @@ namespace Trukman
 				};*/
 
 				this.IsBusy = true;
-				MCResponse data = await MCQuery.verifyMC(edtMC.Text);
+				MCInfo data = await MCQuery.VerifyMC(edtMC.Text);
 
 				this.IsBusy = false;
-				if(data.success) {
+				if(data.Success) {
 					await Navigation.PushAsync(new SignUpCompanyPage(data));
 				} else {
 					throw new Exception("Didn't found company with this MC");

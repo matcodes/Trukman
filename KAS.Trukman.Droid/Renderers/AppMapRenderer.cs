@@ -38,11 +38,13 @@ namespace KAS.Trukman.Droid.Renderers
         private bool _isMapProcess = false;
 
         private PolylineOptions _polylineOptions = null;
+        private PolylineOptions _basePolylineOptions = null;
         private MarkerOptions _startMarkerOptions = null;
         private MarkerOptions _endMarkerOptions = null;
         private MarkerOptions _carMarkerOptions = null;
 
         private Polyline _polyline = null;
+        private Polyline _basePolyline = null;
         private Marker _startMarker = null;
         private Marker _endMarker = null;
         private Marker _carMarker = null;
@@ -57,6 +59,7 @@ namespace KAS.Trukman.Droid.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if ((args.PropertyName == "RoutePoints") ||
+                (args.PropertyName == "BaseRoutePoints") ||
                 (args.PropertyName == "RouteStartPosition") ||
                 (args.PropertyName == "RouteEndPosition") ||
                 (args.PropertyName == "RouteCarPosition"))
@@ -120,11 +123,22 @@ namespace KAS.Trukman.Droid.Renderers
                 }
                 else
                     _carMarkerOptions = null;
-                                
-                if (_polylineOptions == null)
+
+                if (element.BaseRoutePoints != null)
                 {
                     var points = new List<LatLng>();
-                    foreach (var position in (this.Element as AppMap).RoutePositions)
+                    foreach (var position in (this.Element as AppMap).BaseRoutePoints)
+                        points.Add(new LatLng(position.Latitude, position.Longitude));
+                    _basePolylineOptions = new PolylineOptions();
+                    _basePolylineOptions.InvokeColor(Android.Graphics.Color.Argb(128, 0, 255, 33));
+                    _basePolylineOptions.Geodesic(true);
+                    _basePolylineOptions.Add(points.ToArray());
+                }
+
+                if (element.RoutePoints != null)
+                {
+                    var points = new List<LatLng>();
+                    foreach (var position in (this.Element as AppMap).RoutePoints)
                         points.Add(new LatLng(position.Latitude, position.Longitude));
                     _polylineOptions = new PolylineOptions();
                     _polylineOptions.InvokeColor(Android.Graphics.Color.Argb(128, 0, 38, 255));
@@ -144,6 +158,8 @@ namespace KAS.Trukman.Droid.Renderers
                     _startMarker.Remove();
                 if (_endMarker != null)
                     _endMarker.Remove();
+                if (_basePolyline != null)
+                    _basePolyline.Remove();
                 if (_polyline != null)
                     _polyline.Remove();
                 if (_carMarker != null)
@@ -153,6 +169,8 @@ namespace KAS.Trukman.Droid.Renderers
                     _startMarker = _map.AddMarker(_startMarkerOptions);
                 if (_endMarkerOptions != null)
                     _endMarker = _map.AddMarker(_endMarkerOptions);
+                if (_basePolylineOptions != null)
+                    _basePolyline = _map.AddPolyline(_basePolylineOptions);
                 if (_polylineOptions != null)
                     _polyline = _map.AddPolyline(_polylineOptions);
                 if (_carMarkerOptions != null)
@@ -195,8 +213,7 @@ namespace KAS.Trukman.Droid.Renderers
             var faxLabel = view.FindViewById<TextView>(Resource.Id.faxLabel);
             var faxValue = view.FindViewById<TextView>(Resource.Id.faxValue);
             var addressLabel = view.FindViewById<TextView>(Resource.Id.addressLabel);
-            var addressLineFirstValue = view.FindViewById<TextView>(Resource.Id.addressLineFirstValue);
-            var addressLineSecondValue = view.FindViewById<TextView>(Resource.Id.addressLineSecondValue);
+            var addressValue = view.FindViewById<TextView>(Resource.Id.addressValue);
 
             title.Text = titleText;
             nameLabel.Text = AppLanguages.CurrentLanguage.ContractorPageNameLabel;
@@ -206,9 +223,8 @@ namespace KAS.Trukman.Droid.Renderers
             faxLabel.Text = AppLanguages.CurrentLanguage.ContractorPageFaxLabel;
             faxValue.Text = contractor.Fax;
             addressLabel.Text = AppLanguages.CurrentLanguage.ContractorPageAddressLabel;
-            addressLineFirstValue.Text = contractor.AddressLineFirst;
-            addressLineSecondValue.Text = contractor.AddressLineSecond;
-
+            addressValue.Text = contractor.Address;
+            
             return view;
         }
 

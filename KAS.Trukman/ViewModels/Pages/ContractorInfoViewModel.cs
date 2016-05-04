@@ -30,8 +30,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.Name = contractor.Name;
                 this.Phone = contractor.Phone;
                 this.Fax = contractor.Fax;
-                this.AddressLineFirst = contractor.AddressLineFirst;
-                this.AddressLineSecond = contractor.AddressLineSecond;
+                this.Address = contractor.Address;
 
                 this.FindAddress();
             }
@@ -41,16 +40,9 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Task.Run(async () => {
                 var geocoder = new Geocoder();
-                var locations = await geocoder.GetPositionsForAddressAsync(this.AddressLineFirst + " " + this.AddressLineSecond);
+                var locations = await geocoder.GetPositionsForAddressAsync(this.Address);
 
-                var location = locations.FirstOrDefault();
-                if ((location.Latitude == 0) && (location.Longitude == 0))
-                {
-                    locations = await geocoder.GetPositionsForAddressAsync(this.AddressLineSecond);
-                    location = locations.FirstOrDefault();
-                }
-
-                this.AddressPosition = location;
+                this.AddressPosition = locations.FirstOrDefault();
             });
         }
 
@@ -92,16 +84,10 @@ namespace KAS.Trukman.ViewModels.Pages
             set { this.SetValue("Fax", value); }
         }
 
-        public string AddressLineFirst
+        public string Address
         {
-            get { return (string)this.GetValue("AddressLineFirst"); }
-            set { this.SetValue("AddressLineFirst", value); }
-        }
-
-        public string AddressLineSecond
-        {
-            get { return (string)this.GetValue("AddressLineSecond"); }
-            set { this.SetValue("AddressLineSecond", value); }
+            get { return (string)this.GetValue("Address"); }
+            set { this.SetValue("Address", value); }
         }
 
         public Position AddressPosition

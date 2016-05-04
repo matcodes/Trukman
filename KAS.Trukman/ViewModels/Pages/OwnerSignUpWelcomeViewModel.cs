@@ -12,8 +12,6 @@ namespace KAS.Trukman.ViewModels.Pages
     #region OwnerSignUpWelcomeViewModel
     public class OwnerSignUpWelcomeViewModel : PageViewModel
     {
-        private System.Timers.Timer _checkDriversTimer = null;
-
         public OwnerSignUpWelcomeViewModel() 
             : base()
         {
@@ -31,14 +29,10 @@ namespace KAS.Trukman.ViewModels.Pages
         public override void Appering()
         {
             base.Appering();
-
-            this.CheckDrivers();
         }
 
         public override void Disappering()
         {
-            this.StopCheckDriversTimer();
-
             base.Disappering();
         }
 
@@ -58,51 +52,6 @@ namespace KAS.Trukman.ViewModels.Pages
             base.DoPropertyChanged(propertyName);
         }
 
-        private void StartCheckDriversTimer()
-        {
-            if (_checkDriversTimer == null)
-            {
-                _checkDriversTimer = new System.Timers.Timer { Interval = 10000 };
-                _checkDriversTimer.Elapsed += (sender, args) => {
-                    this.CheckDrivers();
-                };
-            }
-            _checkDriversTimer.Start();
-        }
-
-        private void StopCheckDriversTimer()
-        {
-            if (_checkDriversTimer != null)
-                _checkDriversTimer.Stop();
-        }
-
-        private void CheckDrivers()
-        {
-            Task.Run(async () => {
-                this.IsBusy = true;
-                this.DisableCommands();
-                try
-                {
-                    var user = await App.ServerManager.GetRequestForCompany(this.CompanyName);
-                    if (user != null)
-                        ShowDriverAuthorizationPageMessage.Send(this.CompanyName, user);
-                    else
-                       this.StartCheckDriversTimer();
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    // To do: Show exception message
-                    ShowToastMessage.Send(exception.Message);
-                }
-                finally
-                {
-                    this.EnabledCommands();
-                    this.IsBusy = false;
-                }
-            });
-        }
-
         private void PopPage(object parameter)
         {
             PopPageMessage.Send();
@@ -110,7 +59,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Continue(object parameter)
         {
-            
+            StartOwnerMainPageMessage.Send();
         }
 
         public string CompanyName

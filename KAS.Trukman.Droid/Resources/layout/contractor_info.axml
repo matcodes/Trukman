@@ -90,30 +90,13 @@
                 android:textSize="10dp"
                 android:text="Address:" />
             <TextView
-                android:id="@+id/addressLineFirstValue"
+                android:id="@+id/addressValue"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:textSize="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="Address line first" />
-        </TableRow>
-        <TableRow
-            android:padding="2dp">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="10dp"
-                android:text="" />
-            <TextView
-                android:id="@+id/addressLineSecondValue"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="Address line two" />
+                android:text="Address" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

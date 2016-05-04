@@ -64,14 +64,9 @@ namespace KAS.Trukman.ViewModels.Pages
                 var contractor = (this.SelectedItem == TripContractorItems.Shipper ? (IContractor)this.Shipper : (IContractor)this.Receiver);
 
                 var geocoder = new Geocoder();
-                var locations = await geocoder.GetPositionsForAddressAsync(contractor.AddressLineFirst + " " + contractor.AddressLineSecond);
+                var locations = await geocoder.GetPositionsForAddressAsync(contractor.Address);
 
                 var location = locations.FirstOrDefault();
-                if ((location.Latitude == 0) && (location.Longitude == 0))
-                {
-                    locations = await geocoder.GetPositionsForAddressAsync(contractor.AddressLineSecond);
-                    location = locations.FirstOrDefault();
-                }
 
                 this.ContractorPosition = location;
             });
@@ -93,15 +88,15 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.SelectedItem = (TripContractorItems)parameter;
         }
 
-        public IShipper Shipper
+        public IContractor Shipper
         {
-            get { return (this.GetValue("Shipper") as IShipper); }
+            get { return (this.GetValue("Shipper") as IContractor); }
             set { this.SetValue("Shipper", value); }
         }
 
-        public IReceiver Receiver
+        public IContractor Receiver
         {
-            get { return (this.GetValue("Receiver") as IReceiver); }
+            get { return (this.GetValue("Receiver") as IContractor); }
             set { this.SetValue("Receiver", value); }
         }
 

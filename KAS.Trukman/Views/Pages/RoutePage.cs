@@ -69,6 +69,7 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Fill
             };
             appMap.SetBinding(AppMap.RouteRegionProperty, "RouteRegion", BindingMode.OneWay);
+            appMap.SetBinding(AppMap.BaseRoutePointsProperty, "BaseRoutePoints", BindingMode.OneWay);
             appMap.SetBinding(AppMap.RoutePointsProperty, "RoutePoints", BindingMode.OneWay);
             appMap.SetBinding(AppMap.RouteStartPositionProperty, "StartPosition", BindingMode.OneWay);
             appMap.SetBinding(AppMap.RouteEndPositionProperty, "EndPosition", BindingMode.OneWay);

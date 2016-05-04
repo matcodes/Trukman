@@ -1,33 +1,35 @@
-﻿using System;
-using KAS.Trukman.Data.Classes;
-using Trukman.Interfaces;
+﻿using KAS.Trukman.Data.Interfaces;
+using System;
 
-namespace Trukman.Classes
+namespace KAS.Trukman.Data.Classes
 {
-	public class Company: MainData, ICompany
+    #region Company
+    public class Company : MainData, ICompany
 	{
-		#region ICompany implementation
+        public Company()
+        {
+        }
 
-		/*public string Id { 
-			get { return this.GetValue ("Id"); }
-			set { this.SetValue ("Id", value); }
-		}*/
-
-		public string Name {
+        #region ICompany implementation
+        public string Name
+        {
 			get { return (string)this.GetValue ("Name"); }
 			set { this.SetValue ("Name", value); }
 		}
 
-		public string DisplayName {
-			get { return (string)this.GetValue ("displayName"); }
-			set { this.SetValue ("displayName", value); }
+		public string DisplayName
+        {
+			get { return (string)this.GetValue ("DisplayName"); }
+			set { this.SetValue ("DisplayName", value); }
 		}
 
+        public int FleetSize
+        {
+            get { return (int)this.GetValue("FleetSize", (int)0); }
+            set { this.SetValue("FleetSize", value); }
+        }
 		#endregion
-
-		public Company ()
-		{
-		}
 	}
+    #endregion
 }
 

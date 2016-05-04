@@ -9,6 +9,10 @@ using KAS.Trukman;
 using Trukman.Helpers;
 using Trukman.Interfaces;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.Languages;
+using KAS.Trukman.Views.Lists;
 
 namespace Trukman
 {
@@ -28,6 +32,8 @@ namespace Trukman
         AppEntry edtCompany;
         AppEntry edtPhone;
         AppButton btnSubmit;
+
+        private AppEntry _filter;
 
 
         Label lblHaveAccount;
@@ -195,6 +201,8 @@ namespace Trukman
             edtCompany = new AppEntry {
                 PlaceholderColor = PlatformHelper.EntryPlaceholderColor
             };
+            edtCompany.SetBinding(AppEntry.TapCommandProperty, "SelectCompanyCommand");
+            edtCompany.SetBinding(AppEntry.TextProperty, "CompanyName", BindingMode.TwoWay);
 
             edtFirstName.Completed += (sender, args) => {
                 edtLastName.Focus();
@@ -205,6 +213,10 @@ namespace Trukman
             edtPhone.Completed += (sender, args) => {
                 edtCompany.Focus();
             };
+            edtCompany.Focused += (sender, args) => {
+                _filter.Focus();               
+            };
+
 
             var userGrid = new Grid {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -249,6 +261,7 @@ namespace Trukman
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.Center
 			};
+            indicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.OneWay);
 
 			var content = new Grid {
 				HorizontalOptions = LayoutOptions.Fill,
@@ -273,21 +286,128 @@ namespace Trukman
 			content.Children.Add (buttonContent, 0, 4);
 			content.Children.Add (lblAccContent, 0, 5);
 
-			var pageContent = new Grid {
+            var popupBackground = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
+            };
+            popupBackground.SetBinding(ContentView.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.OneWay);
+
+            var pageContent = new Grid {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
 				RowSpacing = 0,
 				ColumnSpacing = 0
 			};
 			pageContent.Children.Add (content);
-			pageContent.Children.Add (indicator);
+            pageContent.Children.Add(popupBackground);
+            pageContent.Children.Add(this.CreateSelectCompanyPopup());
+            pageContent.Children.Add(indicator);
 
-			UpdateText ();
+            UpdateText();
 
-			return content;
+			return pageContent;
 		}
 
-		void SegmentLan_ValueChanged (object sender, EventArgs e)
+        private View CreateSelectCompanyPopup()
+        {
+            var appBoxView = new AppBoxView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill
+            };
+
+            _filter = new AppEntry
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                PlaceholderColor = Color.Gray
+            };
+            _filter.SetBinding(Entry.TextProperty, "CompanyFilter", BindingMode.TwoWay);
+            _filter.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var filterContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(10, 20, 10, 5),
+                Content = _filter
+            };
+
+            var companyListView = new CompanyListView {
+                
+            };
+            companyListView.SetBinding(CompanyListView.ItemsSourceProperty, "Companies", BindingMode.TwoWay);
+            companyListView.SetBinding(CompanyListView.SelectedItemProperty, "SelectedCompany", BindingMode.TwoWay);
+            companyListView.SetBinding(CompanyListView.ItemClickCommandProperty, "SelectCompany");
+
+            var cancelButton = new AppPopupButton
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
+                AppStyle = AppButtonStyle.Left
+            };
+            cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            cancelButton.SetBinding(AppButton.CommandProperty, "SelectCompanyCancelCommand");
+
+            var acceptButton = new AppPopupButton
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
+                AppStyle = AppButtonStyle.Right
+            };
+            acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            acceptButton.SetBinding(AppPopupButton.CommandProperty, "SelectCompanyAcceptCommand");
+
+            var buttons = new Grid
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(0, 1, 0, 0),
+                ColumnDefinitions = {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                }
+            };
+            buttons.Children.Add(cancelButton, 0, 0);
+            buttons.Children.Add(acceptButton, 1, 0);
+
+            var popupContent = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                HeightRequest = this.Height / 2,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                RowDefinitions = {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
+                }
+            };
+            popupContent.Children.Add(filterContent, 0, 0);
+            popupContent.Children.Add(companyListView, 0, 1);
+            popupContent.Children.Add(buttons, 0, 2);
+
+            var content = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(40, 40, 40, 0)
+            };
+            content.SetBinding(Grid.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.TwoWay);
+
+            content.Children.Add(appBoxView);
+            content.Children.Add(popupContent);
+
+            return content;
+        }
+
+        void SegmentLan_ValueChanged (object sender, EventArgs e)
 		{
 			if (((SegmentedControl)sender).SelectedValue == ((SegmentedControl)sender).Children [0].Text)
 				Localization.language = Localization.Languages.ENGLISH;
@@ -418,23 +538,28 @@ namespace Trukman
 				try {
 					await App.ServerManager.Register (username, edtPhone.Text, UserRole.UserRoleDriver, edtFirstName.Text, edtLastName.Text);
 
-					bool findCompany = await App.ServerManager.FindCompany(edtCompany.Text);
-					if (!findCompany)
-						throw new Exception(string.Format("Company {0} is not registered in Trukman", edtCompany.Text));
+                    var companyName = edtCompany.Text.Trim();
+                    if ((this.ViewModel != null) && (this.ViewModel.SelectedCompany != null))
+                        companyName = this.ViewModel.SelectedCompany.Name;
 
-					var company = await App.ServerManager.GetUserCompany();
-					if (company != null && string.Compare(company.Name, edtCompany.Text, true) != 0)
+                    var company = await TrukmanContext.SelectCompanyByName(companyName); //  await App.ServerManager.FindCompany(companyName);
+					if (company == null)
+						throw new Exception(string.Format("Company {0} is not registered in Trukman", companyName));
+
+                    company = await TrukmanContext.SelectUserCompany(); // await App.ServerManager.GetUserCompany();
+					if (company != null && string.Compare(company.Name, companyName, true) != 0)
 						throw new Exception(string.Format("Your are approved to company {0}", company.Name));						
 					else if (company == null)
-						isJoinCompany = await App.ServerManager.RequestToJoinCompany (edtCompany.Text);
-					else if (company != null && string.Compare(company.Name, edtCompany.Text, true) == 0)
+						isJoinCompany = await App.ServerManager.RequestToJoinCompany (companyName);
+					else if (company != null && string.Compare(company.Name, companyName, true) == 0)
 						isJoinCompany = true;
 
-					SettingsServiceHelper.SaveCompany (edtCompany.Text);
+					SettingsServiceHelper.SaveCompany (companyName);
 				} finally {
 					indicator.IsRunning = false;
 				}
 				if (isJoinCompany) {
+                    await TrukmanContext.JoinDriver();
 					ShowMainPageMessage.Send ();
 					//await Navigation.PushAsync (new MainPage ());
 				} else {
@@ -499,6 +624,11 @@ namespace Trukman
 				//AlertHandler.ShowAlert (exc.Message);
 			}
 		}
+
+        public new SignUpDriverViewModel ViewModel
+        {
+            get { return (this.BindingContext as SignUpDriverViewModel); }
+        }
 	}
 }
 

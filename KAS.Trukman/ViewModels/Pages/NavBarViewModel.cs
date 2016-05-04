@@ -40,19 +40,17 @@ namespace KAS.Trukman.ViewModels.Pages
         private void ShowTrip(object parameter)
         {
             var trip = new Trip {
-                Shipper = new Shipper {
+                Shipper = new Contractor {
                     Name = "ACME Shipping, Inc.",
                     Phone = "123-456-789",
                     Fax = "123-456-789",
-                    AddressLineFirst = "10777 Santa Monica Blvd",
-                    AddressLineSecond = "Los Angeles, California"
+                    Address = "10777 Santa Monica Blvd, Los Angeles, California"
                 },
-                Receiver = new Receiver {
+                Receiver = new Contractor {
                     Name = "ACME Shipping, Inc.",
                     Phone = "123-456-789",
                     Fax = "123-456-789",
-                    AddressLineFirst = "10777 Santa Monica Blvd",
-                    AddressLineSecond = "Los Angeles, California"
+                    Address = "10777 Santa Monica Blvd, Los Angeles, California"
                 }
             };
             ShowTripPageMessage.Send(trip);
@@ -60,25 +58,22 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShowShipperInfo(object parameter)
         {
-            var shipper = new Shipper {
+            var shipper = new Contractor {
                 Name = "ACME Shipping, Inc.",
                 Phone = "123-456-789",
                 Fax = "123-456-789",
-                AddressLineFirst = "10777 Santa Monica Blvd",
-                AddressLineSecond = "Los Angeles, California"
+                Address = "10777 Santa Monica Blvd, Los Angeles, California"
             };
             ShowShipperInfoPageMessage.Send(shipper);
         }
 
         private void ShowReceiverInfo(object parameter)
         {
-            var receiver = new Receiver
-            {
+            var receiver = new Contractor {
                 Name = "ACME Shipping, Inc.",
                 Phone = "123-456-789",
                 Fax = "123-456-789",
-                AddressLineFirst = "10777 Santa Monica Blvd",
-                AddressLineSecond = "Los Angeles, California"
+                Address = "10777 Santa Monica Blvd, Los Angeles, California"
             };
             ShowReceiverInfoPageMessage.Send(receiver);
         }

@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms.Maps;
 
 namespace KAS.Trukman.Data.Interfaces
 {
     #region ITrip
-    public interface ITrip
+    public interface ITrip : IMainData
     {
-		string TripId { get; set; }
+        IContractor Shipper { get; set; }
 
-        IShipper Shipper { get; set; }
-
-        IReceiver Receiver { get; set; }
-
-        //DateTime Time { get; set; }
+        IContractor Receiver { get; set; }
 
         int Points { get; set; }
 
@@ -21,17 +18,21 @@ namespace KAS.Trukman.Data.Interfaces
 
 		DateTime DeliveryDatetime { get; set; }
 
-		int DriverOnTimePickup { get; set; }
+		bool IsPickup { get; set; }
 
-		int DriverOnTimeDelivery { get; set; }
+		bool IsDelivery { get; set; }
 
 		bool JobCompleted { get; set; }
 
-		bool? DriverAccepted { get; set; }
+		bool DriverAccepted { get; set; }
 
 		string DeclineReason { get; set; }
 
 		bool JobCancelled { get; set; }
+
+        string DriverDisplayName { get; set; }
+
+        Position Location { get; set; }
     }
     #endregion
 }

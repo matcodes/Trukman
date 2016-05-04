@@ -64,6 +64,21 @@ namespace KAS.Trukman.Droid
         #endregion
 
         #region Colors
+        public Xamarin.Forms.Color SignUpTextColor
+        {
+            get { return Xamarin.Forms.Color.White; }
+        }
+
+        public Xamarin.Forms.Color SignUpSelectedItemColor
+        {
+            get { return Xamarin.Forms.Color.White; }
+        }
+
+        public Xamarin.Forms.Color SignUpItemColor
+        {
+            get { return Xamarin.Forms.Color.Gray; }
+        }
+
         public Xamarin.Forms.Color EntryPlaceholderColor
         {
             get { return Xamarin.Forms.Color.Gray; }
@@ -291,9 +306,19 @@ namespace KAS.Trukman.Droid
             get { return "turn_none"; }
         }
 
-        public string LockImageSource
+        public string LockNormalImageSource
         {
-            get { return "lock"; }
+            get { return "lock_normal"; }
+        }
+
+        public string LockRedImageSource
+        {
+            get { return "lock_red"; }
+        }
+
+        public string UnlockImageSource
+        {
+            get { return "unlock"; }
         }
 
         public string LogoImageSource

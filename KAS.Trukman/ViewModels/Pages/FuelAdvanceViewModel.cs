@@ -351,10 +351,10 @@ namespace KAS.Trukman.ViewModels.Pages
     #region FuelAdvanceStates
     public enum FuelAdvanceStates
     {
-        None, 
-        Requested,
-        Received,
-        Completed
+        None = 0, 
+        Requested = 1,
+        Received = 2,
+        Completed = 3
     }
     #endregion
 }

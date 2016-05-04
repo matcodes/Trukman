@@ -12,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowReceiverInfoPageMessage";
 
-        public static void Send(IReceiver receiver)
+        public static void Send(IContractor receiver)
         {
             var message = new ShowReceiverInfoPageMessage(receiver);
             MessagingCenter.Send<ShowReceiverInfoPageMessage>(message, MESSAGE_KEY);
@@ -29,13 +29,13 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowReceiverInfoPageMessage(IReceiver receiver)
+        public ShowReceiverInfoPageMessage(IContractor receiver)
             : base()
         {
             this.Receiver = receiver;
         }
 
-        public IReceiver Receiver { get; private set; }
+        public IContractor Receiver { get; private set; }
     }
     #endregion
 }

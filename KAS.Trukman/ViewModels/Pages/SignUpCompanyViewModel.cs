@@ -6,6 +6,7 @@ using KAS.Trukman.ViewModels.Pages;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Data.Interfaces;
 
 namespace Trukman.ViewModels.Pages
 {
@@ -63,7 +64,7 @@ namespace Trukman.ViewModels.Pages
 			PopPageMessage.Send();
 		}
 
-		public VisualCommand PopPageCommand { get; private set; }
+        public VisualCommand PopPageCommand { get; private set; }
 	}
 }
 

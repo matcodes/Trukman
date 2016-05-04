@@ -23,6 +23,12 @@ namespace KAS.Trukman.Helpers
         #endregion
 
         #region Colors
+        Color SignUpTextColor { get; }
+
+        Color SignUpSelectedItemColor { get; }
+
+        Color SignUpItemColor { get; }
+
         Color EntryPlaceholderColor { get; }
 
         Color TitleTextColor { get; }
@@ -115,7 +121,11 @@ namespace KAS.Trukman.Helpers
 
         string TurnNoneImageSource { get; }
 
-        string LockImageSource { get; }
+        string LockNormalImageSource { get; }
+
+        string LockRedImageSource { get; }
+
+        string UnlockImageSource { get; }
 
         string LogoImageSource { get; }
         #endregion
@@ -165,6 +175,21 @@ namespace KAS.Trukman.Helpers
         #endregion
 
         #region Colors
+        public static Color SignUpTextColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.SignUpTextColor : Color.White); }
+        }
+
+        public static Color SignUpSelectedItemColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.SignUpSelectedItemColor : Color.White); }
+        }
+
+        public static Color SignUpItemColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.SignUpItemColor : Color.Gray); }
+        }
+
         public static Color EntryPlaceholderColor
         {
             get { return (_platformHelper != null ? _platformHelper.EntryPlaceholderColor : Color.Gray); }
@@ -392,9 +417,19 @@ namespace KAS.Trukman.Helpers
             get { return (_platformHelper != null ? _platformHelper.TurnNoneImageSource : "turn_none"); }
         }
 
-        public static string LockImageSource
+        public static string LockNormalImageSource
         {
-            get { return (_platformHelper != null ? _platformHelper.LockImageSource : "lock"); }
+            get { return (_platformHelper != null ? _platformHelper.LockNormalImageSource : "lock_normal"); }
+        }
+
+        public static string LockRedImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.LockRedImageSource : "lock_red"); }
+        }
+
+        public static string UnlockImageSource
+        {
+            get { return (_platformHelper != null ? _platformHelper.UnlockImageSource : "unlock"); }
         }
 
         public static string LogoImageSource

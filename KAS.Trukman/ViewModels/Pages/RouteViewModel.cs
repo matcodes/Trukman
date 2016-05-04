@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using KAS.Trukman.Droid.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -23,10 +24,6 @@ namespace KAS.Trukman.ViewModels.Pages
         private int _currentIndex = -1;
 
         private System.Timers.Timer _currentPositionTimer = null;
-
-        private RouteResult _routeResult = null;
-        private Route _route = null;
-        private RouteLeg _leg = null;
 
         public RouteViewModel()
             : base()
@@ -62,11 +59,11 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.CreateRoute();
             else if (propertyName == "CurrentPosition")
             {
-                this.RemoveSteps();
-                if (this.CurrentPosition != null)
-                    this.StepInfoText = String.Format("{0}, {1}", this.CurrentPosition.GetDistanceTextFromMiles(), this.CurrentPosition.GetDurationText());
-                else
-                    this.StepInfoText = "";
+                //this.RemoveSteps();
+                //if (this.CurrentPosition != null)
+                //    this.StepInfoText = String.Format("{0}, {1}", this.CurrentPosition.GetDistanceTextFromMiles(), this.CurrentPosition.GetDurationText());
+                //else
+                //    this.StepInfoText = "";
             }
             else if ((propertyName == "SelectedRouteStep") && (this.SelectedRouteStep != null))
                 this.SelectedRouteStep = null;
@@ -103,49 +100,27 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Task.Run(async () =>
             {
-                _routeResult = await RouteHelper.FindRouteForTrip(this.Trip);
-                _route = ((_routeResult != null) && (_routeResult.Routes.Length > 0) ? _routeResult.Routes[0] : null);
-                _leg = ((_route != null) && (_route.Legs.Length > 0) ? _route.Legs[0] : null);
-                if (_route != null)
+                var routeResult = await RouteHelper.FindRouteForTrip(this.Trip);
+                var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
+                var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
+                if (route != null)
                 {
-                    this.RouteRegion = _route.Bounds;
+                    this.RouteRegion = route.Bounds;
 
-                    if (_leg != null)
+                    if (leg != null)
                     {
                         this.StartPosition = new AddressInfo
                         {
-                            Address = _leg.StartAddress,
-                            Position = new Position(_leg.StartLocation.Latitude, _leg.StartLocation.Longitude),
+                            Address = leg.StartAddress,
+                            Position = new Position(leg.StartLocation.Latitude, leg.StartLocation.Longitude),
                             Contractor = this.Trip.Shipper
                         };
                         this.EndPosition = new AddressInfo
                         {
-                            Address = _leg.EndAddress,
-                            Position = new Position(_leg.EndLocation.Latitude, _leg.EndLocation.Longitude),
+                            Address = leg.EndAddress,
+                            Position = new Position(leg.EndLocation.Latitude, leg.EndLocation.Longitude),
                             Contractor = this.Trip.Receiver
                         };
-
-                        List<RouteStepInfo> steps = new List<RouteStepInfo>();
-
-                        for (var index = 0; index < _leg.Steps.Length; index++)
-                        {
-                            var turn = RouteStepTurn.None;
-                            if (_leg.Steps[index].Maneuver == "turn-left")
-                                turn = RouteStepTurn.Left;
-                            else if (_leg.Steps[index].Maneuver == "turn-right")
-                                turn = RouteStepTurn.Right;
-
-                            var routeStep = new RouteStepInfo {
-                                StepIndex = index,
-                                Text = this.ParseHtmlText(_leg.Steps[index].HtmlInstructions),
-                                Distance = _leg.Steps[index].Distance.Text,
-                                Turn = turn
-                            };
-
-                            steps.Add(routeStep);
-                        }
-
-                        this.AddRouteSteps(steps.ToArray());
                     }
                     else
                     {
@@ -153,12 +128,12 @@ namespace KAS.Trukman.ViewModels.Pages
                         this.EndPosition = null;
                     }
 
-                    var routePoints = this.DecodeRoutePoints(_route.OverviewPolyline.Points);
+                    var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
 
-                    this.RoutePoints = routePoints;
-
-                    this.GetCurrentPosition();
+                    this.BaseRoutePoints = routePoints;
                 }
+
+                this.SetCurrentPosition();
             });
         }
 
@@ -195,9 +170,7 @@ namespace KAS.Trukman.ViewModels.Pages
             {
                 _currentPositionTimer = new System.Timers.Timer { Interval = 10000 };
                 _currentPositionTimer.Elapsed += (sender, args) => {
-                    this.StopCurrentPositionTimer();
-
-                    this.GetCurrentPosition();
+                    this.SetCurrentPosition();
                 };
             }
             _currentPositionTimer.Start();
@@ -209,31 +182,73 @@ namespace KAS.Trukman.ViewModels.Pages
                 _currentPositionTimer.Stop();
         }
 
-        private void GetCurrentPosition()
+        private void SetCurrentPosition()
         {
-            Task.Run(() => {
-                // To do: Get current position
-                if (_currentIndex < _leg.Steps.Length - 1)
-                    _currentIndex++;
-
-                var step = _leg.Steps[_currentIndex];
-                var distance = (long)0;
-                var duration = (long)0;
-                for (int index = _currentIndex; index < _leg.Steps.Length; index++)
+            Task.Run(async () =>
+            {
+                this.StopCurrentPositionTimer();
+                try
                 {
-                    distance += _leg.Steps[index].Distance.Value;
-                    duration += _leg.Steps[index].Duration.Value;
+                    if (this.Trip != null)
+                    {
+                        var position = TrukmanContext.Driver.Location;
+
+                        if ((position.Latitude == 0) && (position.Longitude == 0) && (this.StartPosition != null))
+                            position = this.StartPosition.Position;
+
+                        var positionAddress = await RouteHelper.GetAddressByPosition(position);
+
+                        var contractorAddress = (this.Trip.IsPickup ? this.Trip.Receiver.Address : this.Trip.Shipper.Address);
+
+                        var routeResult = await RouteHelper.FindRouteForTrip(positionAddress, contractorAddress);
+                        var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
+                        var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
+
+                        if (route != null)
+                        {
+                            List<RouteStepInfo> steps = new List<RouteStepInfo>();
+
+                            for (var index = 0; index < leg.Steps.Length; index++)
+                            {
+                                var turn = RouteStepTurn.None;
+                                if (leg.Steps[index].Maneuver == "turn-left")
+                                    turn = RouteStepTurn.Left;
+                                else if (leg.Steps[index].Maneuver == "turn-right")
+                                    turn = RouteStepTurn.Right;
+
+                                var routeStep = new RouteStepInfo
+                                {
+                                    StepIndex = index,
+                                    Text = this.ParseHtmlText(leg.Steps[index].HtmlInstructions),
+                                    Distance = leg.Steps[index].Distance.Text,
+                                    Turn = turn
+                                };
+
+                                steps.Add(routeStep);
+                            }
+
+                            this.AddRouteSteps(steps.ToArray());
+
+                            var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
+                            this.RoutePoints = routePoints;
+                        }
+
+                        this.CurrentPosition = new CarInfo
+                        {
+                            Distance = leg.Distance.Value,
+                            Duration = leg.Duration.Value,
+                            Position = position
+                        };
+                    }
                 }
-
-                var carInfo = new CarInfo {
-                    Position = new Position(step.StartLocation.Latitude, step.StartLocation.Longitude),
-                    Distance = distance,
-                    Duration = duration
-                };
-
-                this.CurrentPosition = carInfo;
-
-                this.StartCurrentPositionTimer();
+                catch (Exception exception)
+                {
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.StartCurrentPositionTimer();
+                }
             });
         }
 
@@ -297,6 +312,12 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             get { return (this.GetValue("Trip") as ITrip); }
             set { this.SetValue("Trip", value); }
+        }
+
+        public Position[] BaseRoutePoints
+        {
+            get { return (Position[])this.GetValue("BaseRoutePoints", new Position[] { }); }
+            set { this.SetValue("BaseRoutePoints", value); }
         }
 
         public Position[] RoutePoints

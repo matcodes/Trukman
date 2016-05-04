@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Trukman.Helpers;
 using KAS.Trukman;
 using KAS.Trukman.Helpers;
+using KAS.Trukman.Droid.AppContext;
 
 namespace Trukman
 {
@@ -145,6 +146,8 @@ namespace Trukman
 
 			if (status== AuthorizationRequestStatus.Authorized) {
 				SettingsServiceHelper.SaveRejectedCounter (0);
+
+                await TrukmanContext.JoinDriver();
 
 				Device.BeginInvokeOnMainThread(async () => 
 					{
