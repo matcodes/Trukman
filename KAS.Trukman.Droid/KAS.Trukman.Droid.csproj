@@ -684,9 +684,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\notification_sound.mp3" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\lock_normal.png" />
   </ItemGroup>
   <ItemGroup>
@@ -742,5 +739,8 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\apppopupbutton_pressed.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\raw\notification_sound.mp3" />
   </ItemGroup>
 </Project>
