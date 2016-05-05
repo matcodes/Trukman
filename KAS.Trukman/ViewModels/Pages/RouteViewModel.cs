@@ -100,41 +100,65 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Task.Run(async () =>
             {
-                var routeResult = await RouteHelper.FindRouteForTrip(this.Trip);
-                var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
-                var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
-                if (route != null)
+                this.IsBusy = true;
+                try
                 {
-                    this.RouteRegion = route.Bounds;
-
-                    if (leg != null)
+                    var routeResult = await RouteHelper.FindRouteForTrip(this.Trip);
+                    var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
+                    var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
+                    if (route != null)
                     {
-                        this.StartPosition = new AddressInfo
-                        {
-                            Address = leg.StartAddress,
-                            Position = new Position(leg.StartLocation.Latitude, leg.StartLocation.Longitude),
-                            Contractor = this.Trip.Shipper
-                        };
-                        this.EndPosition = new AddressInfo
-                        {
-                            Address = leg.EndAddress,
-                            Position = new Position(leg.EndLocation.Latitude, leg.EndLocation.Longitude),
-                            Contractor = this.Trip.Receiver
-                        };
-                    }
-                    else
-                    {
-                        this.StartPosition = null;
-                        this.EndPosition = null;
-                    }
+                        this.RouteRegion = route.Bounds;
 
-                    var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
+                        if (leg != null)
+                        {
+                            this.StartPosition = new AddressInfo
+                            {
+                                Address = leg.StartAddress,
+                                Position = new Position(leg.StartLocation.Latitude, leg.StartLocation.Longitude),
+                                Contractor = this.Trip.Shipper
+                            };
+                            this.EndPosition = new AddressInfo
+                            {
+                                Address = leg.EndAddress,
+                                Position = new Position(leg.EndLocation.Latitude, leg.EndLocation.Longitude),
+                                Contractor = this.Trip.Receiver
+                            };
+                        }
+                        else
+                        {
+                            this.StartPosition = null;
+                            this.EndPosition = null;
+                        }
 
-                    this.BaseRoutePoints = routePoints;
+                        var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
+
+                        this.BaseRoutePoints = routePoints;
+                    }
                 }
-
-                this.SetCurrentPosition();
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                    this.RecreateRoute();
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                    this.SetCurrentPosition();
+                }
             });
+        }
+
+        private void RecreateRoute()
+        {
+            var timer = new System.Timers.Timer { Interval = 200 };
+            timer.Elapsed += (sender, args) => 
+            {
+                timer.Stop();
+                this.CreateRoute();
+            };
+            timer.Start();
         }
 
         private string ParseHtmlText(string htmlText)

@@ -52,7 +52,8 @@ namespace KAS.Trukman.Helpers
                     catch (Exception exception)
                     {
                         Console.WriteLine(exception);
-                        // To do: Show exception message
+                        // To do: Exception message
+                        throw new Exception("Check internet connection");
                     }
                 });
 
@@ -64,7 +65,8 @@ namespace KAS.Trukman.Helpers
                     catch (Exception exception)
                     {
                         Console.WriteLine(exception);
-                        // To do: Show exception message
+                        // To do: Exception message
+                        throw new Exception("Bad route response");
                     }
             }
             return result;
