@@ -18,6 +18,7 @@ using Android.Webkit;
 using Newtonsoft.Json;
 using Trukman.Droid.Views;
 using KAS.Trukman.Droid;
+using Android.Provider;
 
 namespace Trukman.Droid
 {
@@ -45,7 +46,16 @@ namespace Trukman.Droid
 
 			selectRect = FindViewById<SelectionRectangleView>(Resource.Id.PDFView);
 
-			ShowPdfDocument (Intent.Data);
+            Android.Net.Uri uri = null;
+            if (this.Intent.Action == Intent.ActionSend)
+            {
+                var bundle = this.Intent.Extras;
+                uri = (Android.Net.Uri)bundle.Get(Intent.ExtraStream);
+            }
+            else
+                uri = this.Intent.Data;
+            if (uri != null)
+                ShowPdfDocument(uri);
 		}
 
 		protected override void OnResume ()
@@ -97,30 +107,69 @@ namespace Trukman.Droid
 			pdfWebView.SetWebChromeClient(new WebChromeClient());
 
 			string path = docUri.Path;
-			if (docUri.Scheme == "content")
-			{
-				path = GetRealPathFromURI(docUri);
-			}
+            if (docUri.Scheme == "content")
+            {
+                path = this.GetRealPathFromURI(docUri);
+            }
 
-			pdfWebView.LoadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + WebUtility.UrlEncode(path));
+            pdfWebView.LoadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + WebUtility.UrlEncode(path));
 		}
 
-		private string GetRealPathFromURI(Android.Net.Uri contentURI)
-		{
-			var mediaStoreImagesMediaData = "_data";
-			string[] projection = { mediaStoreImagesMediaData };
+        //private string GetRealPathFromURI(Android.Net.Uri contentURI)
+        //{
+        //	var mediaStoreImagesMediaData = "_data";
+        //	string[] projection = { mediaStoreImagesMediaData };
 
-			Android.Database.ICursor cursor = ContentResolver.Query(contentURI, projection, 
-				null, null, null);
-			int columnIndex = cursor.GetColumnIndexOrThrow(mediaStoreImagesMediaData);
-			cursor.MoveToFirst();
+        //	Android.Database.ICursor cursor = ContentResolver.Query(contentURI, projection, 
+        //		null, null, null);
+        //	int columnIndex = cursor.GetColumnIndexOrThrow(mediaStoreImagesMediaData);
+        //	cursor.MoveToFirst();
 
-			string path = cursor.GetString(columnIndex);
-			cursor.Close();
-			return path;
-		}
+        //	string path = cursor.GetString(columnIndex);
+        //	cursor.Close();
+        //	return path;
+        //}
 
-		void ScanImage (object sender, EventArgs ea)
+        private String GetRealPathFromURI(Android.Net.Uri contentUri)
+        {
+            var fileName = "";
+            try
+            {
+                var path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                fileName = System.IO.Path.Combine(path, "current.pdf");
+                using (var stream = this.ContentResolver.OpenInputStream(contentUri))
+                using (var fileStream = new FileStream(fileName, FileMode.Create))
+                    stream.CopyTo(fileStream);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+            return fileName;
+
+
+
+            //Android.Database.ICursor cursor = null;
+            //try
+            //{
+            //    String[] proj = { MediaStore.Images.Media.InterfaceConsts.Data };
+            //    cursor = this.ContentResolver.Query(contentUri, proj, null, null, null);
+            //    int column_index = cursor.GetColumnIndexOrThrow(MediaStore.Images.Media.InterfaceConsts.Data);
+            //    cursor.MoveToFirst();
+            //    String path = cursor.GetString(column_index);
+
+            //    return path;
+            //}
+            //finally
+            //{
+            //    if (cursor != null)
+            //    {
+            //        cursor.Close();
+            //    }
+            //}
+        }
+
+        void ScanImage (object sender, EventArgs ea)
 		{
 			Rect bounds = selectRect.getBounds();
 			pdfWebView.DrawingCacheEnabled = true;

@@ -33,7 +33,6 @@ namespace Trukman.Droid.Views
 		#endregion
 
 		#region Constructors
-
 		public SelectionRectangleView(Context context)
 			: base(context)
 		{
@@ -51,7 +50,6 @@ namespace Trukman.Droid.Views
 		{
 			Initialize(context);
 		}
-
 		#endregion
 
 

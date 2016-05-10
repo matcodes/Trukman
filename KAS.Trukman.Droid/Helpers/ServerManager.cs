@@ -18,7 +18,7 @@ using KAS.Trukman;
 using Xamarin.Forms.Maps;
 using Trukman.Droid.ParseClasses;
 using System.Linq;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 using KAS.Trukman.Storage.ParseClasses;
 
 [assembly: Dependency(typeof(ServerManager))]

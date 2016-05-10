@@ -28,6 +28,8 @@ namespace KAS.Trukman.Data.Interfaces
         UserRole Role{ get; set; }
 
         Position Position { get; set; }
+
+        int Status { get; set; }
 	}
     #endregion
 }

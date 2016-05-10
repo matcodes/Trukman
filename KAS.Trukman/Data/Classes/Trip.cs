@@ -94,6 +94,12 @@ namespace KAS.Trukman.Data.Classes
             get { return (string)this.GetValue("DriverDisplayName"); }
             set { this.SetValue("DriverDisplayName", value); }
         }
+
+        public bool IsDeleted
+        {
+            get { return (bool)this.GetValue("IsDeleted"); }
+            set { this.SetValue("IsDeleted", value); }
+        }
 		#endregion
 
         public string ShipperID { get; set; }

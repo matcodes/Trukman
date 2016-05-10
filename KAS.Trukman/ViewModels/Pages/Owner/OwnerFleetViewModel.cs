@@ -2,7 +2,7 @@
 using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Maps;
 using KAS.Trukman.Data.Route;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -100,42 +100,65 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             Task.Run(async () =>
             {
-                this.StopCurrentPositionTimer();
-                var routeResult = await RouteHelper.FindRouteForTrip(this.SelectedTrip);
-                var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
-                var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
-                if (route != null)
+                this.IsBusy = true;
+                try
                 {
-                    this.RouteRegion = route.Bounds;
-
-                    if (leg != null)
+                    var routeResult = await RouteHelper.FindRouteForTrip(this.SelectedTrip);
+                    var route = ((routeResult != null) && (routeResult.Routes.Length > 0) ? routeResult.Routes[0] : null);
+                    var leg = ((route != null) && (route.Legs.Length > 0) ? route.Legs[0] : null);
+                    if (route != null)
                     {
-                        this.StartPosition = new AddressInfo
+                        this.RouteRegion = route.Bounds;
+
+                        if (leg != null)
                         {
-                            Address = leg.StartAddress,
-                            Position = new Position(leg.StartLocation.Latitude, leg.StartLocation.Longitude),
-                            Contractor = this.SelectedTrip.Shipper
-                        };
-                        this.EndPosition = new AddressInfo
+                            this.StartPosition = new AddressInfo
+                            {
+                                Address = leg.StartAddress,
+                                Position = new Position(leg.StartLocation.Latitude, leg.StartLocation.Longitude),
+                                Contractor = this.SelectedTrip.Shipper
+                            };
+                            this.EndPosition = new AddressInfo
+                            {
+                                Address = leg.EndAddress,
+                                Position = new Position(leg.EndLocation.Latitude, leg.EndLocation.Longitude),
+                                Contractor = this.SelectedTrip.Receiver
+                            };
+                        }
+                        else
                         {
-                            Address = leg.EndAddress,
-                            Position = new Position(leg.EndLocation.Latitude, leg.EndLocation.Longitude),
-                            Contractor = this.SelectedTrip.Receiver
-                        };
+                            this.StartPosition = null;
+                            this.EndPosition = null;
+                        }
+
+                        var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
+
+                        this.BaseRoutePoints = routePoints;
                     }
-                    else
-                    {
-                        this.StartPosition = null;
-                        this.EndPosition = null;
-                    }
-
-                    var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
-
-                    this.BaseRoutePoints = routePoints;
-
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                    this.RecreateRoute();
+                }
+                finally
+                {
+                    this.IsBusy = false;
                     this.SetCurrentPosition();
                 }
             });
+        }
+
+        private void RecreateRoute()
+        {
+            var timer = new System.Timers.Timer { Interval = 200 };
+            timer.Elapsed += (sender, args) =>
+            {
+                timer.Stop();
+                this.CreateBaseRoute();
+            };
+            timer.Start();
         }
 
         private void SetCurrentPosition()

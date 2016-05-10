@@ -42,6 +42,7 @@ namespace KAS.Trukman.Storage
                 _connection.CreateTable<Company>();
                 _connection.CreateTable<Contractor>();
                 _connection.CreateTable<Trip>();
+                _connection.CreateTable<Photo>();
 
                 _externalStorage = new ParseExternalStorage(); // new TestExternalStorage();
 
@@ -53,13 +54,13 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public void SynchronizeDriverContext()
+        public async Task SynchronizeDriverContext()
         {
             var tripID = this.GetSettings(TRIP_ID_SETTINGS_KEY);
             if (String.IsNullOrEmpty(tripID))
-                this.CheckNewTrip();
+                await this.CheckNewTrip();
             else
-                this.SynchronizeTrip(tripID, null);
+                await this.SynchronizeTrip(tripID, null);
         }
 
         public void SynchronizeOwnerContext()
@@ -70,10 +71,10 @@ namespace KAS.Trukman.Storage
         {
         }
 
-        private void CheckNewTrip()
+        private async Task CheckNewTrip()
         {
             var userID = this.GetSettings(USER_ID_SETTINGS_KEY);
-            var trip = _externalStorage.CheckNewTripForDriver(userID);
+            var trip = await _externalStorage.CheckNewTripForDriver(userID);
             if (trip != null)
             {
                 this.SetSettings(TRIP_ID_SETTINGS_KEY, trip.ID);
@@ -95,12 +96,12 @@ namespace KAS.Trukman.Storage
             this.SetSettings(TRIP_STATE_SETTINGS_KEY, tripState.ToString());
         }
 
-        public bool TripIsCancelled(string tripID)
+        public async Task<bool> TripIsCancelled(string tripID)
         {
             bool isCancelled = false;
             try
             {
-                this.SynchronizeTrip(tripID, null);
+                await this.SynchronizeTrip(tripID, null);
 
                 var trip = this.SelectTripByID(tripID);
                 isCancelled = ((trip != null) && (trip.JobCancelled));
@@ -113,25 +114,27 @@ namespace KAS.Trukman.Storage
             return isCancelled;
         }
 
-        public void TripAccepted(string tripID)
+        public async Task<Trip> TripAccepted(string tripID)
         {
+            Trip trip = null;
             try
             {
-                var trip = _externalStorage.AcceptTrip(tripID);
-                this.SynchronizeTrip(tripID, trip);
+                trip = await _externalStorage.AcceptTrip(tripID);
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
+            return trip;
         }
 
-        public void TripDeclined(string tripID, string reasonText)
+        public async Task TripDeclined(string tripID, string reasonText)
         {
             try
             {
-                var trip = _externalStorage.DeclineTrip(tripID, reasonText);
+                var trip = await _externalStorage.DeclineTrip(tripID, reasonText);
                 this.RemoveTrip(trip);
                 this.SetSettings(TRIP_ID_SETTINGS_KEY, "");
             }
@@ -142,11 +145,11 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public void TripCompleted(string tripID)
+        public async Task TripCompleted(string tripID)
         {
             try
             {
-                var trip = _externalStorage.CompleteTrip(tripID);
+                var trip = await _externalStorage.CompleteTrip(tripID);
                 this.RemoveTrip(trip);
                 this.SetSettings(TRIP_ID_SETTINGS_KEY, "");
             }
@@ -157,40 +160,56 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public void TripInPickup(string tripID, int minutes)
+        public async Task<Trip> TripInPickup(string tripID, int minutes)
         {
+            Trip trip = null;
             try
             {
-                var trip = _externalStorage.TripInPickup(tripID, minutes);
-                this.SynchronizeTrip(tripID, trip);
+                trip = await _externalStorage.TripInPickup(tripID, minutes);
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
+                trip = null;
                 Console.WriteLine(exception.Message);
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
+            return trip;
         }
 
-        public void TripInDelivery(string tripID, int minutes)
+        public async Task<Trip> TripInDelivery(string tripID, int minutes)
         {
+            Trip trip = null;
             try
             {
-                var trip = _externalStorage.TripInDelivery(tripID, minutes);
-                this.SynchronizeTrip(tripID, trip);
+                trip = await _externalStorage.TripInDelivery(tripID, minutes);
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
+                trip = null;
                 Console.WriteLine(exception.Message);
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
+            return trip;
         }
 
-        public void SendPhoto(string tripID, byte[] data, string kind)
+        public async Task SendPhoto(string tripID, byte[] data, string kind)
         {
             try
             {
-                var trip = _externalStorage.SendPhoto(tripID, data, kind);
-                this.SynchronizeTrip(tripID, trip);
+//                this.Become();
+
+                var trip = await _externalStorage.SendPhoto(tripID, data, kind);
+            
+				var photo = new Photo {
+					ID = Guid.NewGuid().ToString(),
+					Type = kind,
+					TripID = trip.ID
+				};
+				this.SavePhoto(photo);
+
+				await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
@@ -199,12 +218,33 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public void AddLocation(string tripID, Position location)
+		public Photo GetPhoto(string tripID, string kind)
+		{
+			Photo photo = _connection.Table<Photo> ()
+				.Where (p => p.TripID == tripID && p.Type == kind)
+				.FirstOrDefault ();
+			return photo;
+		}
+
+		private void SavePhoto(Photo photo)
+		{
+			_connection.Insert(photo);
+		}
+
+		private void ClearPhotos(string tripID)
+		{
+			var photos = _connection.Table<Photo> ()
+				.Where (p => p.TripID == tripID);
+			foreach (var photo in photos)
+				_connection.Delete (photo);
+		}
+
+        public async Task AddLocation(string tripID, Position location)
         {
             try
             {
-                var trip = _externalStorage.AddLocation(tripID, location);
-                this.SynchronizeTrip(tripID, trip);
+                var trip = await _externalStorage.AddLocation(tripID, location);
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
@@ -213,12 +253,12 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public void SaveLocation(string tripID, Position location)
+        public async Task SaveLocation(string tripID, Position location)
         {
             try
             {
-                var trip = _externalStorage.SaveLocation(tripID, location);
-                this.SynchronizeTrip(tripID, trip);
+                var trip = await _externalStorage.SaveLocation(tripID, location);
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
@@ -288,50 +328,13 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
-        private void SynchronizeTrip(string tripID, Trip externalTrip)
+        private async Task SynchronizeTrip(string tripID, Trip externalTrip)
         {
             var localTrip = this.SelectTripByID(tripID);
             if (externalTrip == null)
-                externalTrip = _externalStorage.SelectTripByID(tripID);
+                externalTrip = await _externalStorage.SelectTripByID(tripID);
             if ((localTrip != null) && (externalTrip != null) && (localTrip.UpdateTime < externalTrip.UpdateTime.AddMilliseconds(externalTrip.UpdateTime.Millisecond * -1)))
                 this.SaveTrip(externalTrip);
-        }
-
-        public async Task JoinDriver()
-        {
-            try
-            {
-                var userInfo = await App.ServerManager.GetCurrentUser();
-                var companyInfo = await this.SelectUserCompany();
-                if ((userInfo != null) && (companyInfo != null))
-                {
-                    var user = new User
-                    {
-                        ID = userInfo.ID,
-                        UserName = userInfo.UserName,
-                        FirstName = userInfo.FirstName,
-                        LastName = userInfo.LastName,
-                        Phone = userInfo.Phone,
-                        Email = userInfo.Email,
-                        Role = userInfo.Role
-                    };
-                    this.SaveUser(user);
-                    this.SetSettings(USER_ID_SETTINGS_KEY, user.ID);
-
-                    var company = new Company
-                    {
-                        ID = companyInfo.ID,
-                        DisplayName = companyInfo.DisplayName,
-                        Name = companyInfo.Name
-                    };
-                    this.SaveCompany(company);
-                    this.SetSettings(COMPANY_ID_SETTINGS_KEY, company.ID);
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
         }
 
         public async Task<Trip[]> SelectActiveTrips()
@@ -366,12 +369,12 @@ namespace KAS.Trukman.Storage
             return position;
         }
 
-        public Trip SelectTripByIDExternal(string id)
+        public async Task<Trip> SelectTripByIDExternal(string id)
         {
             Trip trip = null;
             try
             {
-                trip = _externalStorage.SelectTripByID(id);
+                trip = await _externalStorage.SelectTripByID(id);
             }
             catch (Exception exception)
             {
@@ -420,19 +423,19 @@ namespace KAS.Trukman.Storage
             this.SaveCompany(company);
         }
 
-        public async Task<User> BecomeAsync()
+        public User Become()
         {
             User user = null;
             try
             {
                 var session = this.GetSettings(USER_SESSION_ID_KEY);
                 if (!String.IsNullOrEmpty(session))
-                    user = await _externalStorage.BecomeAsync(session);
+                    user = _externalStorage.Become(session);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                this.SetSettings(USER_SESSION_ID_KEY, "");
+                //this.SetSettings(USER_SESSION_ID_KEY, "");
                 //                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return user;
@@ -495,7 +498,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw exception;
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return company;
         }
@@ -512,7 +515,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw exception;
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return company;
         }
@@ -527,7 +530,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw exception;
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return user;
         }
@@ -757,7 +760,11 @@ namespace KAS.Trukman.Storage
 
         public Trip RemoveTrip(Trip trip)
         {
-            _connection.Delete(trip);
+			this.ClearPhotos (trip.ID);
+            if (trip.Shipper != null)
+                _connection.Delete(trip.Shipper);
+            if (trip.Receiver != null)
+                _connection.Delete(trip.Receiver);
             return trip;
         }
 

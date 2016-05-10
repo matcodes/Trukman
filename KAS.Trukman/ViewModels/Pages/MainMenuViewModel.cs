@@ -1,6 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Interfaces;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;

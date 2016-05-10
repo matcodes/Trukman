@@ -9,7 +9,7 @@ using Xamarin.Forms;
 using Trukman.Helpers;
 using Trukman;
 using KAS.Trukman.Data.Interfaces;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 using KAS.Trukman.Views.Pages.Owner;
 using KAS.Trukman.Views.Pages.SignUp;
 using KAS.Trukman.Data.Enums;
@@ -21,7 +21,8 @@ namespace KAS.Trukman
     public class App : Application
     {
         static IServerManager serverManager;
-        public static IServerManager ServerManager {
+        public static IServerManager ServerManager
+        {
             get
             {
                 if (serverManager == null)
@@ -31,7 +32,8 @@ namespace KAS.Trukman
         }
 
         static ILocationService locManager;
-        public static ILocationService LocManager {
+        public static ILocationService LocManager
+        {
             get
             {
                 if (locManager == null)
@@ -114,8 +116,7 @@ namespace KAS.Trukman
 
             this.Appering();
 
-            if (TrukmanContext.Initialized)
-                this.ShowTopPage(null);
+            this.ShowTopPage();
         }
 
         private void ShowMainMenu(ShowMainPageMessage message)
@@ -170,6 +171,8 @@ namespace KAS.Trukman
         protected override void OnResume()
         {
             this.Appering();
+
+ //           this.ShowTopPage();
         }
 
         private void Appering()
@@ -247,20 +250,41 @@ namespace KAS.Trukman
         //    });
         //}
 
+        private void ShowTopPage()
+        {
+            var timer = new System.Timers.Timer { Interval = 200 };
+            timer.Elapsed += (sender, args) => {
+                timer.Stop();
+                if (TrukmanContext.Initialized)
+                    this.ShowTopPage(new ShowTopPageMessage());
+                else
+                    this.ShowTopPage();
+            };
+            timer.Start();
+        }
+
         private void ShowTopPage(ShowTopPageMessage message)
         {
-            Device.BeginInvokeOnMainThread(async () => {
-                if (TrukmanContext.User == null)
-                    this.MainPage = new SignUpNavigationPage();
-                else if (TrukmanContext.User.Role == UserRole.UserRoleOwner)
-                    this.MainPage = new OwnerMainPage();
-                else if (TrukmanContext.User.Role == UserRole.UserRoleDriver)
+            Device.BeginInvokeOnMainThread(() => {
+                try
                 {
-                    var driverState = await TrukmanContext.GetDriverState();
-                    if (driverState == DriverState.Joined)
-                        this.MainPage = new MainPage();
-                    else
-                        this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
+                    if (TrukmanContext.User == null)
+                        this.MainPage = new SignUpNavigationPage();
+                    else if (TrukmanContext.User.Role == UserRole.UserRoleOwner)
+                        this.MainPage = new OwnerMainPage();
+                    else if (TrukmanContext.User.Role == UserRole.UserRoleDriver)
+                    {
+                        var driverState = (DriverState)TrukmanContext.User.Status;
+                        if (driverState == DriverState.Joined)
+                            this.MainPage = new MainPage();
+                        else
+                            this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ShowToastMessage.Send(exception.Message);
+                    this.MainPage = new SignUpNavigationPage();
                 }
             });
         }

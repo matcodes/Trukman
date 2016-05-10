@@ -40,6 +40,9 @@ namespace KAS.Trukman.Droid.Helpers
 
         static LocationHelper()
         {
+			IsSelfPermission = false;
+			IsSelfIntent = true;
+
             _locator = CrossGeolocator.Current;
             _locator.DesiredAccuracy = LOCATION_DESIRED_ACCURACY;
 
@@ -51,8 +54,8 @@ namespace KAS.Trukman.Droid.Helpers
         public static void Update()
         {
             Task.Run(async () => {
-                if ((State == States.Wait) && (CheckTime()))
-                    await GetLocationAsync();
+				if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent))
+					await GetLocationAsync();
             });
         }
 
@@ -86,6 +89,10 @@ namespace KAS.Trukman.Droid.Helpers
         }
 
         private static States State { get; set; }
+
+		public static bool IsSelfPermission { get; set; }
+
+		public static bool IsSelfIntent { get; set; }
     }
     #endregion
 }

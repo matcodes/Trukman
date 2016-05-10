@@ -142,6 +142,13 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<ParseCompany>(value); }
         }
 
+        [ParseFieldName("JobDeleted")]
+        public bool IsDeleted
+        {
+            get { return this.GetProperty<bool>(false); }
+            set { this.SetProperty<bool>(value); }
+        }
+
         [ParseFieldName("LocationHistory")]
         public ParseRelation<ParseGeoLocation> Locations
         {

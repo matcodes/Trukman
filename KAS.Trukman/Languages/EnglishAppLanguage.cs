@@ -99,6 +99,7 @@ namespace KAS.Trukman.Languages
 
 			this.HomeCongratulations = "Congratulations!";
 			this.HomeRewardsButtonText = "Rewards";
+			this.HomeNewTripButtonText = "New Trip";
             #endregion
 
             #region Trip page

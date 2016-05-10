@@ -17,7 +17,7 @@ using Trukman.Helpers;
 using Trukman.Messages;
 using Trukman.Interfaces;
 using System.Collections.ObjectModel;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -45,6 +45,7 @@ namespace KAS.Trukman.ViewModels.Pages
             this.GPSPopupSettingsCommand = new VisualCommand(this.GPSPopupSettings);
             this.GPSPopupCancelCommand = new VisualCommand(this.GPSPopupCancel);
 			this.RewardsCommand = new VisualCommand (this.Rewards);
+			this.NewTripCommand = new VisualCommand (this.NewTrip);
 
             this.MenuItemClickCommand = new VisualCommand(this.MenuItemClick);
             this.TakePhotoFromCameraCommand = new VisualCommand(this.TakePhotoFromCamera);
@@ -81,6 +82,7 @@ namespace KAS.Trukman.ViewModels.Pages
             DriverTripContextChangedMessage.Subscribe(this, this.DriverTripContextChanged);
             TripShipperPositionChangedMessage.Subscribe(this, this.TripShipperPositionChanged);
             TripReceiverPositionChangedMessage.Subscribe(this, this.TripReceiverPositionChanged);
+			StopBusyMessage.Subscribe (this, this.StopBusy);
 
             this.StartCheckGPSTimer();
             this.SetCurrentTime();
@@ -92,6 +94,7 @@ namespace KAS.Trukman.ViewModels.Pages
             this.StopCheckGPSTimer();
             this.StopArrivedTimeTimer();
 
+			StopBusyMessage.Unsubscribe (this);
             DriverLocationChangedMessage.Unsubscribe(this);
             DriverTripContextChangedMessage.Unsubscribe(this);
             TripShipperPositionChangedMessage.Unsubscribe(this);
@@ -342,6 +345,13 @@ namespace KAS.Trukman.ViewModels.Pages
             });
         }
 
+		private void StopBusy(StopBusyMessage message)
+		{
+			Xamarin.Forms.Device.BeginInvokeOnMainThread (() => {
+				this.IsBusy = false;
+			});
+		}
+
         private void UpdateState()
         {
             try
@@ -439,6 +449,11 @@ namespace KAS.Trukman.ViewModels.Pages
 		{
             CompletedTripChangedMessage.Send();
             ShowPointsAndRewardsPageMessage.Send();
+		}
+
+		private void NewTrip(object parameter)
+		{
+			CompletedTripChangedMessage.Send ();
 		}
 
         private void MenuItemClick(object parameter)
@@ -607,6 +622,8 @@ namespace KAS.Trukman.ViewModels.Pages
         public VisualCommand GPSPopupCancelCommand { get; private set; }
 
 		public VisualCommand RewardsCommand { get; private set; }
+
+		public VisualCommand NewTripCommand { get; private set; }
 
         public VisualCommand MenuItemClickCommand { get; private set; }
 

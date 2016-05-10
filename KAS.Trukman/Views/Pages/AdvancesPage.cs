@@ -51,6 +51,13 @@ namespace KAS.Trukman.Views.Pages
             };
             busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
 
+            var lumperBusyIndicator = new ActivityIndicator
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+            lumperBusyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "LumperIsBusy", BindingMode.TwoWay);
+
             var content = new Grid {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
@@ -59,6 +66,7 @@ namespace KAS.Trukman.Views.Pages
             };
             content.Children.Add(grid);
             content.Children.Add(busyIndicator);
+            content.Children.Add(lumperBusyIndicator);
 
             return content;
         }

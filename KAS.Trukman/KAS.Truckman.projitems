@@ -10,6 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppContext\DispatcherContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppContext\DriverContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppContext\OwnerContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppContext\TrukmanContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BaseData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\CommandItem.cs" />
@@ -41,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Notification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Photo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Trip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\DriverState.cs" />
@@ -89,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SendPhotoMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowAdvancesPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDelayEmergencyPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowNotificationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDriverAuthorizationPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowGPSSettingsMessage.cs" />
@@ -126,7 +132,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseNotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParsePhoto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseExternalStorage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\TestExternalStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Commands\PageCommandsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\AdvancesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ContractorInfoViewModel.cs" />
@@ -207,24 +212,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PositionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IAlerts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IJobAlert.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpCompanyPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpDispatchPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpDriverPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpFleetSizePage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignupFrozenPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpOwnerPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\SignUpTypePage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpCompanyViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpDispatchViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpDriverViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpEmployeeViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\SignUpOwnerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SegmentedControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PopupLayout.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\PendingAuthorizationPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizationDeclinedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanButton.cs" />
@@ -236,6 +227,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ICompany.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ChangeLocationMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StopBusyMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

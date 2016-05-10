@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Helpers;
+using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,9 +20,26 @@ namespace KAS.Trukman.Views.Pages
 
             this.SizeChanged += (sender, args) => {
                 if (this.Content == null) {
-                    var content = this.CreateContent();
-                    if (content != null)
-                        this.Content = content;
+
+                    bool added = false;
+                    int count = 0;
+
+                    while ((!added) && (count < 3))
+                    {
+                        try
+                        {
+                            var content = this.CreateContent();
+                            if (content != null)
+                                this.Content = content;
+                            added = true;
+                        }
+                        catch
+                        {
+                            count++;
+                            if (count == 3)
+                                ShowToastMessage.Send("Error create view.");
+                        }
+                    }
                 }
             };
         }

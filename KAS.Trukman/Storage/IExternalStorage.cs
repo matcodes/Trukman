@@ -13,25 +13,25 @@ namespace KAS.Trukman.Storage
     #region IExternalStorage
     public interface IExternalStorage
     {
-        Trip CheckNewTripForDriver(string userID);
+        Task<Trip> CheckNewTripForDriver(string userID);
 
-        Trip SelectTripByID(string id);
+        Task<Trip> SelectTripByID(string id);
 
-        Trip AcceptTrip(string id);
+        Task<Trip> AcceptTrip(string id);
 
-        Trip CompleteTrip(string id);
+        Task<Trip> CompleteTrip(string id);
 
-        Trip DeclineTrip(string id, string reasonText);
+        Task<Trip> DeclineTrip(string id, string reasonText);
 
-        Trip TripInPickup(string id, int minutes);
+        Task<Trip> TripInPickup(string id, int minutes);
 
-        Trip TripInDelivery(string id, int minutes);
+        Task<Trip> TripInDelivery(string id, int minutes);
 
-        Trip SendPhoto(string id, byte[] data, string kind);
+        Task<Trip> SendPhoto(string id, byte[] data, string kind);
 
-        Trip AddLocation(string id, Position location);
+        Task<Trip> AddLocation(string id, Position location);
 
-        Trip SaveLocation(string id, Position location);
+        Task<Trip> SaveLocation(string id, Position location);
 
         Task<Company[]> SelectCompanies(string filter);
 
@@ -45,7 +45,7 @@ namespace KAS.Trukman.Storage
 
         void InitializeOwnerNotification();
 
-        Task<User> BecomeAsync(string session);
+        User Become(string session);
 
         Task<User> SignUpAsync(User user);
 

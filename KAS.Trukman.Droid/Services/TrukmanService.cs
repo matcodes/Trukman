@@ -12,7 +12,11 @@ using Android.Widget;
 using Android.Util;
 using System.Timers;
 using KAS.Trukman.Droid.Helpers;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
+using KAS.Trukman.Messages;
+using Xamarin.Forms;
+using Android.Support.V7.App;
+using KAS.Trukman.Languages;
 
 namespace KAS.Trukman.Droid.Services
 {
@@ -35,6 +39,8 @@ namespace KAS.Trukman.Droid.Services
         {
             Log.Debug(TAG, "On start command.");
 
+            ShowNotificationMessage.Subscribe(this, this.ShowNotification);
+
             TrukmanContext.Initialize();
 
             this.UpdateLocation();
@@ -53,6 +59,8 @@ namespace KAS.Trukman.Droid.Services
 
         public override void OnDestroy()
         {
+            ShowNotificationMessage.Unsubscribe(this);
+
             this.CreateAlarm();
 
             Log.Debug(TAG, "On destroy.");
@@ -81,6 +89,42 @@ namespace KAS.Trukman.Droid.Services
             alarmManager.Set(AlarmType.Rtc, Java.Lang.JavaSystem.CurrentTimeMillis() + 1000 * 60, locationIntent);
         }
 
+        private void ShowNotification(ShowNotificationMessage message)
+        {
+            if (!TrukmanContext.AppWorking)
+            {
+                try
+                {
+                    var soundUri = Android.Net.Uri.Parse("android.resource://" + Forms.Context.PackageName + "/" + Resource.Raw.notification_sound);
+                    var wearableExtender = new NotificationCompat.WearableExtender()
+                        .SetHintHideIcon(true);
+                    var builder = new NotificationCompat.Builder(this)
+                        .SetSmallIcon(Resource.Drawable.icon)
+                        .SetContentTitle(AppLanguages.CurrentLanguage.AppName)
+                        .SetContentText(message.MessageText)
+                        .Extend(wearableExtender)
+                        .SetSound(soundUri)
+                        .SetAutoCancel(true);
+                    var resultIntent = new Intent(Forms.Context, typeof(MainActivity));
+                    resultIntent.SetFlags(ActivityFlags.NewTask);
+                    var stackBuilder = Android.Support.V4.App.TaskStackBuilder.Create(Forms.Context);
+                    stackBuilder.AddNextIntent(resultIntent);
+                    var resultPendingIntent = stackBuilder.GetPendingIntent(0, (int)PendingIntentFlags.UpdateCurrent);
+                    builder.SetContentIntent(resultPendingIntent);
+
+                    var notificationManager = Android.Support.V4.App.NotificationManagerCompat.From(Forms.Context);
+                    notificationManager.Notify(0, builder.Build());
+                }
+                // Analysis disable once EmptyGeneralCatchClause
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            }
+            else
+                ShowToastMessage.Send(message.MessageText);
+        }
+
         private void StartTimer()
         {
             if (_serviceTimer == null)
@@ -88,9 +132,16 @@ namespace KAS.Trukman.Droid.Services
                 _serviceTimer = new Timer { Interval = 5000 };
                 _serviceTimer.Elapsed += (sender, args) =>
                 {
-                    _serviceTimer.Stop();
-                    this.UpdateLocation();
-                    _serviceTimer.Start();
+					try
+					{
+						Console.WriteLine("Update location from service");
+                    	this.UpdateLocation();
+					}
+					catch (Exception exception)
+					{
+						Console.WriteLine(exception);
+					}
+
                 };
             }
             _serviceTimer.Start();

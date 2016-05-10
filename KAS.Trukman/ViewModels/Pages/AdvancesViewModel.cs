@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using KAS.Trukman.Data.Interfaces;
 using Trukman.Helpers;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -119,12 +120,12 @@ namespace KAS.Trukman.ViewModels.Pages
             {
                 this.ShowMainMenuCommand.IsEnabled = true;
                 this.ShowHomePageCommand.IsEnabled = true;
-                this.FuelRequestCommand.IsEnabled = true;
                 this.FuelResendCommand.IsEnabled = true;
                 this.FuelCancelCommand.IsEnabled = true;
-                this.LumperRequestCommand.IsEnabled = true;
                 this.LumperResendCommand.IsEnabled = true;
                 this.LumperCancelCommand.IsEnabled = true;
+    			this.FuelRequestCommand.IsEnabled = (TrukmanContext.Driver.TripState == 4);
+				this.LumperRequestCommand.IsEnabled = (TrukmanContext.Driver.TripState > 6);
             });
         }
 
@@ -319,7 +320,7 @@ namespace KAS.Trukman.ViewModels.Pages
 		private async void CheckLumperComcheck ()
 		{
 			this.DisableCommands();
-			this.IsBusy = true;
+			this.LumperIsBusy = true;
 			try
 			{
 				var comcheckState = await App.ServerManager.GetComcheckState (this.Trip.ID, ComcheckRequestType.Lumper);
@@ -358,7 +359,7 @@ namespace KAS.Trukman.ViewModels.Pages
 			}
 			finally
 			{
-				this.IsBusy = false;
+				this.LumperIsBusy = false;
 				this.EnabledCommands();
 			}
 
@@ -448,7 +449,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Task.Run(async () => {
                 this.DisableCommands();
-                this.IsBusy = true;
+                this.LumperIsBusy = true;
                 try
                 {
 					await App.ServerManager.SendComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
@@ -462,7 +463,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 finally
                 {
-                    this.IsBusy = false;
+                    this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
             });
@@ -473,7 +474,7 @@ namespace KAS.Trukman.ViewModels.Pages
             Task.Run(async () =>
             {
                 this.DisableCommands();
-                this.IsBusy = true;
+                this.LumperIsBusy = true;
                 try
                 {
 					this.LumperStopRequestedTimer();
@@ -490,7 +491,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 finally
                 {
-                    this.IsBusy = false;
+                    this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
 			});
@@ -501,7 +502,7 @@ namespace KAS.Trukman.ViewModels.Pages
             Task.Run(async () =>
             {
                 this.DisableCommands();
-                this.IsBusy = true;
+                this.LumperIsBusy = true;
                 try
                 {
 					await App.ServerManager.CancelComcheckRequest(this.Trip.ID, ComcheckRequestType.Lumper);
@@ -515,7 +516,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 finally
                 {
-                    this.IsBusy = false;
+                    this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
 			});
@@ -639,6 +640,12 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             get { return (bool)this.GetValue("LumperReceivedTextInfoVisible", false); }
             set { this.SetValue("LumperReceivedTextInfoVisible", value); }
+        }
+
+        public bool LumperIsBusy
+        {
+            get { return (bool)this.GetValue("LumperIsBusy", false); }
+            set { this.SetValue("LumperIsBusy", value); }
         }
 
         public VisualCommand ShowMainMenuCommand { get; private set; }

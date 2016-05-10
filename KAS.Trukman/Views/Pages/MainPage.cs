@@ -79,8 +79,8 @@ namespace KAS.Trukman.Views.Pages
             ShowFuelAdvancePageMessage.Subscribe(this, this.ShowFuelAdvancePage);
             ShowLumperPageMessage.Subscribe(this, this.ShowLumperPage);
             ShowDelayEmergencyPageMessage.Subscribe(this, this.ShowDelayEmergencyPage);
-			StartLocationServiceMessage.Subscribe (this, this.StartLocationService);
-			StopLocationServiceMessage.Subscribe (this, this.StopLocationService);
+			//StartLocationServiceMessage.Subscribe (this, this.StartLocationService);
+			//StopLocationServiceMessage.Subscribe (this, this.StopLocationService);
             ShowRoutePageMessage.Subscribe(this, this.ShowRoutePage);
             ShowPointsAndRewardsPageMessage.Subscribe(this, this.ShowPointsAndRewardsPage);
             ShowSettingsPageMessage.Subscribe(this, this.ShowSettingsPage);
@@ -202,15 +202,15 @@ namespace KAS.Trukman.Views.Pages
             this.PushPage(page);
         }
 
-		private void StartLocationService(StartLocationServiceMessage message)
-		{
-			App.LocationServiceStarter.StartService (message.tag);
-		}
+		//private void StartLocationService(StartLocationServiceMessage message)
+		//{
+		//	App.LocationServiceStarter.StartService (message.tag);
+		//}
 
-		private void StopLocationService(StopLocationServiceMessage message)
-		{
-			App.LocationServiceStarter.StopService ();
-		}
+		//private void StopLocationService(StopLocationServiceMessage message)
+		//{
+		//	App.LocationServiceStarter.StopService ();
+		//}
 
         public MainViewModel ViewModel
         {

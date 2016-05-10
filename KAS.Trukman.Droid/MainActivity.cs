@@ -19,8 +19,12 @@ using System.IO;
 using System.Threading.Tasks;
 using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Droid.Services;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
+using KAS.Trukman.Droid.Helpers;
 using Android;
+using HockeyApp;
+using KAS.Trukman.Data.Classes;
+using Android.Support.V7.App;
 
 namespace KAS.Trukman.Droid
 {
@@ -38,8 +42,10 @@ namespace KAS.Trukman.Droid
         private readonly string[] _permissionsLocation =
             {
                 Manifest.Permission.AccessCoarseLocation,
-                Manifest.Permission.AccessFineLocation
-            };
+                Manifest.Permission.AccessFineLocation,
+				Manifest.Permission.WriteExternalStorage,
+				Manifest.Permission.Camera
+			};
         private readonly string[] _permissionsWriteExternal= 
             {
                 Manifest.Permission.WriteExternalStorage
@@ -51,16 +57,27 @@ namespace KAS.Trukman.Droid
 		{
 			base.OnCreate (bundle);
 
-            if ((int)Build.VERSION.SdkInt >= 23)
-            {
-                var permission = Manifest.Permission.AccessFineLocation;
-                if (this.CheckSelfPermission(permission) == Permission.Denied)
-                    this.RequestPermissions(_permissionsLocation, REQUEST_LOCATION_ID);
+			CrashManager.Register(this, "a775372499f441429cd55ce97a432cfe");
 
-                permission = Manifest.Permission.WriteExternalStorage;
-                if (this.CheckSelfPermission(permission) == Permission.Denied)
-                    this.RequestPermissions(_permissionsWriteExternal, REQUEST_WRITE_EXTERNAL_ID);
-            }
+
+            //Trip trip = null;
+            //trip.ID = Guid.NewGuid().ToString();
+
+//            var appDomain = AppDomain.CurrentDomain;
+//            appDomain.UnhandledException += (senderm, args) => {
+//               Console.WriteLine(args.ExceptionObject);
+//            };
+
+			if ((int)Build.VERSION.SdkInt >= 23) {
+				LocationHelper.IsSelfPermission = this.IsSelfPermission ();
+				if (!LocationHelper.IsSelfPermission)
+					this.RequestPermissions (_permissionsLocation, REQUEST_LOCATION_ID);
+
+//                permission = Manifest.Permission.WriteExternalStorage;
+//                if (this.CheckSelfPermission(permission) == Permission.Denied)
+//                    this.RequestPermissions(_permissionsWriteExternal, REQUEST_WRITE_EXTERNAL_ID);
+			} else
+				LocationHelper.IsSelfPermission = true;
 
             var platformHelper = new AndroidPlatformHelper(this);
 
@@ -84,22 +101,29 @@ namespace KAS.Trukman.Droid
             var message = "";
             if (requestCode == REQUEST_LOCATION_ID)
             {
-                if (grantResults[0] == Permission.Granted)
-                    message = "Location permission is available";
-                else
-                    message = "Location permission is denied";
+				LocationHelper.IsSelfPermission = this.IsSelfPermission();
+//                if (grantResults[0] == Permission.Granted)
+//                    message = "Location permission is available";
+//                else
+//                    message = "Location permission is denied";
             }
             else if (requestCode == REQUEST_WRITE_EXTERNAL_ID)
             {
-                if (grantResults[0] == Permission.Granted)
-                    message = "Write external storage permission is available";
-                else
-                    message = "Write external storage permission is denied";
+//                if (grantResults[0] == Permission.Granted)
+//                    message = "Write external storage permission is available";
+//                else
+//                    message = "Write external storage permission is denied";
             }
 
             if (!String.IsNullOrEmpty(message))
                 this.ShowToast(new ShowToastMessage(message));
         }
+
+		private bool IsSelfPermission()
+		{
+			var permission = Manifest.Permission.AccessFineLocation;
+			return (this.CheckSelfPermission (permission) == Permission.Granted);
+		}
 
         protected override void OnResume()
         {
@@ -134,6 +158,7 @@ namespace KAS.Trukman.Droid
 
         private void TakePhotoFromCamera(TakePhotoFromCameraMessage message)
         {
+			LocationHelper.IsSelfIntent = false;
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
         }
@@ -146,8 +171,14 @@ namespace KAS.Trukman.Droid
             {
                 if (requestCode == TAKE_PHOTO_REQUEST_CODE)
                 {
-                    var result = data.Data.ToString();
-                    this.SavePhotoToStore(result);
+					LocationHelper.IsSelfIntent = true;
+					if (data.Data != null) {
+						var result = data.Data.ToString ();
+						this.SavePhotoToStore (result);
+					} else {
+						this.ShowToast (new ShowToastMessage ("Photo not found!!!"));
+						StopBusyMessage.Send ();
+					}
 //                    ShowAdvancesPageMessage.Send(_trip);
                 }
             }

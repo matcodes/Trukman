@@ -109,6 +109,7 @@ namespace KAS.Trukman.Languages
 
                 this.HomeCongratulations = appLanguage.HomeCongratulations;
                 this.HomeRewardsButtonText = appLanguage.HomeRewardsButtonText;
+				this.HomeNewTripButtonText = appLanguage.HomeNewTripButtonText;
                 #endregion
 
                 #region Trip page
@@ -692,6 +693,12 @@ namespace KAS.Trukman.Languages
             get { return (string)this.GetValue("HomeRewardsButtonText"); }
             set { this.SetValue("HomeRewardsButtonText", value); }
         }
+
+		public string HomeNewTripButtonText
+		{
+			get { return (string)this.GetValue ("HomeNewTripButtonText"); }
+			set { this.SetValue ("HomeNewTripButtonText", value); }
+		}
         #endregion
 
         #region Trip page

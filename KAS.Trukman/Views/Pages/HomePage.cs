@@ -1590,7 +1590,7 @@ namespace KAS.Trukman.Views.Pages
 			var completedTripContent = new ContentView {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(20, 0, 20, 0),
+				Padding = new Thickness(20, 10, 20, 0),
 				Content = completedTripLabel
 			};
 
@@ -1629,6 +1629,21 @@ namespace KAS.Trukman.Views.Pages
 				Content = rewardsButton
 			};
 
+			var newTripButton = new AppButton {
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Center
+			};
+			newTripButton.SetBinding(AppButton.TextProperty, new Binding("HomeNewTripButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			newTripButton.SetBinding(AppButton.CommandProperty, "NewTripCommand");
+
+			var newTripContent = new ContentView
+			{
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+				Padding = new Thickness(20, 10, 20, 10),
+				Content = newTripButton
+			};
+
 			var grid = new Grid
 			{
 				VerticalOptions = LayoutOptions.Fill,
@@ -1639,13 +1654,15 @@ namespace KAS.Trukman.Views.Pages
 					new RowDefinition { Height = new GridLength(4, GridUnitType.Star) },
 					new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
 				}
 			};
 			grid.Children.Add(mapContent, 0, 0);
 			grid.Children.Add(completedTripContent, 0, 1);
 			grid.Children.Add(totalPointsContent, 0, 2);
 			grid.Children.Add(rewardsContent, 0, 3);
+			grid.Children.Add (newTripContent, 0, 4);
 
 			var content = new ContentView 
 			{

@@ -7,7 +7,7 @@
         p1:id="@+id/PDFWebView"
         p1:layout_width="match_parent"
         p1:layout_height="match_parent" />
-    <trukman.droid.SelectionRectangleView
+    <Trukman.Droid.Views.SelectionRectangleView
         class="trukman.droid.dragrect"
         p1:id="@+id/PDFView"
         p1:visibility="invisible"

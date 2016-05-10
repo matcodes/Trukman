@@ -33,6 +33,8 @@ namespace KAS.Trukman.Data.Interfaces
         string DriverDisplayName { get; set; }
 
         Position Location { get; set; }
+
+        bool IsDeleted { get; set; }
     }
     #endregion
 }

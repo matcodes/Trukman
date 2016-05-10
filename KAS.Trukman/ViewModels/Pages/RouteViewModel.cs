@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
-using KAS.Trukman.Droid.AppContext;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
