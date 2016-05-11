@@ -21,8 +21,6 @@ namespace KAS.Trukman.Helpers
         }
         #endregion
 
-        private static readonly string TAG = "LocationHelper";
-
         private static readonly int UPDATE_LOCATION_TIME = 15;
         private static readonly int UPDATE_LOCATION_TIMEOUT = 10;
         private static readonly int LOCATION_DESIRED_ACCURACY = 5;
@@ -38,11 +36,19 @@ namespace KAS.Trukman.Helpers
 
             _locator = CrossGeolocator.Current;
             _locator.DesiredAccuracy = LOCATION_DESIRED_ACCURACY;
+			_locator.AllowsBackgroundUpdates = true;
 
             _lastTime = DateTime.Now.AddMinutes(-1);
 
             State = States.Wait;
         }
+
+		public static void Initialize()
+		{
+			_locator.PositionChanged += (sender, args) => {
+				Update(args.Position);
+			};
+		}
 
         public static void Update()
         {
@@ -51,6 +57,29 @@ namespace KAS.Trukman.Helpers
 					await GetLocationAsync();
             });
         }
+
+		public static void Update (Position position)
+		{
+			Task.Run (() => {
+				if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent)) {
+					State = States.Working;
+					try 
+					{
+						var now = DateTime.Now;
+						GeoLocationChangedMessage.Send(position.Latitude, position.Longitude);
+						_lastTime = now;
+					}
+					catch (Exception exception)
+					{
+						Console.WriteLine(exception.Message);
+					}
+					finally
+					{
+						State = States.Wait;
+					}
+				}
+			});
+		}
 
         private static bool CheckTime()
         {

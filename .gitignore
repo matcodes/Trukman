@@ -26,3 +26,31 @@ UpgradeLog.*
 
 # dotCover
 *.dotCover
+
+packages/Plugin.Permissions.1.1.7/lib/MonoAndroid10/Plugin.Permissions.Abstractions.dll.mdb
+
+packages/Plugin.Permissions.1.1.7/lib/MonoAndroid10/Plugin.Permissions.dll.mdb
+
+packages/Xam.Plugin.Geolocator.3.0.4/lib/MonoAndroid10/Plugin.Geolocator.Abstractions.dll.mdb
+
+packages/Xam.Plugin.Geolocator.3.0.4/lib/MonoAndroid10/Plugin.Geolocator.dll.mdb
+
+packages/Xamarin.Forms.2.2.0.31/lib/MonoAndroid10/FormsViewGroup.dll.mdb
+
+packages/Xamarin.Forms.2.2.0.31/lib/MonoAndroid10/Xamarin.Forms.Core.dll.mdb
+
+packages/Xamarin.Forms.2.2.0.31/lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll.mdb
+
+packages/Xamarin.Forms.2.2.0.31/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll.mdb
+
+packages/Plugin.Permissions.1.1.7/lib/MonoAndroid10/Plugin.Permissions.Abstractions.dll.mdb
+
+packages/Plugin.Permissions.1.1.7/lib/MonoAndroid10/Plugin.Permissions.Abstractions.dll.mdb
+
+packages/Plugin.Permissions.1.1.7/lib/MonoAndroid10/Plugin.Permissions.Abstractions.dll.mdb
+
+packages/Xamarin.Forms.2.2.0.31/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll.mdb
+
+*.mdb
+
+*.mdb

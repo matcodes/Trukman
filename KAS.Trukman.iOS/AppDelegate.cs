@@ -2,12 +2,16 @@
 using UIKit;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
+using CoreLocation
 
 namespace KAS.Trukman.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
+	public var locationManager = new CLLocationManager();;
+
+
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
@@ -27,9 +31,11 @@ namespace KAS.Trukman.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Trukman.App());
 
+			app.SetStatusBarHidden = true
+			locationManager.RequestWhenInUseAuthorization();
+
             return base.FinishedLaunching(app, options);
         }
     }
 }
-
 
