@@ -30,4 +30,3 @@ namespace KAS.Trukman.iOS
         }
     }
 }
-
