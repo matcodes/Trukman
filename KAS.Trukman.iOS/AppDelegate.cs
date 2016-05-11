@@ -1,5 +1,7 @@
 ﻿using Foundation;
 using UIKit;
+using KAS.Trukman.Helpers;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.iOS
 {
@@ -18,6 +20,10 @@ namespace KAS.Trukman.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+			PlatformHelper.Initialize (new IOSPlatformHelper ());
+
+			TrukmanContext.Initialize ();
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Trukman.App());
 
