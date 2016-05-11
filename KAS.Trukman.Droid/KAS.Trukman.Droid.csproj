@@ -151,7 +151,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\LocationHelper.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\AppBoxViewRenderer.cs" />
@@ -939,7 +938,6 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <AndroidAsset Include="Assets\pdfjs\build\pdf.js" />
   </ItemGroup>

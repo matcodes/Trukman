@@ -15,7 +15,7 @@ using Plugin.Geolocator;
 using Android.Util;
 using KAS.Trukman.Messages;
 
-namespace KAS.Trukman.Droid.Helpers
+namespace KAS.Trukman.Helpers
 {
     #region LocationHelper
     public class LocationHelper

@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using System.Timers;
-using KAS.Trukman.Droid.Helpers;
+using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Messages;
 using Xamarin.Forms;

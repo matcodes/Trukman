@@ -70,6 +70,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IServerManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationServiceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformHelper.cs" />

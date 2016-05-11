@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Droid.Services;
 using KAS.Trukman.AppContext;
-using KAS.Trukman.Droid.Helpers;
 using Android;
 using HockeyApp;
 using KAS.Trukman.Data.Classes;
