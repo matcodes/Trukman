@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
 using Plugin.Geolocator;
-using Android.Util;
 using KAS.Trukman.Messages;
 
 namespace KAS.Trukman.Helpers
@@ -85,7 +78,7 @@ namespace KAS.Trukman.Helpers
             {
                 State = States.Wait;
             }
-            Log.Debug(TAG, logMessage);
+            Console.WriteLine(logMessage);
         }
 
         private static States State { get; set; }

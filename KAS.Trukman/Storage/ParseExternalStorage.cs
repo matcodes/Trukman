@@ -534,13 +534,13 @@ namespace KAS.Trukman.Storage
 
         public void InitializeOwnerNotification()
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 try
                 {
-                    var company = await this.SelectUserCompanyAsync();
-                    await ParsePush.SubscribeAsync(company.Name.Replace(" ", ""));
-                    ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
+                    //var company = await this.SelectUserCompanyAsync();
+                    //await ParsePush.SubscribeAsync(company.Name.Replace(" ", ""));
+                    //ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
                     //ParseInstallation installation = ParseInstallation.CurrentInstallation;
                     //installation.AddUniqueToList("channels", company.Name.Replace(" ", ""));
                     //await installation.SaveAsync();
