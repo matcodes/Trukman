@@ -27,6 +27,7 @@ namespace KAS.Trukman.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Trukman.App());
 
+			app.SetStatusBarHidden = true
             return base.FinishedLaunching(app, options);
         }
     }
