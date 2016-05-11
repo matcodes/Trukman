@@ -2,37 +2,29 @@
 using UIKit;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
-using CoreLocation
+using CoreLocation;
 
 namespace KAS.Trukman.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
-    // application events from iOS.
-	public var locationManager = new CLLocationManager();;
-
-
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        //
-        // This method is invoked when the application has loaded and is ready to run. In this 
-        // method you should instantiate the window, load the UI into it and then make the window
-        // visible.
-        //
-        // You have 17 seconds to return from this method, or iOS will terminate your application.
-        //
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+		public CLLocationManager _locationManager = new CLLocationManager();
+
+		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
 
+			app.StatusBarHidden = true;
+			_locationManager.RequestWhenInUseAuthorization();
+
+			LocationHelper.IsSelfPermission = true;
+			LocationHelper.Initialize ();
+			
 			TrukmanContext.Initialize ();
 
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Trukman.App());
-
-			app.SetStatusBarHidden = true
-			locationManager.RequestWhenInUseAuthorization();
 
             return base.FinishedLaunching(app, options);
         }
