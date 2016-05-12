@@ -13,30 +13,8 @@ using KAS.Trukman.iOS.Renderers;
 namespace KAS.Trukman.iOS.Renderers
 {
     #region AppBoxViewRenderer
-    public class AppBoxViewRenderer : ViewRenderer
+    public class AppBoxViewRenderer : BoxRenderer
     {
-        public override void Draw(CGRect rect)
-        {
-            base.Draw(rect);
-
-            using (var context = UIGraphics.GetCurrentContext())
-            {
-                context.SetFillColor(Xamarin.Forms.Color.White.ToCGColor());
-                context.SetStrokeColor(Xamarin.Forms.Color.White.ToCGColor());
-                context.SetLineWidth((float)1);
-
-                var rc = this.Bounds.Inset(1, 1);
-
-                var path = CGPath.FromRoundedRect(rc, 25, 25);
-                context.AddPath(path);
-                context.DrawPath(CGPathDrawingMode.FillStroke);
-            }
-        }
-
-        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs args)
-        {
-            base.OnElementPropertyChanged(sender, args);
-        }
     }
     #endregion
 }

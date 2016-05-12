@@ -1,15 +1,25 @@
 ﻿using System;
 using KAS.Trukman.Helpers;
+using UIKit;
 
 namespace KAS.Trukman.iOS
 {
 	#region IOSPlatformHelpert
 	public class IOSPlatformHelper : IPlatformHelper
 	{
+		private nfloat _ratio = (nfloat)1.0;
+
 		public IOSPlatformHelper ()
 		{
-		}
+			var bounds = UIScreen.MainScreen.Bounds;
 
+			_ratio = bounds.Width / (nfloat)320.0;
+
+			this.DisplayWidth = (int)(bounds.Width / _ratio);
+			this.DisplayHeight = (int)(bounds.Height / _ratio);
+			this.ActionBarHeight = (int)(this.DisplayWidth / 6);
+		}
+	
 		public bool CheckGPS()
 		{
 			return false;

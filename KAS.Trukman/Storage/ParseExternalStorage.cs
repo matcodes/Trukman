@@ -560,7 +560,7 @@ namespace KAS.Trukman.Storage
         {
             User currentUser = null;
 
-            var task = Task.Run(async() => {
+            Task.Run(async() => {
                 try
                 {
                     await ParseUser.BecomeAsync(session);

@@ -313,6 +313,12 @@
     <Folder Include="Categories\" />
   </ItemGroup>
   <ItemGroup>
+    <XamarinComponentReference Include="GeolocatorPlugin">
+      <Version>1.0.3</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ESignatureBinding\ESignatureBinding\ESignatureBinding.csproj">
       <Project>{8C286A61-79DA-4CA2-B339-1C2CAC6D8163}</Project>
       <Name>ESignatureBinding</Name>

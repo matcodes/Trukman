@@ -261,7 +261,8 @@ namespace KAS.Trukman.Views.Pages.SignUp
             var appBoxView = new AppBoxView
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
+                VerticalOptions = LayoutOptions.Fill,
+				Color = Color.White
             };
 
             _filter = new AppEntry

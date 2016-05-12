@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KAS.Trukman.iOS", "KAS.Trukman.iOS.csproj", "{DC0C1444-AF29-482F-AEB3-D130280BF264}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Debug|iPhone.Build.0 = Debug|iPhone
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Release|iPhone.ActiveCfg = Release|iPhone
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Release|iPhone.Build.0 = Release|iPhone
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{DC0C1444-AF29-482F-AEB3-D130280BF264}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+EndGlobal
