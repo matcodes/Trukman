@@ -171,6 +171,12 @@
     <Compile Include="Native ViewControllers\OCRPdfViewController.designer.cs">
       <DependentUpon>OCRPdfViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderers\ToolButtonRenderer.cs" />
+    <Compile Include="Renderers\AppButtonRenderer.cs" />
+    <Compile Include="Renderers\AppEntryRenderer.cs" />
+    <Compile Include="Renderers\AppLabelRenderer.cs" />
+    <Compile Include="Renderers\AppMapRenderer.cs" />
+    <Compile Include="Renderers\AppPopupButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
