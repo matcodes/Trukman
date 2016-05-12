@@ -9,6 +9,8 @@
     <RootNamespace>KAS.Trukman.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>KASTrukmaniOS</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -126,6 +128,9 @@
     <Reference Include="Xamarin.Forms.Maps.iOS, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.2.0.31\lib\Xamarin.iOS10\Xamarin.Forms.Maps.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="MBProgressHUD">
+      <HintPath>..\packages\mbprogresshud.0.9.2.0\lib\Xamarin.iOS\MBProgressHUD.dll</HintPath>
+    </Reference>
     <Reference Include="HockeySDK.CrashOnly">
       <HintPath>..\Components\hockeyappios-crashonly-4.1.0\lib\ios-unified\HockeySDK.CrashOnly.dll</HintPath>
     </Reference>
@@ -140,6 +145,7 @@
     <InterfaceDefinition Include="Main.storyboard" />
     <InterfaceDefinition Include="Native ViewControllers\RateConfirmationViewController.xib" />
     <InterfaceDefinition Include="Native ViewControllers\OCRPdfViewController.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\OCRResultViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -171,12 +177,20 @@
     <Compile Include="Native ViewControllers\OCRPdfViewController.designer.cs">
       <DependentUpon>OCRPdfViewController.cs</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Renderers\ToolButtonRenderer.cs" />
     <Compile Include="Renderers\AppButtonRenderer.cs" />
     <Compile Include="Renderers\AppEntryRenderer.cs" />
     <Compile Include="Renderers\AppLabelRenderer.cs" />
     <Compile Include="Renderers\AppMapRenderer.cs" />
     <Compile Include="Renderers\AppPopupButtonRenderer.cs" />
+=======
+    <Compile Include="Categories\ImageCategory.cs" />
+    <Compile Include="Native ViewControllers\OCRResultViewController.cs" />
+    <Compile Include="Native ViewControllers\OCRResultViewController.designer.cs">
+      <DependentUpon>OCRResultViewController.cs</DependentUpon>
+    </Compile>
+>>>>>>> origin/dev/team433
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
@@ -329,19 +343,13 @@
       <Version>1.0.3</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+    <XamarinComponentReference Include="mbprogresshud">
+      <Version>0.9.2.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="hockeyappios-crashonly">
       <Version>4.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ESignatureBinding\ESignatureBinding\ESignatureBinding.csproj">
-      <Project>{8C286A61-79DA-4CA2-B339-1C2CAC6D8163}</Project>
-      <Name>ESignatureBinding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPResizableViewIOSBinding\SPResizableViewIOSBinding\SPResizableViewIOSBinding.csproj">
-      <Project>{F76C6A75-F039-46F1-B24A-F680912C8CF4}</Project>
-      <Name>SPResizableViewIOSBinding</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>

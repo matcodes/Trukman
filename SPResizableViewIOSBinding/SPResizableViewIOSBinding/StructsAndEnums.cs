@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace KAS.SPResizableView
 {
 	[StructLayout (LayoutKind.Sequential)]
-	public struct SPUserResizableViewAnchorPoint
+	public struct TRUserResizableViewAnchorPoint
 	{
 		public nfloat adjustsX;
 
