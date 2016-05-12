@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Trukman.Droid.Views;
 using KAS.Trukman.Droid;
 using Android.Provider;
+using KAS.Trukman.OCR;
 
 namespace Trukman.Droid
 {
@@ -178,7 +179,7 @@ namespace Trukman.Droid
 
 			OCRApi ocr = new OCRApi();
 
-			ocr.Parse(selectedFragment)
+			ocr.Parse(BitmapToByteArray(selectedFragment))
 				.ContinueWith((task) =>
 					{
 						OCRResponse response = task.Result;
@@ -193,6 +194,19 @@ namespace Trukman.Droid
 						}
 					});
 		}
+
+		private static byte[] BitmapToByteArray(Bitmap bitmap)
+		{
+			byte[] bitmapData;
+			using (var stream = new MemoryStream())
+			{
+				bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
+				bitmapData = stream.ToArray();
+			}
+
+			return bitmapData;
+		}
+
 
 		void ShowResult(string result)
 		{

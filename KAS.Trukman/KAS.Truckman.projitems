@@ -229,6 +229,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ChangeLocationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopBusyMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OCRApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

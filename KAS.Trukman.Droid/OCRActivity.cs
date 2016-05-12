@@ -13,6 +13,7 @@ using Android.Widget;
 
 using Newtonsoft.Json;
 using KAS.Trukman.Droid;
+using KAS.Trukman.OCR;
 
 namespace Trukman.Droid
 {

@@ -132,6 +132,8 @@
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="Native ViewControllers\RateConfirmationViewController.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\OCRPdfViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -150,6 +152,19 @@
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="IOSPlatformHelper.cs" />
+    <Compile Include="Native ViewControllers\SignPdfViewController.cs" />
+    <Compile Include="Native ViewControllers\SignPdfViewController.designer.cs">
+      <DependentUpon>SignPdfViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PDFHandler.cs" />
+    <Compile Include="Native ViewControllers\RateConfirmationViewController.cs" />
+    <Compile Include="Native ViewControllers\RateConfirmationViewController.designer.cs">
+      <DependentUpon>RateConfirmationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Native ViewControllers\OCRPdfViewController.cs" />
+    <Compile Include="Native ViewControllers\OCRPdfViewController.designer.cs">
+      <DependentUpon>OCRPdfViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
@@ -292,4 +307,19 @@
   <Import Project="..\KAS.Trukman\KAS.Truckman.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <ItemGroup>
+    <Folder Include="Native ViewControllers\" />
+    <Folder Include="Model\" />
+    <Folder Include="Categories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESignatureBinding\ESignatureBinding\ESignatureBinding.csproj">
+      <Project>{8C286A61-79DA-4CA2-B339-1C2CAC6D8163}</Project>
+      <Name>ESignatureBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPResizableViewIOSBinding\SPResizableViewIOSBinding\SPResizableViewIOSBinding.csproj">
+      <Project>{F76C6A75-F039-46F1-B24A-F680912C8CF4}</Project>
+      <Name>SPResizableViewIOSBinding</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

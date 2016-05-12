@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RateConfirmationViewController">
+            <connections>
+                <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
+                <outlet property="logo" destination="21" id="name-outlet-21"/>
+                <outlet property="jobButton" destination="8" id="name-outlet-8"/>
+                <outlet property="signButton" destination="12" id="name-outlet-12"/>
+                <outlet property="sendButton" destination="17" id="name-outlet-17"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8" translatesAutoresizingMaskIntoConstraints="NO">
+                    <rect key="frame" x="240" y="220" width="120" height="30"/>
+                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.792156862745098" green="0.00784313725490196" blue="0.00784313725490196" alpha="1"/>
+                    <state key="normal" title="CREATE JOB">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                    </state>
+                    <constraints>
+                        <constraint id="15" firstItem="8" firstAttribute="width" constant="120"/>
+                    </constraints>
+                    <connections>
+                        <action selector="createJobPressed:" destination="-1" id="39" eventType="touchUpInside"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="12" translatesAutoresizingMaskIntoConstraints="NO">
+                    <rect key="frame" x="240" y="270" width="120" height="30"/>
+                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.792156862745098" green="0.00784313725490196" blue="0.00784313725490196" alpha="1"/>
+                    <state key="normal" title="SIGN RC">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                    </state>
+                    <constraints>
+                        <constraint id="16" firstItem="12" firstAttribute="width" constant="120"/>
+                    </constraints>
+                    <connections>
+                        <action selector="signPressed:" destination="-1" id="38" eventType="touchUpInside"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="17" translatesAutoresizingMaskIntoConstraints="NO" enabled="NO">
+                    <rect key="frame" x="240" y="320" width="120" height="30"/>
+                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.792156862745098" green="0.00784313725490196" blue="0.00784313725490196" alpha="1"/>
+                    <state key="normal" title="SEND EMAIL">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                    </state>
+                    <constraints>
+                        <constraint id="18" firstItem="17" firstAttribute="width" constant="120"/>
+                    </constraints>
+                    <connections>
+                        <action selector="sendPressed:" destination="-1" id="37" eventType="touchUpInside"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="21" translatesAutoresizingMaskIntoConstraints="NO">
+                    <rect key="frame" x="224" y="92" width="152" height="110"/>
+                    <constraints>
+                        <constraint id="27" firstItem="21" firstAttribute="width" constant="152"/>
+                        <constraint id="42" firstAttribute="width" secondItem="21" secondAttribute="height" multiplier="76:55"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint id="9" firstItem="8" firstAttribute="top" secondItem="2" secondAttribute="top" constant="220"/>
+                <constraint id="10" firstItem="8" firstAttribute="centerX" secondItem="2" secondAttribute="centerX"/>
+                <constraint id="11" firstItem="8" firstAttribute="centerX" secondItem="2" secondAttribute="centerX"/>
+                <constraint id="13" firstItem="12" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="20"/>
+                <constraint id="14" firstItem="12" firstAttribute="centerX" secondItem="8" secondAttribute="centerX"/>
+                <constraint id="19" firstItem="17" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="20"/>
+                <constraint id="20" firstItem="17" firstAttribute="centerX" secondItem="12" secondAttribute="centerX"/>
+                <constraint id="26" firstItem="21" firstAttribute="top" secondItem="2" secondAttribute="topMargin" constant="84"/>
+                <constraint id="29" firstItem="21" firstAttribute="centerX" secondItem="2" secondAttribute="centerX"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="background.png" width="320" height="480"/>
+        <image name="background_menu.png" width="263" height="480"/>
+        <image name="background_menu-568h.png" width="263" height="568"/>
+        <image name="background_menu-667h.png" width="308" height="667"/>
+        <image name="background_menu-736h.png" width="340.333344" height="736"/>
+        <image name="background-568h.png" width="320" height="568"/>
+        <image name="background-667h.png" width="375" height="667"/>
+        <image name="background-736h.png" width="414" height="736"/>
+        <image name="camera.png" width="144" height="144"/>
+        <image name="car.png" width="144" height="144"/>
+        <image name="car_notification.png" width="144" height="144"/>
+        <image name="clock.png" width="144" height="144"/>
+        <image name="dislike.png" width="840" height="840"/>
+        <image name="fuel.png" width="840" height="840"/>
+        <image name="fuel_received.png" width="840" height="840"/>
+        <image name="fuel_requested.png" width="840" height="840"/>
+        <image name="gps_off.png" width="144" height="144"/>
+        <image name="gps_off_warning.png" width="144" height="144"/>
+        <image name="gps_on.png" width="144" height="144"/>
+        <image name="home.png" width="144" height="144"/>
+        <image name="home_map.png" width="840" height="840"/>
+        <image name="icon.png" width="144" height="144"/>
+        <image name="left.png" width="144" height="144"/>
+        <image name="like.png" width="840" height="840"/>
+        <image name="location.png" width="144" height="144"/>
+        <image name="lock.png" width="840" height="840"/>
+        <image name="lock_normal.png" width="840" height="840"/>
+        <image name="lock_red.png" width="840" height="840"/>
+        <image name="logo.png" width="840" height="840"/>
+        <image name="lumper.png" width="840" height="840"/>
+        <image name="lumper_received.png" width="840" height="840"/>
+        <image name="lumper_requested.png" width="840" height="840"/>
+        <image name="mail.png" width="144" height="144"/>
+        <image name="map.png" width="144" height="144"/>
+        <image name="marker_car.png" width="144" height="144"/>
+        <image name="marker_finish.png" width="284" height="144"/>
+        <image name="marker_start.png" width="284" height="144"/>
+        <image name="menu.png" width="144" height="144"/>
+        <image name="right.png" width="144" height="144"/>
+        <image name="time.png" width="840" height="840"/>
+        <image name="turn_left.png" width="144" height="144"/>
+        <image name="turn_none.png" width="144" height="144"/>
+        <image name="turn_right.png" width="144" height="144"/>
+        <image name="unlock.png" width="840" height="840"/>
+    </resources>
+</document>

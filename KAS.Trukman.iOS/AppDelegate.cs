@@ -2,19 +2,20 @@
 using UIKit;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
-using CoreLocation
+using CoreLocation;
 
 namespace KAS.Trukman.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
-	public var locationManager = new CLLocationManager();;
 
 
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
+		public CLLocationManager locationManager = new CLLocationManager();
+
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -31,11 +32,26 @@ namespace KAS.Trukman.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Trukman.App());
 
-			app.SetStatusBarHidden = true
+			app.StatusBarHidden = true;
 			locationManager.RequestWhenInUseAuthorization();
 
             return base.FinishedLaunching(app, options);
         }
+
+		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
+			if (url.IsFileUrl == true) {
+				RateConfirmationViewController.handleFileURL (url);
+			}
+
+			return true;
+		}
+
+		public override bool HandleOpenURL(UIApplication application, NSUrl url) {
+			if (url.IsFileUrl == true) {
+				RateConfirmationViewController.handleFileURL (url);
+			}
+			return true;
+		}
     }
 }
 

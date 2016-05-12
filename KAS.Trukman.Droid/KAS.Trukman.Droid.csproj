@@ -147,7 +147,6 @@
     <Compile Include="Helpers\AndroidPlatformHelper.cs" />
     <Compile Include="Helpers\AndroidLocationServiceStarter.cs" />
     <Compile Include="Helpers\SettingsService.cs" />
-    <Compile Include="Helpers\OCRApi.cs" />
     <Compile Include="OCRActivity.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="PDFActivity.cs" />

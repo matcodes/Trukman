@@ -55,6 +55,14 @@
 				<string>com.apple.maps.directionsrequest</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Portable Document Format</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.adobe.pdf</string>
+			</array>
+		</dict>
 	</array>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
@@ -71,5 +79,7 @@
 	<string>This application requires location services to work</string>
 	<key>UIStatusBarHidden</key>
 	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

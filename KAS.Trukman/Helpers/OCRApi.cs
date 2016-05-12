@@ -5,9 +5,8 @@ using System.Net.Http;
 
 using Newtonsoft.Json;
 
-using Android.Graphics;
 
-namespace Trukman.Droid
+namespace KAS.Trukman.OCR
 {
 	/*
      * Usage example:
@@ -83,10 +82,9 @@ namespace Trukman.Droid
 			APIKey = apikey;
 		}
 
-		public async Task<OCRResponse> Parse(Bitmap image, string language = "eng")
+		public async Task<OCRResponse> Parse(byte[] imageData, string language = "eng")
 		{
 			HttpClient client = new HttpClient();
-			byte[] imageData = BitmapToByteArray(image);
 			MultipartFormDataContent form = new MultipartFormDataContent();
 
 			form.Add(new StringContent(APIKey), "apikey");
@@ -97,18 +95,6 @@ namespace Trukman.Droid
 			string strContent = await response.Content.ReadAsStringAsync();
 
 			return JsonConvert.DeserializeObject<OCRResponse>(strContent);
-		}
-
-		private static byte[] BitmapToByteArray(Bitmap bitmap)
-		{
-			byte[] bitmapData;
-			using (var stream = new MemoryStream())
-			{
-				bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
-				bitmapData = stream.ToArray();
-			}
-
-			return bitmapData;
 		}
 	}
 }
