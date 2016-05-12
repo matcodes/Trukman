@@ -6,19 +6,19 @@ using CoreGraphics;
 
 namespace KAS.SPResizableView
 {
-	// @interface SPUserResizableView : UIView
+	// @interface TRUserResizableView : UIView
 	[BaseType (typeof(UIView))]
-	interface SPUserResizableView
+	interface TRUserResizableView
 	{
-
 		[Export ("initWithFrame:")]
 		IntPtr Constructor (CGRect frame);
 
+
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
-		SPUserResizableViewDelegate Delegate { get; set; }
+		TRUserResizableViewDelegate Delegate { get; set; }
 
-		// @property (nonatomic, weak) id<SPUserResizableViewDelegate> _Nullable delegate;
+		// @property (nonatomic, weak) id<TRUserResizableViewDelegate> _Nullable delegate;
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
@@ -47,17 +47,17 @@ namespace KAS.SPResizableView
 		void ShowEditingHandles ();
 	}
 
-	// @protocol SPUserResizableViewDelegate <NSObject>
+	// @protocol TRUserResizableViewDelegate <NSObject>
 	[Protocol, Model]
 	[BaseType (typeof(NSObject))]
-	interface SPUserResizableViewDelegate
+	interface TRUserResizableViewDelegate
 	{
-		// @optional -(void)userResizableViewDidBeginEditing:(SPUserResizableView *)userResizableView;
+		// @optional -(void)userResizableViewDidBeginEditing:(TRUserResizableView *)userResizableView;
 		[Export ("userResizableViewDidBeginEditing:")]
-		void UserResizableViewDidBeginEditing (SPUserResizableView userResizableView);
+		void UserResizableViewDidBeginEditing (TRUserResizableView userResizableView);
 
-		// @optional -(void)userResizableViewDidEndEditing:(SPUserResizableView *)userResizableView;
+		// @optional -(void)userResizableViewDidEndEditing:(TRUserResizableView *)userResizableView;
 		[Export ("userResizableViewDidEndEditing:")]
-		void UserResizableViewDidEndEditing (SPUserResizableView userResizableView);
+		void UserResizableViewDidEndEditing (TRUserResizableView userResizableView);
 	}
 }

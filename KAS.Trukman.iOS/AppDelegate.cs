@@ -48,17 +48,23 @@ namespace KAS.Trukman.iOS
 
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
 			if (url.IsFileUrl == true) {
-				RateConfirmationViewController.handleFileURL (url);
+				this.InvokeOnMainThread (() => {
+					RateConfirmationViewController.handleFileURL (url);
+				});
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 
 		public override bool HandleOpenURL(UIApplication application, NSUrl url) {
 			if (url.IsFileUrl == true) {
-				RateConfirmationViewController.handleFileURL (url);
+				this.InvokeOnMainThread (() => {
+					RateConfirmationViewController.handleFileURL (url);
+				});
+				return true;
 			}
-			return true;
+			return false;
 		}
     }
 }
