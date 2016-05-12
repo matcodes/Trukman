@@ -3,28 +3,23 @@ using UIKit;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
 using CoreLocation;
+using HockeyApp;
+
 
 namespace KAS.Trukman.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
-    // application events from iOS.
-
-
+	#region AppDelegate
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-		public CLLocationManager locationManager = new CLLocationManager();
+		private CLLocationManager _locationManager = null;
 
-        //
-        // This method is invoked when the application has loaded and is ready to run. In this 
-        // method you should instantiate the window, load the UI into it and then make the window
-        // visible.
-        //
-        // You have 17 seconds to return from this method, or iOS will terminate your application.
-        //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+			var hockeyManager = BITHockeyManager.SharedHockeyManager;
+			hockeyManager.Configure ("d30cee35c8b5469d8987e7d557b150f8");
+			hockeyManager.StartManager ();
+
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
 
 			TrukmanContext.Initialize ();
@@ -33,7 +28,8 @@ namespace KAS.Trukman.iOS
             LoadApplication(new Trukman.App());
 
 			app.StatusBarHidden = true;
-			locationManager.RequestWhenInUseAuthorization();
+			_locationManager = new CLLocationManager ();
+			_locationManager.RequestWhenInUseAuthorization();
 
             LocationHelper.IsSelfPermission = true;
             LocationHelper.Initialize ();
@@ -61,4 +57,5 @@ namespace KAS.Trukman.iOS
 			return true;
 		}
     }
+	#endregion
 }

@@ -71,6 +71,9 @@
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
+    <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
+    <MtouchLink>Full</MtouchLink>
+    <OptimizePNGs>false</OptimizePNGs>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -122,6 +125,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Maps.iOS, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.2.0.31\lib\Xamarin.iOS10\Xamarin.Forms.Maps.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="HockeySDK.CrashOnly">
+      <HintPath>..\Components\hockeyappios-crashonly-4.1.0\lib\ios-unified\HockeySDK.CrashOnly.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +321,10 @@
   <ItemGroup>
     <XamarinComponentReference Include="GeolocatorPlugin">
       <Version>1.0.3</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="hockeyappios-crashonly">
+      <Version>4.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
