@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Net.Http;
-
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 
@@ -57,7 +57,10 @@ namespace KAS.Trukman.OCR
 
 	public class OCRResponse
 	{
-		public Parsedresult[] ParsedResults { get; set; }
+		[JsonConstructor]
+		public OCRResponse() { }
+
+		public List<Parsedresult> ParsedResults { get; set; }
 		public int OCRExitCode { get; set; }
 		public bool IsErroredOnProcessing { get; set; }
 		public string ErrorMessage { get; set; }
@@ -66,7 +69,10 @@ namespace KAS.Trukman.OCR
 
 	public class Parsedresult
 	{
-		public object FileParseExitCode { get; set; }
+		[JsonConstructor]
+		public Parsedresult() { }
+
+		public int FileParseExitCode { get; set; }
 		public string ParsedText { get; set; }
 		public string ErrorMessage { get; set; }
 		public string ErrorDetails { get; set; }
@@ -94,6 +100,7 @@ namespace KAS.Trukman.OCR
 			HttpResponseMessage response = await client.PostAsync(endpoint, form);
 			string strContent = await response.Content.ReadAsStringAsync();
 
+			Console.WriteLine ("OCR request result: {0}", strContent);
 			return JsonConvert.DeserializeObject<OCRResponse>(strContent);
 		}
 	}

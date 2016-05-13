@@ -72,7 +72,6 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
     <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
-    <MtouchLink>Full</MtouchLink>
     <OptimizePNGs>false</OptimizePNGs>
   </PropertyGroup>
   <ItemGroup>

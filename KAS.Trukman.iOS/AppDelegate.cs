@@ -24,12 +24,9 @@ namespace KAS.Trukman.iOS
 
 			TrukmanContext.Initialize ();
 
-            global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new Trukman.App());
-
 			app.StatusBarHidden = true;
-			_locationManager = new CLLocationManager ();
-			_locationManager.RequestWhenInUseAuthorization();
+//			_locationManager = new CLLocationManager ();
+//			_locationManager.RequestWhenInUseAuthorization();
 
             LocationHelper.IsSelfPermission = true;
             LocationHelper.Initialize ();
