@@ -7,7 +7,6 @@ using HockeyApp;
 using ToastIOS;
 using KAS.Trukman.Messages;
 
-
 namespace KAS.Trukman.iOS
 {
 	#region AppDelegate
@@ -15,6 +14,9 @@ namespace KAS.Trukman.iOS
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
 		private CLLocationManager _locationManager = null;
+		private CameraHelper _cameraHelper = null;
+
+		public NSUrl fileUrl = null;
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
@@ -22,6 +24,7 @@ namespace KAS.Trukman.iOS
 			hockeyManager.Configure ("d30cee35c8b5469d8987e7d557b150f8");
 			hockeyManager.StartManager ();
 
+			_cameraHelper = new CameraHelper ();
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
 
 			app.StatusBarHidden = true;
@@ -32,26 +35,39 @@ namespace KAS.Trukman.iOS
             LocationHelper.Initialize ();
             
             TrukmanContext.Initialize ();
+			global::Xamarin.Forms.Forms.Init();
+			LoadApplication(new Trukman.App());
 
-            global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new Trukman.App());
-
+			if (options != null) {
+				var url = (NSUrl)options [UIApplication.LaunchOptionsUrlKey];
+				if (url != null) {
+					if (fileUrl != null) {
+						this.InvokeOnMainThread (() => {
+							RateConfirmationViewController.handleFileURL (fileUrl);
+						});
+					}
+				}
+			}
             return base.FinishedLaunching(app, options);
         }
 
 		public override void OnActivated (UIApplication uiApplication) {
 			ShowToastMessage.Subscribe (this, this.ShowToast);
+			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
 		}
 
 		public override void DidEnterBackground (UIApplication uiApplication) {
 			ShowToastMessage.Unsubscribe (this);
+			TakePhotoFromCameraMessage.Unsubscribe(_cameraHelper);
+
 		}
 
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
 			if (url.IsFileUrl == true) {
-				this.InvokeOnMainThread (() => {
-					RateConfirmationViewController.handleFileURL (url);
-				});
+				fileUrl = url;
+//				this.InvokeOnMainThread (() => {
+//					RateConfirmationViewController.handleFileURL (url);
+//				});
 				return true;
 			}
 
@@ -60,9 +76,7 @@ namespace KAS.Trukman.iOS
 
 		public override bool HandleOpenURL(UIApplication application, NSUrl url) {
 			if (url.IsFileUrl == true) {
-				this.InvokeOnMainThread (() => {
-					RateConfirmationViewController.handleFileURL (url);
-				});
+				fileUrl = url;
 				return true;
 			}
 			return false;
