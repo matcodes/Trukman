@@ -17,6 +17,8 @@ namespace KAS.Trukman.iOS
 		private MKPolyline _baseRoute = null;
 		private MKPolyline _route = null;
 	
+		private MKPointAnnotation _routeStartPosition = null;
+		private MKPointAnnotation _routeEndPosition = null;
 
 		private MKPolylineRenderer _baseRouteRenderer = null;
 		private MKPolylineRenderer _routeRenderer = null;
@@ -61,6 +63,28 @@ namespace KAS.Trukman.iOS
 
 				_route = MKPolyline.FromCoordinates (coords.ToArray ());
 				nativeMap.AddOverlay (_route);
+			} else if (args.PropertyName == "RouteStartPosition") {
+				if (_routeStartPosition != null)
+					nativeMap.RemoveAnnotation (_routeStartPosition);
+
+				_routeStartPosition = new MKPointAnnotation {
+					Title = map.RouteStartPosition.Contractor.Name,
+					Subtitle = map.RouteStartPosition.Address,
+					Coordinate = new CLLocationCoordinate2D (map.RouteStartPosition.Position.Latitude, map.RouteStartPosition.Position.Longitude)
+				};
+
+				nativeMap.AddAnnotation (_routeStartPosition);
+			} else if (args.PropertyName == "RouteEndPosition") {
+				if (_routeEndPosition != null)
+					nativeMap.RemoveAnnotation (_routeEndPosition);
+
+				_routeEndPosition = new MKPointAnnotation {
+					Title = map.RouteEndPosition.Contractor.Name,
+					Subtitle = map.RouteEndPosition.Address,
+					Coordinate = new CLLocationCoordinate2D (map.RouteEndPosition.Position.Latitude, map.RouteEndPosition.Position.Longitude)
+				};
+
+				nativeMap.AddAnnotation (_routeEndPosition);
 			}
 		}
 
