@@ -261,6 +261,8 @@ namespace KAS.Trukman.Storage
             var saved = await this.SelectParseCompanyByIDAsync(company.ID);
             if (saved == null)
                 saved = new ParseCompany();
+            saved.Owner = ParseUser.CurrentUser;
+            saved.Name = company.Name;
             saved.DisplayName = company.DisplayName;
             saved.FleetSize = company.FleetSize;
             await saved.SaveAsync();
