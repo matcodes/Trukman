@@ -268,6 +268,8 @@ namespace KAS.Trukman
             Device.BeginInvokeOnMainThread(() => {
                 try
                 {
+                    bool isEmpty = (this.MainPage is EmptyPage);
+
                     if (TrukmanContext.User == null)
                         this.MainPage = new SignUpNavigationPage();
                     else if (TrukmanContext.User.Role == UserRole.UserRoleOwner)
@@ -280,6 +282,9 @@ namespace KAS.Trukman
                         else
                             this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
                     }
+
+                    if (isEmpty)
+                        MainPageInitializedMessage.Send();
                 }
                 catch (Exception exception)
                 {

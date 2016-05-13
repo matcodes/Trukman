@@ -90,6 +90,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\GeoLocationChangedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\HideMainMenuMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\LanguageSelectedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\MainPageInitializedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\PopPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\PopToRootPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SendPhotoMessage.cs" />
