@@ -3,6 +3,8 @@ using UIKit;
 using KAS.Esignature;
 using Foundation;
 using MessageUI;
+using Parse;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.iOS
 {
@@ -64,9 +66,19 @@ namespace KAS.Trukman.iOS
 			
 		partial void createJobPressed(UIButton button)
 		{
-			OCRPdfViewController ocr = new OCRPdfViewController();
-			ocr.pdfUrl = notSignedRateConfirmationURL;
-			NavigationController.PushViewController(ocr, true);
+			if (TrukmanContext.User == null) {
+				UIAlertView alertView = new UIAlertView("Error", "No user logged in...", null, "Ok", null);
+				alertView.Show();
+			} else {
+				if (TrukmanContext.User.Role == 0) {
+					OCRPdfViewController ocr = new OCRPdfViewController();
+					ocr.pdfUrl = notSignedRateConfirmationURL;
+					NavigationController.PushViewController(ocr, true);
+				} else {
+					UIAlertView alertView = new UIAlertView("Error", "Only owner can create new job...", null, "Ok", null);
+					alertView.Show();
+				}
+			}
 		}
 
 		public void GetStoredPdfPath (string pdfPath) 

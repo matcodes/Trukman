@@ -16,6 +16,13 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<ParseGeoPoint>(value); }
         }
 
+		[ParseFieldName("JobRef")]
+		public string JobRef
+		{
+			get { return this.GetProperty<string>(); }
+			set { this.SetProperty<string>(value); }
+		}
+
         [ParseFieldName("DeclineReason")]
         public string DeclineReason
         {

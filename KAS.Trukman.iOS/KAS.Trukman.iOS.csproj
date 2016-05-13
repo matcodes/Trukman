@@ -146,6 +146,7 @@
     <InterfaceDefinition Include="Native ViewControllers\JobCreateViewController.xib" />
     <InterfaceDefinition Include="Native ViewControllers\JobTextCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\JobButtonCreateViewCell.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\UserListViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -199,6 +200,10 @@
     <Compile Include="Native ViewControllers\JobButtonCreateViewCell.cs" />
     <Compile Include="Native ViewControllers\JobButtonCreateViewCell.designer.cs">
       <DependentUpon>JobButtonCreateViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Native ViewControllers\UserListViewController.cs" />
+    <Compile Include="Native ViewControllers\UserListViewController.designer.cs">
+      <DependentUpon>UserListViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -22,8 +22,6 @@ namespace KAS.Trukman.iOS
 
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
 
-			TrukmanContext.Initialize ();
-
 			app.StatusBarHidden = true;
 //			_locationManager = new CLLocationManager ();
 //			_locationManager.RequestWhenInUseAuthorization();

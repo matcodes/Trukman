@@ -14,6 +14,8 @@ using Xamarin.Forms.Maps;
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Infos;
 using KAS.Trukman.Data.Enums;
+using KAS.Trukman.Storage.ParseClasses;
+using Parse;
 
 namespace KAS.Trukman.AppContext
 {
@@ -222,6 +224,31 @@ namespace KAS.Trukman.AppContext
         {
             await _localStorage.DeclineDriverToCompany(user);
         }
+
+		static public async Task<ParseCompany> FetchParseCompany(string name)
+		{
+			var query = new ParseQuery<ParseCompany>()
+				.WhereEqualTo("name", name.ToLower());
+			var parseCompany = await query.FirstOrDefaultAsync();
+			return parseCompany;
+		}
+
+		static public async Task<IEnumerable<ParseUser>> GetBrokersFromCompany(ParseCompany company)
+		{
+			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("brokers");
+			ParseQuery<ParseUser> query = relation.Query;
+			var brokers = await query.FindAsync ();
+			return brokers;
+		}
+
+		static public async Task<IEnumerable<ParseUser>> GetDriversFromCompany(ParseCompany company)
+		{
+			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("drivers");
+			ParseQuery<ParseUser> query = relation.Query;
+			var brokers = await query.FindAsync ();
+			return brokers;
+		}
+
 
         private static void StartSynchronizeTimer()
         {

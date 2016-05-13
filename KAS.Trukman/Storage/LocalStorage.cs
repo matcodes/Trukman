@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Trukman.Interfaces;
 using Xamarin.Forms.Maps;
+using Parse;
+using KAS.Trukman.Storage.ParseClasses;
 
 namespace KAS.Trukman.Storage
 {
@@ -777,6 +779,8 @@ namespace KAS.Trukman.Storage
         {
             return (_connection.Table<Trip>().Where(t => t.ID == id).Count() > 0);
         }
+
+
         #endregion
     }
     #endregion

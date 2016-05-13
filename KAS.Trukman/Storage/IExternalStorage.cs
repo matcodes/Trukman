@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
+using KAS.Trukman.Storage.ParseClasses;
+using Parse;
 
 namespace KAS.Trukman.Storage
 {

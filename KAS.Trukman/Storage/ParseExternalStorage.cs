@@ -425,14 +425,14 @@ namespace KAS.Trukman.Storage
         public async Task<Company> SelectCompanyByName(string name)
         {
             Company company = null;
-            var query = new ParseQuery<ParseCompany>()
-                .WhereEqualTo("name", name.ToLower());
-            var parseCompany = await query.FirstOrDefaultAsync();
+			var query = new ParseQuery<ParseCompany>()
+				.WhereEqualTo("name", name.ToLower());
+			var parseCompany = await query.FirstOrDefaultAsync();
             if (parseCompany != null)
                 company = this.ParseCompanyToCompany(parseCompany);
             return company;
         }
-
+			
         private async Task<ParseCompany> SelectUserParseCompanyAsync()
         {
             var query = new ParseQuery<ParseCompany>()
