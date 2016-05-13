@@ -806,7 +806,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+				FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 TapCommandParameter = 0
             };
             tripTimeLabel.SetBinding(TappedLabel.TextProperty, "TripTime", BindingMode.OneWay);
@@ -826,7 +826,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Start,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 FontAttributes = FontAttributes.Bold
             };
             timerLabel.SetBinding(TappedLabel.TextProperty, "CurrentTime", BindingMode.OneWay);
@@ -1680,7 +1680,8 @@ namespace KAS.Trukman.Views.Pages
         {
             var appBoxView = new AppBoxView {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
+                VerticalOptions = LayoutOptions.Fill,
+				Color = Color.White
             };
 
             var mainLabel = new Label {

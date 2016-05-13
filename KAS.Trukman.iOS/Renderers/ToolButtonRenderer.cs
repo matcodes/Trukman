@@ -29,10 +29,13 @@ namespace KAS.Trukman.iOS
 		private void SetImage()
 		{
 			var element = (this.Element as ToolButton);
-			var button = (this.Element as UIButton);
+			var button = (this.Control as UIButton);
 
 			if ((button != null) && (element != null) && (!String.IsNullOrEmpty (element.ImageSourceName))) {
-				button.SetImage (UIImage.FromBundle (element.ImageSourceName), UIControlState.Normal);
+				UIImage image = UIImage.FromBundle(element.ImageSourceName);
+				image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+				button.SetImage (image, UIControlState.Normal);
+				//button.TintColor = UIColor.White;
 			}
 		}
 	}

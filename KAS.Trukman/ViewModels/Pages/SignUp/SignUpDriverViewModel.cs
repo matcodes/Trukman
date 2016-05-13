@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -78,18 +79,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     try
                     {
                         var companies = await TrukmanContext.SelectCompanies(this.CompanyFilter);
-                        this.Companies.Clear();
-                        ICompany selected = null;
-                        this.SelectedCompany = null;
-                        foreach (var company in companies)
-                        {
-                            this.Companies.Add(company);
-                            if (selected == null)
-                            {
-                                selected = company;
-                                this.SelectedCompany = selected;
-                            }
-                        }
+						this.ShowCompanies(companies);
                     }
                     catch (Exception exception)
                     {
@@ -103,6 +93,24 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             }
             _selectCompaniesTimer.Start();
         }
+
+		private void ShowCompanies(ICompany[] companies)
+		{
+			Device.BeginInvokeOnMainThread (() => {
+				this.Companies.Clear();
+				ICompany selected = null;
+				this.SelectedCompany = null;
+				foreach (var company in companies)
+				{
+					this.Companies.Add(company);
+					if (selected == null)
+					{
+						selected = company;
+						this.SelectedCompany = selected;
+					}
+				}
+			});
+		}
 
         private void StopSelectCompaniesTimer()
         {

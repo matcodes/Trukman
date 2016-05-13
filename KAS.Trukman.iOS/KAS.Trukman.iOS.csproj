@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,6 @@
     <RootNamespace>KAS.Trukman.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>KASTrukmaniOS</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -177,23 +175,21 @@
     <Compile Include="Native ViewControllers\OCRPdfViewController.designer.cs">
       <DependentUpon>OCRPdfViewController.cs</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Renderers\ToolButtonRenderer.cs" />
     <Compile Include="Renderers\AppButtonRenderer.cs" />
     <Compile Include="Renderers\AppEntryRenderer.cs" />
     <Compile Include="Renderers\AppLabelRenderer.cs" />
     <Compile Include="Renderers\AppMapRenderer.cs" />
     <Compile Include="Renderers\AppPopupButtonRenderer.cs" />
-=======
     <Compile Include="Categories\ImageCategory.cs" />
     <Compile Include="Native ViewControllers\OCRResultViewController.cs" />
     <Compile Include="Native ViewControllers\OCRResultViewController.designer.cs">
       <DependentUpon>OCRResultViewController.cs</DependentUpon>
     </Compile>
->>>>>>> origin/dev/team433
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
+    <BundleResource Include="Resources\background%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background%402x.png" />
@@ -205,22 +201,10 @@
     <BundleResource Include="Resources\background_menu%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\background_menu-568h%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\background_menu-667h%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\background_menu-736h%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\background-568h%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background-667h%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\background-736h%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\camera.png" />
@@ -351,5 +335,15 @@
       <Version>4.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESignatureBinding\ESignatureBinding\ESignatureBinding.csproj">
+      <Project>{8C286A61-79DA-4CA2-B339-1C2CAC6D8163}</Project>
+      <Name>ESignatureBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPResizableViewIOSBinding\SPResizableViewIOSBinding\SPResizableViewIOSBinding.csproj">
+      <Project>{F76C6A75-F039-46F1-B24A-F680912C8CF4}</Project>
+      <Name>SPResizableViewIOSBinding</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
