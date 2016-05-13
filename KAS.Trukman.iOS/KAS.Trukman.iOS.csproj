@@ -9,8 +9,6 @@
     <RootNamespace>KAS.Trukman.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>KASTrukmaniOS</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -342,5 +340,15 @@
       <Version>4.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESignatureBinding\ESignatureBinding\ESignatureBinding.csproj">
+      <Project>{8C286A61-79DA-4CA2-B339-1C2CAC6D8163}</Project>
+      <Name>ESignatureBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPResizableViewIOSBinding\SPResizableViewIOSBinding\SPResizableViewIOSBinding.csproj">
+      <Project>{F76C6A75-F039-46F1-B24A-F680912C8CF4}</Project>
+      <Name>SPResizableViewIOSBinding</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

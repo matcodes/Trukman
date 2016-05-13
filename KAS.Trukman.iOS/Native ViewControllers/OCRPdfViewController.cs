@@ -6,6 +6,7 @@ using KAS.SPResizableView;
 using CoreGraphics;
 using KAS.Trukman.OCR;
 using MBProgressHUD;
+using KAS.Trukman.Storage.ParseClasses;
 
 namespace KAS.Trukman.iOS
 {
@@ -13,6 +14,7 @@ namespace KAS.Trukman.iOS
 	{
 		public NSUrl pdfUrl;
 		public TRUserResizableView highlightBox;
+		public ParseJob job;
 
 		public OCRPdfViewController () : base ("OCRPdfViewController", null)
 		{
@@ -38,8 +40,9 @@ namespace KAS.Trukman.iOS
 			highlightBox.PreventsPositionOutsideSuperview = true;
 			highlightBox.Hidden = true;
 
-
 			this.View.AddSubview(highlightBox);
+
+			job = ParseJob.Create<ParseJob> ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -87,11 +90,12 @@ namespace KAS.Trukman.iOS
 								if (response.OCRExitCode == 1) {
 									OCRResultViewController vc = new OCRResultViewController();
 									vc.text = results.ParsedText;
+									vc.job = job;
 									this.PresentViewController(vc, true, null);
 									return;
 								}
 							}
-							UIAlertView alertView = new UIAlertView("Error", "Can not OCR the results", null, "Ok", null);
+							UIAlertView alertView = new UIAlertView("Error", "Can not scan the image", null, "Ok", null);
 							alertView.Show();
 						});
 					});
