@@ -41,7 +41,7 @@ namespace KAS.Trukman.iOS
 
 			// You can convert it back to an array if you would like to
 			String[] options = list.ToArray();
-			UIActionSheet sheet = new UIActionSheet("Save as", this, "Cancel", null, options);
+			UIActionSheet sheet = new UIActionSheet("Save as", null, "Cancel", null, options);
 			sheet.ShowInView(this.View);
 			sheet.Clicked += delegate(object a, UIButtonEventArgs b) {
 				Console.WriteLine ("Button " + b.ButtonIndex.ToString () + " clicked");

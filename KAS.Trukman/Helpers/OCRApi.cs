@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Net.Http;
-
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 
@@ -60,7 +60,7 @@ namespace KAS.Trukman.OCR
 		[JsonConstructor]
 		public OCRResponse() { }
 
-		public Parsedresult[] ParsedResults { get; set; }
+		public List<Parsedresult> ParsedResults { get; set; }
 		public int OCRExitCode { get; set; }
 		public bool IsErroredOnProcessing { get; set; }
 		public string ErrorMessage { get; set; }

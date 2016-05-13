@@ -85,7 +85,7 @@ namespace KAS.Trukman.iOS
 
 							OCRResponse response = task.Result;
 							// And so on...
-							if (response.ParsedResults.Length > 0) {
+							if (response.ParsedResults.Count > 0) {
 								Parsedresult results = response.ParsedResults[0];
 								if (response.OCRExitCode == 1) {
 									OCRResultViewController vc = new OCRResultViewController();
