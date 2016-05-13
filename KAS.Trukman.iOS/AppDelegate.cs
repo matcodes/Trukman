@@ -4,6 +4,8 @@ using KAS.Trukman.Helpers;
 using KAS.Trukman.AppContext;
 using CoreLocation;
 using HockeyApp;
+using ToastIOS;
+using KAS.Trukman.Messages;
 
 
 namespace KAS.Trukman.iOS
@@ -37,6 +39,14 @@ namespace KAS.Trukman.iOS
             return base.FinishedLaunching(app, options);
         }
 
+		public override void OnActivated (UIApplication uiApplication) {
+			ShowToastMessage.Subscribe (this, this.ShowToast);
+		}
+
+		public override void DidEnterBackground (UIApplication uiApplication) {
+			ShowToastMessage.Unsubscribe (this);
+		}
+
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
 			if (url.IsFileUrl == true) {
 				this.InvokeOnMainThread (() => {
@@ -56,6 +66,13 @@ namespace KAS.Trukman.iOS
 				return true;
 			}
 			return false;
+		}
+
+		private void ShowToast(ShowToastMessage message) 
+		{
+			this.InvokeOnMainThread (() => {
+				Toast.MakeText(message.Text).Show();
+			});
 		}
     }
 	#endregion
