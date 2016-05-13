@@ -128,6 +128,14 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<ParseUser>(value); }
         }
 
+		[ParseFieldName("Broker")]
+		public ParseUser Broker
+		{
+			get { return this.GetProperty<ParseUser>(); }
+			set { this.SetProperty<ParseUser>(value); }
+		}
+
+
         [ParseFieldName("Dispatcher")]
         public ParseUser Dispatcher
         {

@@ -44,7 +44,7 @@ namespace KAS.Trukman.iOS
 			UIActionSheet sheet = new UIActionSheet("Save as", null, "Cancel", null, options);
 			sheet.ShowInView(this.View);
 			sheet.Clicked += delegate(object a, UIButtonEventArgs b) {
-				Console.WriteLine ("Button " + b.ButtonIndex.ToString () + " clicked");
+				Console.WriteLine ("Job Button " + b.ButtonIndex.ToString () + " clicked");
 				if (scannedTextView.Text != null) {
 					switch (b.ButtonIndex) {
 					case 0:
@@ -69,8 +69,8 @@ namespace KAS.Trukman.iOS
 					default:
 						break;
 					}
+					this.DismissViewController(true, null);
 				}
-
 			};
 
 			scannedTextView.ResignFirstResponder();

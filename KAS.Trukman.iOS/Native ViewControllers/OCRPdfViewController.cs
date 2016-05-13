@@ -43,6 +43,15 @@ namespace KAS.Trukman.iOS
 			this.View.AddSubview(highlightBox);
 
 			job = ParseJob.Create<ParseJob> ();
+
+			UIBarButtonItem rightBarItem = new UIBarButtonItem ();
+			rightBarItem.Title = "Next";
+			rightBarItem.Clicked += (object sender, EventArgs e) => {
+				JobCreateViewController newJobViewController = new JobCreateViewController ();
+				newJobViewController.job = this.job;
+				this.NavigationController.PushViewController (newJobViewController, true);
+			};
+			this.NavigationItem.RightBarButtonItem = rightBarItem;
 		}
 
 		public override void DidReceiveMemoryWarning ()
