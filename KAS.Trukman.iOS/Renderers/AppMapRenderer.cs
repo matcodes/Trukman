@@ -14,11 +14,22 @@ namespace KAS.Trukman.iOS
 	#region AppMapRenderer
 	public class AppMapRenderer : MapRenderer
 	{
+		#region Static members
+		public static readonly string ROUTE_START_PIN_ID = "RouteStartPinID";
+		public static readonly string ROUTE_END_PIN_ID = "RouteEndPinID";
+		public static readonly string ROUTE_CAR_PIN_ID = "RouteStartPinID";
+		#endregion
+
 		private MKPolyline _baseRoute = null;
 		private MKPolyline _route = null;
 	
 		private MKPointAnnotation _routeStartPosition = null;
 		private MKPointAnnotation _routeEndPosition = null;
+		private MKPointAnnotation _routeCarPosition = null;
+
+		private MKPinAnnotationView _routeStartPinAnnotationView = null;
+		private MKPinAnnotationView _routeEndPinAnnotationView = null;
+		private MKPinAnnotationView _routeCarPinAnnotationView = null;
 
 		private MKPolylineRenderer _baseRouteRenderer = null;
 		private MKPolylineRenderer _routeRenderer = null;
@@ -29,11 +40,16 @@ namespace KAS.Trukman.iOS
 
 			var nativeMap = (this.Control as MKMapView);
 
-			if ((nativeMap != null) && (args.OldElement != null)) 
+			if ((nativeMap != null) && (args.OldElement != null)) {
 				nativeMap.OverlayRenderer = null;
+				nativeMap.Delegate = null;
+			}
 
-			if ((nativeMap != null) && (args.NewElement != null)) 
+			if ((nativeMap != null) && (args.NewElement != null)) {
+				nativeMap.Delegate = null;
 				nativeMap.OverlayRenderer = this.GetOverlayRenderer;
+				nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
+			}
 		}
 
 		protected override void OnElementPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs args)
@@ -85,7 +101,51 @@ namespace KAS.Trukman.iOS
 				};
 
 				nativeMap.AddAnnotation (_routeEndPosition);
+			} else if (args.PropertyName == "RouteCarPosition") {
+				if (_routeCarPosition != null)
+					nativeMap.RemoveAnnotation (_routeCarPosition);
+
+				_routeCarPosition = new MKPointAnnotation {
+					Title = map.RouteCarPosition.Duration.ToString(),
+					Subtitle = map.RouteCarPosition.Distance.ToString(),
+					Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
+				};
 			}
+		}
+
+		private MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
+		{
+			MKAnnotationView view = null;
+			if (annotation == _routeStartPosition) {
+				if (_routeStartPinAnnotationView == null) {
+					_routeStartPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
+					_routeStartPinAnnotationView.Image = this.GetPinImage("marker_start");
+					_routeStartPinAnnotationView.CanShowCallout = true;
+				}
+				view = _routeStartPinAnnotationView;
+			} else if (annotation == _routeEndPosition) {
+				if (_routeEndPinAnnotationView == null) {
+					_routeEndPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
+					_routeEndPinAnnotationView.Image = this.GetPinImage ("marker_end");
+					_routeEndPinAnnotationView.CanShowCallout = true;
+				}
+				view = _routeEndPinAnnotationView;
+			} else if (annotation == _routeCarPosition) {
+				if (_routeCarPinAnnotationView == null) {
+					_routeCarPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_CAR_PIN_ID);
+					_routeCarPinAnnotationView.Image = this.GetPinImage ("marker_car");
+					_routeCarPinAnnotationView.CanShowCallout = true;
+				}
+				view = _routeCarPinAnnotationView;
+			}
+			return view;
+		}
+
+		private UIImage GetPinImage(string name)
+		{
+			var image = UIImage.FromBundle("marker_start");
+			image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+			return image;
 		}
 
 		private MKOverlayRenderer GetOverlayRenderer(MKMapView mapView, IMKOverlay overlay)

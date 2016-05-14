@@ -148,7 +148,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     };
                     var company = await TrukmanContext.RegisterDriverAsync(driverInfo);
 
-                    var state = await TrukmanContext.GetDriverState();
+					var state = (DriverState)TrukmanContext.User.Status; //await TrukmanContext.GetDriverState();
                     if (state == DriverState.Joined)
                         await TrukmanContext.InitializeDriverContext();
                     else if (state == DriverState.Waiting)
