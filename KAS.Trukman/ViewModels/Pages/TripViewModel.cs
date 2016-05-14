@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -59,18 +60,12 @@ namespace KAS.Trukman.ViewModels.Pages
         }
 
         private void FindAddress()
-        {
-            Task.Run(async () => {
-                var contractor = (this.SelectedItem == TripContractorItems.Shipper ? (IContractor)this.Shipper : (IContractor)this.Receiver);
-
-                var geocoder = new Geocoder();
-                var locations = await geocoder.GetPositionsForAddressAsync(contractor.Address);
-
-                var location = locations.FirstOrDefault();
-
-                this.ContractorPosition = location;
-            });
-        }
+		{
+			var position = (this.SelectedItem == TripContractorItems.Shipper ? TrukmanContext.Driver.ShipperPosition : TrukmanContext.Driver.ReceiverPosition);
+			if ((position.Latitude == 0) && (position.Longitude == 0))
+				position = TrukmanContext.Driver.Location;
+			this.ContractorPosition = position;
+		}
 
         private void ShowHomePage(object parameter)
         {
