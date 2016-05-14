@@ -92,16 +92,19 @@ namespace KAS.Trukman.iOS
 							// manipulate UI controls
 							hud.Hide(true);
 
-							OCRResponse response = task.Result;
-							// And so on...
-							if (response.ParsedResults.Count > 0) {
-								Parsedresult results = response.ParsedResults[0];
-								if (response.OCRExitCode == 1) {
-									OCRResultViewController vc = new OCRResultViewController();
-									vc.text = results.ParsedText;
-									vc.job = job;
-									this.PresentViewController(vc, true, null);
-									return;
+							if (task != null) {
+								// And so on...
+								OCRResponse response = task.Result;
+
+								if (response.ParsedResults.Count > 0) {
+									Parsedresult results = response.ParsedResults[0];
+									if (response.OCRExitCode == 1) {
+										OCRResultViewController vc = new OCRResultViewController();
+										vc.text = results.ParsedText;
+										vc.job = job;
+										this.PresentViewController(vc, true, null);
+										return;
+									}
 								}
 							}
 							UIAlertView alertView = new UIAlertView("Error", "Can not scan the image", null, "Ok", null);

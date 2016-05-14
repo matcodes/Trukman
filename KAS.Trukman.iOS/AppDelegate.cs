@@ -14,7 +14,7 @@ namespace KAS.Trukman.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-		private CLLocationManager _locationManager = null;
+		private LocationHelperIOS _locationManager = null;
 		private CameraHelper _cameraHelper = null;
 		private bool launchPdfFromZero = false;
 
@@ -30,10 +30,10 @@ namespace KAS.Trukman.iOS
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
 
 			app.StatusBarHidden = true;
-//			_locationManager = new CLLocationManager ();
-//			_locationManager.RequestWhenInUseAuthorization();
 
 			this.InvokeOnMainThread (() => {
+				_locationManager = new LocationHelperIOS ();
+
 				LocationHelper.IsSelfPermission = true;
 				LocationHelper.Initialize ();
 			});

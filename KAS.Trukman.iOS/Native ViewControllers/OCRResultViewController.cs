@@ -38,6 +38,8 @@ namespace KAS.Trukman.iOS
 			list.Add("Drop off Address");
 			list.Add("Contractor");
 			list.Add("Weight");
+			list.Add("Drop Time");
+			list.Add("Pickup Time");
 
 			// You can convert it back to an array if you would like to
 			String[] options = list.ToArray();
@@ -66,6 +68,29 @@ namespace KAS.Trukman.iOS
 						}					
 						break;
 
+					case 4:
+						DateTime pickupDate;
+						if (DateTime.TryParse(scannedTextView.Text, out pickupDate))
+						{
+							job.PickupDatetime = pickupDate;
+						} else {
+							UIAlertView view = new UIAlertView("Error", "Can not parse your time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+							view.Show();
+						}
+
+						break;
+
+					case 5:
+						DateTime dropDate;
+						if (DateTime.TryParse(scannedTextView.Text, out dropDate))
+						{
+							job.DeliveryDatetime = dropDate;
+						} else {
+							UIAlertView alert = new UIAlertView("Error", "Can not define your time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+							alert.Show();
+						}
+
+						break;
 					default:
 						break;
 					}

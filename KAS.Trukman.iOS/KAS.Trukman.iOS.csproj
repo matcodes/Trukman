@@ -71,7 +71,6 @@
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
-    <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
     <OptimizePNGs>false</OptimizePNGs>
   </PropertyGroup>
   <ItemGroup>
@@ -209,6 +208,7 @@
       <DependentUpon>UserListViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CameraHelper.cs" />
+    <Compile Include="Helpers\LocationHelperIOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />

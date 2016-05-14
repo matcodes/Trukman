@@ -5,6 +5,7 @@ using KAS.Trukman.Storage.ParseClasses;
 using KAS.Trukman.Storage;
 using KAS.Trukman.AppContext;
 using System.Threading.Tasks;
+using MBProgressHUD;
 
 namespace KAS.Trukman.iOS
 {
@@ -14,6 +15,8 @@ namespace KAS.Trukman.iOS
 			Number,
 			From,
 			To,
+			FromTime,
+			ToTime,
 			Broker,
 			Driver
 		};
@@ -45,6 +48,13 @@ namespace KAS.Trukman.iOS
 			UIBarButtonItem rightBarItem = new UIBarButtonItem ();
 			rightBarItem.Title = "Done";
 			rightBarItem.Clicked += (object sender, EventArgs e) => {
+				var hud = new MTMBProgressHUD (View) {
+					LabelText = "Saving...",
+					RemoveFromSuperViewOnHide = true
+				};
+				hud.Show(true);
+
+				View.AddSubview (hud);
 				Task.Run(async() => {
 					Console.Write("Creating job with Ref Number:{0}", job.JobRef);
 
@@ -52,13 +62,18 @@ namespace KAS.Trukman.iOS
 						company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
 					}
 					this.InvokeOnMainThread(() => {
-						if (job.Broker != null && job.Driver != null && company != null) {
-							job.SaveAsync();
+						if (/*job.Broker != null &&*/ job.Driver != null && company != null) {
+							job.Company = company;
+							try {
+								job.SaveAsync();
+							} catch {
+							}
 							this.NavigationController.DismissViewController(true, null);
 						} else {
 							UIAlertView alertView = new UIAlertView("Error", "Please, assign broker and driver to the job.", null, "Ok", null);
 							alertView.Show();
 						}
+						hud.Hide(true);
 					});
 				});
 			};
@@ -90,20 +105,13 @@ namespace KAS.Trukman.iOS
 				numberCell._textLabel.Text = "Job #:";
 				numberCell.textField.Text = job.JobRef;
 				numberCell.SelectionStyle = UITableViewCellSelectionStyle.None;
+				numberCell.textField.Tag = (int)JobFields.Number;
 
-				numberCell.textField.EditingChanged += (object sender, EventArgs e) => {
-					//Action
-					var item = (sender as UITextField);
-					if (sender != null) {
-						job.JobRef = item.Text;
-					}
-				};
-				numberCell.textField.EditingDidEndOnExit += (object sender, EventArgs e) => {
-					var item = (sender as UITextField);
-					if (sender != null) {
-						item.ResignFirstResponder ();
-					}
-				};
+				numberCell.textField.EditingChanged -= TextFieldDidEndEditing;
+				numberCell.textField.EditingChanged += TextFieldDidEndEditing;
+
+				numberCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
+				numberCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
 					
 				return numberCell;
 
@@ -114,23 +122,34 @@ namespace KAS.Trukman.iOS
 				fromCell._textLabel.Text = "Pick up:";
 				fromCell.textField.Text = job.FromAddress;
 				fromCell.SelectionStyle = UITableViewCellSelectionStyle.None;
+				fromCell.textField.Tag = (int)JobFields.From;
+				fromCell.textField.EditingChanged -= TextFieldDidEndEditing;
+				fromCell.textField.EditingChanged += TextFieldDidEndEditing;
 
-				fromCell.textField.EditingChanged += (object sender, EventArgs e) => {
-					//Action
-					var item = (sender as UITextField);
-					if (sender != null) {
-						job.FromAddress = item.Text;
-					}
-				};
-				fromCell.textField.EditingDidEndOnExit += (object sender, EventArgs e) => {
-					var item = (sender as UITextField);
-					if (sender != null) {
-						item.ResignFirstResponder ();
-					}
-				};
+				fromCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
+				fromCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
 					
 
 				return fromCell;
+
+			case (int)JobFields.FromTime:
+				JobTextCreateViewCell fromTimeCell = (JobTextCreateViewCell)tableView.DequeueReusableCell ("detailCell");
+				fromTimeCell.textField.Placeholder = "pick up time";
+				fromTimeCell._textLabel.Text = "Pick Up Time:";
+				if (job.PickupDatetime != DateTime.MinValue) {
+					fromTimeCell.textField.Text = string.Format("{0} {1}",job.PickupDatetime.ToShortDateString (), job.PickupDatetime.ToShortTimeString ());
+				} else {
+					fromTimeCell.textField.Text = null;
+				}
+				fromTimeCell.SelectionStyle = UITableViewCellSelectionStyle.None;
+				fromTimeCell.textField.Tag = (int)JobFields.FromTime;
+				fromTimeCell.textField.EditingChanged -= TextFieldDidEndEditing;
+				fromTimeCell.textField.EditingChanged += TextFieldDidEndEditing;
+
+				fromTimeCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
+				fromTimeCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
+
+				return fromTimeCell;
 
 			
 			case (int)JobFields.To:
@@ -140,28 +159,39 @@ namespace KAS.Trukman.iOS
 				toCell._textLabel.Text = "Delivery:";
 				toCell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
-				toCell.textField.EditingDidEndOnExit += (object sender, EventArgs e) => {
-					var item = (sender as UITextField);
-					if (sender != null) {
-						item.ResignFirstResponder ();
-					}
-				};
+				toCell.textField.Tag = (int)JobFields.To;
+				toCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
+				toCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
 
-				toCell.textField.EditingChanged += (object sender, EventArgs e) => 
-				{
-					//Action
-					var item = (sender as UITextField);
-					if (sender != null) {
-						job.ToAddress = item.Text;
-					}
-				};
+				toCell.textField.EditingChanged -= TextFieldDidEndEditing;
+				toCell.textField.EditingChanged += TextFieldDidEndEditing; 
 					
 				return toCell;
+
+			case (int)JobFields.ToTime:
+				JobTextCreateViewCell toTimeCell = (JobTextCreateViewCell)tableView.DequeueReusableCell ("detailCell");
+				toTimeCell.textField.Placeholder = "drop time";
+				toTimeCell._textLabel.Text = "Drop Time:";
+				if (job.DeliveryDatetime != DateTime.MinValue) {
+					toTimeCell.textField.Text =  string.Format("{0} {1}",job.DeliveryDatetime.ToShortDateString (), job.DeliveryDatetime.ToShortTimeString ());;
+				} else {
+					toTimeCell.textField.Text = null;
+				}
+				toTimeCell.SelectionStyle = UITableViewCellSelectionStyle.None;
+				toTimeCell.textField.Tag = (int)JobFields.ToTime;
+				toTimeCell.textField.EditingChanged -= TextFieldDidEndEditing;
+				toTimeCell.textField.EditingChanged += TextFieldDidEndEditing;
+
+				toTimeCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
+				toTimeCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
+
+
+				return toTimeCell;
 
 
 			case (int)JobFields.Broker:
 				JobButtonCreateViewCell brokerCell = (JobButtonCreateViewCell)tableView.DequeueReusableCell ("userCell");
-				if (job.Driver == null) {
+				if (job.Broker == null) {
 					brokerCell.actionButton.SetTitle ("assign", UIControlState.Normal);
 				} else {
 					brokerCell.actionButton.SetTitle (job.Broker.Username, UIControlState.Normal);
@@ -169,14 +199,9 @@ namespace KAS.Trukman.iOS
 
 				brokerCell._textLabel.Text = "Broker:";
 				brokerCell.SelectionStyle = UITableViewCellSelectionStyle.None;
-				brokerCell.actionButton.TouchUpInside += (object sender, EventArgs e) => 
-				{
-					UserListViewController list = new UserListViewController();
-					list.dataSourceType = UserListDataSource.Broker;
-					list.company = company;
-
-					this.NavigationController.PushViewController(list, true);
-				};
+				brokerCell.actionButton.Tag = (int)JobFields.Broker;
+				brokerCell.actionButton.TouchUpInside -= actionButtonClicked;
+				brokerCell.actionButton.TouchUpInside += actionButtonClicked;
 				return brokerCell;
 
 
@@ -190,19 +215,59 @@ namespace KAS.Trukman.iOS
 
 				driverCell._textLabel.Text = "Driver:";
 				driverCell.SelectionStyle = UITableViewCellSelectionStyle.None;
-				driverCell.actionButton.TouchUpInside += (object sender, EventArgs e) => 
-				{
-					UserListViewController list = new UserListViewController();
-					list.dataSourceType = UserListDataSource.Driver;
-					list.company = company;
-
-					this.NavigationController.PushViewController(list, true);
-				};
+				driverCell.actionButton.Tag = (int)JobFields.Driver;
+				driverCell.actionButton.TouchUpInside -= actionButtonClicked;
+				driverCell.actionButton.TouchUpInside += actionButtonClicked;
 				return driverCell;
 
 			default:
 				UITableViewCell defaultCell = tableView.DequeueReusableCell ("detailCell");
 				return defaultCell;
+			}
+		}
+
+		private void actionButtonClicked(object sender, EventArgs e)
+		{
+			UIButton button = (UIButton)sender;
+			if (button != null) {
+				UserListViewController list = new UserListViewController();
+
+				if (button.Tag == (int)JobFields.Driver) {
+					list.dataSourceType = UserListDataSource.Driver;
+				} else {
+					list.dataSourceType = UserListDataSource.Broker;
+				}
+
+				list.company = company;
+				list.job = job;
+
+				this.NavigationController.PushViewController(list, true);
+			}
+		}
+
+		private void TextFieldEditingDidEndOnExit(object sender, EventArgs e) {
+			UITextField field = (UITextField)sender;
+			if (field != null) {
+				field.ResignFirstResponder ();
+			}
+		}
+
+		private void TextFieldDidEndEditing(object sender, EventArgs e) {
+			UITextField field = (UITextField)sender;
+			if (field != null) {
+				switch (field.Tag) {
+				case (int)JobFields.To:
+					job.ToAddress = field.Text;
+					break;
+
+				case (int)JobFields.From:
+					job.FromAddress = field.Text;
+					break;
+				case (int)JobFields.Number:
+					job.JobRef = field.Text;
+					break;
+
+				}
 			}
 		}
 

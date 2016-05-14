@@ -81,7 +81,9 @@ namespace KAS.Trukman.OCR
 	public class OCRApi
 	{
 		private string APIKey;
-		private string endpoint = "https://api.ocr.space/Parse/Image";
+		//private string endpoint = "https://api.ocr.space/Parse/Image";
+		private string endpoint = "https://apifree2.ocr.space/parse/image";
+
 
 		public OCRApi(string apikey = "helloworld")
 		{
@@ -95,7 +97,7 @@ namespace KAS.Trukman.OCR
 
 			form.Add(new StringContent(APIKey), "apikey");
 			form.Add(new StringContent(language), "language");
-			form.Add(new ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg");
+			form.Add(new ByteArrayContent(imageData, 0, imageData.Length), "file", "image.jpg");
 
 			HttpResponseMessage response = await client.PostAsync(endpoint, form);
 			string strContent = await response.Content.ReadAsStringAsync();
