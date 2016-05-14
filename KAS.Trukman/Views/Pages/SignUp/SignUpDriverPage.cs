@@ -249,10 +249,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 company.Focus();
             };
 
-            company.Focused += (sender, args) => {
-                _filter.Focus();
-            };
-
             return pageContent;
         }
 
@@ -275,7 +271,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             _filter.SetBinding(Entry.TextProperty, "CompanyFilter", BindingMode.TwoWay);
             _filter.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var filterContent = new ContentView
+			var filterContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(10, 20, 10, 5),
@@ -348,6 +344,11 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Padding = new Thickness(40, 40, 40, 0)
             };
             content.SetBinding(Grid.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.TwoWay);
+			content.PropertyChanged += (sender, e) => 
+			{
+				if (this.ViewModel.SelectCompanyPopupVisible)
+					_filter.Focus();
+			};
 
             content.Children.Add(appBoxView);
             content.Children.Add(popupContent);

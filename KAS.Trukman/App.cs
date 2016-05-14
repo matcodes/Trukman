@@ -165,12 +165,12 @@ namespace KAS.Trukman
 
         protected override void OnSleep()
         {
-            this.Disappering();
+//            this.Disappering();
         }
 
         protected override void OnResume()
         {
-            this.Appering();
+//            this.Appering();
 
  //           this.ShowTopPage();
         }

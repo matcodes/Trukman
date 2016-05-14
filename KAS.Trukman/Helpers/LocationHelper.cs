@@ -48,6 +48,7 @@ namespace KAS.Trukman.Helpers
 			_locator.PositionChanged += (sender, args) => {
 				Update(args.Position);
 			};
+			Update ();
 		}
 
         public static void Update()

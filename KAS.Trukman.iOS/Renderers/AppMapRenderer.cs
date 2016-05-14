@@ -110,6 +110,8 @@ namespace KAS.Trukman.iOS
 					Subtitle = map.RouteCarPosition.Distance.ToString(),
 					Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
 				};
+
+				nativeMap.AddAnnotation (_routeCarPosition);
 			}
 		}
 
