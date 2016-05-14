@@ -12,6 +12,7 @@ using Trukman.Interfaces;
 using Xamarin.Forms.Maps;
 using Parse;
 using KAS.Trukman.Storage.ParseClasses;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.Storage
 {
@@ -619,6 +620,54 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
         }
+
+		public async Task<ComcheckRequestState> GetComcheckStateAsync (string tripID, ComcheckRequestType requestType)
+		{
+			try
+			{
+				return await _externalStorage.GetComcheckStateAsync(tripID, requestType);
+			}
+			catch (Exception exception) {
+				Console.WriteLine (exception);
+				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
+
+		public async Task<string> GetComcheckAsync (string tripID, ComcheckRequestType requestType)
+		{
+			try
+			{
+				return await _externalStorage.GetComcheckAsync(tripID, requestType);
+			}
+			catch (Exception exception){
+				Console.WriteLine (exception);
+				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
+
+		public async Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
+		{
+			try 
+			{
+				await _externalStorage.SendComcheckRequestAsync(tripID, requestType);
+			}
+			catch (Exception exception) {
+				Console.WriteLine(exception);
+				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
+
+		public async Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
+		{
+			try 
+			{
+				await _externalStorage.CancelComcheckRequestAsync(tripID, requestType);
+			}
+			catch (Exception exception){
+				Console.WriteLine (exception);
+				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
 
         #region SettingsItem
         public string GetSettings(string key)

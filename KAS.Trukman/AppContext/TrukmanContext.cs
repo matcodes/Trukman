@@ -16,6 +16,7 @@ using KAS.Trukman.Data.Infos;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Storage.ParseClasses;
 using Parse;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.AppContext
 {
@@ -166,6 +167,28 @@ namespace KAS.Trukman.AppContext
             var trip = await _localStorage.SelectTripByIDExternal(tripID);
             return trip;
         }
+
+		public static async Task<ComcheckRequestState> GetComcheckStateAsync (string tripID, ComcheckRequestType requestType)
+		{
+			var state = await _localStorage.GetComcheckStateAsync (tripID, requestType);
+			return state;
+		}
+
+		public static async Task<string> GetComcheckAsync (string tripID, ComcheckRequestType requestType)
+		{
+			var comcheck = await _localStorage.GetComcheckAsync(tripID, requestType);
+			return comcheck;
+		}
+
+		public static async Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
+		{
+			await _localStorage.SendComcheckRequestAsync (tripID, requestType);
+		}
+
+		public static async Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
+		{
+			await _localStorage.CancelComcheckRequestAsync (tripID, requestType);
+		}
 
         public static async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {

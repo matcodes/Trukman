@@ -11,6 +11,7 @@ using Xamarin.Forms.Maps;
 using KAS.Trukman.Data.Infos;
 using KAS.Trukman.Data.Enums;
 using System.Threading;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.Storage
 {
@@ -877,7 +878,82 @@ namespace KAS.Trukman.Storage
             await ParseCloud.CallFunctionAsync<object>("setDriverStatus", par).ContinueWith(t => {
             });
         }
-        #endregion
+
+		public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+		{
+			var result = ComcheckRequestState.None;
+
+			var parseJob = await this.GetParseJobByID(tripID);
+
+			var query = parseJob.Advances.Query
+				.OrderByDescending("createdAt")
+				.WhereEqualTo("RequestType", (int)requestType);
+
+			var parseComcheck = await query.FirstOrDefaultAsync();
+			if (parseComcheck != null)
+				result = (ComcheckRequestState)parseComcheck.State;
+
+			return result;
+		}
+
+		public async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
+		{
+			var result = "";
+
+			var parseJob = await this.GetParseJobByID(tripID);
+
+			var relationQuery = parseJob.Advances.Query
+				.OrderByDescending("createdAt")
+				.WhereEqualTo("RequestType", (int)requestType);
+
+			var parseComcheck = await relationQuery.FirstOrDefaultAsync();
+			if (parseComcheck != null)
+				result = parseComcheck.Comcheck;
+
+			return result;
+		}
+
+		public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+		{
+			var parseJob = await this.GetParseJobByID (tripID);
+			if (parseJob != null)
+			{
+				var comcheck = new ParseComcheck
+				{
+					Driver = ParseUser.CurrentUser,
+					State = (int)ComcheckRequestState.Requested,
+					RequestDatetime = DateTime.Now,
+					RequestType = (int)requestType,
+					Job = parseJob,
+					Comcheck = (requestType == ComcheckRequestType.FuelAdvance ? "fuel advance" : "lumper advance"),
+					Dispatch = parseJob.Dispatcher
+				};
+				await comcheck.SaveAsync();
+				parseJob.Advances.Add(comcheck);
+				await parseJob.SaveAsync();
+			}
+			else 
+				throw new Exception("Trip not found.");
+		}
+
+		public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+		{
+			var parseJob = await this.GetParseJobByID(tripID);
+			if (parseJob != null)
+			{
+				var relationQuery = parseJob.Advances.Query
+					.OrderByDescending("createdAt")
+					.WhereEqualTo("RequestType", (int)requestType);
+				var comcheckData = await relationQuery.FirstOrDefaultAsync();
+				if (comcheckData != null)
+				{
+					parseJob.Advances.Remove(comcheckData);
+					await parseJob.SaveAsync();
+					await comcheckData.DeleteAsync();
+				}
+			}
+		}
+		#endregion
     }
     #endregion
 }

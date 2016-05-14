@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Storage.ParseClasses;
 using Parse;
+using Trukman.Helpers;
 
 namespace KAS.Trukman.Storage
 {
@@ -74,6 +75,14 @@ namespace KAS.Trukman.Storage
         Task<Notification> GetNotification();
 
         Task SendNotification(Trip trip, string message);
+
+		Task<ComcheckRequestState> GetComcheckStateAsync (string tripID, ComcheckRequestType requestType);
+
+		Task<string> GetComcheckAsync (string tripID, ComcheckRequestType requestType);
+	
+		Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType);
+
+		Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType);
     }
     #endregion
 }
