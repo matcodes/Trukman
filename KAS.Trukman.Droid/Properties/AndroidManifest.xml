@@ -24,12 +24,12 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<data android:mimeType="application/pdf" />
 			</intent-filter>
-      <intent-filter> 
-        <action  android:name = "android.intent.action.SEND"  /> 
-          <category  android:name = "android.intent.category.DEFAULT"  /> 
-          <data  android:mimeType = "application/pdf"  /> 
-      </intent-filter> 
-    </activity>
+			<intent-filter>
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="application/pdf" />
+			</intent-filter>
+		</activity>
 		<!-- Put your Google Maps V2 API Key here. -->
 		<!-- KAS map key -->
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCG2u61Ejf_I-joHPXka__FcnLuakr63lQ" />
