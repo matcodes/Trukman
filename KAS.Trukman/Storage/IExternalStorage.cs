@@ -83,6 +83,8 @@ namespace KAS.Trukman.Storage
 		Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType);
 
 		Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType);
+
+		Task SendJobAlertAsync (string tripID, int alertType, string alertText);
     }
     #endregion
 }

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.AppContext;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -95,11 +96,10 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.IsBusy = true;
                 try
                 {
-					string alert = this.SelectedItem.ToString();
+					string alertText = this.SelectedItem.ToString();
 					if (!string.IsNullOrEmpty(this.Comments))
-						alert = string.Format("{0}: {1}", alert, this.Comments);
-					App.ServerManager.SendJobAlert(alert, this.Trip.ID);
-                    //Thread.Sleep(2000);
+						alertText = string.Format("{0}: {1}", alertText, this.Comments);
+					TrukmanContext.SendJobAlertAsync(this.Trip.ID, (int)this.SelectedItem, alertText);
 
                     this.ShowPrevPage(null);
                 }

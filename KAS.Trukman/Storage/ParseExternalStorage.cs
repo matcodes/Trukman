@@ -37,6 +37,7 @@ namespace KAS.Trukman.Storage
             ParseObject.RegisterSubclass<ParseCompany>();
             ParseObject.RegisterSubclass<ParseComcheck>();
             ParseObject.RegisterSubclass<ParseNotification>();
+			ParseObject.RegisterSubclass<ParseJobAlert> ();
 
             ParseClient.Initialize(PARSE_APPLICATION_ID, PARSE_DOTNET_KEY);
 
@@ -953,6 +954,21 @@ namespace KAS.Trukman.Storage
 				}
 			}
 		}
+
+		public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+		{
+			var parseJob = await this.GetParseJobByID (tripID);
+
+			var parseJobAlert = new ParseJobAlert {
+				AlertType = alertType,
+				AlertText = alertText
+			};
+
+			await parseJobAlert.SaveAsync ();
+
+			parseJob.Alerts.Add (parseJobAlert);
+			await parseJob.SaveAsync ();
+		}	
 		#endregion
     }
     #endregion

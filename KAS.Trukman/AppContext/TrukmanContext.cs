@@ -190,6 +190,11 @@ namespace KAS.Trukman.AppContext
 			await _localStorage.CancelComcheckRequestAsync (tripID, requestType);
 		}
 
+		public static async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+		{
+			await _localStorage.SendJobAlertAsync (tripID, alertType, alertText);
+		}
+
         public static async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {
             var company = await _localStorage.RegisterCompanyAsync(companyInfo);

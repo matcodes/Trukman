@@ -187,6 +187,12 @@ namespace KAS.Trukman.Storage.ParseClasses
         {
             get { return this.GetRelationProperty<ParseNotification>(); }
         }
+
+		[ParseFieldName("JobAlerts")]
+		public ParseRelation<ParseJobAlert> Alerts
+		{
+			get { return this.GetRelationProperty<ParseJobAlert> (); }
+		}
     }
     #endregion
 }

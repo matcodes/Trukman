@@ -669,6 +669,18 @@ namespace KAS.Trukman.Storage
 			}
 		}
 
+		public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+		{
+			try 
+			{
+				await _externalStorage.SendJobAlertAsync(tripID, alertType, alertText);
+			}
+			catch (Exception exception) {
+				Console.WriteLine (exception);
+				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
+
         #region SettingsItem
         public string GetSettings(string key)
         {
