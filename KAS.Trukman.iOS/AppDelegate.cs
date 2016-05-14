@@ -14,8 +14,10 @@ namespace KAS.Trukman.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-		private LocationHelperIOS _locationManager = null;
-		private CameraHelper _cameraHelper = null;
+		 private LocationHelperIOS _locationManager = null;
+		 private CameraHelper _cameraHelper = null;
+		 private PushHelperIOS _pushHelper = null;
+
 		private bool launchPdfFromZero = false;
 
 		public NSUrl fileUrl = null;
@@ -33,6 +35,7 @@ namespace KAS.Trukman.iOS
 
 			this.InvokeOnMainThread (() => {
 				_locationManager = new LocationHelperIOS ();
+				_pushHelper = new PushHelperIOS();
 
 				LocationHelper.IsSelfPermission = true;
 				LocationHelper.Initialize ();
@@ -52,10 +55,23 @@ namespace KAS.Trukman.iOS
 
             return base.FinishedLaunching(app, options);
         }
+			
+		public override void RegisteredForRemoteNotifications (
+			UIApplication application, NSData deviceToken)
+		{
+			_pushHelper.DidGetDeviceToken (deviceToken);
+		}
+
+		public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo) {
+			// We need this to fire userInfo into ParsePushNotificationReceived.
+			ParsePush.HandlePush(userInfo);
+		}
+
 
 		public override void OnActivated (UIApplication uiApplication) {
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
+			ShowSignUpOwnerWelcomePageMessage.Subscribe(_pushHelper, _pushHelper.Register);
 
 			if (launchPdfFromZero == false && fileUrl != null) {
 				ShowPdf (null);
@@ -65,7 +81,7 @@ namespace KAS.Trukman.iOS
 		public override void DidEnterBackground (UIApplication uiApplication) {
 			ShowToastMessage.Unsubscribe (this);
 			TakePhotoFromCameraMessage.Unsubscribe(_cameraHelper);
-
+			ShowSignUpOwnerWelcomePageMessage.Unsubscribe(_pushHelper);
 		}
 
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {

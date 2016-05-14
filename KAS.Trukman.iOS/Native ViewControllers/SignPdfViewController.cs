@@ -15,8 +15,12 @@ namespace KAS.Trukman.iOS
 		{
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
-			//this.NavigationController.NavigationBar.BarTintColor = UIColor.White;
-			//this.NavigationController.NavigationBar.TintColor = UIColor.Black;
+			UINavigationBar.Appearance.BarTintColor = UIColor.White;
+			UINavigationBar.Appearance.TintColor = UIColor.Black;
+			UINavigationBar.Appearance.TitleTextAttributes = new UIStringAttributes() { ForegroundColor = UIColor.Black};
+
+			UIToolbar.Appearance.TintColor = UIColor.Black;
+			UIToolbar.Appearance.BarTintColor = UIColor.White;
 		}
 
 		public override void DidReceiveMemoryWarning ()

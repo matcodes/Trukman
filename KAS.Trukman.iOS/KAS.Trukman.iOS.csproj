@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="Helpers\CameraHelper.cs" />
     <Compile Include="Helpers\LocationHelperIOS.cs" />
+    <Compile Include="Helpers\PushHelperIOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
