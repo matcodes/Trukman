@@ -107,8 +107,8 @@ namespace KAS.Trukman.iOS
 				numberCell.SelectionStyle = UITableViewCellSelectionStyle.None;
 				numberCell.textField.Tag = (int)JobFields.Number;
 
-				numberCell.textField.EditingChanged -= TextFieldDidEndEditing;
-				numberCell.textField.EditingChanged += TextFieldDidEndEditing;
+				numberCell.textField.EditingDidEnd -= TextFieldDidEndEditing;
+				numberCell.textField.EditingDidEnd += TextFieldDidEndEditing;
 
 				numberCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
 				numberCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
@@ -123,8 +123,8 @@ namespace KAS.Trukman.iOS
 				fromCell.textField.Text = job.FromAddress;
 				fromCell.SelectionStyle = UITableViewCellSelectionStyle.None;
 				fromCell.textField.Tag = (int)JobFields.From;
-				fromCell.textField.EditingChanged -= TextFieldDidEndEditing;
-				fromCell.textField.EditingChanged += TextFieldDidEndEditing;
+				fromCell.textField.EditingDidEnd -= TextFieldDidEndEditing;
+				fromCell.textField.EditingDidEnd += TextFieldDidEndEditing;
 
 				fromCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
 				fromCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
@@ -143,8 +143,8 @@ namespace KAS.Trukman.iOS
 				}
 				fromTimeCell.SelectionStyle = UITableViewCellSelectionStyle.None;
 				fromTimeCell.textField.Tag = (int)JobFields.FromTime;
-				fromTimeCell.textField.EditingChanged -= TextFieldDidEndEditing;
-				fromTimeCell.textField.EditingChanged += TextFieldDidEndEditing;
+				fromTimeCell.textField.EditingDidEnd -= TextFieldDidEndEditing;
+				fromTimeCell.textField.EditingDidEnd += TextFieldDidEndEditing;
 
 				fromTimeCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
 				fromTimeCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
@@ -163,8 +163,8 @@ namespace KAS.Trukman.iOS
 				toCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
 				toCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
 
-				toCell.textField.EditingChanged -= TextFieldDidEndEditing;
-				toCell.textField.EditingChanged += TextFieldDidEndEditing; 
+				toCell.textField.EditingDidEnd -= TextFieldDidEndEditing;
+				toCell.textField.EditingDidEnd += TextFieldDidEndEditing; 
 					
 				return toCell;
 
@@ -179,8 +179,8 @@ namespace KAS.Trukman.iOS
 				}
 				toTimeCell.SelectionStyle = UITableViewCellSelectionStyle.None;
 				toTimeCell.textField.Tag = (int)JobFields.ToTime;
-				toTimeCell.textField.EditingChanged -= TextFieldDidEndEditing;
-				toTimeCell.textField.EditingChanged += TextFieldDidEndEditing;
+				toTimeCell.textField.EditingDidEnd -= TextFieldDidEndEditing;
+				toTimeCell.textField.EditingDidEnd += TextFieldDidEndEditing;
 
 				toTimeCell.textField.EditingDidEndOnExit -= TextFieldEditingDidEndOnExit;
 				toTimeCell.textField.EditingDidEndOnExit += TextFieldEditingDidEndOnExit;
@@ -248,6 +248,33 @@ namespace KAS.Trukman.iOS
 		private void TextFieldEditingDidEndOnExit(object sender, EventArgs e) {
 			UITextField field = (UITextField)sender;
 			if (field != null) {
+				switch (field.Tag) {
+				case (int)JobFields.ToTime:
+					DateTime dropDate;
+					if (DateTime.TryParse(field.Text, out dropDate))
+					{
+						job.DeliveryDatetime = dropDate;
+					} else {
+						UIAlertView alert = new UIAlertView("Error", "Can not define your Delivery time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+						alert.Show();
+					}
+					break;
+
+				case (int)JobFields.FromTime:
+					DateTime pickDate;
+					if (DateTime.TryParse(field.Text, out pickDate))
+					{
+						job.PickupDatetime = pickDate;
+					} else {
+						UIAlertView alert = new UIAlertView("Error", "Can not define your Pick up time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+						alert.Show();
+					}
+					break;
+
+				default:
+					break;
+				}
+
 				field.ResignFirstResponder ();
 			}
 		}
@@ -259,10 +286,32 @@ namespace KAS.Trukman.iOS
 				case (int)JobFields.To:
 					job.ToAddress = field.Text;
 					break;
+				case (int)JobFields.ToTime:
+					DateTime dropDate;
+					if (DateTime.TryParse(field.Text, out dropDate))
+					{
+						job.DeliveryDatetime = dropDate;
+					} else {
+						UIAlertView alert = new UIAlertView("Error", "Can not define your Delivery time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+						alert.Show();
+					}
+					break;
 
 				case (int)JobFields.From:
 					job.FromAddress = field.Text;
 					break;
+
+				case (int)JobFields.FromTime:
+					DateTime pickDate;
+					if (DateTime.TryParse(field.Text, out pickDate))
+					{
+						job.PickupDatetime = pickDate;
+					} else {
+						UIAlertView alert = new UIAlertView("Error", "Can not define your Pick up time input. Please try following format: \"April 20 2016 15:00\"", null, "Ok", null);
+						alert.Show();
+					}
+					break;
+
 				case (int)JobFields.Number:
 					job.JobRef = field.Text;
 					break;
@@ -276,7 +325,7 @@ namespace KAS.Trukman.iOS
 		[Export ("tableView:numberOfRowsInSection:"), Preserve (Conditional = true)]
 		public nint RowsInSection (UITableView tableView, nint section)
 		{
-			return 5;
+			return 7;
 		}
 	}
 }
