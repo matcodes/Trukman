@@ -6,6 +6,7 @@ using CoreLocation;
 using HockeyApp;
 using ToastIOS;
 using KAS.Trukman.Messages;
+using Parse;
 
 namespace KAS.Trukman.iOS
 {
@@ -15,6 +16,7 @@ namespace KAS.Trukman.iOS
     {
 		private CLLocationManager _locationManager = null;
 		private CameraHelper _cameraHelper = null;
+		private bool launchPdfFromZero = false;
 
 		public NSUrl fileUrl = null;
 
@@ -31,29 +33,33 @@ namespace KAS.Trukman.iOS
 //			_locationManager = new CLLocationManager ();
 //			_locationManager.RequestWhenInUseAuthorization();
 
-            LocationHelper.IsSelfPermission = true;
-            LocationHelper.Initialize ();
-            
+			this.InvokeOnMainThread (() => {
+				LocationHelper.IsSelfPermission = true;
+				LocationHelper.Initialize ();
+			});
+
+			if (options != null) {
+				launchPdfFromZero = true;
+				MainPageInitializedMessage.Subscribe (this, this.ShowPdf);
+			} else {
+				launchPdfFromZero = false;
+			}
+
+
             TrukmanContext.Initialize ();
 			global::Xamarin.Forms.Forms.Init();
 			LoadApplication(new Trukman.App());
 
-			if (options != null) {
-				var url = (NSUrl)options [UIApplication.LaunchOptionsUrlKey];
-				if (url != null) {
-					if (fileUrl != null) {
-						this.InvokeOnMainThread (() => {
-							RateConfirmationViewController.handleFileURL (fileUrl);
-						});
-					}
-				}
-			}
             return base.FinishedLaunching(app, options);
         }
 
 		public override void OnActivated (UIApplication uiApplication) {
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
+
+			if (launchPdfFromZero == false && fileUrl != null) {
+				ShowPdf (null);
+			}
 		}
 
 		public override void DidEnterBackground (UIApplication uiApplication) {
@@ -65,9 +71,6 @@ namespace KAS.Trukman.iOS
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
 			if (url.IsFileUrl == true) {
 				fileUrl = url;
-//				this.InvokeOnMainThread (() => {
-//					RateConfirmationViewController.handleFileURL (url);
-//				});
 				return true;
 			}
 
@@ -80,6 +83,16 @@ namespace KAS.Trukman.iOS
 				return true;
 			}
 			return false;
+		}
+
+		private void ShowPdf(MainPageInitializedMessage message)
+		{
+			this.InvokeOnMainThread (() => {
+				RateConfirmationViewController.handleFileURL (fileUrl);
+				MainPageInitializedMessage.Unsubscribe(this);
+				fileUrl = null;
+				launchPdfFromZero = false;
+			});
 		}
 
 		private void ShowToast(ShowToastMessage message) 

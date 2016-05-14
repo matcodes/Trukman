@@ -205,10 +205,7 @@ namespace KAS.Trukman.Storage
         {
             if ((_currentUser == null) && (ParseUser.CurrentUser != null))
             {
-                var query = ParseUser.Query
-                    .WhereEqualTo("objectId", ParseUser.CurrentUser.ObjectId);
-
-                var parseUser = await query.FirstOrDefaultAsync();
+				var parseUser = ParseUser.CurrentUser;
                 await parseUser.FetchAsync();
 
                 _currentUser = this.ParseUserToUser(parseUser);
@@ -565,7 +562,7 @@ namespace KAS.Trukman.Storage
             Task.Run(async() => {
                 try
                 {
-                    await ParseUser.BecomeAsync(session);
+                    //await ParseUser.BecomeAsync(session);
                     currentUser = await this.GetCurrentUserAsync();
                 }
                 catch

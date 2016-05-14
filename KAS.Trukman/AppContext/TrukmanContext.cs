@@ -66,10 +66,11 @@ namespace KAS.Trukman.AppContext
                         }
                         else
                         {
-                            var userID = _localStorage.GetSettings(LocalStorage.USER_ID_SETTINGS_KEY);
-                            var companyID = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
-                            User = _localStorage.GetUserByID(userID);
-                            Company = _localStorage.GetCompanyByID(companyID);
+							await ParseUser.LogOutAsync();
+//                            var userID = _localStorage.GetSettings(LocalStorage.USER_ID_SETTINGS_KEY);
+//                            var companyID = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
+//                            User = _localStorage.GetUserByID(userID);
+//                            Company = _localStorage.GetCompanyByID(companyID);
                         }
                         if (User != null)
                             InitializeContext();
