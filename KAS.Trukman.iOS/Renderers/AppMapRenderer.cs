@@ -108,6 +108,8 @@ namespace KAS.Trukman.iOS
 					Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
 				};
 
+				CLLocationCoordinate2D carPosition = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude);
+				nativeMap.Region = MKCoordinateRegion.FromDistance (carPosition, 1000, 1000);
 				nativeMap.AddAnnotation (_routeCarPosition);
 			}
 		}
@@ -117,19 +119,19 @@ namespace KAS.Trukman.iOS
 		{
 			MKAnnotationView view = null;
 			if (annotation == _routeStartPosition) {
-				var annotationView = (MKPinAnnotationView)mapView.DequeueReusableAnnotation (ROUTE_START_PIN_ID);
+				var annotationView = (MKAnnotationView)mapView.DequeueReusableAnnotation (ROUTE_START_PIN_ID);
 				if (annotationView == null)
-					annotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
+					annotationView = new MKAnnotationView (annotation, ROUTE_START_PIN_ID);
 				annotationView.Image = this.GetPinImage ("marker_start");
 				annotationView.CalloutOffset = new CoreGraphics.CGPoint(0, 0);
 				view = annotationView;
 			} else if (annotation == _routeEndPosition) {
-				var annotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
-				annotationView.Image = this.GetPinImage ("marker_end");
+				var annotationView = new MKAnnotationView (annotation, ROUTE_END_PIN_ID);
+				annotationView.Image = this.GetPinImage ("marker_finish");
 				annotationView.CanShowCallout = true;
 				view = annotationView;
 			} else if (annotation == _routeCarPosition) {
-				var annotationView = new MKPinAnnotationView (annotation, ROUTE_CAR_PIN_ID);
+				var annotationView = new MKAnnotationView (annotation, ROUTE_CAR_PIN_ID);
 				annotationView.Image = this.GetPinImage ("marker_car");
 				annotationView.CanShowCallout = true;
 				view = annotationView;
@@ -139,7 +141,7 @@ namespace KAS.Trukman.iOS
 
 		private UIImage GetPinImage(string name)
 		{
-			var image = UIImage.FromBundle("marker_start");
+			var image = UIImage.FromBundle(name);
 			image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 			return image;
 		}
@@ -172,4 +174,3 @@ namespace KAS.Trukman.iOS
 	}
 	#endregion
 }
-

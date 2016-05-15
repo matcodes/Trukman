@@ -215,6 +215,9 @@
     <BundleResource Include="Resources\background.png" />
     <BundleResource Include="Resources\background%403x.png" />
     <BundleResource Include="Resources\icon.png" />
+    <BundleResource Include="Resources\marker_car%402x.png" />
+    <BundleResource Include="Resources\marker_finish%402x.png" />
+    <BundleResource Include="Resources\marker_start%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background%402x.png" />
@@ -305,15 +308,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\map.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\marker_car.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\marker_finish.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\marker_start.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\menu.png" />
