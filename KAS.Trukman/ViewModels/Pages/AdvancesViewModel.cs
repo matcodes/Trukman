@@ -99,34 +99,32 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.DisableCommands();
 
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                this.ShowMainMenuCommand.IsEnabled = false;
-                this.ShowHomePageCommand.IsEnabled = false;
-                this.FuelRequestCommand.IsEnabled = false;
-                this.FuelResendCommand.IsEnabled = false;
-                this.FuelCancelCommand.IsEnabled = false;
-                this.LumperRequestCommand.IsEnabled = false;
-                this.LumperResendCommand.IsEnabled = false;
-                this.LumperCancelCommand.IsEnabled = false;
-            });
+			Device.BeginInvokeOnMainThread (() => {
+				this.ShowMainMenuCommand.IsEnabled = false;
+				this.ShowHomePageCommand.IsEnabled = false;
+				this.FuelRequestCommand.IsEnabled = false;
+				this.FuelResendCommand.IsEnabled = false;
+				this.FuelCancelCommand.IsEnabled = false;
+				this.LumperRequestCommand.IsEnabled = false;
+				this.LumperResendCommand.IsEnabled = false;
+				this.LumperCancelCommand.IsEnabled = false;
+			});
         }
 
         protected override void EnabledCommands()
         {
             base.EnabledCommands();
 
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                this.ShowMainMenuCommand.IsEnabled = true;
-                this.ShowHomePageCommand.IsEnabled = true;
-                this.FuelResendCommand.IsEnabled = true;
-                this.FuelCancelCommand.IsEnabled = true;
-                this.LumperResendCommand.IsEnabled = true;
-                this.LumperCancelCommand.IsEnabled = true;
-    			this.FuelRequestCommand.IsEnabled = (TrukmanContext.Driver.TripState == 4);
+			Device.BeginInvokeOnMainThread (() => {
+				this.ShowMainMenuCommand.IsEnabled = true;
+				this.ShowHomePageCommand.IsEnabled = true;
+				this.FuelResendCommand.IsEnabled = true;
+				this.FuelCancelCommand.IsEnabled = true;
+				this.LumperResendCommand.IsEnabled = true;
+				this.LumperCancelCommand.IsEnabled = true;
+				this.FuelRequestCommand.IsEnabled = true;
 				this.LumperRequestCommand.IsEnabled = (TrukmanContext.Driver.TripState > 6);
-            });
+			});
         }
 
 		private void GetLumperComcheck ()

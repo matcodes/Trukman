@@ -7,6 +7,8 @@ using HockeyApp;
 using ToastIOS;
 using KAS.Trukman.Messages;
 using Parse;
+using System.Threading.Tasks;
+using System;
 
 namespace KAS.Trukman.iOS
 {
@@ -27,6 +29,10 @@ namespace KAS.Trukman.iOS
 			var hockeyManager = BITHockeyManager.SharedHockeyManager;
 			hockeyManager.Configure ("d30cee35c8b5469d8987e7d557b150f8");
 			hockeyManager.StartManager ();
+
+			TaskScheduler.UnobservedTaskException += (sender, args) => {
+				Console.WriteLine(args.Exception);
+			};
 
 			_cameraHelper = new CameraHelper ();
 			PlatformHelper.Initialize (new IOSPlatformHelper ());
