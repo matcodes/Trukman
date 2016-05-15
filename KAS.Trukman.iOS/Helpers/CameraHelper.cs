@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace KAS.Trukman.iOS
 {
-	public class CameraHelper:NSObject, UIImagePickerControllerDelegate
+	public class CameraHelper : NSObject, IUIImagePickerControllerDelegate
 	{
 		static UIImagePickerController picker;
 
@@ -18,7 +18,7 @@ namespace KAS.Trukman.iOS
 		}
 
 		[Export("imagePickerController:didFinishPickingMediaWithInfo:")]
-		public override void FinishedPickingMedia (UIImagePickerController picker, NSDictionary info)
+		public void FinishedPickingMedia (UIImagePickerController picker, NSDictionary info)
 		{
 			presented = false;
 			var photo = info.ValueForKey(new NSString("UIImagePickerControllerOriginalImage")) as UIImage;

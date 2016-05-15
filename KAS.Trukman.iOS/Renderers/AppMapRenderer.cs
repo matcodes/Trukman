@@ -13,7 +13,7 @@ using Foundation;
 namespace KAS.Trukman.iOS
 {
 	#region AppMapRenderer
-	public class AppMapRenderer : MapRenderer, MKMapViewDelegate
+	public class AppMapRenderer : MapRenderer, IMKMapViewDelegate
 	{
 		#region Static members
 		public static readonly string ROUTE_START_PIN_ID = "RouteStartPinID";
@@ -21,16 +21,12 @@ namespace KAS.Trukman.iOS
 		public static readonly string ROUTE_CAR_PIN_ID = "RouteStartPinID";
 		#endregion
 
-		string pId = "PinAnnotation";
-
 		private MKPolyline _baseRoute = null;
 		private MKPolyline _route = null;
 	
 		private MKPointAnnotation _routeStartPosition = null;
 		private MKPointAnnotation _routeEndPosition = null;
 		private MKPointAnnotation _routeCarPosition = null;
-
-		private MyMapViewDelegate _delegate = null;
 
 		protected override void OnElementChanged (Xamarin.Forms.Platform.iOS.ElementChangedEventArgs<View> args)
 		{
@@ -142,7 +138,7 @@ namespace KAS.Trukman.iOS
 		}
 
 		[Export ("mapView:rendererForOverlay:")]
-		public MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay);
+		public MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay)
 		{
 			MKOverlayRenderer renderer = null;
 			if (overlay == _baseRoute) {
@@ -168,33 +164,5 @@ namespace KAS.Trukman.iOS
 
 	}
 	#endregion
-
-	public class MyMapViewDelegate : MKMapViewDelegate
-	{
-		public MyMapViewDelegate()
-		{
-		}
-
-		public override MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
-		{
-			MKAnnotationView anView;
-
-			if (annotation is MKUserLocation)
-				return null; 
-
-			// create pin annotation view
-			anView = (MKPinAnnotationView)mapView.DequeueReusableAnnotation ("123");
-
-			if (anView == null)
-				anView = new MKPinAnnotationView (annotation, "123");
-
-			var image = UIImage.FromBundle ("marker_car");
-			image = image.ImageWithRenderingMode (UIImageRenderingMode.AlwaysOriginal);
-			anView.Image = image;
-			anView.CanShowCallout = true;
-
-			return anView;
-		}
-	}
 }
 
