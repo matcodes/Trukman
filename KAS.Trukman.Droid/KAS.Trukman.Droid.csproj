@@ -33,7 +33,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <Debugger>Microsoft</Debugger>
+    <Debugger>Xamarin</Debugger>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkSkip />
     <BundleAssemblies>False</BundleAssemblies>
