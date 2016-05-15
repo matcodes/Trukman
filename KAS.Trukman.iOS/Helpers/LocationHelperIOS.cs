@@ -68,6 +68,9 @@ namespace KAS.Trukman.iOS
 				};
 
 				LocMgr.StartUpdatingLocation ();
+			} else {
+				UIAlertView alertView = UIAlertView ("Error", "GPS tracking is disabled in your device settings. Please, Turn on your GPS for correct working.", null, "OK", null);
+				alertView.Show ();
 			}
 		}
 

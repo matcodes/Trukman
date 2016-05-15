@@ -14,9 +14,9 @@ namespace KAS.Trukman.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-		 private LocationHelperIOS _locationManager = null;
-		 private CameraHelper _cameraHelper = null;
-		 private PushHelperIOS _pushHelper = null;
+		private LocationHelperIOS _locationManager = null;
+		private CameraHelper _cameraHelper = null;
+		private PushHelperIOS _pushHelper = null;
 
 		private bool launchPdfFromZero = false;
 
@@ -72,6 +72,14 @@ namespace KAS.Trukman.iOS
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
 			ShowSignUpOwnerWelcomePageMessage.Subscribe(_pushHelper, _pushHelper.Register);
+
+			this.InvokeOnMainThread(() => {
+				if (CLLocationManager.LocationServicesEnabled == false) {
+					UIAlertView alertView = UIAlertView ("Error", "GPS tracking is disabled in your device settings. Please, Turn on your GPS for correct working.", null, "OK", null);
+					alertView.Show ();
+				}
+			});
+
 
 			if (launchPdfFromZero == false && fileUrl != null) {
 				ShowPdf (null);
