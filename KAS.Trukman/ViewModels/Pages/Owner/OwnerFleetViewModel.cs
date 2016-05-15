@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Xamarin.Forms.Maps;
+using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
@@ -32,6 +33,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
 
             this.SelectTripCommand = new VisualCommand(this.SelectTrip);
+
+			this.RefreshCommand = new VisualCommand (this.Refresh);
         }
 
         public override void Appering()
@@ -78,23 +81,25 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 finally
                 {
                     this.IsBusy = false;
+				    this.IsRefreshing = false;
                 }
             });
         }
 
         private void ShowTrips(ITrip[] trips)
-        {
-            this.Trips.Clear();
-            this.SelectedTrip = null;
+		{
+			Device.BeginInvokeOnMainThread (() => {
+				this.Trips.Clear ();
+				this.SelectedTrip = null;
 
-            if (trips != null)
-                foreach (var trip in trips)
-                {
-                    this.Trips.Add(trip);
-                    if (this.SelectedTrip == null)
-                        this.SelectedTrip = trip;
-                }
-        }
+				if (trips != null)
+					foreach (var trip in trips) {
+						this.Trips.Add (trip);
+						if (this.SelectedTrip == null)
+							this.SelectedTrip = trip;
+					}
+			});
+		}
 
         private void CreateBaseRoute()
         {
@@ -306,6 +311,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         }
 
+		private void Refresh(object parameter)
+		{
+			this.SelectActiveTrips ();
+		}
+
         public ObservableCollection<ITrip> Trips { get; private set; }
 
         public ITrip SelectedTrip
@@ -350,11 +360,19 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("CurrentPosition", value); }
         }
 
+		public bool IsRefreshing
+		{
+			get { return (bool)this.GetValue ("IsRefreshing", false); }
+			set { this.SetValue ("IsRefreshing", value); }
+		}
+
         public VisualCommand SelectTripCommand { get; private set; }
 
         public VisualCommand ShowMainMenuCommand { get; private set; }
 
         public VisualCommand ShowHomePageCommand { get; private set; }
+
+		public VisualCommand RefreshCommand { get; private set; }
     }
     #endregion
 }

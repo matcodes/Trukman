@@ -21,8 +21,6 @@ namespace KAS.Trukman.iOS
 		public static readonly string ROUTE_CAR_PIN_ID = "RouteStartPinID";
 		#endregion
 
-		string pId = "PinAnnotation";
-
 		private MKPolyline _baseRoute = null;
 		private MKPolyline _route = null;
 	
@@ -30,28 +28,17 @@ namespace KAS.Trukman.iOS
 		private MKPointAnnotation _routeEndPosition = null;
 		private MKPointAnnotation _routeCarPosition = null;
 
-		private MKPinAnnotationView _routeStartPinAnnotationView = null;
-		private MKPinAnnotationView _routeEndPinAnnotationView = null;
-		private MKPinAnnotationView _routeCarPinAnnotationView = null;
-
-		private MKPolylineRenderer _baseRouteRenderer = null;
-		private MKPolylineRenderer _routeRenderer = null;
-
 		protected override void OnElementChanged (Xamarin.Forms.Platform.iOS.ElementChangedEventArgs<View> args)
 		{
 			base.OnElementChanged (args);
 
 			var nativeMap = (this.Control as MKMapView);
 
-			if ((nativeMap != null) && (args.OldElement != null)) {
+			if ((nativeMap != null) && (args.OldElement != null)) 
 				nativeMap.OverlayRenderer = null;
-				nativeMap.Delegate = null;
-			}
 
 			if ((nativeMap != null) && (args.NewElement != null)) {
 				nativeMap.WeakDelegate = this;
-				//nativeMap.OverlayRenderer = this.GetOverlayRenderer;
-				//nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
 			}
 		}
 
@@ -109,8 +96,8 @@ namespace KAS.Trukman.iOS
 					nativeMap.RemoveAnnotation (_routeCarPosition);
 
 				_routeCarPosition = new MKPointAnnotation {
-					Title = map.RouteCarPosition.Duration.ToString(),
-					Subtitle = map.RouteCarPosition.Distance.ToString(),
+					Title = map.RouteCarPosition.GetDurationText(),
+					Subtitle = map.RouteCarPosition.GetDistanceTextFromMiles(),
 					Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
 				};
 
@@ -123,26 +110,22 @@ namespace KAS.Trukman.iOS
 		{
 			MKAnnotationView view = null;
 			if (annotation == _routeStartPosition) {
-				if (_routeStartPinAnnotationView == null) {
-					_routeStartPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
-					_routeStartPinAnnotationView.Image = this.GetPinImage("marker_start");
-					_routeStartPinAnnotationView.CanShowCallout = true;
-				}
-				view = _routeStartPinAnnotationView;
+				var annotationView = (MKPinAnnotationView)mapView.DequeueReusableAnnotation (ROUTE_START_PIN_ID);
+				if (annotationView == null)
+					annotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
+				annotationView.Image = this.GetPinImage ("marker_start");
+				annotationView.CanShowCallout = true;
+				view = annotationView;
 			} else if (annotation == _routeEndPosition) {
-				if (_routeEndPinAnnotationView == null) {
-					_routeEndPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
-					_routeEndPinAnnotationView.Image = this.GetPinImage ("marker_end");
-					_routeEndPinAnnotationView.CanShowCallout = true;
-				}
-				view = _routeEndPinAnnotationView;
+				var annotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
+				annotationView.Image = this.GetPinImage ("marker_end");
+				annotationView.CanShowCallout = true;
+				view = annotationView;
 			} else if (annotation == _routeCarPosition) {
-				if (_routeCarPinAnnotationView == null) {
-					_routeCarPinAnnotationView = new MKPinAnnotationView (annotation, ROUTE_CAR_PIN_ID);
-					_routeCarPinAnnotationView.Image = this.GetPinImage ("marker_car");
-					_routeCarPinAnnotationView.CanShowCallout = true;
-				}
-				view = _routeCarPinAnnotationView;
+				var annotationView = new MKPinAnnotationView (annotation, ROUTE_CAR_PIN_ID);
+				annotationView.Image = this.GetPinImage ("marker_car");
+				annotationView.CanShowCallout = true;
+				view = annotationView;
 			}
 			return view;
 		}
@@ -159,25 +142,21 @@ namespace KAS.Trukman.iOS
 		{
 			MKOverlayRenderer renderer = null;
 			if (overlay == _baseRoute) {
-				if (_baseRouteRenderer == null) {
-					_baseRouteRenderer = new MKPolylineRenderer (overlay as MKPolyline);
-					var color = UIColor.FromRGB (0, 255, 33);
-					_baseRouteRenderer.FillColor = color;
-					_baseRouteRenderer.StrokeColor = color;
-					_baseRouteRenderer.LineWidth = 3;
-					_baseRouteRenderer.Alpha = 0.5f;
-				}
-				renderer = _baseRouteRenderer;
+				var polylineRenderer = new MKPolylineRenderer (overlay as MKPolyline);
+				var color = UIColor.FromRGB (0, 255, 33);
+				polylineRenderer.FillColor = color;
+				polylineRenderer.StrokeColor = color;
+				polylineRenderer.LineWidth = 3;
+				polylineRenderer.Alpha = 0.5f;
+				renderer = polylineRenderer;
 			} else if (overlay == _route) {
-				if (_route == null) {
-					_routeRenderer = new MKPolylineRenderer (overlay as MKPolyline);
-					var color = UIColor.FromRGB (0, 38, 255);
-					_routeRenderer.FillColor = color;
-					_routeRenderer.StrokeColor = color;
-					_routeRenderer.LineWidth = 3;
-					_routeRenderer.Alpha = 0.5f;
-				}
-				renderer = _routeRenderer;
+				var polylineRenderer = new MKPolylineRenderer (overlay as MKPolyline);
+				var color = UIColor.FromRGB (0, 38, 255);
+				polylineRenderer.FillColor = color;
+				polylineRenderer.StrokeColor = color;
+				polylineRenderer.LineWidth = 3;
+				polylineRenderer.Alpha = 0.5f;
+				renderer = polylineRenderer;
 			}
 			return renderer;
 		}
