@@ -37,11 +37,16 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 			this.RefreshCommand = new VisualCommand (this.Refresh);
         }
 
+		public override void Initialize (params object[] parameters)
+		{
+			base.Initialize (parameters);
+
+			this.SelectActiveTrips();
+		}
+
         public override void Appering()
         {
             base.Appering();
-
-            this.SelectActiveTrips();
         }
 
         public override void Disappering()

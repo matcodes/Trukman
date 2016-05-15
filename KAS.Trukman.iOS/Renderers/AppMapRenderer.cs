@@ -34,11 +34,15 @@ namespace KAS.Trukman.iOS
 
 			var nativeMap = (this.Control as MKMapView);
 
-			if ((nativeMap != null) && (args.OldElement != null)) 
+			if ((nativeMap != null) && (args.OldElement != null)) {
 				nativeMap.OverlayRenderer = null;
+				nativeMap.GetViewForAnnotation = null;
+			}
 
 			if ((nativeMap != null) && (args.NewElement != null)) {
-				nativeMap.WeakDelegate = this;
+				nativeMap.OverlayRenderer = this.OverlayRenderer;
+				nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
+//				nativeMap.WeakDelegate = this;
 			}
 		}
 
@@ -58,7 +62,10 @@ namespace KAS.Trukman.iOS
 					coords.Add (new CLLocationCoordinate2D (position.Latitude, position.Longitude));
 
 				_baseRoute = MKPolyline.FromCoordinates (coords.ToArray ());
-				nativeMap.AddOverlay (_baseRoute);
+
+				this.InvokeOnMainThread (() => {
+					nativeMap.AddOverlay (_baseRoute);
+				});
 			} else if (args.PropertyName == "RoutePoints") {
 				if (_route != null)
 					nativeMap.RemoveOverlay (_route);
@@ -114,7 +121,7 @@ namespace KAS.Trukman.iOS
 				if (annotationView == null)
 					annotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
 				annotationView.Image = this.GetPinImage ("marker_start");
-				annotationView.CanShowCallout = true;
+				annotationView.CalloutOffset = new CoreGraphics.CGPoint(0, 0);
 				view = annotationView;
 			} else if (annotation == _routeEndPosition) {
 				var annotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
