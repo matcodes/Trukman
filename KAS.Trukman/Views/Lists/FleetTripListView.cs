@@ -13,7 +13,7 @@ namespace KAS.Trukman.Views.Lists
         {
             this.BackgroundColor = Color.Transparent;
 
-            this.IsPullToRefreshEnabled = false;
+			this.IsPullToRefreshEnabled = true;
 
             this.ItemTemplate = new DataTemplate(typeof(FleetTripCell));
         }

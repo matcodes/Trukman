@@ -97,7 +97,7 @@ namespace KAS.Trukman.Views.Pages
 					map.Pins.Clear ();
 					//if (position.Longitude != 0 || position.Latitude != 0)
 					map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
-                    map.MoveToRegion(new MapSpan(position, 0.5, 0.5));
+					map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(2.0d)));
 				}
 			});
         }

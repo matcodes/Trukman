@@ -34,6 +34,8 @@ namespace KAS.Trukman.Views.Pages.Owner
             fleetTrips.SetBinding(MainMenuListView.ItemsSourceProperty, "Trips", BindingMode.TwoWay);
             fleetTrips.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedTrip", BindingMode.TwoWay);
             fleetTrips.SetBinding(MainMenuListView.ItemClickCommandProperty, "SelectTripCommand");
+			fleetTrips.SetBinding(MainMenuListView.RefreshCommandProperty, "RefreshCommand");
+			fleetTrips.SetBinding(MainMenuListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
 
             var appMap = new AppMap
             {
