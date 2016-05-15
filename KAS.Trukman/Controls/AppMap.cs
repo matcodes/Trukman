@@ -37,11 +37,10 @@ namespace KAS.Trukman.Controls
             }
             else if ((propertyName == "RouteCarPosition") && (this.RouteCarPosition != null) && (this.RouteStartPosition != null))
             {
-                if (!this.RouteCarPosition.Position.Equals(this.RouteStartPosition.Position))
-                {
-                    var mapSpan = this.GetRegionSpan(this.RouteCarPosition.Position);
-                    this.MoveToRegion(mapSpan);
-                }
+//                if (!this.RouteCarPosition.Position.Equals(this.RouteStartPosition.Position))
+//                    var mapSpan = this.GetRegionSpan(this.RouteCarPosition.Position);
+//                    this.MoveToRegion(mapSpan);
+//                }
             }
         }
 

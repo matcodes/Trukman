@@ -47,6 +47,7 @@ namespace KAS.Trukman.iOS
 			if ((nativeMap != null) && (args.NewElement != null)) {
 				nativeMap.OverlayRenderer = this.OverlayRenderer;
 				nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
+				nativeMap.ShowsUserLocation = false;
 				//				nativeMap.WeakDelegate = this;
 			}
 		}
