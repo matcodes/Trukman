@@ -61,7 +61,7 @@ namespace KAS.Trukman.iOS
 
 		public void Register(ShowSignUpOwnerWelcomePageMessage message) 
 		{
-			this.InvokeOnMainThread (async () => {
+			this.InvokeOnMainThread (() => {
 				if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0)) {
 					var pushSettings = UIUserNotificationSettings.GetSettingsForTypes (
 						UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
