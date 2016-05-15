@@ -55,7 +55,7 @@ namespace KAS.Trukman.iOS
 					vc = vc.PresentedViewController;
 				}
 
-				UIImagePickerController presentedPicker = (UIImagePickerController)vc;
+//				UIImagePickerController presentedPicker = (UIImagePickerController)vc;
 				if (presentedPicker == null) {
 					vc.PresentModalViewController (picker, true);
 				} 

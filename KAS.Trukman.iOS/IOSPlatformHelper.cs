@@ -1,6 +1,7 @@
 ﻿using System;
 using KAS.Trukman.Helpers;
 using UIKit;
+using CoreLocation;
 
 namespace KAS.Trukman.iOS
 {
@@ -22,7 +23,7 @@ namespace KAS.Trukman.iOS
 	
 		public bool CheckGPS()
 		{
-			return true;
+			return CLLocationManager.LocationServicesEnabled;
 		}
 
 		#region IPlatformHelper

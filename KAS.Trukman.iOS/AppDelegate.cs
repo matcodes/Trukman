@@ -72,6 +72,7 @@ namespace KAS.Trukman.iOS
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
 			ShowSignUpOwnerWelcomePageMessage.Subscribe(_pushHelper, _pushHelper.Register);
+			ShowGPSSettingsMessage.Subscribe (this, this.ShowGPSSettings);
 
 			this.InvokeOnMainThread(() => {
 				if (CLLocationManager.LocationServicesEnabled == false) {
@@ -90,6 +91,7 @@ namespace KAS.Trukman.iOS
 			ShowToastMessage.Unsubscribe (this);
 			TakePhotoFromCameraMessage.Unsubscribe(_cameraHelper);
 			ShowSignUpOwnerWelcomePageMessage.Unsubscribe(_pushHelper);
+			ShowGPSSettingsMessage.Unsubscribe (this);
 		}
 
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {
@@ -124,6 +126,11 @@ namespace KAS.Trukman.iOS
 			this.InvokeOnMainThread (() => {
 				Toast.MakeText(message.Text).Show();
 			});
+		}
+
+		private void ShowGPSSettings(ShowGPSSettingsMessage message)
+		{
+			UIApplication.SharedApplication.OpenUrl (new NSUrl (UIApplication.OpenSettingsUrlString));
 		}
     }
 	#endregion
