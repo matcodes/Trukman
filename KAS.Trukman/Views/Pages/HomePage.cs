@@ -32,9 +32,9 @@ namespace KAS.Trukman.Views.Pages
         {
             _viewModel = new HomeViewModel();
             _viewModel.PropertyChanged += (sender, args) => {
-                if (args.PropertyName == "AddressPosition")
+				if ((args.PropertyName == "AddressPosition") && ((this.ViewModel.AddressPosition.Latitude != 0) ||(this.ViewModel.AddressPosition.Longitude != 0)))
                     this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
-                else if (args.PropertyName == "ContractorPosition")
+				else if ((args.PropertyName == "ContractorPosition") && ((this.ViewModel.ContractorPosition.Latitude != 0) || (this.ViewModel.ContractorPosition.Longitude != 0)))
                     this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
                 else if (args.PropertyName == "ArrivedPosition")
                 {
@@ -96,8 +96,9 @@ namespace KAS.Trukman.Views.Pages
 				if ((map != null) && (this.ViewModel != null)) {
 					map.Pins.Clear ();
 					//if (position.Longitude != 0 || position.Latitude != 0)
+					map.MoveToRegion(new MapSpan(position, 0.01d, 0.01d));
 					map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
-					map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(2.0d)));
+					map.MoveToRegion(new MapSpan(position, 0.01d, 0.01d));
 				}
 			});
         }

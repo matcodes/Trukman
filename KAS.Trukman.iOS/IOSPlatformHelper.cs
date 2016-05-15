@@ -22,7 +22,7 @@ namespace KAS.Trukman.iOS
 	
 		public bool CheckGPS()
 		{
-			return false;
+			return true;
 		}
 
 		#region IPlatformHelper
