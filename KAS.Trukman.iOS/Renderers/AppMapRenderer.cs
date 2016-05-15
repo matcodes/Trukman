@@ -7,18 +7,21 @@ using MapKit;
 using CoreLocation;
 using System.Collections.Generic;
 using UIKit;
+using Foundation;
 
 [assembly: ExportRenderer(typeof(AppMap), typeof(AppMapRenderer))]
 namespace KAS.Trukman.iOS
 {
 	#region AppMapRenderer
-	public class AppMapRenderer : MapRenderer
+	public class AppMapRenderer : MapRenderer, MKMapViewDelegate
 	{
 		#region Static members
 		public static readonly string ROUTE_START_PIN_ID = "RouteStartPinID";
 		public static readonly string ROUTE_END_PIN_ID = "RouteEndPinID";
 		public static readonly string ROUTE_CAR_PIN_ID = "RouteStartPinID";
 		#endregion
+
+		string pId = "PinAnnotation";
 
 		private MKPolyline _baseRoute = null;
 		private MKPolyline _route = null;
@@ -46,9 +49,9 @@ namespace KAS.Trukman.iOS
 			}
 
 			if ((nativeMap != null) && (args.NewElement != null)) {
-				nativeMap.Delegate = null;
-				nativeMap.OverlayRenderer = this.GetOverlayRenderer;
-				nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
+				nativeMap.WeakDelegate = this;
+				//nativeMap.OverlayRenderer = this.GetOverlayRenderer;
+				//nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
 			}
 		}
 
@@ -115,7 +118,8 @@ namespace KAS.Trukman.iOS
 			}
 		}
 
-		private MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
+		[Export ("mapView:viewForAnnotation:")]
+		public virtual MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
 		{
 			MKAnnotationView view = null;
 			if (annotation == _routeStartPosition) {
@@ -150,7 +154,8 @@ namespace KAS.Trukman.iOS
 			return image;
 		}
 
-		private MKOverlayRenderer GetOverlayRenderer(MKMapView mapView, IMKOverlay overlay)
+		[Export ("mapView:rendererForOverlay:")]
+		public MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay);
 		{
 			MKOverlayRenderer renderer = null;
 			if (overlay == _baseRoute) {
@@ -176,6 +181,8 @@ namespace KAS.Trukman.iOS
 			}
 			return renderer;
 		}
+
+
 	}
 	#endregion
 }
