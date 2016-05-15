@@ -28,22 +28,28 @@ namespace KAS.Trukman.iOS
 		private MKPointAnnotation _routeEndPosition = null;
 		private MKPointAnnotation _routeCarPosition = null;
 
+		private MKMapView _mapView = null;
+
 		protected override void OnElementChanged (Xamarin.Forms.Platform.iOS.ElementChangedEventArgs<View> args)
 		{
 			base.OnElementChanged (args);
 
-			var nativeMap = (this.Control as MKMapView);
+			if (_mapView == null) {
+				_mapView = new MKMapView {
+					MapType = MKMapType.Standard,
+					ZoomEnabled = true,
+					ScrollEnabled = true,
+					ShowsBuildings = true,
+					PitchEnabled = true,
+				};
 
-			if ((nativeMap != null) && (args.OldElement != null)) {
-				nativeMap.OverlayRenderer = null;
-				nativeMap.GetViewForAnnotation = null;
+				var mapDelegate = this;
+
+				_mapView.Delegate = mapDelegate;
+
+				SetNativeControl (_mapView);
 			}
 
-			if ((nativeMap != null) && (args.NewElement != null)) {
-				nativeMap.OverlayRenderer = this.OverlayRenderer;
-				nativeMap.GetViewForAnnotation = this.GetViewForAnnotation;
-//				nativeMap.WeakDelegate = this;
-			}
 		}
 
 		protected override void OnElementPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs args)
@@ -51,11 +57,10 @@ namespace KAS.Trukman.iOS
 			base.OnElementPropertyChanged (sender, args);
 
 			var map = (this.Element as AppMap);
-			var nativeMap = (this.Control as MKMapView);
 
 			if (args.PropertyName == "BaseRoutePoints") {
 				if (_baseRoute != null)
-					nativeMap.RemoveOverlay (_baseRoute);
+					_mapView.RemoveOverlay (_baseRoute);
 
 				var coords = new List<CLLocationCoordinate2D> ();
 				foreach (var position in map.BaseRoutePoints)
@@ -64,21 +69,21 @@ namespace KAS.Trukman.iOS
 				_baseRoute = MKPolyline.FromCoordinates (coords.ToArray ());
 
 				this.InvokeOnMainThread (() => {
-					nativeMap.AddOverlay (_baseRoute);
+					_mapView.AddOverlay (_baseRoute);
 				});
 			} else if (args.PropertyName == "RoutePoints") {
 				if (_route != null)
-					nativeMap.RemoveOverlay (_route);
+					_mapView.RemoveOverlay (_route);
 
 				var coords = new List<CLLocationCoordinate2D> ();
 				foreach (var position in map.RoutePoints)
 					coords.Add (new CLLocationCoordinate2D (position.Latitude, position.Longitude));
 
 				_route = MKPolyline.FromCoordinates (coords.ToArray ());
-				nativeMap.AddOverlay (_route);
+				_mapView.AddOverlay (_route);
 			} else if (args.PropertyName == "RouteStartPosition") {
 				if (_routeStartPosition != null)
-					nativeMap.RemoveAnnotation (_routeStartPosition);
+					_mapView.RemoveAnnotation (_routeStartPosition);
 
 				_routeStartPosition = new MKPointAnnotation {
 					Title = map.RouteStartPosition.Contractor.Name,
@@ -86,10 +91,10 @@ namespace KAS.Trukman.iOS
 					Coordinate = new CLLocationCoordinate2D (map.RouteStartPosition.Position.Latitude, map.RouteStartPosition.Position.Longitude)
 				};
 
-				nativeMap.AddAnnotation (_routeStartPosition);
+				_mapView.AddAnnotation (_routeStartPosition);
 			} else if (args.PropertyName == "RouteEndPosition") {
 				if (_routeEndPosition != null)
-					nativeMap.RemoveAnnotation (_routeEndPosition);
+					_mapView.RemoveAnnotation (_routeEndPosition);
 
 				_routeEndPosition = new MKPointAnnotation {
 					Title = map.RouteEndPosition.Contractor.Name,
@@ -97,10 +102,10 @@ namespace KAS.Trukman.iOS
 					Coordinate = new CLLocationCoordinate2D (map.RouteEndPosition.Position.Latitude, map.RouteEndPosition.Position.Longitude)
 				};
 
-				nativeMap.AddAnnotation (_routeEndPosition);
+				_mapView.AddAnnotation (_routeEndPosition);
 			} else if (args.PropertyName == "RouteCarPosition") {
 				if (_routeCarPosition != null)
-					nativeMap.RemoveAnnotation (_routeCarPosition);
+					_mapView.RemoveAnnotation (_routeCarPosition);
 
 				_routeCarPosition = new MKPointAnnotation {
 					Title = map.RouteCarPosition.GetDurationText(),
@@ -108,7 +113,7 @@ namespace KAS.Trukman.iOS
 					Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
 				};
 
-				nativeMap.AddAnnotation (_routeCarPosition);
+				_mapView.AddAnnotation (_routeCarPosition);
 			}
 		}
 
@@ -117,7 +122,7 @@ namespace KAS.Trukman.iOS
 		{
 			MKAnnotationView view = null;
 			if (annotation == _routeStartPosition) {
-				var annotationView = (MKPinAnnotationView)mapView.DequeueReusableAnnotation (ROUTE_START_PIN_ID);
+				var annotationView = mapView.DequeueReusableAnnotation (ROUTE_START_PIN_ID);
 				if (annotationView == null)
 					annotationView = new MKPinAnnotationView (annotation, ROUTE_START_PIN_ID);
 				annotationView.Image = this.GetPinImage ("marker_start");
@@ -125,7 +130,7 @@ namespace KAS.Trukman.iOS
 				view = annotationView;
 			} else if (annotation == _routeEndPosition) {
 				var annotationView = new MKPinAnnotationView (annotation, ROUTE_END_PIN_ID);
-				annotationView.Image = this.GetPinImage ("marker_end");
+				annotationView.Image = this.GetPinImage ("marker_finish");
 				annotationView.CanShowCallout = true;
 				view = annotationView;
 			} else if (annotation == _routeCarPosition) {
@@ -139,7 +144,7 @@ namespace KAS.Trukman.iOS
 
 		private UIImage GetPinImage(string name)
 		{
-			var image = UIImage.FromBundle("marker_start");
+			var image = UIImage.FromBundle(name);
 			image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 			return image;
 		}
