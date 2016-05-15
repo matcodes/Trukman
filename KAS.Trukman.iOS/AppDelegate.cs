@@ -75,7 +75,7 @@ namespace KAS.Trukman.iOS
 
 			this.InvokeOnMainThread(() => {
 				if (CLLocationManager.LocationServicesEnabled == false) {
-					UIAlertView alertView = UIAlertView ("Error", "GPS tracking is disabled in your device settings. Please, Turn on your GPS for correct working.", null, "OK", null);
+					UIAlertView alertView = new UIAlertView ("Error", "GPS tracking is disabled in your device settings. Please, Turn on your GPS for correct working.", null, "OK", null);
 					alertView.Show ();
 				}
 			});

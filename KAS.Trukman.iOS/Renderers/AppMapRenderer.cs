@@ -13,7 +13,7 @@ using Foundation;
 namespace KAS.Trukman.iOS
 {
 	#region AppMapRenderer
-	public class AppMapRenderer : MapRenderer, MKMapViewDelegate
+	public class AppMapRenderer : MapRenderer, IMKMapViewDelegate
 	{
 		#region Static members
 		public static readonly string ROUTE_START_PIN_ID = "RouteStartPinID";
@@ -155,7 +155,7 @@ namespace KAS.Trukman.iOS
 		}
 
 		[Export ("mapView:rendererForOverlay:")]
-		public MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay);
+		public MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay)
 		{
 			MKOverlayRenderer renderer = null;
 			if (overlay == _baseRoute) {
