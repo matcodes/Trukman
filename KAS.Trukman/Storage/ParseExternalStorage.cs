@@ -97,6 +97,7 @@ namespace KAS.Trukman.Storage
                 var jquery = new ParseQuery<ParseJob>()
                     .Include("Shipper")
                     .Include("Receiver")
+					.Include("Company")
                     .WhereEqualTo("objectId", id);
                 job = await jquery.FirstOrDefaultAsync();
             }
@@ -341,7 +342,8 @@ namespace KAS.Trukman.Storage
                 {
                     Kind = kind,
                     Data = new ParseFile(kind + ".jpg", data),
-                    Job = job
+                    Job = job,
+					Company = job.Company
                 };
                 await this.SaveParsePhoto(photo);
                 job.Photos.Add(photo);

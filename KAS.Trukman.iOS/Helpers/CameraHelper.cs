@@ -21,7 +21,7 @@ namespace KAS.Trukman.iOS
 		public void FinishedPickingMedia (UIImagePickerController picker, NSDictionary info)
 		{
 			var photo = info.ValueForKey(new NSString("UIImagePickerControllerOriginalImage")) as UIImage;
-			NSData imageData = photo.AsJPEG((nfloat)0.5);
+			NSData imageData = photo.AsJPEG((nfloat)0.25);
 			Byte[] byteArray = new Byte[imageData.Length];
 			System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes, byteArray, 0, Convert.ToInt32(imageData.Length));
 			picker.DismissViewController (true, () => {

@@ -232,6 +232,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopBusyMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\OCRApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseJobAlert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerCurrentJobListPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerCurrentJobsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDeliveryUpdateMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\OwnerDeliveryUpdateListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\ImageViewerPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

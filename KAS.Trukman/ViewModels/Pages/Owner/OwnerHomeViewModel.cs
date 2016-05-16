@@ -192,6 +192,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void DeliveryUpdate(object parameter)
         {
+			ShowOwnerDeliveryUpdateMessage.Send ();
         }
 
         public CommandItem SelectedItem

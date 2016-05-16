@@ -55,7 +55,8 @@ namespace KAS.Trukman.iOS
 		protected override void OnElementPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs args)
 		{
 			base.OnElementPropertyChanged (sender, args);
-
+			this.InvokeOnMainThread (() => {
+				
 			var map = (this.Element as AppMap);
 			var nativeMap = (this.Control as MKMapView);
 
@@ -69,9 +70,7 @@ namespace KAS.Trukman.iOS
 
 				_baseRoute = MKPolyline.FromCoordinates (coords.ToArray ());
 
-				this.InvokeOnMainThread (() => {
 					nativeMap.AddOverlay (_baseRoute);
-				});
 			} else if (args.PropertyName == "RoutePoints") {
 				if (_route != null)
 					nativeMap.RemoveOverlay (_route);
@@ -120,6 +119,8 @@ namespace KAS.Trukman.iOS
 
 				nativeMap.AddAnnotation (_routeCarPosition);
 			}
+			});
+
 		}
 
 		[Export ("mapView:viewForAnnotation:")]

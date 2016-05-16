@@ -15,6 +15,7 @@ namespace KAS.Trukman.Languages
             #region Page titles
             this.SignUpPageName = "SIGN UP";
             this.OwnerFleetPageName = "FLEET";
+			this.OwnerDeliveryUpdatePageName = "UPDATES";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
             this.ReceiverInfoPageName = "RECEIVER INFO";
