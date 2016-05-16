@@ -20,7 +20,7 @@ namespace KAS.Trukman.Views.Lists
     }
     #endregion
 
-    #region CompanyCell
+    #region FleetTripCell
     public class FleetTripCell : ViewCell
     {
         public FleetTripCell()

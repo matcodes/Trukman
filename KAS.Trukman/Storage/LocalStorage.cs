@@ -681,11 +681,11 @@ namespace KAS.Trukman.Storage
 			}
 		}
 
-        public async Task<Advance[]> SelectFuelAdvancesAsync()
+		public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
             try
             {
-                var advances = await _externalStorage.SelectFuelAdvancesAsync();
+				var advances = await _externalStorage.SelectFuelAdvancesAsync(requestType);
                 return advances;
             }
             catch (Exception exception)
@@ -694,6 +694,18 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
         }
+
+		public async Task SetAdvanceStateAsync(Advance advance)
+		{
+			try 
+			{
+				await _externalStorage.SetAdvanceStateAsync(advance);				
+			}
+			catch (Exception exception) {
+				Console.WriteLine(exception);
+				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+		}
 
         #region SettingsItem
         public string GetSettings(string key)

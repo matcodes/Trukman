@@ -992,7 +992,7 @@ namespace KAS.Trukman.Storage
 			await parseJob.SaveAsync ();
 		}
 
-        public async Task<Advance[]> SelectFuelAdvancesAsync()
+		public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();
 
@@ -1000,7 +1000,7 @@ namespace KAS.Trukman.Storage
                 .Include("Job")
                 .Include("Driver")
                 .WhereEqualTo("Company", parseCompany)
-                .WhereEqualTo("RequestType", 0)
+				.WhereEqualTo("RequestType", requestType)
                 .WhereNotEqualTo("State", 3)
                 .OrderBy("RequestDatetime");
 
@@ -1016,6 +1016,19 @@ namespace KAS.Trukman.Storage
 
             return advances.ToArray();
         }
+
+		public async Task SetAdvanceStateAsync(Advance advance)
+		{
+			var query = new ParseQuery<ParseComcheck> ()
+				.WhereEqualTo ("objectId", advance.ID);
+
+			var parseComcheck = await query.FirstOrDefaultAsync ();
+
+			parseComcheck.State = advance.State;
+			parseComcheck.Comcheck = advance.Comcheck;
+
+			await parseComcheck.SaveAsync ();
+		}
 		#endregion
     }
     #endregion

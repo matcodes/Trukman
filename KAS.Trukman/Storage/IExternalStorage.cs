@@ -86,7 +86,9 @@ namespace KAS.Trukman.Storage
 
 		Task SendJobAlertAsync (string tripID, int alertType, string alertText);
 
-        Task<Advance[]> SelectFuelAdvancesAsync();
+		Task<Advance[]> SelectFuelAdvancesAsync(int requestType);
+
+		Task SetAdvanceStateAsync (Advance advance);
     }
     #endregion
 }

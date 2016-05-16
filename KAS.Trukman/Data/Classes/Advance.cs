@@ -48,6 +48,16 @@ namespace KAS.Trukman.Data.Classes
             get { return (this.GetValue("Company") as Company); }
             set { this.SetValue("Company", value); }
         }
+
+        public string JobNumber
+        {
+            get { return ((this.Trip != null && !String.IsNullOrEmpty(this.Trip.JobRef)) ? this.Trip.JobRef : "-----"); }
+        }
+
+        public string DriverName
+        {
+            get { return ((this.Driver != null) ? String.Format("{0} {1}", this.Driver.FirstName, this.Driver.LastName) : "-----"); }
+        }
     }
     #endregion
 }

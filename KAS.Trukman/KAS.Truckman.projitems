@@ -173,6 +173,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\TripViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Commands\PageCommandsView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EmptyPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\AdvanceListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\BaseListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CommandsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CompanyListView.cs" />
