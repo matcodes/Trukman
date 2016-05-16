@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\RouteStepTurnToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SignUpLanguageToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Advance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Notification.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowHelpPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnweFleetPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverAuthorizedPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverDeclinedPageMessage.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\OwnerSignUpWelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDriverAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerHomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainViewModel.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\OwnerSignUpWelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerDriverAuthorizationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFleetPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerHomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainPage.cs" />

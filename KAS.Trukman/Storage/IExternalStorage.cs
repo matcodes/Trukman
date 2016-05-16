@@ -85,6 +85,8 @@ namespace KAS.Trukman.Storage
 		Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType);
 
 		Task SendJobAlertAsync (string tripID, int alertType, string alertText);
+
+        Task<Advance[]> SelectFuelAdvancesAsync();
     }
     #endregion
 }

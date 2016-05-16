@@ -25,6 +25,7 @@ namespace KAS.Trukman.Languages
                 #region Page titles
                 this.SignUpPageName = appLanguage.SignUpPageName;
                 this.OwnerFleetPageName = appLanguage.OwnerFleetPageName;
+                this.OwnerFuelAdvancePageName = appLanguage.OwnerFuelAdvancePageName;
 				this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
@@ -265,6 +266,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("OwnerFleetPageName"); }
             set { this.SetValue("OwnerFleetPageName", value); }
+        }
+
+        public string OwnerFuelAdvancePageName
+        {
+            get { return (string)this.GetValue("OwnerFuelAdvanceName"); }
+            set { this.SetValue("OwnerFuelAdvanceName", value); }
         }
 
 		public string OwnerDeliveryUpdatePageName

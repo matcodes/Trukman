@@ -183,6 +183,7 @@ namespace KAS.Trukman.Storage
                 Points = parseJob.Price,
                 Shipper = shipper,
                 Receiver = receiver,
+				JobRef = parseJob.JobRef,
                 Location = new Position(parseJob.Location.Latitude, parseJob.Location.Longitude),
                 UpdateTime = (parseJob.UpdatedAt != null ? (DateTime)parseJob.UpdatedAt : DateTime.Now),
                 DriverDisplayName = driverDisplayName
@@ -202,6 +203,24 @@ namespace KAS.Trukman.Storage
             if (String.IsNullOrEmpty(company.DisplayName))
                 company.DisplayName = company.Name;
             return company;
+        }
+
+        private Advance ParseComcheckToAdvance(ParseComcheck parseComcheck)
+        {
+            var driver = this.ParseUserToUser(parseComcheck.Driver);
+            var trip = this.ParseJobToTrip(parseComcheck.Job);
+
+            var advance = new Advance {
+                ID = parseComcheck.ObjectId,
+                Comcheck = parseComcheck.Comcheck,
+                Driver = driver,
+                Trip = trip,
+                RequestDateTime = parseComcheck.RequestDatetime,
+                RequestType = parseComcheck.RequestType,
+                State = parseComcheck.State
+            };
+
+			return advance;
         }
 
         public async Task<User> GetCurrentUserAsync()
@@ -929,7 +948,8 @@ namespace KAS.Trukman.Storage
 					RequestType = (int)requestType,
 					Job = parseJob,
 					Comcheck = (requestType == ComcheckRequestType.FuelAdvance ? "fuel advance" : "lumper advance"),
-					Dispatch = parseJob.Dispatcher
+					Dispatch = parseJob.Dispatcher,
+					Company = parseJob.Company
 				};
 				await comcheck.SaveAsync();
 				parseJob.Advances.Add(comcheck);
@@ -970,7 +990,32 @@ namespace KAS.Trukman.Storage
 
 			parseJob.Alerts.Add (parseJobAlert);
 			await parseJob.SaveAsync ();
-		}	
+		}
+
+        public async Task<Advance[]> SelectFuelAdvancesAsync()
+        {
+            var parseCompany = await this.SelectUserParseCompanyAsync();
+
+            var query = new ParseQuery<ParseComcheck>()
+                .Include("Job")
+                .Include("Driver")
+                .WhereEqualTo("Company", parseCompany)
+                .WhereEqualTo("RequestType", 0)
+                .WhereNotEqualTo("State", 3)
+                .OrderBy("RequestDatetime");
+
+            var parseComchecks = await query.FindAsync();
+
+            var advances = new List<Advance>();
+
+            foreach (var parseComcheck in parseComchecks)
+            {
+                var advance = ParseComcheckToAdvance(parseComcheck);
+                advances.Add(advance);
+            }
+
+            return advances.ToArray();
+        }
 		#endregion
     }
     #endregion

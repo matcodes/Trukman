@@ -681,6 +681,20 @@ namespace KAS.Trukman.Storage
 			}
 		}
 
+        public async Task<Advance[]> SelectFuelAdvancesAsync()
+        {
+            try
+            {
+                var advances = await _externalStorage.SelectFuelAdvancesAsync();
+                return advances;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
+
         #region SettingsItem
         public string GetSettings(string key)
         {

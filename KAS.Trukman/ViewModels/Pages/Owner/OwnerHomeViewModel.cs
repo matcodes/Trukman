@@ -167,6 +167,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void FuelAdvance(object parameter)
         {
+            ShowOwnerFuelAdvancePageMessage.Send();
         }
 
         private void TrackFleet(object parameter)

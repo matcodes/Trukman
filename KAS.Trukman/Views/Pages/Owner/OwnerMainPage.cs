@@ -52,6 +52,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerFleetPageMessage.Subscribe(this, this.ShowOwnerFleetPage);
 			ShowOwnerDeliveryUpdateMessage.Subscribe (this, this.ShowOwnerJobList);
             ShowOwnerDriverAuthorizationPageMessage.Subscribe(this, this.ShowOwnerDriverAuthorizationPage);
+            ShowOwnerFuelAdvancePageMessage.Subscribe(this, this.ShowOwnerFuelAdvancePage);
         }
 
         private void UnsubscribeMessage()
@@ -63,6 +64,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerFleetPageMessage.Unsubscribe(this);
 			ShowOwnerDeliveryUpdateMessage.Unsubscribe (this);
             ShowOwnerDriverAuthorizationPageMessage.Unsubscribe(this);
+            ShowOwnerFuelAdvancePageMessage.Unsubscribe(this);
         }
 
         private void PushPage(Page page)
@@ -128,6 +130,13 @@ namespace KAS.Trukman.Views.Pages.Owner
 			page.ViewModel.Initialize ();
 			this.PushPage (page);
 		}
+
+        private void ShowOwnerFuelAdvancePage(ShowOwnerFuelAdvancePageMessage message)
+        {
+            var page = new OwnerFuelAdvancePage();
+            page.ViewModel.Initialize();
+            this.PushPage(page);
+        }
 
         public OwnerMainViewModel ViewModel
         {

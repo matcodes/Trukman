@@ -100,6 +100,12 @@ namespace KAS.Trukman.Data.Classes
             get { return (bool)this.GetValue("IsDeleted"); }
             set { this.SetValue("IsDeleted", value); }
         }
+
+		public string JobRef
+		{
+			get { return (string)this.GetValue ("JobRef"); }
+			set { this.SetValue ("JobRef", value); }
+		}
 		#endregion
 
         public string ShipperID { get; set; }

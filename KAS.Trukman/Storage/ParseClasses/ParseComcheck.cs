@@ -58,6 +58,13 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<ParseJob>(value); }
         }
 
+		[ParseFieldName("Company")]
+		public ParseCompany Company
+		{
+			get { return this.GetProperty<ParseCompany> (); }
+			set { this.SetProperty<ParseCompany> (value); }
+		}
+
         [ParseFieldName("Archive")]
         public bool Archive
         {

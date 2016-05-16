@@ -142,7 +142,6 @@ namespace KAS.Trukman.Storage.ParseClasses
 			set { this.SetProperty<ParseUser>(value); }
 		}
 
-
         [ParseFieldName("Dispatcher")]
         public ParseUser Dispatcher
         {
