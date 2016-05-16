@@ -72,12 +72,19 @@ namespace KAS.Trukman.iOS
 			// We need this to fire userInfo into ParsePushNotificationReceived.
 			ParsePush.HandlePush(userInfo);
 		}
+			
 
+		public void ReceivedLocalNotification (UIApplication application, UILocalNotification notification) {
+			if (application.ApplicationState == UIApplicationState.Active) {
+				ShowToastMessage.Send (notification.AlertBody);
+			}
+		}
 
 		public override void OnActivated (UIApplication uiApplication) {
+			_pushHelper.SubscribeMessages ();
+
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
-			ShowSignUpOwnerWelcomePageMessage.Subscribe(_pushHelper, _pushHelper.Register);
 			ShowGPSSettingsMessage.Subscribe (this, this.ShowGPSSettings);
 
 			this.InvokeOnMainThread(() => {
@@ -96,8 +103,9 @@ namespace KAS.Trukman.iOS
 		public override void DidEnterBackground (UIApplication uiApplication) {
 			ShowToastMessage.Unsubscribe (this);
 			TakePhotoFromCameraMessage.Unsubscribe(_cameraHelper);
-			ShowSignUpOwnerWelcomePageMessage.Unsubscribe(_pushHelper);
 			ShowGPSSettingsMessage.Unsubscribe (this);
+
+			_pushHelper.UnsubscribeMessages ();
 		}
 
 		public override bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options) {

@@ -13,6 +13,8 @@ namespace KAS.Trukman.iOS
 	public class PushHelperIOS:NSObject
 	{
 		public PushHelperIOS () {
+			ShowNotificationMessage.Subscribe (this, this.ShowLocalMessage);
+
 			ParsePush.ParsePushNotificationReceived += (object sender, ParsePushNotificationEventArgs args) => {
 				string message = null;
 				try
@@ -29,6 +31,7 @@ namespace KAS.Trukman.iOS
 						}
 						catch (Exception e)
 						{
+							ShowToastMessage.Send(e.Message);
 						}
 
 						try
@@ -40,20 +43,24 @@ namespace KAS.Trukman.iOS
 								message = alertText;
 							}
 						}
-						catch (Exception)
+						catch (Exception e)
 						{
+							ShowToastMessage.Send(e.Message);
+
 						}
 					}
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					message = "payload crash";
 				}
+				finally
+				{
+					if (string.IsNullOrEmpty(message)) {
 
-				if (string.IsNullOrEmpty(message)) {
-					
-				} else {
-					ShowToastMessage.Send(message);
+					} else {
+						ShowToastMessage.Send(message);
+					}
 				}
 
 			};
@@ -74,6 +81,35 @@ namespace KAS.Trukman.iOS
 					UIApplication.SharedApplication.RegisterForRemoteNotificationTypes (notificationTypes);
 				}
 			});
+		}
+
+		public void SubscribeMessages()
+		{
+			ShowSignUpOwnerWelcomePageMessage.Subscribe(this, this.Register);
+		}
+
+		public void UnsubscribeMessages()
+		{
+			ShowSignUpOwnerWelcomePageMessage.Unsubscribe(this);
+		}
+
+		public void ShowLocalMessage(ShowNotificationMessage message)
+		{
+			string text = message.MessageText;
+			// create the notification
+			var notification = new UILocalNotification();
+
+			// set the fire date (the date time in which it will fire)
+			notification.FireDate = NSDate.FromTimeIntervalSinceNow(2);
+
+			// configure the alert
+			notification.AlertBody = text;
+
+			// set the sound to be the default sound
+			notification.SoundName = UILocalNotification.DefaultSoundName;
+
+			// schedule it
+			UIApplication.SharedApplication.ScheduleLocalNotification(notification);
 		}
 
 		public void DidGetDeviceToken(NSData deviceToken)
@@ -114,6 +150,12 @@ namespace KAS.Trukman.iOS
 
 
 			// Save new device token 
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			base.Dispose (disposing);
+			ShowNotificationMessage.Unsubscribe (this);
 		}
 	}
 }
