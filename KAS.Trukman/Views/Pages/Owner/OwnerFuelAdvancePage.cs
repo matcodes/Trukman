@@ -87,7 +87,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
-				Color = Color.Black
+				Color = Color.White
 			};
 
 			var jobLabel = new Label
