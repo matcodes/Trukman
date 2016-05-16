@@ -36,6 +36,10 @@ namespace KAS.Trukman.Views.Pages
                     this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
 				else if ((args.PropertyName == "ContractorPosition") && ((this.ViewModel.ContractorPosition.Latitude != 0) || (this.ViewModel.ContractorPosition.Longitude != 0)))
                     this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
+				else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripAccepted))
+					this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
+				else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripPropesed))
+					this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
                 else if (args.PropertyName == "ArrivedPosition")
                 {
 //                    if (this.ViewModel.State == HomeStates.ArrivedAtPickupOnTime)

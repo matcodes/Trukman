@@ -179,7 +179,8 @@ namespace KAS.Trukman.ViewModels.Pages
             var position = (this.SelectedContractor == ContractorItems.Origin ? TrukmanContext.Driver.ShipperPosition : TrukmanContext.Driver.ReceiverPosition);
             if ((position.Latitude == 0) && (position.Longitude == 0))
                 position = TrukmanContext.Driver.Location;
-            this.ContractorPosition = position;
+			if ((this.ContractorPosition.Latitude != position.Latitude) || (this.ContractorPosition.Longitude != position.Longitude))
+				this.ContractorPosition = position;
         }
 
         private void SetAddressPosition()
@@ -187,7 +188,8 @@ namespace KAS.Trukman.ViewModels.Pages
             var position = TrukmanContext.Driver.ShipperPosition;
             if ((position.Latitude == 0) && (position.Longitude == 0))
                 position = TrukmanContext.Driver.Location;
-            this.AddressPosition = position;
+			if ((this.AddressPosition.Latitude != position.Latitude) || (this.AddressPosition.Longitude != position.Longitude))
+				this.AddressPosition = position;
         }
 
         private void SetCurrentTime()
