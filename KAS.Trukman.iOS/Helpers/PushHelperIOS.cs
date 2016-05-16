@@ -95,21 +95,23 @@ namespace KAS.Trukman.iOS
 
 		public void ShowLocalMessage(ShowNotificationMessage message)
 		{
-			string text = message.MessageText;
-			// create the notification
-			var notification = new UILocalNotification();
+			this.InvokeOnMainThread (() => {
+				string text = message.MessageText;
+				// create the notification
+				var notification = new UILocalNotification();
 
-			// set the fire date (the date time in which it will fire)
-			notification.FireDate = NSDate.FromTimeIntervalSinceNow(2);
+				// set the fire date (the date time in which it will fire)
+				notification.FireDate = NSDate.FromTimeIntervalSinceNow(2);
 
-			// configure the alert
-			notification.AlertBody = text;
+				// configure the alert
+				notification.AlertBody = text;
 
-			// set the sound to be the default sound
-			notification.SoundName = UILocalNotification.DefaultSoundName;
+				// set the sound to be the default sound
+				notification.SoundName = UILocalNotification.DefaultSoundName;
 
-			// schedule it
-			UIApplication.SharedApplication.ScheduleLocalNotification(notification);
+				// schedule it
+				UIApplication.SharedApplication.ScheduleLocalNotification(notification);
+			});
 		}
 
 		public void DidGetDeviceToken(NSData deviceToken)
