@@ -105,7 +105,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFuelAdvancePageMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnweFleetPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverAuthorizedPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverDeclinedPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverPageMessage.cs" />
@@ -242,6 +241,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDeliveryUpdateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\OwnerDeliveryUpdateListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\ImageViewerPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFleetPageMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />
