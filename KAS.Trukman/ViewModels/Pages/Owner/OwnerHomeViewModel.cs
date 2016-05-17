@@ -177,6 +177,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void Lumper(object parameter)
         {
+            ShowOwnerLumperPageMessage.Send();
         }
 
         private void Invoice(object parameter)

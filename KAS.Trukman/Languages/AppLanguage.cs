@@ -26,6 +26,7 @@ namespace KAS.Trukman.Languages
                 this.SignUpPageName = appLanguage.SignUpPageName;
                 this.OwnerFleetPageName = appLanguage.OwnerFleetPageName;
                 this.OwnerFuelAdvancePageName = appLanguage.OwnerFuelAdvancePageName;
+                this.OwnerLumperPageName = appLanguage.OwnerLumperPageName;
 				this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
@@ -272,6 +273,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("OwnerFuelAdvanceName"); }
             set { this.SetValue("OwnerFuelAdvanceName", value); }
+        }
+
+        public string OwnerLumperPageName
+        {
+            get { return (string)this.GetValue("OwnerLumperPageName"); }
+            set { this.SetValue("OwnerLumperPageName", value); }
         }
 
 		public string OwnerDeliveryUpdatePageName

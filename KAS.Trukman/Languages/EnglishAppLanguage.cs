@@ -16,6 +16,7 @@ namespace KAS.Trukman.Languages
             this.SignUpPageName = "SIGN UP";
             this.OwnerFleetPageName = "FLEET";
             this.OwnerFuelAdvancePageName = "FUEL ADVANCE";
+            this.OwnerLumperPageName = "LUMPER";
 			this.OwnerDeliveryUpdatePageName = "UPDATES";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
