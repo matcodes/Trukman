@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using KAS.Trukman.Languages;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
@@ -89,44 +90,43 @@ namespace KAS.Trukman.Views.Pages.Owner
                 VerticalOptions = LayoutOptions.Fill,
                 Color = Color.White
             };
+			var jobLabel = new Label
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Start,
+				TextColor = Color.Black,
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
+			};
+			jobLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListJobNumberLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var jobLabel = new Label
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Start,
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                Text = "Job#:"
-            };
+			var job = new Label
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Start,
+				TextColor = Color.Black,
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+				FontAttributes = FontAttributes.Bold
+			};
+			job.SetBinding(Label.TextProperty, "EditingAdvance.JobNumber", BindingMode.OneWay);
 
-            var job = new Label
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Start,
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                FontAttributes = FontAttributes.Bold
-            };
-            job.SetBinding(Label.TextProperty, "EditingAdvance.JobNumber", BindingMode.OneWay);
+			var driverLabel = new Label
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Start,
+				TextColor = Color.Black,
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
+			};
+			driverLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListDriverNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var driverLabel = new Label
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Start,
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                Text = "Driver:"
-            };
-
-            var driver = new Label
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Start,
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                FontAttributes = FontAttributes.Bold
-            };
-            driver.SetBinding(Label.TextProperty, "EditingAdvance.DriverName", BindingMode.OneWay);
+			var driver = new Label
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Start,
+				TextColor = Color.Black,
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+				FontAttributes = FontAttributes.Bold
+			};
+			driver.SetBinding(Label.TextProperty, "EditingAdvance.DriverName", BindingMode.OneWay);
 
             var grid = new Grid
             {
@@ -149,45 +149,44 @@ namespace KAS.Trukman.Views.Pages.Owner
             grid.Children.Add(driverLabel, 0, 1);
             grid.Children.Add(driver, 1, 1);
 
-            var comcheck = new AppEntry
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                PlaceholderColor = Color.Gray,
-                Placeholder = "Comcheck"
-            };
-            comcheck.SetBinding(Entry.TextProperty, "Comcheck", BindingMode.TwoWay);
-            //			comcheck.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			var comcheck = new AppEntry
+			{
+				HorizontalOptions = LayoutOptions.Fill,
+				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+				TextColor = Color.Black,
+				PlaceholderColor = Color.Gray
+			};
+			comcheck.SetBinding(Entry.TextProperty, "Comcheck", BindingMode.TwoWay);
+			comcheck.SetBinding(Entry.PlaceholderProperty, new Binding("ComcheckPopupEntryPlaceholer", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var comcheckContent = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Center,
-                Padding = new Thickness(10, 0, 10, 0),
-                Content = comcheck
-            };
+			var comcheckContent = new ContentView
+			{
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Center,
+				Padding = new Thickness(10, 0, 10, 0),
+				Content = comcheck
+			};
 
-            var cancelButton = new AppPopupButton
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left,
-                Text = "Cancel"
-            };
-            //			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            cancelButton.SetBinding(AppButton.CommandProperty, "EditComcheckCancelCommand");
+			var cancelButton = new AppPopupButton
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Fill,
+				AppStyle = AppButtonStyle.Left,
+				Text = "Cancel"
+			};
+			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			cancelButton.SetBinding(AppButton.CommandProperty, "EditComcheckCancelCommand");
 
-            var acceptButton = new AppPopupButton
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right,
-                Text = "Accept"
-            };
-            //			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            acceptButton.SetBinding(AppPopupButton.CommandProperty, "EditComcheckAcceptCommand");
+			var acceptButton = new AppPopupButton
+			{
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Fill,
+				AppStyle = AppButtonStyle.Right,
+				Text = "Accept"
+			};
+			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
+			acceptButton.SetBinding(AppPopupButton.CommandProperty, "EditComcheckAcceptCommand");
             var buttons = new Grid
             {
                 VerticalOptions = LayoutOptions.Fill,

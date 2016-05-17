@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using KAS.Trukman.Languages;
 
 namespace KAS.Trukman.Views.Lists
 {
@@ -31,9 +32,9 @@ namespace KAS.Trukman.Views.Lists
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Start,
                 TextColor = Color.White,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                Text = "Job#:"
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
+			jobLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListJobNumberLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
             var job = new Label
             {
@@ -50,9 +51,9 @@ namespace KAS.Trukman.Views.Lists
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Start,
                 TextColor = Color.White,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                Text = "Driver:"
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
+			driverLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceLisDriverNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
             var driver = new Label
             {

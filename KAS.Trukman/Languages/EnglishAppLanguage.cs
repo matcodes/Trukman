@@ -32,6 +32,17 @@ namespace KAS.Trukman.Languages
             this.DriverAuthorizePageName = "DRIVER AUTHORIZATION";
             #endregion
 
+			#region Lists
+			this.AdvanceListJobNumberLabel = "Job#:";
+			this.AdvanceListDriverNameLabel = "Driver:";
+			#endregion
+
+			#region ComcheckPopup
+			this.ComcheckPopupEntryPlaceholer = "Comcheck";
+			this.ComcheckPopupCancelButtonText = "Cancel";
+			this.ComcheckPopupAcceptButtonText = "Accept";
+			#endregion
+
             #region Main menu
             this.MainMenuHomeLabel = "Home";
             this.MainMenuTripLabel = "Trip";

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using KAS.Trukman.Languages;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
@@ -95,9 +96,9 @@ namespace KAS.Trukman.Views.Pages.Owner
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Start,
 				TextColor = Color.Black,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				Text = "Job#:"
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
 			};
+			jobLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListJobNumberLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
 			var job = new Label
 			{
@@ -114,9 +115,9 @@ namespace KAS.Trukman.Views.Pages.Owner
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Start,
 				TextColor = Color.Black,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				Text = "Driver:"
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
 			};
+			driverLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListDriverNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
 			var driver = new Label
 			{
@@ -153,11 +154,10 @@ namespace KAS.Trukman.Views.Pages.Owner
 				HorizontalOptions = LayoutOptions.Fill,
 				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
 				TextColor = Color.Black,
-				PlaceholderColor = Color.Gray,
-				Placeholder = "Comcheck"
+				PlaceholderColor = Color.Gray
 			};
 			comcheck.SetBinding(Entry.TextProperty, "Comcheck", BindingMode.TwoWay);
-//			comcheck.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			comcheck.SetBinding(Entry.PlaceholderProperty, new Binding("ComcheckPopupEntryPlaceholer", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
 			var comcheckContent = new ContentView
 			{
@@ -174,7 +174,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 				AppStyle = AppButtonStyle.Left,
 				Text = "Cancel"
 			};
-//			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 			cancelButton.SetBinding(AppButton.CommandProperty, "EditComcheckCancelCommand");
 
 			var acceptButton = new AppPopupButton
@@ -184,7 +184,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 				AppStyle = AppButtonStyle.Right,
 				Text = "Accept"
 			};
-//			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 			acceptButton.SetBinding(AppPopupButton.CommandProperty, "EditComcheckAcceptCommand");
 
 			var buttons = new Grid

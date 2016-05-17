@@ -115,6 +115,17 @@ namespace KAS.Trukman.Languages
 				this.HomeNewTripButtonText = appLanguage.HomeNewTripButtonText;
                 #endregion
 
+				#region Lists
+				this.AdvanceListJobNumberLabel = appLanguage.AdvanceListJobNumberLabel;
+				this.AdvanceListDriverNameLabel = appLanguage.AdvanceListDriverNameLabel;
+				#endregion
+
+				#region ComcheckPopup
+				this.ComcheckPopupEntryPlaceholer = appLanguage.ComcheckPopupEntryPlaceholer;
+				this.ComcheckPopupCancelButtonText = appLanguage.ComcheckPopupCancelButtonText;
+				this.ComcheckPopupAcceptButtonText = appLanguage.ComcheckPopupAcceptButtonText;
+				#endregion
+
                 #region Trip page
                 this.TripReceiverTitleLabel = appLanguage.TripReceiverTitleLabel;
                 this.TripShipperTitleLabel = appLanguage.TripShipperTitleLabel;
@@ -359,6 +370,40 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("DriverAuthorizePageName", value); }
         }
         #endregion
+
+		#region Lists
+		public string AdvanceListJobNumberLabel
+		{
+			get { return (string)this.GetValue ("AdvanceListJobNumberLabel"); }
+			set { this.SetValue ("AdvanceListJobNumberLabel", value); }
+		}
+
+		public string AdvanceListDriverNameLabel
+		{
+			get { return (string)this.GetValue ("AdvanceListDriverNameLabel"); }
+			set { this.SetValue ("AdvanceListDriverNameLabel", value); }
+		}
+		#endregion
+
+		#region ComcheckPopup
+		public string ComcheckPopupEntryPlaceholer
+		{
+			get { return (string)this.GetValue ("ComcheckPopupEntryPlaceholer"); }
+			set { this.SetValue ("ComcheckPopupEntryPlaceholer", value); }
+		}
+
+		public string ComcheckPopupCancelButtonText
+		{
+			get { return (string)this.GetValue ("ComcheckPopupCancelButtonText"); }
+			set { this.SetValue ("ComcheckPopupCancelButtonText", value); }
+		}
+
+		public string ComcheckPopupAcceptButtonText
+		{
+			get { return (string)this.GetValue ("ComcheckPopupAcceptButtonText"); }
+			set { this.SetValue ("ComcheckPopupAcceptButtonText", value); }
+		}
+		#endregion
 
         #region Main Menu
         public string MainMenuHomeLabel
