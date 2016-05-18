@@ -53,7 +53,7 @@ namespace KAS.Trukman.Views.Lists
                 TextColor = Color.White,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
-			driverLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceLisDriverNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			driverLabel.SetBinding (Label.TextProperty, new Binding ("AdvanceListDriverNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
             var driver = new Label
             {
