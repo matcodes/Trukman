@@ -19,8 +19,6 @@ namespace KAS.Trukman.Views.Pages
     {
         private Map _map = null;
         private Map _contractorMap = null;
-//        private Map _arrivedOnTimeMap = null;
-//        private Map _arrivedLateMap = null;
 
         private HomeViewModel _viewModel = null;
 
@@ -42,14 +40,6 @@ namespace KAS.Trukman.Views.Pages
 					this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
                 else if (args.PropertyName == "ArrivedPosition")
                 {
-//                    if (this.ViewModel.State == HomeStates.ArrivedAtPickupOnTime)
-//						this.MapLocateAddress(_arrivedOnTimeMap, this.ViewModel.ArrivedPosition, "Arrive");
-//                    else if (this.ViewModel.State == HomeStates.ArrivedAtPickupLate)
-//						this.MapLocateAddress(_arrivedLateMap, this.ViewModel.ArrivedPosition, "Arrive");
-//					else if (this.ViewModel.State == HomeStates.ArrivedAtDestinationOnTime)
-//					{
-//						this.MapLocateAddress(_arrivedOnTimeMap
-//					}
                 }
             };
 
@@ -95,17 +85,23 @@ namespace KAS.Trukman.Views.Pages
         }
 
 		private void MapLocateAddress(Map map, Position position, string label)
-        {
-			Device.BeginInvokeOnMainThread (() => {
-				if ((map != null) && (this.ViewModel != null)) {
-					map.Pins.Clear ();
-					//if (position.Longitude != 0 || position.Latitude != 0)
-					map.MoveToRegion(new MapSpan(position, 0.01d, 0.01d));
-					map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
-					map.MoveToRegion(new MapSpan(position, 0.01d, 0.01d));
-				}
-			});
-        }
+		{
+			var timer = new System.Timers.Timer{ Interval = 50 };
+			timer.Elapsed += (sender, e) => {
+				timer.Stop ();
+				if (map.IsVisible)
+					Device.BeginInvokeOnMainThread (() => {
+						if ((map != null) && (this.ViewModel != null)) {
+							map.Pins.Clear ();
+							map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
+							map.MoveToRegion (new MapSpan (position, 0.01d, 0.01d));
+						}
+					});
+				else
+					timer.Start ();
+			};
+			timer.Start ();
+		}
 
         protected override View CreateContent()
         {

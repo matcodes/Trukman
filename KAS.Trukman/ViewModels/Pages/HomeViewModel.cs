@@ -144,7 +144,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 else if (this.State == HomeStates.TripAccepted)
                 {
                     this.SelectedContractor = (TrukmanContext.Driver.Trip.IsPickup ? ContractorItems.Destination : ContractorItems.Origin);
-                    this.SetContractorAddress();
+					this.SetContractorAddress ();
                 }
                 else if (this.State == HomeStates.ArrivedAtPickupOnTime)
                 {

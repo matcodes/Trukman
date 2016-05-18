@@ -149,6 +149,7 @@
     <InterfaceDefinition Include="Native ViewControllers\JobTextCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\JobButtonCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\UserListViewController.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\ContractorInfoViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -210,6 +211,10 @@
     <Compile Include="Helpers\CameraHelper.cs" />
     <Compile Include="Helpers\LocationHelperIOS.cs" />
     <Compile Include="Helpers\PushHelperIOS.cs" />
+    <Compile Include="Native ViewControllers\ContractorInfoViewController.cs" />
+    <Compile Include="Native ViewControllers\ContractorInfoViewController.designer.cs">
+      <DependentUpon>ContractorInfoViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
