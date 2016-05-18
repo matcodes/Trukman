@@ -149,6 +149,7 @@
     <InterfaceDefinition Include="Native ViewControllers\JobTextCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\JobButtonCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\UserListViewController.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\CarInfoViewController.xib" />
     <InterfaceDefinition Include="Native ViewControllers\ContractorInfoViewController.xib" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,10 @@
     <Compile Include="Helpers\CameraHelper.cs" />
     <Compile Include="Helpers\LocationHelperIOS.cs" />
     <Compile Include="Helpers\PushHelperIOS.cs" />
+    <Compile Include="Native ViewControllers\CarInfoViewController.cs" />
+    <Compile Include="Native ViewControllers\CarInfoViewController.designer.cs">
+      <DependentUpon>CarInfoViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Native ViewControllers\ContractorInfoViewController.cs" />
     <Compile Include="Native ViewControllers\ContractorInfoViewController.designer.cs">
       <DependentUpon>ContractorInfoViewController.cs</DependentUpon>
