@@ -147,10 +147,15 @@ namespace KAS.Trukman.iOS
 		{
 			get { return Xamarin.Forms.Color.White; }
 		}
-		#endregion
 
-		#region Image sources
-		public string BackgroundImageSource
+        public Xamarin.Forms.Color RegularTextColor
+        {
+            get { return Xamarin.Forms.Color.FromHex("FF8F8E"); }
+        }
+        #endregion
+
+        #region Image sources
+        public string BackgroundImageSource
 		{
 			get { return "background"; }
 		}

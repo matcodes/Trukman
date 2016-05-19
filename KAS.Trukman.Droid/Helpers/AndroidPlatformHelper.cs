@@ -168,6 +168,11 @@ namespace KAS.Trukman.Droid
         {
             get { return Xamarin.Forms.Color.White; }
         }
+
+        public Xamarin.Forms.Color RegularTextColor
+        {
+            get { return Xamarin.Forms.Color.FromHex("FF8F8E"); }
+        }
         #endregion
 
         #region Image sources

@@ -51,7 +51,7 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                TextColor = Color.FromHex(Constants.RegularFontColor) // To do: declare color in PlatformHelper
+                TextColor = PlatformHelper.RegularTextColor
             };
             userRole.SetBinding(Label.TextProperty, new Binding("SignUpUserRoleOwnerOperator", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 

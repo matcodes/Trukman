@@ -41,10 +41,8 @@ namespace KAS.Trukman.ViewModels.Pages
 			ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
 			this.Trip = trip;
 
-			// To do: get fuel comcheck
 			this.GetFuelComcheck ();
 
-            // To do: get lumper comcheck
 			this.GetLumperComcheck ();
         }
 
@@ -188,8 +186,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 catch (Exception exception)
                 {
-                    // To do: show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -216,8 +213,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 catch (Exception exception)
                 {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -232,22 +228,17 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Task.Run(async () =>
             {
-                //this.FuelStopRequestedTimer();
-
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-                    // To do: Cancel request
-                    //Thread.Sleep(2000);
 				    await TrukmanContext.CancelComcheckRequestAsync (this.Trip.ID, ComcheckRequestType.FuelAdvance);
 					this.FuelState = FuelAdvanceStates.None;
 					this.FuelStopRequestedTimer();
 				}
                 catch (Exception exception)
                 {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -288,7 +279,6 @@ namespace KAS.Trukman.ViewModels.Pages
 				}
 				else if (comcheckState == ComcheckRequestState.Requested)
 				{
-					//this.FuelStopReceivedTimer();
 					this.FuelState = FuelAdvanceStates.Requested;
 					this.FuelStartRequestedTimer ();
 				}
@@ -298,15 +288,14 @@ namespace KAS.Trukman.ViewModels.Pages
 					if (!string.IsNullOrEmpty(comcheck))
 					{
 						this.FuelStopReceivedTimer ();
-						this.FuelState = FuelAdvanceStates.Completed;
-						this.FuelComcheck = comcheck;
+                        this.FuelComcheck = comcheck;
+                        this.FuelState = FuelAdvanceStates.Completed;
 					}
 				}
 			}
 			catch (Exception exception)
 			{
-				// To do: show exception message
-				Console.WriteLine(exception);
+                ShowToastMessage.Send(exception.Message);
 			}
 			finally
 			{
@@ -335,7 +324,6 @@ namespace KAS.Trukman.ViewModels.Pages
 				}
 				else if (comcheckState == ComcheckRequestState.Requested)
 				{
-					//this.LumperStopReceivedTimer();
 					this.LumperState = LumperStates.Requested;
 					this.LumperStartRequestedTimer ();
 				}
@@ -345,23 +333,20 @@ namespace KAS.Trukman.ViewModels.Pages
 					if (!string.IsNullOrEmpty(comcheck))
 					{
 						this.LumperStopReceivedTimer ();
-						this.LumperState = LumperStates.Completed;
-						this.LumperComcheck = comcheck;
+                        this.LumperComcheck = comcheck;
+                        this.LumperState = LumperStates.Completed;
 					}
 				}
 			}
 			catch (Exception exception)
 			{
-				// To do: show exception message
-				Console.WriteLine(exception);
+                ShowToastMessage.Send(exception.Message);
 			}
 			finally
 			{
 				this.LumperIsBusy = false;
 				this.EnabledCommands();
 			}
-
-			//this.FuelStartReceivedTimer();
 		}
 
         private void FuelStopRequestedTimer()
@@ -375,9 +360,6 @@ namespace KAS.Trukman.ViewModels.Pages
 			if (_fuelReceivedTimer == null) {
 				_fuelReceivedTimer = new System.Timers.Timer { Interval = 5000 };
 				_fuelReceivedTimer.Elapsed += (sender, args) => {
-
-					// To do: Check completed
-					//Thread.Sleep(2000);
 					CheckFuelComcheck ();
 				};
 			}
@@ -431,8 +413,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 catch (Exception exception)
                 {
-                    // To do: show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -459,8 +440,7 @@ namespace KAS.Trukman.ViewModels.Pages
 				}
                 catch (Exception exception)
                 {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
@@ -484,8 +464,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
                 catch (Exception exception)
                 {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {

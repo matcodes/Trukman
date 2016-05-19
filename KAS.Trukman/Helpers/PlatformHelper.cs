@@ -64,6 +64,8 @@ namespace KAS.Trukman.Helpers
         Color RouteTextColor { get; }
 
         Color DriverAuthorizationTextColor { get; }
+
+        Color RegularTextColor { get; }
         #endregion
 
         #region Image sources
@@ -278,6 +280,11 @@ namespace KAS.Trukman.Helpers
         public static Color DriverAuthorizationTextColor
         {
             get { return (_platformHelper != null ? _platformHelper.DriverAuthorizationTextColor : Color.White); }
+        }
+
+        public static Color RegularTextColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.RegularTextColor : Color.White); }
         }
         #endregion
 
