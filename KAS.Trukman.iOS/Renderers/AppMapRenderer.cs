@@ -210,7 +210,7 @@ namespace KAS.Trukman.iOS
 				});
 			} else if ((args.View.Annotation == _routeEndPosition) && (_receiverInfoView == null)) {
 				_receiverInfoView = new ContractorInfoViewController ();
-				_receiverInfoView.ContractorTypeText = AppLanguages.CurrentLanguage.TripShipperTitleLabel;
+				_receiverInfoView.ContractorTypeText = AppLanguages.CurrentLanguage.TripReceiverTitleLabel;
 				_receiverInfoView.ContractorInfo = map.RouteEndPosition;
 				args.View.AddSubview (_receiverInfoView.View);
 
