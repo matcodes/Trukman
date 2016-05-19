@@ -218,8 +218,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IAlerts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IJobAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\Localization.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizationDeclinedPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTopPageMessage.cs" />
