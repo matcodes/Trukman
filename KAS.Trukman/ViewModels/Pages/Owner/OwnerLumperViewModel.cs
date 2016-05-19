@@ -12,6 +12,7 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
+    #region OwnerLumperViewModel
     public class OwnerLumperViewModel : PageViewModel
     {
         public OwnerLumperViewModel()
@@ -197,4 +198,5 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         public VisualCommand EditComcheckAcceptCommand { get; private set; }
     }
+    #endregion
 }

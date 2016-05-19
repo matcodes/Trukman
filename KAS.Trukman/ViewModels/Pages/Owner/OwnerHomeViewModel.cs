@@ -163,6 +163,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void BrockerList(object parameter)
         {
+            ShowOwnerBrockerListMessage.Send();
         }
 
         private void FuelAdvance(object parameter)

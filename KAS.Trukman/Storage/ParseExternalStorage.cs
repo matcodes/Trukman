@@ -1029,6 +1029,20 @@ namespace KAS.Trukman.Storage
 
 			await parseComcheck.SaveAsync ();
 		}
+
+        public async Task<User[]> SelectBrockersAsync()
+        {
+            var parseCompany = await this.SelectUserParseCompanyAsync();
+            var query = parseCompany.Brockers.Query;
+            var parseUsers = await query.FindAsync();
+            var brockers = new List<User>();
+            foreach (var parseUser in parseUsers)
+            {
+                var user = this.ParseUserToUser(parseUser);
+                brockers.Add(user);
+            }
+            return brockers.ToArray();
+        }
 		#endregion
     }
     #endregion

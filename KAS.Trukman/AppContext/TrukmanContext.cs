@@ -301,7 +301,6 @@ namespace KAS.Trukman.AppContext
 			return photos;
 		}
 
-
         private static void StartSynchronizeTimer()
         {
             if (_synchronizeTimer == null)
