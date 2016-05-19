@@ -70,13 +70,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteStep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IServerManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationServiceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RouteHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SettingsServiceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\EnglishAppLanguage.cs" />
@@ -218,18 +215,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\CallCameraMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StartLocationServiceMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopLocationServiceMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PositionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IAlerts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IJobAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\Localization.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\SegmentedControl.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\PopupLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizationDeclinedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AuthorizedPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanEditor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TrukmanLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTopPageMessage.cs" />
@@ -245,6 +235,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\OwnerDeliveryUpdateListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\ImageViewerPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFleetPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\AuthorizationRequestStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\ComcheckRequestType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\ComcheckRequestState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />

@@ -20,6 +20,7 @@ namespace KAS.Trukman
     #region App
     public class App : Application
     {
+		/*
         static IServerManager serverManager;
         public static IServerManager ServerManager
         {
@@ -53,6 +54,7 @@ namespace KAS.Trukman
                 return locationServiceStarter;
             }
         }
+        */
 
         public App()
         {

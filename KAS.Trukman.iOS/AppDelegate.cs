@@ -83,6 +83,8 @@ namespace KAS.Trukman.iOS
 		public override void OnActivated (UIApplication uiApplication) {
 			_pushHelper.SubscribeMessages ();
 
+			TrukmanContext.AppWorking = true;
+
 			ShowToastMessage.Subscribe (this, this.ShowToast);
 			TakePhotoFromCameraMessage.Subscribe(_cameraHelper, _cameraHelper.TakePhotoFromCamera);
 			ShowGPSSettingsMessage.Subscribe (this, this.ShowGPSSettings);
@@ -101,6 +103,8 @@ namespace KAS.Trukman.iOS
 		}
 
 		public override void DidEnterBackground (UIApplication uiApplication) {
+			TrukmanContext.AppWorking = false;
+
 			ShowToastMessage.Unsubscribe (this);
 			TakePhotoFromCameraMessage.Unsubscribe(_cameraHelper);
 			ShowGPSSettingsMessage.Unsubscribe (this);
