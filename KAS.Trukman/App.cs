@@ -20,96 +20,9 @@ namespace KAS.Trukman
     #region App
     public class App : Application
     {
-		/*
-        static IServerManager serverManager;
-        public static IServerManager ServerManager
-        {
-            get
-            {
-                if (serverManager == null)
-                    serverManager = DependencyService.Get<IServerManager>();
-                return serverManager;
-            }
-        }
-
-        static ILocationService locManager;
-        public static ILocationService LocManager
-        {
-            get
-            {
-                if (locManager == null)
-                    locManager = DependencyService.Get<ILocationService>();
-                return locManager;
-            }
-        }
-
-
-        static ILocationServicePlatformStarter locationServiceStarter;
-        public static ILocationServicePlatformStarter LocationServiceStarter
-        {
-            get
-            {
-                if (locationServiceStarter == null)
-                    locationServiceStarter = DependencyService.Get<ILocationServicePlatformStarter>();
-                return locationServiceStarter;
-            }
-        }
-        */
-
         public App()
         {
             this.MainPage = new EmptyPage();
-
-            CreateStyles();
-        }
-
-        void CreateStyles()
-        {
-            var entryRadiusStyle = new Style(typeof(TrukmanEditor)) {
-                Setters = {
-                    new Setter{ Property = TrukmanEditor.TextColorProperty, Value = Color.FromHex ("8D8D8D") },
-                    new Setter{ Property = TrukmanEditor.PlaceholderColorProperty, Value = Color.FromHex ("8D8D8D") },
-                    new Setter{ Property = TrukmanEditor.BackgroundColorProperty, Value = Color.Transparent },
-                }
-            };
-            var buttonForEntryRadiusStyle = new Style(typeof(TrukmanButton)) {
-                Setters = {
-                    new Setter{ Property = TrukmanButton.TextColorProperty, Value = Color.Black },
-                    new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.White },
-                    new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 },
-                }
-            };
-
-            var disabledEntryStyle = new Style(typeof(TrukmanEditor)) {
-                Setters = {
-                    new Setter{ Property = TrukmanEditor.TextColorProperty, Value = Color.Black },
-                    new Setter{ Property = TrukmanEditor.BackgroundColorProperty, Value = Color.Transparent },
-                }
-            };
-
-            var disabledButtonForEntryRadiusStyle = new Style(typeof(TrukmanButton)) {
-                Setters = {
-                    new Setter{ Property = TrukmanButton.TextColorProperty, Value = Color.FromHex ("7A7474") },
-                    new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.FromHex ("EAD2D2") },
-                    new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 }
-                }
-            };
-
-            var buttonTransparentEntry = new Style(typeof(TrukmanButton)) {
-                Setters = {
-                    new Setter{ Property = TrukmanButton.BackgroundColorProperty, Value = Color.Transparent },
-                    new Setter{ Property = TrukmanButton.BorderRadiusProperty, Value = 22 },
-                    new Setter{ Property = TrukmanButton.BorderColorProperty, Value = Color.White },
-                    new Setter{ Property = TrukmanButton.BorderWidthProperty, Value = 1.5 }
-                }
-            };
-
-            Resources = new ResourceDictionary();
-            Resources.Add("entryRadiusStyle", entryRadiusStyle);
-            Resources.Add("buttonForEntryRadiusStyle", buttonForEntryRadiusStyle);
-            Resources.Add("disabledEntryStyle", disabledEntryStyle);
-            Resources.Add("disabledButtonForEntryRadiusStyle", disabledButtonForEntryRadiusStyle);
-            Resources.Add("buttonTransparentEntry", buttonTransparentEntry);
         }
 
         protected override void OnStart()
@@ -181,12 +94,7 @@ namespace KAS.Trukman
         {
             TrukmanContext.AppWorking = true;
 
-//            ShowSignUpOwnerWelcomePageMessage.Subscribe(this, this.ShowOwnerSignUpWelcomePage);
-//            ShowMainPageMessage.Subscribe(this, this.ShowMainMenu);
             ShowTopPageMessage.Subscribe(this, this.ShowTopPage);
-//            PopPageMessage.Subscribe(this, this.PopPage);
-//            PopToRootPageMessage.Subscribe(this, this.PopToRootPage);
-//            ShowOwnerDriverAuthorizationPageMessage.Subscribe(this, this.ShowDriverAuthorizationPage);
             StartOwnerMainPageMessage.Subscribe(this, this.StartOwnerMainPage);
         }
 
@@ -194,63 +102,9 @@ namespace KAS.Trukman
         {
             TrukmanContext.AppWorking = false;
 
-//            ShowMainPageMessage.Unsubscribe(this);
             ShowTopPageMessage.Unsubscribe(this);
-//           PopPageMessage.Unsubscribe(this);
-//            PopToRootPageMessage.Unsubscribe(this);
-//            ShowSignUpOwnerWelcomePageMessage.Unsubscribe(this);
-//            ShowOwnerDriverAuthorizationPageMessage.Unsubscribe(this);
             StartOwnerMainPageMessage.Unsubscribe(this);
         }
-
-        //private void ShowTopPage(ShowTopPageMessage message)
-        //{
-        //    Device.BeginInvokeOnMainThread(() => {
-        //        if (TrukmanContext.User == null)
-        //            this.MainPage = new NavigationPage(new SignUpTypePage());
-        //        else if (TrukmanContext.User.Role == UserRole.UserRoleDriver)
-        //            this.MainPage = new MainPage();
-        //        else if (TrukmanContext.User.Role == UserRole.UserRoleOwner)
-        //        {
-        //        }
-        //        else if (TrukmanContext.User.Role == UserRole.UserRoleDispatch)
-        //        {
-        //        }
-        //    });
-        //}
-
-        //private void ShowTopPage(ShowTopPageMessage message)
-        //{
-        //    Device.BeginInvokeOnMainThread(async () =>
-        //    {
-        //        //var _navigationPage = new NavigationPage ();
-        //        //SettingsServiceHelper.SaveRejectedCounter(0);
-        //        string companyName = SettingsServiceHelper.GetCompany();
-        //        if (App.ServerManager.IsAuthorizedUser() && App.serverManager.GetCurrentUserRole() == UserRole.UserRoleOwner)
-        //        {
-        //            //                    var page = new OwnerSignUpWelcomePage();
-        //            //                    page.ViewModel.Initialize(companyName);
-        //            //                    this.MainPage = new NavigationPage(page);
-        //            this.MainPage = new OwnerMainPage();
-        //        }
-        //        else {
-
-        //            if (!App.ServerManager.IsAuthorizedUser() || string.IsNullOrEmpty(companyName))
-        //            {
-        //                this.MainPage = new NavigationPage(new SignUpTypePage());
-        //            }
-        //            else {
-        //                var status = await App.serverManager.GetAuthorizationStatus(companyName);
-        //                if (status == AuthorizationRequestStatus.Authorized)
-        //                    this.MainPage = new MainPage();
-        //                else if (status == AuthorizationRequestStatus.Pending)
-        //                    this.MainPage = new NavigationPage(new PendingAuthorizationPage());
-        //                else if (status == AuthorizationRequestStatus.Declined)
-        //                    this.MainPage = new NavigationPage(new SignUpTypePage());
-        //            }
-        //        }
-        //    });
-        //}
 
         private void ShowTopPage()
         {

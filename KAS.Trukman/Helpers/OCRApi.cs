@@ -8,17 +8,7 @@ using Newtonsoft.Json;
 
 namespace KAS.Trukman.OCR
 {
-	/*
-     * Usage example:
-     * OCRApi ocr = new OCRApi();
-            
-       Task parseTask = ocr.Parse(selectedFragment)
-           .ContinueWith((task) =>
-            {
-               OCRResponse response = task.Result;
-               // And so on...
-            });
-     */
+	#region Order
 	public class Order
 	{
 		public string Sender { get; set; }
@@ -54,7 +44,9 @@ namespace KAS.Trukman.OCR
 		}
 		#endregion
 	}
+	#endregion
 
+	#region OCRResponse
 	public class OCRResponse
 	{
 		[JsonConstructor]
@@ -66,7 +58,9 @@ namespace KAS.Trukman.OCR
 		public string ErrorMessage { get; set; }
 		public string ErrorDetails { get; set; }
 	}
+	#endregion
 
+	#region Parsedresult
 	public class Parsedresult
 	{
 		[JsonConstructor]
@@ -77,7 +71,9 @@ namespace KAS.Trukman.OCR
 		public string ErrorMessage { get; set; }
 		public string ErrorDetails { get; set; }
 	}
+	#endregion
 
+	#region OCRApi
 	public class OCRApi
 	{
 		private string APIKey;
@@ -106,4 +102,5 @@ namespace KAS.Trukman.OCR
 			return JsonConvert.DeserializeObject<OCRResponse>(strContent);
 		}
 	}
+	#endregion
 }
