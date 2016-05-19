@@ -707,6 +707,20 @@ namespace KAS.Trukman.Storage
 			}
 		}
 
+        public async Task<User[]> SelectBrockersAsync()
+        {
+            try
+            {
+                var brockers = await _externalStorage.SelectBrockersAsync();
+                return brockers;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
+
         #region SettingsItem
         public string GetSettings(string key)
         {

@@ -37,6 +37,12 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<int>(value); }
         }
 
+        [ParseFieldName("brockers")]
+        public ParseRelation<ParseUser> Brockers
+        {
+            get { return this.GetRelationProperty<ParseUser>(); }
+        }
+
         [ParseFieldName("drivers")]
         public ParseRelation<ParseUser> Drivers
         {

@@ -89,6 +89,8 @@ namespace KAS.Trukman.Storage
 		Task<Advance[]> SelectFuelAdvancesAsync(int requestType);
 
 		Task SetAdvanceStateAsync (Advance advance);
+
+        Task<User[]> SelectBrockersAsync();
     }
     #endregion
 }

@@ -273,12 +273,10 @@ namespace KAS.Trukman.AppContext
 			return parseCompany;
 		}
 
-		static public async Task<IEnumerable<ParseUser>> GetBrokersFromCompany(ParseCompany company)
+		static public async Task<User[]> SelectBrockersAsync()
 		{
-			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("brokers");
-			ParseQuery<ParseUser> query = relation.Query;
-			var brokers = await query.FindAsync ();
-			return brokers;
+            var brockers = await _localStorage.SelectBrockersAsync();
+            return brockers;
 		}
 
 		static public async Task<IEnumerable<ParseUser>> GetDriversFromCompany(ParseCompany company)
