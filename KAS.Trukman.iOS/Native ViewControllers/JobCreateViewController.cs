@@ -6,6 +6,7 @@ using KAS.Trukman.Storage;
 using KAS.Trukman.AppContext;
 using System.Threading.Tasks;
 using MBProgressHUD;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.iOS
 {
@@ -21,8 +22,11 @@ namespace KAS.Trukman.iOS
 			Driver
 		};
 
-		public ParseJob job = null;
-		public ParseCompany company = null;
+		//public ParseJob job = null;
+		//public ParseCompany company = null;
+
+		public Trip job = null;
+		public Company company = null;
 
 		public JobCreateViewController () : base ("JobCreateViewController", null)
 		{
@@ -55,17 +59,17 @@ namespace KAS.Trukman.iOS
 				hud.Show(true);
 
 				View.AddSubview (hud);
-				Task.Run(async() => {
+				Task.Run(() => {
 					Console.Write("Creating job with Ref Number:{0}", job.JobRef);
 
 					if (company == null) {
-						company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
+						company = (TrukmanContext.Company as Company); // await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
 					}
-					this.InvokeOnMainThread(() => {
+					this.InvokeOnMainThread(async () => {
 						if (/*job.Broker != null &&*/ job.Driver != null && company != null) {
 							job.Company = company;
 							try {
-								job.SaveAsync();
+								job = await TrukmanContext.CreateTripAsync(job); // job.SaveAsync();
 							} catch {
 							}
 							this.NavigationController.DismissViewController(true, null);
@@ -78,8 +82,8 @@ namespace KAS.Trukman.iOS
 				});
 			};
 			this.NavigationItem.RightBarButtonItem = rightBarItem;
-			Task.Run(async() => {
-				company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
+			Task.Run(() => {
+				company = (TrukmanContext.Company as Company); // await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
 			});
 		}
 
@@ -194,7 +198,7 @@ namespace KAS.Trukman.iOS
 				if (job.Broker == null) {
 					brokerCell.actionButton.SetTitle ("assign", UIControlState.Normal);
 				} else {
-					brokerCell.actionButton.SetTitle (job.Broker.Username, UIControlState.Normal);
+					brokerCell.actionButton.SetTitle (job.Broker.UserName, UIControlState.Normal);
 				}
 
 				brokerCell._textLabel.Text = "Broker:";
@@ -210,7 +214,7 @@ namespace KAS.Trukman.iOS
 				if (job.Driver == null) {
 					driverCell.actionButton.SetTitle ("assign", UIControlState.Normal);
 				} else {
-					driverCell.actionButton.SetTitle (job.Driver.Username, UIControlState.Normal);
+					driverCell.actionButton.SetTitle (job.Driver.UserName, UIControlState.Normal);
 				}
 
 				driverCell._textLabel.Text = "Driver:";
@@ -238,7 +242,7 @@ namespace KAS.Trukman.iOS
 					list.dataSourceType = UserListDataSource.Broker;
 				}
 
-				list.company = company;
+				list.company = (TrukmanContext.Company as Company);
 				list.job = job;
 
 				this.NavigationController.PushViewController(list, true);

@@ -59,6 +59,18 @@ namespace KAS.Trukman.Data.Classes
             get { return (int)this.GetValue("Status"); }
             set { this.SetValue("Status", value); }
         }
+
+		[Ignore]
+		public string FullName
+		{
+			get 
+			{
+				var fullName = String.Format ("{0} {1}", this.FirstName, this.LastName);
+				if (String.IsNullOrEmpty (fullName.Trim()))
+					fullName = this.UserName;
+				return fullName;
+			}
+		}
 	}
     #endregion
 }

@@ -3,13 +3,15 @@
 using UIKit;
 using System.Collections.Generic;
 using KAS.Trukman.Storage.ParseClasses;
+using KAS.Trukman.Data.Classes;
 
 
 namespace KAS.Trukman.iOS
 {
 	public partial class OCRResultViewController : UIViewController, IUIActionSheetDelegate
 	{
-		public ParseJob job;
+//		public ParseJob job;
+		public Trip job;
 
 		public OCRResultViewController () : base ("OCRResultViewController", null)
 		{

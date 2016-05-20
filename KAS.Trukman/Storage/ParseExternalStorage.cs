@@ -167,7 +167,15 @@ namespace KAS.Trukman.Storage
                 Fax = (parseJob.Receiver != null ? parseJob.Receiver.Fax : ""),
                 Address = (parseJob.Receiver != null ? parseJob.Receiver.Address : parseJob.ToAddress)
             };
-            var driverDisplayName = (parseJob != null && parseJob.Driver != null ? parseJob.Driver.Username : "");
+			User driver = null;
+			if (parseJob.Driver != null)
+				driver = this.ParseUserToUser (parseJob.Driver);
+			User broker = null;
+			if (parseJob.Broker != null)
+				broker = this.ParseUserToUser (parseJob.Broker);
+			Company company = null;
+			if (parseJob.Company != null)
+				company = this.ParseCompanyToCompany (parseJob.Company);
             var trip = new Trip
             {
                 ID = parseJob.ObjectId,
@@ -184,9 +192,15 @@ namespace KAS.Trukman.Storage
                 Shipper = shipper,
                 Receiver = receiver,
 				JobRef = parseJob.JobRef,
+				FromAddress = parseJob.FromAddress,
+				ToAddress = parseJob.ToAddress,
+				Weight = parseJob.Weight,
                 Location = new Position(parseJob.Location.Latitude, parseJob.Location.Longitude),
                 UpdateTime = (parseJob.UpdatedAt != null ? (DateTime)parseJob.UpdatedAt : DateTime.Now),
-                DriverDisplayName = driverDisplayName
+				Driver = driver,
+				Broker = broker,
+				Company = company,
+				DriverDisplayName = (driver != null ? driver.UserName : "")
             };
 
             return trip;
@@ -1033,16 +1047,57 @@ namespace KAS.Trukman.Storage
         public async Task<User[]> SelectBrockersAsync()
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();
-            var query = parseCompany.Brockers.Query;
+            var query = parseCompany.Brokers.Query;
             var parseUsers = await query.FindAsync();
-            var brockers = new List<User>();
+			var brokers = new List<User>();
             foreach (var parseUser in parseUsers)
             {
                 var user = this.ParseUserToUser(parseUser);
-                brockers.Add(user);
+                brokers.Add(user);
             }
-            return brockers.ToArray();
+            return brokers.ToArray();
         }
+
+		public async Task<User[]> SelectDriversAsync()
+		{
+			var parseCompany = await this.SelectUserParseCompanyAsync();
+			var query = parseCompany.Drivers.Query;
+			var parseUsers = await query.FindAsync();
+			var drivers = new List<User>();
+			foreach (var parseUser in parseUsers)
+			{
+				var user = this.ParseUserToUser(parseUser);
+				drivers.Add(user);
+			}
+			return drivers.ToArray();
+		}
+
+		public async Task<Trip> CreateTripAsync(Trip trip)
+		{
+			var company = ParseObject.CreateWithoutData<ParseCompany> (trip.Company.ID);
+			var driver = ParseObject.CreateWithoutData<ParseUser> (trip.Driver.ID);
+			var broker = ParseObject.CreateWithoutData<ParseUser> (trip.Broker.ID);
+
+			var parseJob = new ParseJob { 
+				DeliveryDatetime = trip.DeliveryDatetime,
+				DriverAccepted = false,
+				JobCancelled = false,
+				JobCompleted = false,
+				IsDeleted = false,
+				PickupDatetime = trip.PickupDatetime,
+				Price = trip.Points,
+				JobRef = trip.JobRef,
+				FromAddress = trip.FromAddress,
+				ToAddress = trip.ToAddress,
+				Weight = trip.Weight,
+				Company = company,
+				Driver = driver,
+				Broker = broker
+			};
+			await parseJob.SaveAsync ();
+			trip.ID = parseJob.ObjectId;
+			return trip;
+		}
 		#endregion
     }
     #endregion

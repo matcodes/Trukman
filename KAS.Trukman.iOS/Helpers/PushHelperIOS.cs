@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using KAS.Trukman.Storage.ParseClasses;
 using KAS.Trukman.AppContext;
 using System.Text.RegularExpressions;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.iOS
 {
@@ -137,7 +138,7 @@ namespace KAS.Trukman.iOS
 
 				Task.Run (async() => {
 					try {
-						ParseCompany company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
+						var company = (TrukmanContext.Company as Company); // await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
 
 						if (company != null) {
 							await ParsePush.SubscribeAsync(Regex.Replace(company.Name.ToLower(), @"\s+", ""));

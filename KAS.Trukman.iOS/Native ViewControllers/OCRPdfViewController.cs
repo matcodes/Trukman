@@ -7,6 +7,7 @@ using CoreGraphics;
 using KAS.Trukman.OCR;
 using MBProgressHUD;
 using KAS.Trukman.Storage.ParseClasses;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.iOS
 {
@@ -14,7 +15,8 @@ namespace KAS.Trukman.iOS
 	{
 		public NSUrl pdfUrl;
 		public TRUserResizableView highlightBox;
-		public ParseJob job;
+//		public ParseJob job;
+		public Trip job;
 
 		public OCRPdfViewController () : base ("OCRPdfViewController", null)
 		{
@@ -42,7 +44,7 @@ namespace KAS.Trukman.iOS
 
 			this.View.AddSubview(highlightBox);
 
-			job = ParseJob.Create<ParseJob> ();
+			job = new Trip (); // ParseJob.Create<ParseJob> ();
 
 			UIBarButtonItem rightBarItem = new UIBarButtonItem ();
 			rightBarItem.Title = "Next";

@@ -13,9 +13,9 @@ using Xamarin.Forms;
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
     #region OwnerBrokerListViewModel
-    public class OwnerBrockerListViewModel : PageViewModel
+    public class OwnerBrokerListViewModel : PageViewModel
     {
-        public OwnerBrockerListViewModel() 
+        public OwnerBrokerListViewModel() 
             : base()
         {
             this.Brokers = new ObservableCollection<User>();
@@ -30,7 +30,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Appering();
 
-            this.SelectBrockers();
+            this.SelectBrokers();
         }
 
         public override void Disappering()
@@ -50,14 +50,14 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.Title = AppLanguages.CurrentLanguage.OwnerBrokerListPageName;
         }
 
-        private void SelectBrockers()
+        private void SelectBrokers()
         {
-            Task.Run( () => {
+            Task.Run(async() => {
                 this.IsBusy = true;
                 try
                 {
-                    var brockers = new User[] { };
-                    this.ShowAdvances(brockers);
+					var brokers = await TrukmanContext.SelectBrockersAsync();
+                    this.ShowBrokers(brokers);
                 }
                 catch (Exception exception)
                 {
@@ -71,14 +71,14 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             });
         }
 
-        private void ShowAdvances(User[] brockers)
+        private void ShowBrokers(User[] brokers)
         {
             Device.BeginInvokeOnMainThread(() =>
             {
                 this.Brokers.Clear();
-                this.SelectedBrocker = null;
+                this.SelectedBroker = null;
 
-                foreach (var brocker in brockers)
+                foreach (var brocker in brokers)
                     this.Brokers.Add(brocker);
             });
         }
@@ -95,20 +95,20 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectBroker(object parameter)
         {
-            this.SelectedBrocker = null;
+            this.SelectedBroker = null;
         }
 
         private void Refresh(object parameter)
         {
-            this.SelectBrockers();
+            this.SelectBrokers();
         }
 
         public ObservableCollection<User> Brokers { get; private set; }
 
-        public Advance SelectedBrocker
+        public Advance SelectedBroker
         {
-            get { return (this.GetValue("SelectedBrocker") as Advance); }
-            set { this.SetValue("SelectedBrocker", value); }
+            get { return (this.GetValue("SelectedBroker") as Advance); }
+            set { this.SetValue("SelectedBroker", value); }
         }
 
         public bool IsRefreshing

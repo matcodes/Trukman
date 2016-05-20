@@ -8,13 +8,13 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
-    #region OwnerBrockerListPage
-    public class OwnerBrockerListPage : TrukmanPage
+	#region OwnerBrokerListPage
+    public class OwnerBrokerListPage : TrukmanPage
     {
-        public OwnerBrockerListPage() 
+        public OwnerBrokerListPage() 
             : base()
         {
-            this.BindingContext = new OwnerBrockerListViewModel();
+            this.BindingContext = new OwnerBrokerListViewModel();
         }
 
         protected override View CreateContent()
@@ -27,14 +27,14 @@ namespace KAS.Trukman.Views.Pages.Owner
             titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowMainMenuCommand", BindingMode.OneWay);
             titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
 
-            //var advances = new AdvanceListView
-            //{
-            //};
-            //advances.SetBinding(AdvanceListView.ItemsSourceProperty, "Advances", BindingMode.TwoWay);
-            //advances.SetBinding(AdvanceListView.SelectedItemProperty, "SelectedAdvance", BindingMode.TwoWay);
-            //advances.SetBinding(AdvanceListView.ItemClickCommandProperty, "SelectAdvanceCommand");
-            //advances.SetBinding(AdvanceListView.RefreshCommandProperty, "RefreshCommand");
-            //advances.SetBinding(AdvanceListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
+			var brokers = new BrokerListView
+            {
+            };
+            brokers.SetBinding(BrokerListView.ItemsSourceProperty, "Brokers", BindingMode.TwoWay);
+            brokers.SetBinding(BrokerListView.SelectedItemProperty, "SelectedBroker", BindingMode.TwoWay);
+            brokers.SetBinding(BrokerListView.ItemClickCommandProperty, "SelectBrokerCommand");
+            brokers.SetBinding(BrokerListView.RefreshCommandProperty, "RefreshCommand");
+            brokers.SetBinding(BrokerListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
 
             var content = new Grid
             {
@@ -48,7 +48,7 @@ namespace KAS.Trukman.Views.Pages.Owner
                 }
             };
             content.Children.Add(titleBar, 0, 0);
-            //content.Children.Add(advances, 0, 1);
+			content.Children.Add(brokers, 0, 1);
 
             var busyIndicator = new ActivityIndicator
             {
@@ -70,9 +70,9 @@ namespace KAS.Trukman.Views.Pages.Owner
             return pageContent;
         }
 
-        public new OwnerBrockerListViewModel ViewModel
+        public new OwnerBrokerListViewModel ViewModel
         {
-            get { return (this.BindingContext as OwnerBrockerListViewModel); }
+            get { return (this.BindingContext as OwnerBrokerListViewModel); }
         }
     }
     #endregion

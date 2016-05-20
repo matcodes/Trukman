@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using KAS.Trukman.Storage;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.iOS
 {
@@ -20,9 +21,11 @@ namespace KAS.Trukman.iOS
 	public partial class UserListViewController : UIViewController, IUITableViewDataSource, IUITableViewDelegate
 	{
 		public UserListDataSource dataSourceType = UserListDataSource.Driver;
-		public IEnumerable <ParseUser> dataSource = null;
-		public ParseJob job = null;
-		public ParseCompany company = null;
+		public User[] dataSource = null;
+//		public ParseJob job = null;
+//		public ParseCompany company = null;
+		public Trip job = null;
+		public Company company = null;
 
 		public UserListViewController () : base ("UserListViewController", null)
 		{
@@ -46,17 +49,17 @@ namespace KAS.Trukman.iOS
 
 			View.AddSubview (hud);
 			Task.Run(async() => {
-				if (company == null) {
-					company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
-				}
+//				if (company == null) {
+//					company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
+//				}
 
-				if (company != null) {
+//				if (company != null) {
 					if (dataSourceType == UserListDataSource.Broker) {
-						dataSource = await TrukmanContext.GetBrokersFromCompany(company);
+						dataSource = await TrukmanContext.SelectBrockersAsync(); // GetBrokersFromCompany(company);
 					} else {
-						dataSource = await TrukmanContext.GetDriversFromCompany(company);
+						dataSource = await TrukmanContext.SelectDriversAsync(); // GetDriversFromCompany(company);
 					}
-				}
+//				}
 				this.InvokeOnMainThread(() => {
 					hud.Hide(true);
 					tableView.ReloadData();
@@ -82,8 +85,8 @@ namespace KAS.Trukman.iOS
 				cell = new UITableViewCell (UITableViewCellStyle.Default, "cell");
 			}
 
-			ParseUser user = dataSource.ElementAt(indexPath.Row);
-			cell.TextLabel.Text = user.Username;
+			var user = dataSource[indexPath.Row];
+			cell.TextLabel.Text = user.UserName;
 			return cell;
 		}
 
@@ -101,7 +104,7 @@ namespace KAS.Trukman.iOS
 		public void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
 			tableView.DeselectRow (indexPath, true);
-			ParseUser user = dataSource.ElementAt(indexPath.Row);
+			var user = dataSource[indexPath.Row];
 			if (dataSourceType == UserListDataSource.Broker) {
 				job.Broker = user;
 			} else {

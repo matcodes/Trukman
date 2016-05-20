@@ -265,7 +265,7 @@ namespace KAS.Trukman.AppContext
             await _localStorage.DeclineDriverToCompany(user);
         }
 
-		static public async Task<ParseCompany> FetchParseCompany(string name)
+		public static async Task<ParseCompany> FetchParseCompany(string name)
 		{
 			var query = new ParseQuery<ParseCompany>()
 				.WhereEqualTo("name", name.ToLower());
@@ -273,18 +273,22 @@ namespace KAS.Trukman.AppContext
 			return parseCompany;
 		}
 
-		static public async Task<User[]> SelectBrockersAsync()
+		public static async Task<Trip> CreateTripAsync(Trip trip)
+		{
+			var result = await _localStorage.CreateTripAsync(trip);
+			return result;
+		}
+
+		public static async Task<User[]> SelectBrockersAsync()
 		{
             var brockers = await _localStorage.SelectBrockersAsync();
             return brockers;
 		}
 
-		static public async Task<IEnumerable<ParseUser>> GetDriversFromCompany(ParseCompany company)
+		public static async Task<User[]> SelectDriversAsync()
 		{
-			ParseRelation<ParseUser> relation = company.GetRelation<ParseUser> ("drivers");
-			ParseQuery<ParseUser> query = relation.Query;
-			var brokers = await query.FindAsync ();
-			return brokers;
+			var users = await _localStorage.SelectDriversAsync ();
+			return users;
 		}
 
 		static public async Task<IEnumerable<ParsePhoto>> GetPhotosFromCompany(ParseCompany company)

@@ -151,7 +151,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 
         private void ShowOwnerBrockerListPage(ShowOwnerBrockerListMessage message)
         {
-            var page = new OwnerBrockerListPage();
+            var page = new OwnerBrokerListPage();
             page.ViewModel.Initialize();
             this.PushPage(page);
         }

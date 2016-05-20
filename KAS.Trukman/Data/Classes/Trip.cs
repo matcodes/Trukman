@@ -36,6 +36,48 @@ namespace KAS.Trukman.Data.Classes
             set { this.SetValue("Location", value); }
         }
 
+		[Ignore]
+		public Company Company
+		{
+			get { return (this.GetValue ("Company") as Company); }
+			set { this.SetValue ("Company", value); }
+		}
+
+		[Ignore]
+		public User Driver
+		{
+			get { return (this.GetValue ("Driver") as User); }
+			set { this.SetValue ("Driver", value); }
+		}
+
+		[Ignore]
+		public User Broker
+		{
+			get { return (this.GetValue ("Brocker") as User); }
+			set { this.SetValue ("Brocker", value); }
+		}
+
+		[Ignore]
+		public string FromAddress
+		{
+			get { return (string)this.GetValue ("FromAddress"); }
+			set { this.SetValue ("FromAddress", value); }
+		}
+
+		[Ignore]
+		public string ToAddress
+		{
+			get { return (string)this.GetValue ("ToAddress"); }
+			set { this.SetValue ("ToAddress", value); }
+		}
+
+		[Ignore]
+		public int Weight
+		{
+			get { return (int)this.GetValue ("Weight", (int)0); }
+			set { this.SetValue ("Weight", value); }
+		}
+
         public int Points
         {
             get { return (int)this.GetValue("Points", (int)0); }
