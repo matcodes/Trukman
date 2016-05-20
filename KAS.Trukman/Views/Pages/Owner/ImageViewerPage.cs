@@ -2,18 +2,19 @@
 
 using Xamarin.Forms;
 using KAS.Trukman.Storage.ParseClasses;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman
 {
 	public class ImageViewerPage : ContentPage
 	{
-		public ImageViewerPage (ParsePhoto photo)
+		public ImageViewerPage (Photo photo)
 		{
-			this.Title = photo.Kind;
+			this.Title = photo.Type;
 
 			var image = new Image
 			{
-				Source = ImageSource.FromUri(photo.Data.Url),
+				Source = ImageSource.FromUri(photo.Uri),
 				Aspect = Aspect.AspectFit,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};

@@ -18,8 +18,8 @@ namespace KAS.Trukman.Views.Lists
 
 			var cell = new DataTemplate(typeof(DeliveryUpdateCell));
 
-			cell.SetBinding(TextCell.TextProperty, "Kind");
-			cell.SetBinding(TextCell.DetailProperty, "Job.Driver.Username");
+			cell.SetBinding(TextCell.TextProperty, "Type");
+			cell.SetBinding(TextCell.DetailProperty, "Job.Driver.FullName");
 
 			this.ItemTemplate = cell;
 
@@ -40,9 +40,9 @@ namespace KAS.Trukman.Views.Lists
 		public HeaderCell()
 		{
 			this.Height = 25;
-			var title = new Label
-			{
-				Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Bold),
+			var title = new Label {
+				FontSize = Device.GetNamedSize (NamedSize.Small, typeof(Label)),
+				FontAttributes = FontAttributes.Bold,
 				TextColor = Color.White,
 				VerticalOptions = LayoutOptions.Center
 			};

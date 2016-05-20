@@ -146,7 +146,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\OwnerSignUpWelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDriverAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
@@ -189,7 +188,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\NavBarPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\OwnerSignUpWelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerDriverAuthorizationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFleetPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />

@@ -291,17 +291,23 @@ namespace KAS.Trukman.AppContext
 			return users;
 		}
 
-		static public async Task<IEnumerable<ParsePhoto>> GetPhotosFromCompany(ParseCompany company)
+		public static async Task<Photo[]> SelectPhotosAsync()
 		{
-			ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
-				.WhereEqualTo ("company", company)
-				.Include("job")
-				.Include("company")
-				.Include ("job.Driver");
-			
-			var photos = await query.FindAsync ();
+			var photos = await _localStorage.SelectPhotosAsync ();
 			return photos;
 		}
+
+//		static public async Task<IEnumerable<ParsePhoto>> GetPhotosFromCompany(ParseCompany company)
+//		{
+//			ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
+//				.WhereEqualTo ("company", company)
+//				.Include("job")
+//				.Include("company")
+//				.Include ("job.Driver");
+//			
+//			var photos = await query.FindAsync ();
+//			return photos;
+//		}
 
         private static void StartSynchronizeTimer()
         {

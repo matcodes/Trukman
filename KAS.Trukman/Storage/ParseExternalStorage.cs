@@ -1098,6 +1098,40 @@ namespace KAS.Trukman.Storage
 			trip.ID = parseJob.ObjectId;
 			return trip;
 		}
+
+		public async Task<Photo[]> SelectPhotosAsync()
+		{
+			var parseCompany = await this.SelectUserParseCompanyAsync ();
+
+			ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
+				.WhereEqualTo ("company", parseCompany)
+				.Include("company")
+				.Include("job")
+				.Include ("job.Driver");
+
+			var parsePhotos = await query.FindAsync ();
+			var photos = new List<Photo> ();
+			foreach (var parsePhoto in parsePhotos) {
+				var photo = this.ParsePhotoToPhoto (parsePhoto);
+				photos.Add (photo);
+			}
+			return photos.ToArray();			
+		}
+
+		private Photo ParsePhotoToPhoto(ParsePhoto parsePhoto)
+		{
+			var job = this.ParseJobToTrip (parsePhoto.Job);
+			var company = this.ParseCompanyToCompany (parsePhoto.Company);
+			var photo = new Photo {
+				ID = parsePhoto.ObjectId,
+				Job = job,
+				Company = company,
+				Type = parsePhoto.Kind,
+				Uri = parsePhoto.Data.Url,
+				IsViewed = parsePhoto.IsViewed
+			};
+			return photo;
+		}
 		#endregion
     }
     #endregion

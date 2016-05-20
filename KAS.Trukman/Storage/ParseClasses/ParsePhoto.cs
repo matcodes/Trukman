@@ -30,6 +30,13 @@ namespace KAS.Trukman.Storage.ParseClasses
 			set { this.SetProperty<ParseCompany>(value); }
 		}
 
+		[ParseFieldName("isViewed")]
+		public bool IsViewed
+		{
+			get { return this.GetProperty<bool> (false); }
+			set { this.SetProperty<bool> (value); }
+		}
+
         [ParseFieldName("photo")]
         public ParseFile Data
         {

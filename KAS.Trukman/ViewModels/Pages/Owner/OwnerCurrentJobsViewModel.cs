@@ -16,21 +16,21 @@ using Xamarin.Forms.Maps;
 using Xamarin.Forms;
 using KAS.Trukman.Storage.ParseClasses;
 using System.Linq;
-using System.Threading.Tasks;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
 	public class OwnerCurrentJobsViewModel:PageViewModel
 	{
-		public ObservableCollection<ParsePhoto> Photos { get; private set; }
-		public ObservableCollection<Grouping<string, ParsePhoto>> PhotosGrouped { get; set; }
+		public ObservableCollection<Photo> Photos { get; private set; }
+		public ObservableCollection<Grouping<string, Photo>> PhotosGrouped { get; set; }
 
-		public ParseCompany company = null;
+//		public ParseCompany company = null;
 
 		public OwnerCurrentJobsViewModel (): base()
 		{
-			this.Photos = new ObservableCollection<ParsePhoto>();
-			this.PhotosGrouped = new ObservableCollection<Grouping<string, ParsePhoto>>();
+			this.Photos = new ObservableCollection<Photo>();
+			this.PhotosGrouped = new ObservableCollection<Grouping<string, Photo>>();
 
 			this.RefreshCommand = new VisualCommand (this.Refresh);
 			this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
@@ -51,14 +51,14 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 					this.IsBusy = true;
 					try
 					{
-						if (company == null) {
-							company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
-						}
+//						if (company == null) {
+//							company = await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
+//						}
 
-						if (company != null) {
-							var photos = await TrukmanContext.GetPhotosFromCompany(company);
+//						if (company != null) {
+							var photos = await TrukmanContext.SelectPhotosAsync(); //  GetPhotosFromCompany(company);
 							this.ShowPhotoList(photos);
-						}
+//						}
 					}
 					catch (Exception exception)
 					{
@@ -72,7 +72,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 				});
 		}
 
-		private void ShowPhotoList(IEnumerable<ParsePhoto> photos)
+		private void ShowPhotoList(Photo[] photos)
 		{
 			Device.BeginInvokeOnMainThread (() => {
 				this.Photos.Clear ();
@@ -85,7 +85,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
 					var grouped = from photo in photos
 						group photo by photo.Job.JobRef into photoGroup
-						select new Grouping<string, ParsePhoto>(photoGroup.Key, photoGroup);
+						select new Grouping<string, Photo>(photoGroup.Key, photoGroup);
 
 					foreach (var _group in grouped) {
 						this.PhotosGrouped.Add(_group);

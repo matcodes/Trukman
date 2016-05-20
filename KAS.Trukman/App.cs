@@ -61,7 +61,7 @@ namespace KAS.Trukman
         {
             if (this.MainPage is NavigationPage)
             {
-                var page = new OwnerSignUpWelcomePage();
+                var page = new SignUpOwnerWelcomePage();
                 page.ViewModel.Initialize(message.Company);
                 await (this.MainPage as NavigationPage).PushAsync(page);
             }

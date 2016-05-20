@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLite;
 
 namespace KAS.Trukman.Data.Classes
 {
@@ -26,11 +27,37 @@ namespace KAS.Trukman.Data.Classes
             set { this.SetValue("Type", value); }
         }
 
+		[Ignore]
+		public Trip Job
+		{
+			get { return (this.GetValue ("Job") as Trip); }
+			set { this.SetValue ("Job", value); }
+		}
+
+		[Ignore]
+		public Company Company {
+			get { return (this.GetValue ("Company") as Company); }
+			set { this.SetValue ("Company", value); }
+		}
+
+		[Ignore]
+		public Uri Uri
+		{
+			get { return (this.GetValue ("Uri") as Uri); }
+			set { this.SetValue ("Uri", value); }
+		}
+
         public byte[] Data
         {
             get { return (byte[])this.GetValue("Data"); }
             set { this.SetValue("Data", value); }
         }
+
+		public bool IsViewed
+		{
+			get { return (bool)this.GetValue ("IsViewed"); }
+			set { this.SetValue ("IsViewed", value); }
+		}
     }
     #endregion
 }

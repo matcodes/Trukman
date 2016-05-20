@@ -747,6 +747,19 @@ namespace KAS.Trukman.Storage
 			}		
 		}
 
+		public async Task<Photo[]> SelectPhotosAsync()
+		{
+			try 
+			{
+				var result = await _externalStorage.SelectPhotosAsync();
+				return result;
+			}
+			catch (Exception exception) {
+				Console.WriteLine(exception);
+				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}		
+		}
+
         #region SettingsItem
         public string GetSettings(string key)
         {

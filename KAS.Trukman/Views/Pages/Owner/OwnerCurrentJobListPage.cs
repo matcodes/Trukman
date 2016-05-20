@@ -8,6 +8,7 @@ using System.Text;
 using Xamarin.Forms;
 using KAS.Trukman.Storage.ParseClasses;
 using KAS.Trukman.Helpers;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
@@ -38,7 +39,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 			list.SetBinding(MainMenuListView.ItemsSourceProperty, "PhotosGrouped", BindingMode.TwoWay);
 			list.ItemTapped += (sender, args) =>
 			{
-				var photo = args.Item as ParsePhoto;
+				var photo = (args.Item as Photo);
 				if (photo == null)
 					return;
 //
