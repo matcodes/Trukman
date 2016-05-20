@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -28,7 +28,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-			ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
+			var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
 			this.Trip = trip;
         }
 
@@ -116,7 +116,7 @@ namespace KAS.Trukman.ViewModels.Pages
             });
         }
 
-		public ITrip Trip { get; private set; }
+		public Trip Trip { get; private set; }
 
         public DelayEmergencyItems SelectedItem
         {

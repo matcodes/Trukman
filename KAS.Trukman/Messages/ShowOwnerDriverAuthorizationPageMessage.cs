@@ -1,8 +1,7 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Trukman.Interfaces;
 using Xamarin.Forms;
 
 namespace KAS.Trukman.Messages
@@ -13,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowOwnerDriverAuthorizationPageMessage";
 
-        public static void Send(string companyName, IUser driver)
+        public static void Send(string companyName, User driver)
         {
             var message = new ShowOwnerDriverAuthorizationPageMessage(companyName, driver);
             MessagingCenter.Send<ShowOwnerDriverAuthorizationPageMessage>(message, MESSAGE_KEY);
@@ -30,7 +29,7 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowOwnerDriverAuthorizationPageMessage(string companyName, IUser driver)
+        public ShowOwnerDriverAuthorizationPageMessage(string companyName, User driver)
         {
             this.CompanyName = companyName;
             this.Driver = driver;
@@ -38,7 +37,7 @@ namespace KAS.Trukman.Messages
 
         public string CompanyName { get; private set; }
 
-        public IUser Driver { get; private set; }
+        public User Driver { get; private set; }
     }
     #endregion
 }

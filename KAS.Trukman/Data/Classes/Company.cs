@@ -1,10 +1,9 @@
-﻿using KAS.Trukman.Data.Interfaces;
-using System;
+﻿using System;
 
 namespace KAS.Trukman.Data.Classes
 {
     #region Company
-    public class Company : MainData, ICompany
+    public class Company : MainData
 	{
         public Company()
         {

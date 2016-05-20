@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Trukman.Helpers;
 using Trukman;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Views.Pages.Owner;
 using KAS.Trukman.Views.Pages.SignUp;

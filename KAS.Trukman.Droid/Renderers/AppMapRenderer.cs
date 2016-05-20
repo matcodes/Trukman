@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Android.Gms.Maps.Model;
 using KAS.Trukman.Languages;
-using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Data.Classes;
 
 [assembly: ExportRenderer(typeof(AppMap), typeof(AppMapRenderer))]
 namespace KAS.Trukman.Droid.Renderers
@@ -201,7 +201,7 @@ namespace KAS.Trukman.Droid.Renderers
         }
         #endregion
 
-        private Android.Views.View CreateContractorInfoView(Android.Views.LayoutInflater inflater, IContractor contractor, string titleText)
+        private Android.Views.View CreateContractorInfoView(Android.Views.LayoutInflater inflater, Contractor contractor, string titleText)
         {
             var view = inflater.Inflate(Resource.Layout.contractor_info, null);
 

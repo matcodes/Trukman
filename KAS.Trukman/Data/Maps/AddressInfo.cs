@@ -1,4 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +18,7 @@ namespace KAS.Trukman.Data.Maps
 
         public string Address { get; set; }
 
-        public IContractor Contractor { get; set; }
+        public Contractor Contractor { get; set; }
     }
     #endregion
 }

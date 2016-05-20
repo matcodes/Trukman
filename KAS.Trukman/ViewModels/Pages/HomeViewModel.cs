@@ -1,6 +1,5 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using KAS.Trukman.ViewModels.Pages;
@@ -15,7 +14,6 @@ using Xamarin.Forms.Maps;
 using KAS.Trukman.Helpers;
 using Trukman.Helpers;
 using Trukman.Messages;
-using Trukman.Interfaces;
 using System.Collections.ObjectModel;
 using KAS.Trukman.AppContext;
 
@@ -477,9 +475,9 @@ namespace KAS.Trukman.ViewModels.Pages
             set { this.SetValue("State", value); }
         }
 
-        public ITrip Trip
+        public Trip Trip
         {
-            get { return (this.GetValue("Trip") as ITrip); }
+            get { return (this.GetValue("Trip") as Trip); }
             set { this.SetValue("Trip", value); }
         }
 

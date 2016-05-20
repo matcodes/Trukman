@@ -1,5 +1,5 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
+using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
@@ -141,7 +141,7 @@ namespace KAS.Trukman.ViewModels.Commands
             }
         }
 
-        public ITrip Trip { get; private set; }
+        public Trip Trip { get; private set; }
 
         public VisualCommand HomeCommand { get; private set; }
 

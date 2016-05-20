@@ -1,8 +1,8 @@
-﻿using System;
+﻿using KAS.Trukman.Data.Classes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
-using KAS.Trukman.Data.Interfaces;
 
 namespace KAS.Trukman.Messages
 {
@@ -12,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowAdvancesPageMessage";
 
-		public static void Send(ITrip trip)
+		public static void Send(Trip trip)
         {
 			var message = new ShowAdvancesPageMessage(trip);
             MessagingCenter.Send<ShowAdvancesPageMessage>(message, MESSAGE_KEY);
@@ -29,12 +29,12 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-		public ShowAdvancesPageMessage(ITrip trip)
+		public ShowAdvancesPageMessage(Trip trip)
         {
 			this.Trip = trip;
         }
 
-		public ITrip Trip { get; private set; }
+		public Trip Trip { get; private set; }
     }
     #endregion
 }

@@ -1,4 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowReceiverInfoPageMessage";
 
-        public static void Send(ITrip trip)
+        public static void Send(Trip trip)
         {
             var message = new ShowTripPageMessage(trip);
             MessagingCenter.Send<ShowTripPageMessage>(message, MESSAGE_KEY);
@@ -29,12 +29,12 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowTripPageMessage(ITrip trip)
+        public ShowTripPageMessage(Trip trip)
         {
             this.Trip = trip;
         }
 
-        public ITrip Trip { get; private set; }
+        public Trip Trip { get; private set; }
     }
     #endregion
 }

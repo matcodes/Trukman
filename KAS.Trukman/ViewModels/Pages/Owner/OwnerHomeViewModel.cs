@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
@@ -204,9 +204,9 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("SelectedItem", value); }
         }
 
-        public ICompany Company
+        public Company Company
         {
-            get { return (this.GetValue("Company") as ICompany); }
+            get { return (this.GetValue("Company") as Company); }
             set { this.SetValue("Company", value); }
         }
 

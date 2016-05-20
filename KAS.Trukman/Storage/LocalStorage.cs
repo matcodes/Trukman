@@ -1,14 +1,12 @@
 ﻿using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Data.Infos;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Languages;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Trukman.Interfaces;
 using Xamarin.Forms.Maps;
 using Parse;
 using KAS.Trukman.Storage.ParseClasses;

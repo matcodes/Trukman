@@ -1,7 +1,6 @@
 ﻿using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Data.Infos;
-using KAS.Trukman.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

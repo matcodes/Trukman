@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Text;
 namespace KAS.Trukman.Data.Classes
 {
     #region MainData
-    public class MainData : BaseData, IMainData
+    public class MainData : BaseData
     {
         public MainData()
         {

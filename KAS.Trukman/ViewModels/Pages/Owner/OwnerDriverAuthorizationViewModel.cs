@@ -1,6 +1,5 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Trukman.Interfaces;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -28,7 +26,7 @@ namespace KAS.Trukman.ViewModels.Pages
             base.Initialize(parameters);
 
             this.CompanyName = (parameters != null && parameters.Length > 0 ? (parameters[0].ToString()) : "");
-            this.Driver = (parameters != null && parameters.Length > 1 ? (parameters[1] as IUser) : null);
+            this.Driver = (parameters != null && parameters.Length > 1 ? (parameters[1] as User) : null);
 
             this.AssignIDNumber = "";
         }
@@ -130,9 +128,9 @@ namespace KAS.Trukman.ViewModels.Pages
             set { this.SetValue("CompanyName", value); }
         }
 
-        public IUser Driver
+        public User Driver
         {
-            get { return (this.GetValue("Driver") as IUser); }
+            get { return (this.GetValue("Driver") as User); }
             set { this.SetValue("Driver", value); }
         }
 

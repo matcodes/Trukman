@@ -52,12 +52,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\DriverState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\SignUpContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\SignUpLanguage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\UserRole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\CompanyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\DriverInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IMainData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IContractor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ITrip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\AddressInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\CarInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\RouteStepInfo.cs" />
@@ -214,13 +211,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\CallCameraMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StartLocationServiceMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopLocationServiceMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IAlerts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\IJobAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\BasePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowTopPageMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Interfaces\ICompany.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ChangeLocationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StopBusyMessage.cs" />

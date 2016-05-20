@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -9,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -27,7 +27,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
+            var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
             this.Shipper = (trip != null ? trip.Shipper : null);
             this.Receiver = (trip != null ? trip.Receiver : null);
 
@@ -83,15 +83,15 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.SelectedItem = (TripContractorItems)parameter;
         }
 
-        public IContractor Shipper
+        public Contractor Shipper
         {
-            get { return (this.GetValue("Shipper") as IContractor); }
+            get { return (this.GetValue("Shipper") as Contractor); }
             set { this.SetValue("Shipper", value); }
         }
 
-        public IContractor Receiver
+        public Contractor Receiver
         {
-            get { return (this.GetValue("Receiver") as IContractor); }
+            get { return (this.GetValue("Receiver") as Contractor); }
             set { this.SetValue("Receiver", value); }
         }
 

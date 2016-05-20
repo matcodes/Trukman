@@ -1,5 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
-using SQLite;
+﻿using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +7,7 @@ using Xamarin.Forms.Maps;
 namespace KAS.Trukman.Data.Classes
 {
     #region Trip
-    public class Trip : MainData, ITrip
+    public class Trip : MainData
     {
         public Trip() : base()
         {
@@ -16,16 +15,16 @@ namespace KAS.Trukman.Data.Classes
 
         #region ITrip
         [Ignore]
-        public IContractor Receiver
+        public Contractor Receiver
         {
-            get { return (this.GetValue("Receiver") as IContractor); }
+            get { return (this.GetValue("Receiver") as Contractor); }
             set { this.SetValue("Receiver", value); }
         }
 
         [Ignore]
-        public IContractor Shipper
+        public Contractor Shipper
         {
-            get { return (this.GetValue("Shipper") as IContractor); }
+            get { return (this.GetValue("Shipper") as Contractor); }
             set { this.SetValue("Shipper", value); }
         }
 

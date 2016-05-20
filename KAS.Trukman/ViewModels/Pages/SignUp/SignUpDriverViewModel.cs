@@ -2,7 +2,6 @@
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Data.Infos;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -23,7 +22,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public SignUpDriverViewModel()
             : base()
         {
-            this.Companies = new ObservableCollection<ICompany>();
+            this.Companies = new ObservableCollection<Company>();
 
             this.EnglishLanguageCommand = new VisualCommand(this.EnglishLanguage);
             this.EspanolLanguageCommand = new VisualCommand(this.EspanolLanguage);
@@ -94,11 +93,11 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             _selectCompaniesTimer.Start();
         }
 
-		private void ShowCompanies(ICompany[] companies)
+		private void ShowCompanies(Company[] companies)
 		{
 			Device.BeginInvokeOnMainThread (() => {
 				this.Companies.Clear();
-				ICompany selected = null;
+				Company selected = null;
 				this.SelectedCompany = null;
 				foreach (var company in companies)
 				{
@@ -217,9 +216,9 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             set { this.SetValue("CompanyName", value); }
         }
 
-        public ICompany SelectedCompany
+        public Company SelectedCompany
         {
-            get { return (this.GetValue("SelectedCompany") as ICompany); }
+            get { return (this.GetValue("SelectedCompany") as Company); }
             set { this.SetValue("SelectedCompany", value); }
         }
 
@@ -235,7 +234,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             set { this.SetValue("CompanyFilter", value); }
         }
 
-        public ObservableCollection<ICompany> Companies { get; private set; }
+        public ObservableCollection<Company> Companies { get; private set; }
 
         public VisualCommand ShowPrevPageCommand { get; private set; }
 

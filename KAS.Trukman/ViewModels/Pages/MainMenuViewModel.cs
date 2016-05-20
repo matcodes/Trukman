@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -8,13 +7,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region MainMenuViewModel
     public class MainMenuViewModel : PageViewModel 
     {
-        private ITrip _trip = null;
+        private Trip _trip = null;
 
         public MainMenuViewModel() 
             : base()

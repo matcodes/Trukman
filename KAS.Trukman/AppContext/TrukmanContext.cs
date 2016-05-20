@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 
 using KAS.Trukman.Storage;
-using Trukman.Interfaces;
-using KAS.Trukman.Data.Interfaces;
 using System.Threading.Tasks;
 using KAS.Trukman.Messages;
 using Xamarin.Forms;
@@ -132,22 +130,22 @@ namespace KAS.Trukman.AppContext
             return await _localStorage.SelectRequestedUser(companyID);
         }
 
-        public static async Task<ICompany[]> SelectCompanies(string filter)
+        public static async Task<Company[]> SelectCompanies(string filter)
         {
             return await _localStorage.SelectCompanies(filter);
         }
 
-        public static async Task<ICompany> SelectCompanyByName(string name)
+        public static async Task<Company> SelectCompanyByName(string name)
         {
             return await _localStorage.SelectCompanyByName(name);
         }
 
-        public static async Task<ICompany> SelectUserCompany()
+        public static async Task<Company> SelectUserCompany()
         {
             return await _localStorage.SelectUserCompany();
         }
 
-        public static async Task<ITrip[]> SelectActiveTrips()
+        public static async Task<Trip[]> SelectActiveTrips()
         {
             return await _localStorage.SelectActiveTrips();
         }
@@ -162,7 +160,7 @@ namespace KAS.Trukman.AppContext
             return await _localStorage.SelectDriverPosition(tripID);
         }
 
-        public static async Task<ITrip> SelectTripByID(string tripID)
+        public static async Task<Trip> SelectTripByID(string tripID)
         {
             var trip = await _localStorage.SelectTripByIDExternal(tripID);
             return trip;
@@ -182,7 +180,20 @@ namespace KAS.Trukman.AppContext
 
 		public static async Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
 		{
-			await _localStorage.SendComcheckRequestAsync (tripID, requestType);
+            try
+            {
+                await _localStorage.SendComcheckRequestAsync(tripID, requestType);
+
+                var message = (requestType == ComcheckRequestType.FuelAdvance ? AppLanguages.CurrentLanguage.OwnerFuelRequestedSystemMessage : AppLanguages.CurrentLanguage.OwnerLumperRequestedSystemMessage);
+                message = String.Format(message, Driver.Trip.JobRef, User.FullName);
+
+                await _localStorage.SendNotification(Driver.Trip, message);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
 		}
 
 		public static async Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
@@ -265,14 +276,6 @@ namespace KAS.Trukman.AppContext
             await _localStorage.DeclineDriverToCompany(user);
         }
 
-		public static async Task<ParseCompany> FetchParseCompany(string name)
-		{
-			var query = new ParseQuery<ParseCompany>()
-				.WhereEqualTo("name", name.ToLower());
-			var parseCompany = await query.FirstOrDefaultAsync();
-			return parseCompany;
-		}
-
 		public static async Task<Trip> CreateTripAsync(Trip trip)
 		{
 			var result = await _localStorage.CreateTripAsync(trip);
@@ -296,18 +299,6 @@ namespace KAS.Trukman.AppContext
 			var photos = await _localStorage.SelectPhotosAsync ();
 			return photos;
 		}
-
-//		static public async Task<IEnumerable<ParsePhoto>> GetPhotosFromCompany(ParseCompany company)
-//		{
-//			ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
-//				.WhereEqualTo ("company", company)
-//				.Include("job")
-//				.Include("company")
-//				.Include ("job.Driver");
-//			
-//			var photos = await query.FindAsync ();
-//			return photos;
-//		}
 
         private static void StartSynchronizeTimer()
         {
@@ -379,9 +370,9 @@ namespace KAS.Trukman.AppContext
 
         public static DispatcherContext Dispatcher { get; set; }
 
-        public static IUser User { get; private set; }
+        public static User User { get; private set; }
 
-        public static ICompany Company { get; private set; }
+        public static Company Company { get; private set; }
 
         public static bool Initialized { get; private set; }
     }

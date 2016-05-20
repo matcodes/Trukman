@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Maps;
 using KAS.Trukman.Data.Route;
 using KAS.Trukman.AppContext;

@@ -5,8 +5,6 @@ using System.Text;
 
 
 using KAS.Trukman.Classes;
-using Trukman.Interfaces;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Messages;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Storage;
@@ -319,7 +317,7 @@ namespace KAS.Trukman.AppContext
 					}
                     await _localStorage.SendPhoto(this.TripID, message.Data, kind);
 
-                    await _localStorage.SendNotification((this.Trip as Trip), notificationMessage);
+                    await _localStorage.SendNotification(this.Trip, notificationMessage);
 
 					if (this.TripState != tripState)
 					{
@@ -458,8 +456,11 @@ namespace KAS.Trukman.AppContext
                         minutes = -1;
 
                     var trip = await _localStorage.TripInPickup(this.TripID, (int)minutes);
-                    if (trip != null)
-                        Trip = trip;
+
+                    var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToPickupSystemMessage, trip.JobRef, TrukmanContext.User.FullName);
+                    await _localStorage.SendNotification(Trip, message);
+
+                    Trip = trip;
 
                     if (this.TripState != tripState)
                         this.TripContextChanged(tripState);
@@ -501,8 +502,11 @@ namespace KAS.Trukman.AppContext
                         minutes = -1;
 
                     var trip = await _localStorage.TripInDelivery(this.TripID, (int)minutes);
-                    if (trip != null)
-                        Trip = trip;
+
+                    var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToDeliverySystemMessage, trip.JobRef, trip.Driver.FullName);
+                    await _localStorage.SendNotification(Trip, message);
+
+                    Trip = trip;
 
                     if (this.TripState != tripState)
                     {
@@ -555,7 +559,7 @@ namespace KAS.Trukman.AppContext
 
         public int TripState { get; private set; }
 
-        public ITrip Trip { get; private set; }
+        public Trip Trip { get; private set; }
 
         public Position ShipperPosition { get; private set; }
 

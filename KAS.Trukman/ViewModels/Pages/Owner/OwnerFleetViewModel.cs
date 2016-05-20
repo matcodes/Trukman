@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Maps;
 using KAS.Trukman.Data.Route;
 using KAS.Trukman.AppContext;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
@@ -27,7 +27,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public OwnerFleetViewModel()
             : base()
         {
-            this.Trips = new ObservableCollection<ITrip>();
+            this.Trips = new ObservableCollection<Trip>();
 
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
@@ -91,7 +91,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             });
         }
 
-        private void ShowTrips(ITrip[] trips)
+        private void ShowTrips(Trip[] trips)
 		{
 			Device.BeginInvokeOnMainThread (() => {
 				this.Trips.Clear ();
@@ -321,11 +321,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 			this.SelectActiveTrips ();
 		}
 
-        public ObservableCollection<ITrip> Trips { get; private set; }
+        public ObservableCollection<Trip> Trips { get; private set; }
 
-        public ITrip SelectedTrip
+        public Trip SelectedTrip
         {
-            get { return (this.GetValue("SelectedTrip") as ITrip); }
+            get { return (this.GetValue("SelectedTrip") as Trip); }
             set { this.SetValue("SelectedTrip", value); }
         }
 

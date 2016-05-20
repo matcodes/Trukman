@@ -246,6 +246,11 @@ namespace KAS.Trukman.Languages
             this.TripCancelledSystemMessage = "Job is canceled";
             this.ArrivedToPickupSystemMessage = "You reached the pick up location";
             this.ArrivedToDeliverySystemMessage = "You reached the drop off location";
+
+            this.OwnerArrivedToPickupSystemMessage = "Job # {0}. {1} has arrived to pick up place";
+            this.OwnerArrivedToDeliverySystemMessage = "Job # {0}. {1} has arrived to drop off place";
+            this.OwnerFuelRequestedSystemMessage = "Job # {0}. {1} requested a fuel advance";
+            this.OwnerLumperRequestedSystemMessage = "Job # {0}. {1} requested a lumper advance";
             #endregion
         }
     }

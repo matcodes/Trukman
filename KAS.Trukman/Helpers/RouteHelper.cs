@@ -1,4 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Route;
 using Newtonsoft.Json;
 using Parse;
@@ -72,7 +72,7 @@ namespace KAS.Trukman.Helpers
             return result;
         }
 
-        public static async Task<RouteResult> FindRouteForTrip(ITrip trip)
+        public static async Task<RouteResult> FindRouteForTrip(Trip trip)
         {
             var origin = "";
             var destination = "";

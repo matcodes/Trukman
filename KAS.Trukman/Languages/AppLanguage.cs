@@ -256,6 +256,11 @@ namespace KAS.Trukman.Languages
                 this.TripCancelledSystemMessage = appLanguage.TripCancelledSystemMessage;
                 this.ArrivedToPickupSystemMessage = appLanguage.ArrivedToPickupSystemMessage;
                 this.ArrivedToDeliverySystemMessage = appLanguage.ArrivedToDeliverySystemMessage;
+
+                this.OwnerArrivedToPickupSystemMessage = appLanguage.OwnerArrivedToPickupSystemMessage;
+                this.OwnerArrivedToDeliverySystemMessage = appLanguage.OwnerArrivedToDeliverySystemMessage;
+                this.OwnerFuelRequestedSystemMessage = appLanguage.OwnerFuelRequestedSystemMessage;
+                this.OwnerLumperRequestedSystemMessage = appLanguage.OwnerLumperRequestedSystemMessage;
                 #endregion
             }
         }
@@ -1313,6 +1318,30 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("TripCancelledSystemMessage"); }
             set { this.SetValue("TripCancelledSystemMessage", value); }
+        }
+
+        public string OwnerArrivedToPickupSystemMessage
+        {
+            get { return (string)this.GetValue("OwnerArrivedToPickupSystemMessage"); }
+            set { this.SetValue("OwnerArrivedToPickupSystemMessage", value); }
+        }
+
+        public string OwnerArrivedToDeliverySystemMessage
+        {
+            get { return (string)this.GetValue("OwnerArrivedToDeliverySystemMessage"); }
+            set { this.SetValue("OwnerArrivedToDeliverySystemMessage", value); }
+        }
+
+        public string OwnerFuelRequestedSystemMessage
+        {
+            get { return (string)this.GetValue("OwnerFuelRequestedSystemMessage"); }
+            set { this.SetValue("OwnerFuelRequestedSystemMessage", value); }
+        }
+
+        public string OwnerLumperRequestedSystemMessage
+        {
+            get { return (string)this.GetValue("OwnerLumperRequestedSystemMessage"); }
+            set { this.SetValue("OwnerLumperRequestedSystemMessage", value); }
         }
         #endregion
     }

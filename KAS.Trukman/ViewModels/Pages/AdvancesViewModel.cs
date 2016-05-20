@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using KAS.Trukman.Data.Interfaces;
 using Trukman.Helpers;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -38,7 +38,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-			ITrip trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as ITrip) : null);
+			var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
 			this.Trip = trip;
 
 			this.GetFuelComcheck ();
@@ -508,7 +508,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 _lumperReceivedTimer.Stop();
         }
 
-		public ITrip Trip { get; private set; }
+		public Trip Trip { get; private set; }
 
         public string FuelComcheck
         {

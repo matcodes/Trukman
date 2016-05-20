@@ -1,4 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowShipperInfoPageMessage";
 
-        public static void Send(IContractor shipper)
+        public static void Send(Contractor shipper)
         {
             var message = new ShowShipperInfoPageMessage(shipper);
             MessagingCenter.Send<ShowShipperInfoPageMessage>(message, MESSAGE_KEY);
@@ -29,13 +29,13 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowShipperInfoPageMessage(IContractor shipper)
+        public ShowShipperInfoPageMessage(Contractor shipper)
             : base()
         {
             this.Shipper = shipper;
         }
 
-        public IContractor Shipper { get; private set; }
+        public Contractor Shipper { get; private set; }
     }
     #endregion
 }

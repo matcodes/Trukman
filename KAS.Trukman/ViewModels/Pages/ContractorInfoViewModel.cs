@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -24,7 +24,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            var contractor = (parameters != null && parameters.Length > 0 ? (parameters[0] as IContractor) : null);
+            var contractor = (parameters != null && parameters.Length > 0 ? (parameters[0] as Contractor) : null);
 
             if (contractor != null) {
                 this.Name = contractor.Name;

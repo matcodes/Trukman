@@ -1,5 +1,4 @@
 ﻿using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Data.Maps;
 using KAS.Trukman.Data.Route;
 using KAS.Trukman.Helpers;
@@ -15,6 +14,7 @@ using Xamarin.Forms.Maps;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -38,7 +38,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-            this.Trip = ((parameters != null && parameters.Length > 0) ? (parameters[0] as ITrip) : null);
+            this.Trip = ((parameters != null && parameters.Length > 0) ? (parameters[0] as Trip) : null);
         }
 
         public override void Appering()
@@ -332,9 +332,9 @@ namespace KAS.Trukman.ViewModels.Pages
             return points.ToArray();
         }
 
-        public ITrip Trip
+        public Trip Trip
         {
-            get { return (this.GetValue("Trip") as ITrip); }
+            get { return (this.GetValue("Trip") as Trip); }
             set { this.SetValue("Trip", value); }
         }
 

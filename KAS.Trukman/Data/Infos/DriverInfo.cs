@@ -1,4 +1,4 @@
-﻿using KAS.Trukman.Data.Interfaces;
+﻿using KAS.Trukman.Data.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +14,7 @@ namespace KAS.Trukman.Data.Infos
 
         public string Phone { get; set; }
 
-        public ICompany Company { get; set; }
+        public Company Company { get; set; }
     }
     #endregion
 }

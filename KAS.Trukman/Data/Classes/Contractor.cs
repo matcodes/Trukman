@@ -1,13 +1,12 @@
-﻿using KAS.Trukman.Data.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace KAS.Trukman.Data.Classes
 {
     #region Contractor
-    public class Contractor : MainData, IContractor
-    {
+    public class Contractor : MainData
+    { 
         public Contractor()
         {
             this.Address = "";

@@ -4,7 +4,6 @@ using System.Text;
 using System.Linq;
 using KAS.Trukman.Data.Classes;
 using Parse;
-using KAS.Trukman.Data.Interfaces;
 using System.Threading.Tasks;
 using KAS.Trukman.Storage.ParseClasses;
 using Xamarin.Forms.Maps;

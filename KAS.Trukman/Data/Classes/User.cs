@@ -1,15 +1,14 @@
 ﻿using System;
-using Trukman.Interfaces;
 using KAS.Trukman.Data.Classes;
-using KAS.Trukman.Data.Interfaces;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Classes;
 using SQLite;
+using KAS.Trukman.Data.Enums;
 
 namespace KAS.Trukman.Data.Classes
 {
     #region User
-    public class User : MainData, IUser
+    public class User : MainData
 	{
 		public string UserName
 		{

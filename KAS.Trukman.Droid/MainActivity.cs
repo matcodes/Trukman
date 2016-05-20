@@ -16,7 +16,6 @@ using Android.Media;
 using Android.Graphics;
 using System.IO;
 using System.Threading.Tasks;
-using KAS.Trukman.Data.Interfaces;
 using KAS.Trukman.Droid.Services;
 using KAS.Trukman.AppContext;
 using Android;
