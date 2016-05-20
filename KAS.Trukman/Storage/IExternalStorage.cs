@@ -43,6 +43,8 @@ namespace KAS.Trukman.Storage
 
         Task<Trip[]> SelectActiveTrips();
 
+        Task<Trip[]> SelectCompletedTrips();
+
         Task<Position> SelectDriverPosition(string tripID);
 
         void InitializeOwnerNotification();

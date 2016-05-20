@@ -150,6 +150,11 @@ namespace KAS.Trukman.AppContext
             return await _localStorage.SelectActiveTrips();
         }
 
+        public static async Task<Trip[]> SelectCompletedTrips()
+        {
+            return await _localStorage.SelectCompletedTrips();
+        }
+
         public static void InitializeOwnerNotification()
         {
             _localStorage.InitializeOwnerNotification();

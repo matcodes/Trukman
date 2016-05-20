@@ -12,15 +12,15 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
-    #region OwnerBrokerListViewModel
-    public class OwnerBrokerListViewModel : PageViewModel
+    #region OwnerInvoiceListViewModel
+    public class OwnerInvoiceListViewModel : PageViewModel
     {
-        public OwnerBrokerListViewModel() 
+        public OwnerInvoiceListViewModel()
             : base()
         {
-            this.Brokers = new ObservableCollection<User>();
+            this.Jobs = new ObservableCollection<Trip>();
 
-            this.SelectBrokerCommand = new VisualCommand(this.SelectBroker);
+            this.SelectJobCommand = new VisualCommand(this.SelectJob);
             this.RefreshCommand = new VisualCommand(this.Refresh);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
@@ -30,7 +30,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Appering();
 
-            this.SelectBrokers();
+            this.SelectJobs();
         }
 
         public override void Disappering()
@@ -47,17 +47,17 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.OwnerBrokerListPageName;
+            this.Title = AppLanguages.CurrentLanguage.OwnerInvoiceListPageName;
         }
 
-        private void SelectBrokers()
+        private void SelectJobs()
         {
             Task.Run(async() => {
                 this.IsBusy = true;
                 try
                 {
-					var brokers = await TrukmanContext.SelectBrockersAsync();
-                    this.ShowBrokers(brokers);
+                    var jobs = await TrukmanContext.SelectCompletedTrips();
+                    this.ShowBrokers(jobs);
                 }
                 catch (Exception exception)
                 {
@@ -71,15 +71,15 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             });
         }
 
-        private void ShowBrokers(User[] brokers)
+        private void ShowBrokers(Trip[] jobs)
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                this.Brokers.Clear();
-                this.SelectedBroker = null;
+                this.Jobs.Clear();
+                this.SelectedJob = null;
 
-                foreach (var brocker in brokers)
-                    this.Brokers.Add(brocker);
+                foreach (var job in jobs)
+                    this.Jobs.Add(job);
             });
         }
 
@@ -93,22 +93,22 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             PopToRootPageMessage.Send();
         }
 
-        private void SelectBroker(object parameter)
+        private void SelectJob(object parameter)
         {
-            this.SelectedBroker = null;
+            this.SelectedJob = null;
         }
 
         private void Refresh(object parameter)
         {
-            this.SelectBrokers();
+            this.SelectJobs();
         }
 
-        public ObservableCollection<User> Brokers { get; private set; }
+        public ObservableCollection<Trip> Jobs { get; private set; }
 
-        public User SelectedBroker
+        public Trip SelectedJob
         {
-            get { return (this.GetValue("SelectedBroker") as User); }
-            set { this.SetValue("SelectedBroker", value); }
+            get { return (this.GetValue("SelectedJob") as Trip); }
+            set { this.SetValue("SelectedJob", value); }
         }
 
         public bool IsRefreshing
@@ -117,7 +117,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("IsRefreshing", value); }
         }
 
-        public VisualCommand SelectBrokerCommand { get; private set; }
+        public VisualCommand SelectJobCommand { get; private set; }
 
         public VisualCommand ShowMainMenuCommand { get; private set; }
 

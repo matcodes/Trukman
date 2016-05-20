@@ -354,6 +354,22 @@ namespace KAS.Trukman.Storage
             return trips;
         }
 
+        public async Task<Trip[]> SelectCompletedTrips()
+        {
+            Trip[] trips = new Trip[] { };
+            try
+            {
+                trips = await _externalStorage.SelectCompletedTrips();
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return trips;
+        }
+
         public async Task<Position> SelectDriverPosition(string tripID)
         {
             var position = new Position(0, 0);

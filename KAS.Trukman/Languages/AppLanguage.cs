@@ -28,6 +28,7 @@ namespace KAS.Trukman.Languages
                 this.OwnerFuelAdvancePageName = appLanguage.OwnerFuelAdvancePageName;
                 this.OwnerLumperPageName = appLanguage.OwnerLumperPageName;
                 this.OwnerBrokerListPageName = appLanguage.OwnerBrokerListPageName;
+                this.OwnerInvoiceListPageName = appLanguage.OwnerInvoiceListPageName;
 				this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
@@ -119,6 +120,8 @@ namespace KAS.Trukman.Languages
 				#region Lists
 				this.AdvanceListJobNumberLabel = appLanguage.AdvanceListJobNumberLabel;
 				this.AdvanceListDriverNameLabel = appLanguage.AdvanceListDriverNameLabel;
+                this.InvoiceListJobNumberLabel = appLanguage.InvoiceListJobNumberLabel;
+                this.InvoiceListDriverNameLabel = appLanguage.InvoiceListDriverNameLabel;
 				#endregion
 
 				#region ComcheckPopup
@@ -298,6 +301,12 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("OwnerBrokerListPageName", value); }
         }
 
+        public string OwnerInvoiceListPageName
+        {
+            get { return (string)this.GetValue("OwnerInvoiceListPageName"); }
+            set { this.SetValue("OwnerInvoiceListPageName", value); }
+        }
+
         public string OwnerLumperPageName
         {
             get { return (string)this.GetValue("OwnerLumperPageName"); }
@@ -395,6 +404,18 @@ namespace KAS.Trukman.Languages
 			get { return (string)this.GetValue ("AdvanceListDriverNameLabel"); }
 			set { this.SetValue ("AdvanceListDriverNameLabel", value); }
 		}
+
+        public string InvoiceListJobNumberLabel
+        {
+            get { return (string)this.GetValue("InvoiceListJobumberLabel"); }
+            set { this.SetValue("InvoiceListJobumberLabel", value); }
+        }
+
+        public string InvoiceListDriverNameLabel
+        {
+            get { return (string)this.GetValue("InvoiceListDriverNameLabel"); }
+            set { this.SetValue("InvoiceListDriverNameLabel", value); }
+        }
 		#endregion
 
 		#region ComcheckPopup

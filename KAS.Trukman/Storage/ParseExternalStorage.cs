@@ -547,6 +547,37 @@ namespace KAS.Trukman.Storage
             return trips.ToArray();
         }
 
+        public async Task<Trip[]> SelectCompletedTrips()
+        {
+            var trips = new List<Trip>();
+            try
+            {
+                var companyQuery = new ParseQuery<ParseCompany>()
+                    .WhereEqualTo("owner", ParseUser.CurrentUser);
+                var parseCompany = await companyQuery.FirstOrDefaultAsync();
+
+                if (parseCompany != null)
+                {
+                    var query = new ParseQuery<ParseJob>()
+                        .Include("Shipper")
+                        .Include("Receiver")
+                        .Include("Driver")
+                        .WhereEqualTo("Company", parseCompany)
+                        .WhereEqualTo("JobCompleted", true)
+                        .OrderBy("DeliveryDatetime");
+                    var jobs = await query.FindAsync();
+                    foreach (var job in jobs)
+                        trips.Add(this.ParseJobToTrip(job));
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw exception;
+            }
+            return trips.ToArray();
+        }
+
         public async Task<Position> SelectDriverPosition(string tripID)
         {
             var position = new Position(0, 0);

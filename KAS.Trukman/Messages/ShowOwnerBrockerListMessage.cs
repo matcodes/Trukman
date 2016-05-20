@@ -9,7 +9,7 @@ namespace KAS.Trukman.Messages
     public class ShowOwnerBrockerListMessage
     {
         #region Static members
-        private static readonly string MESSAGE_KEY = "ShowOwnerLumperPageMessage";
+        private static readonly string MESSAGE_KEY = "ShowOwnerBrockerListMessage";
 
         public static void Send()
         {

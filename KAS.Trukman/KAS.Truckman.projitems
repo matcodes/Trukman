@@ -100,6 +100,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFuelAdvancePageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerInvoiceListPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverAuthorizedPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverDeclinedPageMessage.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerHomeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerInvoiceListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerLumperViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainViewModel.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CommandsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CompanyListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\FleetTripListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\InvoiceListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\MainMenuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\RouteStepsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\AdvancesPage.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFleetPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerHomePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerInvoiceListPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerLumperPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainPage.cs" />

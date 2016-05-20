@@ -18,6 +18,7 @@ namespace KAS.Trukman.Languages
             this.OwnerFuelAdvancePageName = "FUEL ADVANCE";
             this.OwnerLumperPageName = "LUMPER";
             this.OwnerBrokerListPageName = "BROKER LIST";
+            this.OwnerInvoiceListPageName = "INVOICE";
 			this.OwnerDeliveryUpdatePageName = "UPDATES";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
@@ -36,10 +37,12 @@ namespace KAS.Trukman.Languages
 			#region Lists
 			this.AdvanceListJobNumberLabel = "Job#:";
 			this.AdvanceListDriverNameLabel = "Driver:";
-			#endregion
+            this.InvoiceListJobNumberLabel = "Job#";
+            this.InvoiceListDriverNameLabel = "Driver:";
+            #endregion
 
-			#region ComcheckPopup
-			this.ComcheckPopupEntryPlaceholer = "Comcheck";
+            #region ComcheckPopup
+            this.ComcheckPopupEntryPlaceholer = "Comcheck";
 			this.ComcheckPopupCancelButtonText = "Cancel";
 			this.ComcheckPopupAcceptButtonText = "Accept";
 			#endregion

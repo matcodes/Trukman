@@ -183,6 +183,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void Invoice(object parameter)
         {
+            ShowOwnerInvoiceListPageMessage.Send();
         }
 
         private void Reports(object parameter)
