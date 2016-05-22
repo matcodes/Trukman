@@ -100,6 +100,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMainMenuMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFuelAdvancePageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerImageViewerPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerInvoiceListPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverAuthorizedPageMessage.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerHomeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerImageViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerInvoiceListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerLumperViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainMenuViewModel.cs" />
@@ -228,7 +230,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerCurrentJobsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDeliveryUpdateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\OwnerDeliveryUpdateListView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\ImageViewerPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerImageViewerPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFleetPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\AuthorizationRequestStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\ComcheckRequestType.cs" />

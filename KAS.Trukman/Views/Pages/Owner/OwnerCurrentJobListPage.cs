@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using KAS.Trukman.Storage.ParseClasses;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Messages;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
@@ -42,9 +43,9 @@ namespace KAS.Trukman.Views.Pages.Owner
 				var photo = (args.Item as Photo);
 				if (photo == null)
 					return;
-//
-				Navigation.PushAsync(new ImageViewerPage(photo));
-				// Reset the selected item
+
+                ShowOwnerImageViewerPageMessage.Send(photo);
+
 				list.SelectedItem = null;
 			};
 

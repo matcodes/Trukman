@@ -56,6 +56,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerLumperPageMessage.Subscribe(this, this.ShowOwnerLumperPage);
             ShowOwnerBrockerListMessage.Subscribe(this, this.ShowOwnerBrockerListPage);
             ShowOwnerInvoiceListPageMessage.Subscribe(this, this.ShowOwnerInvoiceListPage);
+            ShowOwnerImageViewerPageMessage.Subscribe(this, this.ShowOwnerImageViewerListPage);
         }
 
         private void UnsubscribeMessage()
@@ -71,6 +72,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerLumperPageMessage.Unsubscribe(this);
             ShowOwnerBrockerListMessage.Unsubscribe(this);
             ShowOwnerInvoiceListPageMessage.Unsubscribe(this);
+            ShowOwnerImageViewerPageMessage.Unsubscribe(this);
         }
 
         private void PushPage(Page page)
@@ -162,6 +164,13 @@ namespace KAS.Trukman.Views.Pages.Owner
         {
             var page = new OwnerInvoiceListPage();
             page.ViewModel.Initialize();
+            this.PushPage(page);
+        }
+
+        private void ShowOwnerImageViewerListPage(ShowOwnerImageViewerPageMessage message)
+        {
+            var page = new OwnerImageViewerPage();
+            page.ViewModel.Initialize(message.Photo);
             this.PushPage(page);
         }
 
