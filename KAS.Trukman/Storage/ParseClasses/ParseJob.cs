@@ -163,6 +163,13 @@ namespace KAS.Trukman.Storage.ParseClasses
             set { this.SetProperty<bool>(value); }
         }
 
+        [ParseFieldName("Invoice")]
+        public ParseInvoice Invoice
+        {
+            get { return this.GetProperty<ParseInvoice>(); }
+            set { this.SetProperty<ParseInvoice>(value); }
+        }
+
         [ParseFieldName("LocationHistory")]
         public ParseRelation<ParseGeoLocation> Locations
         {

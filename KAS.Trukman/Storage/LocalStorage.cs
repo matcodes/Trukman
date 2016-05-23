@@ -774,6 +774,11 @@ namespace KAS.Trukman.Storage
 			}		
 		}
 
+        public async Task<string> CreateInvoiceForJobAsync(string tripID)
+        {
+            return await _externalStorage.CreateInvoiceForJobAsync(tripID);
+        }
+
         #region SettingsItem
         public string GetSettings(string key)
         {

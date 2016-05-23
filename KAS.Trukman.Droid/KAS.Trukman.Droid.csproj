@@ -172,6 +172,7 @@
     <Compile Include="Renderers\AppEntryRenderer.cs" />
     <Compile Include="Renderers\AppLabelRenderer.cs" />
     <Compile Include="Renderers\AppMapRenderer.cs" />
+    <Compile Include="Renderers\PDFViewRenderer.cs" />
     <Compile Include="Renderers\ToolButtonRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppPopupButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PDFView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SignUpTitleBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TappedLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TitleBar.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerImageViewerPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerInvoiceListPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerInvoiceViewerPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerLumperPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverAuthorizedPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowSignUpDriverDeclinedPageMessage.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseCompany.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseContractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseGeoLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseInvoice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseJob.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseNotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParsePhoto.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerHomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerImageViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerInvoiceListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerInvoiceViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerLumperViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerMainViewModel.cs" />
@@ -195,6 +199,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerHomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerInvoiceListPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerInvoiceViewerPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerLumperPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainPage.cs" />

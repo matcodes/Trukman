@@ -77,6 +77,13 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue ("Weight", value); }
 		}
 
+        [Ignore]
+        public string InvoiceUri
+        {
+            get { return (string)this.GetValue("InvoiceUri"); }
+            set { this.SetValue("InvoiceUri", value); }
+        }
+
         public int Points
         {
             get { return (int)this.GetValue("Points", (int)0); }

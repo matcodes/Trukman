@@ -299,7 +299,12 @@ namespace KAS.Trukman.AppContext
 			return users;
 		}
 
-		public static async Task<Photo[]> SelectPhotosAsync()
+        public static async Task<string> CreateInvoiceForJobAsync(string tripID)
+        {
+            return await _localStorage.CreateInvoiceForJobAsync(tripID);
+        }
+
+        public static async Task<Photo[]> SelectPhotosAsync()
 		{
 			var photos = await _localStorage.SelectPhotosAsync ();
 			return photos;

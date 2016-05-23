@@ -37,6 +37,7 @@ namespace KAS.Trukman.Storage
             ParseObject.RegisterSubclass<ParseComcheck>();
             ParseObject.RegisterSubclass<ParseNotification>();
 			ParseObject.RegisterSubclass<ParseJobAlert> ();
+            ParseObject.RegisterSubclass<ParseInvoice>();
 
             ParseClient.Initialize(PARSE_APPLICATION_ID, PARSE_DOTNET_KEY);
 
@@ -175,6 +176,7 @@ namespace KAS.Trukman.Storage
 			Company company = null;
 			if (parseJob.Company != null)
 				company = this.ParseCompanyToCompany (parseJob.Company);
+            
             var trip = new Trip
             {
                 ID = parseJob.ObjectId,
@@ -199,6 +201,7 @@ namespace KAS.Trukman.Storage
 				Driver = driver,
 				Broker = broker,
 				Company = company,
+                InvoiceUri = (parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
 				DriverDisplayName = (driver != null ? driver.UserName : "")
             };
 
@@ -562,6 +565,7 @@ namespace KAS.Trukman.Storage
                         .Include("Shipper")
                         .Include("Receiver")
                         .Include("Driver")
+                        .Include("Invoice")
                         .WhereEqualTo("Company", parseCompany)
                         .WhereEqualTo("JobCompleted", true)
                         .OrderBy("DeliveryDatetime");
@@ -1162,7 +1166,40 @@ namespace KAS.Trukman.Storage
 			};
 			return photo;
 		}
-		#endregion
+
+        public async Task<string> CreateInvoiceForJobAsync(string tripID)
+        {
+            var result = "";
+
+            if (!String.IsNullOrEmpty(tripID))
+            {
+                var resultData = "";
+
+                var par = new Dictionary<string, object>();
+                par.Add("jobId", tripID);
+                par.Add("timezone", ParseInstallation.CurrentInstallation.TimeZone);
+
+                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("generateInvoiceForJob", par).ContinueWith(t => {
+                    try
+                    {
+                        resultData = t.Result["text"].ToString();
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        // To do: Exception message
+                        throw new Exception("Error create invoice for job.");
+                    }
+                });
+
+                var parseJob = await this.GetParseJobByID(tripID);
+                var trip = this.ParseJobToTrip(parseJob);
+
+                result = trip.InvoiceUri;
+            }
+            return result;
+        }
+        #endregion
     }
     #endregion
 }

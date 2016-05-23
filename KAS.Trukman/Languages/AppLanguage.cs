@@ -29,7 +29,8 @@ namespace KAS.Trukman.Languages
                 this.OwnerLumperPageName = appLanguage.OwnerLumperPageName;
                 this.OwnerBrokerListPageName = appLanguage.OwnerBrokerListPageName;
                 this.OwnerInvoiceListPageName = appLanguage.OwnerInvoiceListPageName;
-				this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
+                this.OwnerInvoiceViewerPageName = appLanguage.OwnerInvoiceViewerPageName;
+                this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
                 this.ReceiverInfoPageName = appLanguage.ReceiverInfoPageName;
@@ -305,6 +306,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("OwnerInvoiceListPageName"); }
             set { this.SetValue("OwnerInvoiceListPageName", value); }
+        }
+
+        public string OwnerInvoiceViewerPageName
+        {
+            get { return (string)this.GetValue("OwnerInvoiceViewerPageName"); }
+            set { this.SetValue("OwnerInvoiceViewerPageName", value); }
         }
 
         public string OwnerLumperPageName

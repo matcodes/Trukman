@@ -61,7 +61,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("PhotoUri", value); }
         }
 
-        public VisualCommand ShowPrevPageCommand { get; set; }
+        public VisualCommand ShowPrevPageCommand { get; private set; }
     }
     #endregion
 }

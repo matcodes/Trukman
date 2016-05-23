@@ -19,7 +19,8 @@ namespace KAS.Trukman.Languages
             this.OwnerLumperPageName = "LUMPER";
             this.OwnerBrokerListPageName = "BROKER LIST";
             this.OwnerInvoiceListPageName = "INVOICE";
-			this.OwnerDeliveryUpdatePageName = "UPDATES";
+            this.OwnerInvoiceViewerPageName = "INVOICE";
+            this.OwnerDeliveryUpdatePageName = "UPDATES";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
             this.ReceiverInfoPageName = "RECEIVER INFO";

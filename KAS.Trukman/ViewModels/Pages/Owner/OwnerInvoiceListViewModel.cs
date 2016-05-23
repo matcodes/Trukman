@@ -29,8 +29,6 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public override void Appering()
         {
             base.Appering();
-
-            this.SelectJobs();
         }
 
         public override void Disappering()
@@ -41,6 +39,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public override void Initialize(params object[] parameters)
         {
             base.Initialize(parameters);
+
+            this.SelectJobs();
         }
 
         protected override void Localize()
@@ -95,7 +95,29 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectJob(object parameter)
         {
-            this.SelectedJob = null;
+            Task.Run(async() => {
+                this.IsBusy = true;
+                try
+                {
+                    string uri = "";
+                    if (String.IsNullOrEmpty(this.SelectedJob.InvoiceUri))
+                        uri = await TrukmanContext.CreateInvoiceForJobAsync(this.SelectedJob.ID);
+                    else
+                        uri = this.SelectedJob.InvoiceUri;
+
+                    if (!String.IsNullOrEmpty(uri))
+                        ShowOwnerInvoiceViewerPageMessage.Send(uri);
+                }
+                catch (Exception exception)
+                {
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.SelectedJob = null;
+                    this.IsBusy = false;
+                }
+            });
         }
 
         private void Refresh(object parameter)

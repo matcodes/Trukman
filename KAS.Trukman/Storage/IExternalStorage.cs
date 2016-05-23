@@ -98,6 +98,8 @@ namespace KAS.Trukman.Storage
 		Task<Trip> CreateTripAsync (Trip trip);
 
 		Task<Photo[]> SelectPhotosAsync ();
+
+        Task<string> CreateInvoiceForJobAsync(string tripID);
     }
     #endregion
 }
