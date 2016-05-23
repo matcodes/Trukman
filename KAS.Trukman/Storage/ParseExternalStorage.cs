@@ -1173,8 +1173,6 @@ namespace KAS.Trukman.Storage
 
             if (!String.IsNullOrEmpty(tripID))
             {
-                var resultData = "";
-
                 var par = new Dictionary<string, object>();
                 par.Add("jobId", tripID);
                 par.Add("timezone", ParseInstallation.CurrentInstallation.TimeZone);
@@ -1182,7 +1180,7 @@ namespace KAS.Trukman.Storage
                 await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("generateInvoiceForJob", par).ContinueWith(t => {
                     try
                     {
-                        resultData = t.Result["text"].ToString();
+                        var resultData = t.Result["text"].ToString();
                     }
                     catch (Exception exception)
                     {

@@ -220,6 +220,7 @@
     <Compile Include="Native ViewControllers\ContractorInfoViewController.designer.cs">
       <DependentUpon>ContractorInfoViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderers\PDFViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\background.png" />
