@@ -100,9 +100,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 try
                 {
                     string uri = "";
-                    if (String.IsNullOrEmpty(this.SelectedJob.InvoiceUri))
+					if (String.IsNullOrEmpty(this.SelectedJob.InvoiceUri)) {
                         uri = await TrukmanContext.CreateInvoiceForJobAsync(this.SelectedJob.ID);
-                    else
+						this.SelectedJob.InvoiceUri = uri;
+					}
+					else 
                         uri = this.SelectedJob.InvoiceUri;
 
                     if (!String.IsNullOrEmpty(uri))

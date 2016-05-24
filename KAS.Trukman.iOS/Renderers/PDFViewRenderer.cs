@@ -23,8 +23,8 @@ namespace KAS.Trukman.iOS
 
 			if (args.NewElement != null) {
 				var pdfView = (this.Element as PDFView);
-				string fileName = Path.Combine (NSBundle.MainBundle.BundlePath, string.Format ("Content/{0}", WebUtility.UrlEncode (pdfView.Uri)));
-				this.Control.LoadRequest (new NSUrlRequest (new NSUrl (fileName, false)));
+//				string fileName = Path.Combine (NSBundle.MainBundle.BundlePath, string.Format ("Content/{0}", WebUtility.UrlEncode (pdfView.Uri)));
+				this.Control.LoadRequest (new NSUrlRequest (new NSUrl (pdfView.Uri)));
 				this.Control.ScalesPageToFit = true;
 			}
 		}

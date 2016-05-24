@@ -41,7 +41,7 @@ namespace KAS.Trukman.Storage
 
             ParseClient.Initialize(PARSE_APPLICATION_ID, PARSE_DOTNET_KEY);
 
-            //            this.SaveInstallation();
+            this.SaveInstallation();
 
             // To do: 
             //            if (ParseUser.CurrentUser != null)
@@ -98,6 +98,7 @@ namespace KAS.Trukman.Storage
                     .Include("Shipper")
                     .Include("Receiver")
 					.Include("Company")
+					.Include("Invoice")
                     .WhereEqualTo("objectId", id);
                 job = await jquery.FirstOrDefaultAsync();
             }
@@ -1175,25 +1176,11 @@ namespace KAS.Trukman.Storage
             {
                 var par = new Dictionary<string, object>();
                 par.Add("jobId", tripID);
-                par.Add("timezone", ParseInstallation.CurrentInstallation.TimeZone);
+				par.Add("installationId", ParseInstallation.CurrentInstallation.ObjectId);
 
-                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("generateInvoiceForJob", par).ContinueWith(t => {
-                    try
-                    {
-                        var resultData = t.Result["text"].ToString();
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        // To do: Exception message
-                        throw new Exception("Error create invoice for job.");
-                    }
-                });
+				var response = await ParseCloud.CallFunctionAsync<object>("generateInvoiceForJob", par); 
 
-                var parseJob = await this.GetParseJobByID(tripID);
-                var trip = this.ParseJobToTrip(parseJob);
-
-                result = trip.InvoiceUri;
+				result = response.ToString ();
             }
             return result;
         }
