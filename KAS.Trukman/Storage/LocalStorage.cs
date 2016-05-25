@@ -360,7 +360,6 @@ namespace KAS.Trukman.Storage
             try
             {
                 trips = await _externalStorage.SelectCompletedTrips();
-
             }
             catch (Exception exception)
             {
@@ -368,6 +367,34 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return trips;
+        }
+
+        public async Task AddPointsAsync(string jobID, string text, int points)
+        {
+            try
+            {
+                await _externalStorage.AddPointsAsync(jobID, text, points);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
+
+        public async Task<int> GetPointsByJobIDAsync(string jobID)
+        {
+            var points = (int)0;
+            try
+            {
+                points = await _externalStorage.GetPointsByJobIDAsync(jobID);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return points;
         }
 
         public async Task<Position> SelectDriverPosition(string tripID)

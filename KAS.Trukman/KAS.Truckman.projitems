@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Advance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobAlert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Notification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Photo.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseGeoLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseInvoice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseJob.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseJobPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseNotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParsePhoto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseExternalStorage.cs" />

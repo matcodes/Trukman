@@ -104,6 +104,10 @@ namespace KAS.Trukman.Storage
 		Task<Photo[]> SelectPhotosAsync ();
 
         Task<string> CreateInvoiceForJobAsync(string tripID);
+
+        Task AddPointsAsync(string jobID, string text, int points);
+
+        Task<int> GetPointsByJobIDAsync(string jobID);
     }
     #endregion
 }

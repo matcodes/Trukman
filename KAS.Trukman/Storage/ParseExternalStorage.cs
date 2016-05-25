@@ -38,6 +38,7 @@ namespace KAS.Trukman.Storage
             ParseObject.RegisterSubclass<ParseNotification>();
 			ParseObject.RegisterSubclass<ParseJobAlert> ();
             ParseObject.RegisterSubclass<ParseInvoice>();
+            ParseObject.RegisterSubclass<ParseJob>();
 
             ParseClient.Initialize(PARSE_APPLICATION_ID, PARSE_DOTNET_KEY);
 
@@ -1239,6 +1240,43 @@ namespace KAS.Trukman.Storage
 				result = response.ToString ();
             }
             return result;
+        }
+
+        public async Task AddPointsAsync(string jobID, string text, int points)
+        {
+            var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
+            var driver = ParseUser.CurrentUser;
+            var company = await this.SelectUserParseCompanyAsync();
+
+            var parseJobPoint = new ParseJobPoint
+            {
+                Text = text,
+                Value = points,
+                Job = job,
+                Driver = driver,
+                Company = company
+            };
+
+            await parseJobPoint.SaveAsync();
+        }
+
+        public async Task<int> GetPointsByJobIDAsync(string jobID)
+        {
+            var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
+
+            var query = new ParseQuery<ParseJobPoint>()
+                .Include("Job")
+                .Include("Driver")
+                .Include("Company")
+                .WhereEqualTo("Job", job);
+
+            var parseJobPoints = await query.FindAsync();
+
+            var points = 0;
+            foreach (var parseJobPoint in parseJobPoints)
+                points += parseJobPoint.Value;
+
+            return points;
         }
         #endregion
     }

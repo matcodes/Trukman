@@ -233,6 +233,17 @@ namespace KAS.Trukman.AppContext
 			await _localStorage.SetAdvanceStateAsync (advance);
 		}
 
+        public static async Task AddPointsAsync(string jobID, string text, int points)
+        {
+            await _localStorage.AddPointsAsync(jobID, text, points);
+        }
+
+        public static async Task<int> GetPointsByJobIDAsync(string jobID)
+        {
+            var points = await _localStorage.GetPointsByJobIDAsync(jobID);
+            return points;
+        }
+
         public static async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {
             var company = await _localStorage.RegisterCompanyAsync(companyInfo);
