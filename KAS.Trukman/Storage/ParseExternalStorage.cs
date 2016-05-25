@@ -1053,8 +1053,10 @@ namespace KAS.Trukman.Storage
             var query = new ParseQuery<ParseJobAlert>()
                 .Include("Company")
                 .Include("Job")
+				.Include("Job.Driver")
                 .WhereEqualTo("Company", parseCompany)
-                .WhereEqualTo("IsViewed", false);
+                .WhereEqualTo("IsViewed", false)
+				.OrderByDescending("createAt");
             var parseJobAlerts = await query.FindAsync();
 
             foreach (var parseJobAlert in parseJobAlerts)

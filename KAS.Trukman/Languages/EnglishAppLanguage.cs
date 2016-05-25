@@ -21,6 +21,7 @@ namespace KAS.Trukman.Languages
             this.OwnerInvoiceListPageName = "INVOICE";
             this.OwnerInvoiceViewerPageName = "INVOICE";
             this.OwnerDeliveryUpdatePageName = "UPDATES";
+			this.OwnerDelayAlertsPageName = "DELAY ALERTS";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
             this.ReceiverInfoPageName = "RECEIVER INFO";
@@ -38,8 +39,10 @@ namespace KAS.Trukman.Languages
 			#region Lists
 			this.AdvanceListJobNumberLabel = "Job#:";
 			this.AdvanceListDriverNameLabel = "Driver:";
-            this.InvoiceListJobNumberLabel = "Job#";
+            this.InvoiceListJobNumberLabel = "Job#:";
             this.InvoiceListDriverNameLabel = "Driver:";
+			this.JobAlertListJobNumberLabel = "Job#:";
+			this.JobAlertListDriverNameLabel = "Driver:";
             #endregion
 
             #region ComcheckPopup

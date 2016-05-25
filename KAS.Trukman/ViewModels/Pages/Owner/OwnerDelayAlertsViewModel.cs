@@ -4,6 +4,7 @@ using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -18,7 +19,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public OwnerDelayAlertsViewModel()
             : base()
         {
-            this.JobAlerts = new ObservableCollection<JobAlert>();
+            this.JobAlertGroups = new ObservableCollection<JobAlertGroup>();
 
             this.SelectJobAlertCommand = new VisualCommand(this.SelectJobAlert);
             this.RefreshCommand = new VisualCommand(this.Refresh);
@@ -29,8 +30,6 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public override void Appering()
         {
             base.Appering();
-
-            this.SelectJobAlerts();
         }
 
         public override void Disappering()
@@ -41,13 +40,15 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public override void Initialize(params object[] parameters)
         {
             base.Initialize(parameters);
+
+			this.SelectJobAlerts();
         }
 
         protected override void Localize()
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.OwnerBrokerListPageName;
+			this.Title = AppLanguages.CurrentLanguage.OwnerDelayAlertsPageName;
         }
 
         private void SelectJobAlerts()
@@ -56,7 +57,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 this.IsBusy = true;
                 try
                 {
-                    var jobAlerts = await TrukmanContext.SelectJobAlertsAsync();
+					var jobAlerts = await TrukmanContext.SelectJobAlertsAsync();
                     this.ShowJobAlerts(jobAlerts);
                 }
                 catch (Exception exception)
@@ -72,16 +73,33 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         }
 
         private void ShowJobAlerts(JobAlert[] jobAlerts)
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                this.JobAlerts.Clear();
-                this.SelectedJobAlert = null;
+		{
+			Device.BeginInvokeOnMainThread (() => {
+				this.JobAlertGroups.Clear ();
+				this.SelectedJobAlert = null;
 
-                foreach (var jobAlert in jobAlerts)
-                    this.JobAlerts.Add(jobAlert);
-            });
-        }
+				foreach (var jobAlert in jobAlerts) {
+					var group = this.JobAlertGroups.FirstOrDefault (jag => jag.Job.ID == jobAlert.Job.ID);
+					if (group == null) {
+						group = new JobAlertGroup (jobAlert.Job);
+						this.JobAlertGroups.Add (group);
+					}
+					group.Add (jobAlert);
+				}
+			});
+		}
+
+		private void RemoveJobAlert(JobAlert jobAlert)
+		{
+			Device.BeginInvokeOnMainThread (() => {
+				var group = this.JobAlertGroups.FirstOrDefault(jag=>jag.Job.ID == jobAlert.Job.ID);
+				if (group != null) {
+					group.Remove(jobAlert);
+					if (group.Count == 0)
+						this.JobAlertGroups.Remove(group);
+				}
+			});
+		}
 
         private void ShowMainMenu(object parameter)
         {
@@ -95,7 +113,26 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectJobAlert(object parameter)
         {
-            this.SelectedJobAlert = null;
+			Task.Run (async() => {
+				this.IsBusy = true;
+				try
+				{
+					var jobAlert = (parameter as JobAlert);
+					if (jobAlert != null) {
+						await TrukmanContext.SetJobAlertIsViewedAsync(jobAlert.ID, true);
+						this.RemoveJobAlert(jobAlert);
+					}
+				}
+				catch (Exception exception)
+				{
+					ShowToastMessage.Send(exception.Message);
+				}
+				finally
+				{
+					this.SelectedJobAlert = null;
+					this.IsBusy = false;
+				}
+			});
         }
 
         private void Refresh(object parameter)
@@ -103,7 +140,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.SelectJobAlerts();
         }
 
-        public ObservableCollection<JobAlert> JobAlerts { get; private set; }
+        public ObservableCollection<JobAlertGroup> JobAlertGroups { get; private set; }
 
         public JobAlert SelectedJobAlert
         {
@@ -126,4 +163,17 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public VisualCommand RefreshCommand { get; private set; }
     }
     #endregion
+
+	#region JobAlertGroup
+	public class JobAlertGroup : ObservableCollection<JobAlert>
+	{
+		public JobAlertGroup(Trip job)
+			: base()
+		{
+			this.Job = job;
+		}
+
+		public Trip Job { get; private set; }
+	}
+	#endregion
 }

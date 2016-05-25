@@ -27,14 +27,14 @@ namespace KAS.Trukman.Views.Pages.Owner
             titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowMainMenuCommand", BindingMode.OneWay);
             titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
 
-            var brokers = new BrokerListView
+			var jobAlerts = new DelayAlertListView
             {
             };
-            brokers.SetBinding(BrokerListView.ItemsSourceProperty, "Brokers", BindingMode.TwoWay);
-            brokers.SetBinding(BrokerListView.SelectedItemProperty, "SelectedBroker", BindingMode.TwoWay);
-            brokers.SetBinding(BrokerListView.ItemClickCommandProperty, "SelectBrokerCommand");
-            brokers.SetBinding(BrokerListView.RefreshCommandProperty, "RefreshCommand");
-            brokers.SetBinding(BrokerListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
+            jobAlerts.SetBinding(BrokerListView.ItemsSourceProperty, "JobAlertGroups", BindingMode.TwoWay);
+            jobAlerts.SetBinding(BrokerListView.SelectedItemProperty, "SelectedJobAlert", BindingMode.TwoWay);
+            jobAlerts.SetBinding(BrokerListView.ItemClickCommandProperty, "SelectJobAlertCommand");
+            jobAlerts.SetBinding(BrokerListView.RefreshCommandProperty, "RefreshCommand");
+            jobAlerts.SetBinding(BrokerListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
 
             var content = new Grid
             {
@@ -48,7 +48,7 @@ namespace KAS.Trukman.Views.Pages.Owner
                 }
             };
             content.Children.Add(titleBar, 0, 0);
-            content.Children.Add(brokers, 0, 1);
+            content.Children.Add(jobAlerts, 0, 1);
 
             var busyIndicator = new ActivityIndicator
             {

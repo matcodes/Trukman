@@ -31,6 +31,7 @@ namespace KAS.Trukman.Languages
                 this.OwnerInvoiceListPageName = appLanguage.OwnerInvoiceListPageName;
                 this.OwnerInvoiceViewerPageName = appLanguage.OwnerInvoiceViewerPageName;
                 this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
+				this.OwnerDelayAlertsPageName = appLanguage.OwnerDelayAlertsPageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
                 this.ReceiverInfoPageName = appLanguage.ReceiverInfoPageName;
@@ -123,6 +124,8 @@ namespace KAS.Trukman.Languages
 				this.AdvanceListDriverNameLabel = appLanguage.AdvanceListDriverNameLabel;
                 this.InvoiceListJobNumberLabel = appLanguage.InvoiceListJobNumberLabel;
                 this.InvoiceListDriverNameLabel = appLanguage.InvoiceListDriverNameLabel;
+				this.JobAlertListJobNumberLabel = appLanguage.JobAlertListJobNumberLabel;
+				this.JobAlertListDriverNameLabel = appLanguage.JobAlertListDriverNameLabel;
 				#endregion
 
 				#region ComcheckPopup
@@ -326,6 +329,12 @@ namespace KAS.Trukman.Languages
 			set { this.SetValue("OwnerDeliveryUpdatePageName", value); }
 		}
 
+		public string OwnerDelayAlertsPageName
+		{
+			get { return (string)this.GetValue ("OwnerDelayAlertsPageName"); }
+			set { this.SetValue ("OwnerDelayAlertsPageName", value); }
+		}
+
         public string TripPageName
         {
             get { return (string)this.GetValue("TripPageName"); }
@@ -423,6 +432,18 @@ namespace KAS.Trukman.Languages
             get { return (string)this.GetValue("InvoiceListDriverNameLabel"); }
             set { this.SetValue("InvoiceListDriverNameLabel", value); }
         }
+
+		public string JobAlertListJobNumberLabel
+		{
+			get { return (string)this.GetValue ("JobAlertListJobNumberLabel"); }
+			set { this.SetValue ("JobAlertListJobNumberLabel", value); }
+		}
+
+		public string JobAlertListDriverNameLabel
+		{
+			get { return (string)this.GetValue ("JobAlertListDriverNameLabel"); }
+			set { this.SetValue ("JobAlertListDriverNameLabel", value); }
+		}
 		#endregion
 
 		#region ComcheckPopup

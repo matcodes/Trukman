@@ -192,6 +192,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void DelayAlerts(object parameter)
         {
+			ShowOwnerDelayAlertsPageMessage.Send ();
         }
 
         private void DeliveryUpdate(object parameter)

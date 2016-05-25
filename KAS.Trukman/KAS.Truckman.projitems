@@ -247,6 +247,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerBrokerListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\BrokerListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerBrokerListPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\DelayAlertListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DelayEmergenceToTextConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GettingStarted.Xamarin" />
