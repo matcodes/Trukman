@@ -45,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Advance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Notification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Photo.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowDelayEmergencyPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowNotificationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerBrockerListMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDelayAlertsPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDriverAuthorizationPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowGPSSettingsMessage.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDelayAlertsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDriverAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
@@ -200,6 +203,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerHomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerInvoiceListPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerInvoiceViewerPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerDelayAlertsPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerLumperPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerMainPage.cs" />

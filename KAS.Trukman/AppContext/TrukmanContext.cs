@@ -211,7 +211,18 @@ namespace KAS.Trukman.AppContext
 			await _localStorage.SendJobAlertAsync (tripID, alertType, alertText);
 		}
 
-		public static async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
+        public static async Task<JobAlert[]> SelectJobAlertsAsync()
+        {
+            var jobAlerts = await _localStorage.SelectJobAlertsAsync();
+            return jobAlerts;
+        }
+
+        public static async Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
+        {
+            await _localStorage.SetJobAlertIsViewedAsync(jobAlertID, isViewed);
+        }
+
+        public static async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
 			var advances = await _localStorage.SelectFuelAdvancesAsync(requestType);
             return advances;

@@ -695,7 +695,34 @@ namespace KAS.Trukman.Storage
 			}
 		}
 
-		public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
+        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        {
+            try
+            {
+                var jobAlerts = await _externalStorage.SelectJobAlertsAsync();
+                return jobAlerts;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
+
+        public async Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
+        {
+            try
+            {
+                await _externalStorage.SetJobAlertIsViewedAsync(jobAlertID, isViewed);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
+
+        public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
             try
             {

@@ -50,7 +50,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowMainMenuMessage.Subscribe(this, this.ShowMainMenu);
             HideMainMenuMessage.Subscribe(this, this.HideMainMenu);
             ShowOwnerFleetPageMessage.Subscribe(this, this.ShowOwnerFleetPage);
-			ShowOwnerDeliveryUpdateMessage.Subscribe (this, this.ShowOwnerJobList);
+			ShowOwnerDeliveryUpdatePageMessage.Subscribe (this, this.ShowOwnerDeliveryUpdatePage);
             ShowOwnerDriverAuthorizationPageMessage.Subscribe(this, this.ShowOwnerDriverAuthorizationPage);
             ShowOwnerFuelAdvancePageMessage.Subscribe(this, this.ShowOwnerFuelAdvancePage);
             ShowOwnerLumperPageMessage.Subscribe(this, this.ShowOwnerLumperPage);
@@ -58,6 +58,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerInvoiceListPageMessage.Subscribe(this, this.ShowOwnerInvoiceListPage);
             ShowOwnerImageViewerPageMessage.Subscribe(this, this.ShowOwnerImageViewerPage);
             ShowOwnerInvoiceViewerPageMessage.Subscribe(this, this.ShowOwnerInvoiceViewerPage);
+            ShowOwnerDelayAlertsPageMessage.Subscribe(this, this.ShowOwnerDelayAlertsPage);
         }
 
         private void UnsubscribeMessage()
@@ -67,7 +68,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowMainMenuMessage.Unsubscribe(this);
             HideMainMenuMessage.Unsubscribe(this);
             ShowOwnerFleetPageMessage.Unsubscribe(this);
-			ShowOwnerDeliveryUpdateMessage.Unsubscribe (this);
+			ShowOwnerDeliveryUpdatePageMessage.Unsubscribe (this);
             ShowOwnerDriverAuthorizationPageMessage.Unsubscribe(this);
             ShowOwnerFuelAdvancePageMessage.Unsubscribe(this);
             ShowOwnerLumperPageMessage.Unsubscribe(this);
@@ -75,6 +76,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             ShowOwnerInvoiceListPageMessage.Unsubscribe(this);
             ShowOwnerImageViewerPageMessage.Unsubscribe(this);
             ShowOwnerInvoiceViewerPageMessage.Unsubscribe(this);
+            ShowOwnerDelayAlertsPageMessage.Unsubscribe(this);
         }
 
         private void PushPage(Page page)
@@ -134,7 +136,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             this.PushPage(page);
         }
 
-		private void ShowOwnerJobList(ShowOwnerDeliveryUpdateMessage message)
+		private void ShowOwnerDeliveryUpdatePage(ShowOwnerDeliveryUpdatePageMessage message)
 		{
 			var page = new OwnerCurrentJobListPage ();
 			page.ViewModel.Initialize ();
@@ -180,6 +182,13 @@ namespace KAS.Trukman.Views.Pages.Owner
         {
             var page = new OwnerInvoiceViewerPage();
             page.ViewModel.Initialize(message.InvoiceUri);
+            this.PushPage(page);
+        }
+
+        private void ShowOwnerDelayAlertsPage(ShowOwnerDelayAlertsPageMessage message)
+        {
+            var page = new OwnerDelayAlertsPage();
+            page.ViewModel.Initialize();
             this.PushPage(page);
         }
 

@@ -1032,7 +1032,10 @@ namespace KAS.Trukman.Storage
 
 			var parseJobAlert = new ParseJobAlert {
 				AlertType = alertType,
-				AlertText = alertText
+				AlertText = alertText,
+                Job = parseJob,
+                Company = parseJob.Company,
+                IsViewed = false
 			};
 
 			await parseJobAlert.SaveAsync ();
@@ -1040,6 +1043,57 @@ namespace KAS.Trukman.Storage
 			parseJob.Alerts.Add (parseJobAlert);
 			await parseJob.SaveAsync ();
 		}
+
+        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        {
+            var jobAlerts = new List<JobAlert>();
+
+            var parseCompany = await this.SelectUserParseCompanyAsync();
+
+            var query = new ParseQuery<ParseJobAlert>()
+                .Include("Company")
+                .Include("Job")
+                .WhereEqualTo("Company", parseCompany)
+                .WhereEqualTo("IsViewed", false);
+            var parseJobAlerts = await query.FindAsync();
+
+            foreach (var parseJobAlert in parseJobAlerts)
+                jobAlerts.Add(this.ParseJobAlertToJobAlert(parseJobAlert));
+
+            return jobAlerts.ToArray();
+        }
+
+        public async Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
+        {
+            var query = new ParseQuery<ParseJobAlert>()
+                .WhereEqualTo("objectId", jobAlertID);
+            var parseJobAlert = await query.FirstOrDefaultAsync();
+            if (parseJobAlert != null)
+            {
+                parseJobAlert.IsViewed = isViewed;
+                await parseJobAlert.SaveAsync();
+            }
+        }
+
+        private JobAlert ParseJobAlertToJobAlert(ParseJobAlert parseJobAlert)
+        {
+            Company company = null;
+            if (parseJobAlert.Company != null)
+                company = this.ParseCompanyToCompany(parseJobAlert.Company);
+            Trip job = null;
+            if (parseJobAlert.Job != null)
+                job = this.ParseJobToTrip(parseJobAlert.Job);
+
+            var jobAlert = new JobAlert {
+                ID = parseJobAlert.ObjectId,
+                AlertType = parseJobAlert.AlertType,
+                AlertText = parseJobAlert.AlertText,
+                Company = company,
+                Job = job,
+                IsViewed = parseJobAlert.IsViewed
+            };
+            return jobAlert;
+        }
 
 		public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {

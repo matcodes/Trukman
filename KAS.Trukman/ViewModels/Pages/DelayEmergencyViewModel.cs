@@ -91,22 +91,18 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Submit(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(async () => {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-					string alertText = this.SelectedItem.ToString();
-					if (!string.IsNullOrEmpty(this.Comments))
-						alertText = string.Format("{0}: {1}", alertText, this.Comments);
-					TrukmanContext.SendJobAlertAsync(this.Trip.ID, (int)this.SelectedItem, alertText);
+					await TrukmanContext.SendJobAlertAsync(this.Trip.ID, (int)this.SelectedItem, this.Comments);
 
                     this.ShowPrevPage(null);
                 }
                 catch (Exception exception)
                 {
-                    // To do: Show exception message
-                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
                 }
                 finally
                 {
