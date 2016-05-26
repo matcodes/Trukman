@@ -185,6 +185,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\BaseListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CommandsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\CompanyListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\DriverJobPointListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\FleetTripListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\InvoiceListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Lists\MainMenuListView.cs" />

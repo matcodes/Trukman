@@ -1297,6 +1297,51 @@ namespace KAS.Trukman.Storage
 
 			return points;
 		}
+
+        public async Task<JobPoint[]> SelectJobPointsAsync()
+        {
+            var driver = ParseUser.CurrentUser;
+
+            var query = new ParseQuery<ParseJobPoint>()
+                .Include("Job")
+                .Include("Driver")
+                .Include("Company")
+                .WhereEqualTo("Driver", driver);
+
+            var parseJobPoints = await query.FindAsync();
+
+            var jobPoints = new List<JobPoint>();
+            foreach (var parseJobPoint in parseJobPoints)
+                jobPoints.Add(this.ParseJobPointToJobPoint(parseJobPoint));
+
+            return jobPoints.ToArray();
+        }
+
+        private JobPoint ParseJobPointToJobPoint(ParseJobPoint parseJobPoint)
+        {
+            Trip job = null;
+            if (parseJobPoint.Job != null)
+                job = this.ParseJobToTrip(parseJobPoint.Job);
+
+            User driver = null;
+            if (parseJobPoint.Driver != null)
+                driver = this.ParseUserToUser(parseJobPoint.Driver);
+
+            Company company = null;
+            if (parseJobPoint.Company != null)
+                company = this.ParseCompanyToCompany(parseJobPoint.Company);
+
+            var jobPoint = new JobPoint {
+                ID = parseJobPoint.ObjectId,
+                Text = parseJobPoint.Text,
+                Value = parseJobPoint.Value,
+                Job = job,
+                Driver = driver,
+                Company = company
+            };
+
+            return jobPoint;
+        }
         #endregion
     }
     #endregion

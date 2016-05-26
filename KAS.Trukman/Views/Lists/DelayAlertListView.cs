@@ -94,7 +94,8 @@ namespace KAS.Trukman
 				Content = grid
 			};
 
-			this.View = displayNameContent;		}
+			this.View = displayNameContent;
+        }
 	}
 	#endregion
 

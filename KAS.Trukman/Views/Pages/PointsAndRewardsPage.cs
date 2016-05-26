@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.Controls;
 using KAS.Trukman.Helpers;
 using KAS.Trukman.ViewModels.Pages;
+using KAS.Trukman.Views.Lists;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,22 +25,50 @@ namespace KAS.Trukman.Views.Pages
                 RightIcon = PlatformHelper.HomeImageSource
             };
             titleBar.SetBinding(TitleBar.TitleProperty, "Title", BindingMode.OneWay);
-            titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
-            titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowPrevPageCommand", BindingMode.OneWay);
+            titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowMainMenuCommand", BindingMode.OneWay);
+            titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
 
-            var content = new Grid {
-                HorizontalOptions = LayoutOptions.Fill,
+            var jobPoints = new DriverJobPointListView
+            {
+            };
+            jobPoints.SetBinding(DriverJobPointListView.ItemsSourceProperty, "JobPointGroups", BindingMode.TwoWay);
+            jobPoints.SetBinding(DriverJobPointListView.SelectedItemProperty, "SelectedJobPoint", BindingMode.TwoWay);
+            jobPoints.SetBinding(DriverJobPointListView.ItemClickCommandProperty, "SelectJobPointCommand");
+            jobPoints.SetBinding(DriverJobPointListView.RefreshCommandProperty, "RefreshCommand");
+            jobPoints.SetBinding(DriverJobPointListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
+
+            var content = new Grid
+            {
                 VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
                 ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    new RowDefinition { Height = new GridLength(3, GridUnitType.Star) }
                 }
             };
             content.Children.Add(titleBar, 0, 0);
+            content.Children.Add(jobPoints, 0, 1);
 
-            return content;
+            var busyIndicator = new ActivityIndicator
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+            busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
+
+            var pageContent = new Grid
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0
+            };
+            pageContent.Children.Add(content);
+            pageContent.Children.Add(busyIndicator);
+
+            return pageContent;
         }
 
         public new PointsAndRewardsViewModel ViewModel

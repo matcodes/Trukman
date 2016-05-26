@@ -144,8 +144,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         public JobAlert SelectedJobAlert
         {
-            get { return (this.GetValue("SelectedJobAlert") as JobAlert); }
-            set { this.SetValue("SelectedJobAlert", value); }
+            get { return (this.GetValue("SelectedJobPoint") as JobAlert); }
+            set { this.SetValue("SelectedJobPoint", value); }
         }
 
         public bool IsRefreshing

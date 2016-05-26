@@ -187,6 +187,7 @@ namespace KAS.Trukman.Views.Pages
         private void ShowPointsAndRewardsPage(ShowPointsAndRewardsPageMessage message)
         {
             var page = new PointsAndRewardsPage();
+            page.ViewModel.Initialize();
             this.PushPage(page);
         }
 

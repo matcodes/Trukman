@@ -409,7 +409,23 @@ namespace KAS.Trukman.Storage
 				Console.WriteLine(exception);
 				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
 			}
-			return points;		}
+			return points;
+        }
+
+        public async Task<JobPoint[]> SelectJobPointsAsync()
+        {
+            var jobPoints = new JobPoint[] { };
+            try
+            {
+                jobPoints = await _externalStorage.SelectJobPointsAsync();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return jobPoints;
+        }
 
         public async Task<Position> SelectDriverPosition(string tripID)
         {

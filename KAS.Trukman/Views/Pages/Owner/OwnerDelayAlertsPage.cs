@@ -30,11 +30,11 @@ namespace KAS.Trukman.Views.Pages.Owner
 			var jobAlerts = new DelayAlertListView
             {
             };
-            jobAlerts.SetBinding(BrokerListView.ItemsSourceProperty, "JobAlertGroups", BindingMode.TwoWay);
-            jobAlerts.SetBinding(BrokerListView.SelectedItemProperty, "SelectedJobAlert", BindingMode.TwoWay);
-            jobAlerts.SetBinding(BrokerListView.ItemClickCommandProperty, "SelectJobAlertCommand");
-            jobAlerts.SetBinding(BrokerListView.RefreshCommandProperty, "RefreshCommand");
-            jobAlerts.SetBinding(BrokerListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
+            jobAlerts.SetBinding(DelayAlertListView.ItemsSourceProperty, "JobAlertGroups", BindingMode.TwoWay);
+            jobAlerts.SetBinding(DelayAlertListView.SelectedItemProperty, "SelectedJobPoint", BindingMode.TwoWay);
+            jobAlerts.SetBinding(DelayAlertListView.ItemClickCommandProperty, "SelectJobAlertCommand");
+            jobAlerts.SetBinding(DelayAlertListView.RefreshCommandProperty, "RefreshCommand");
+            jobAlerts.SetBinding(DelayAlertListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
 
             var content = new Grid
             {

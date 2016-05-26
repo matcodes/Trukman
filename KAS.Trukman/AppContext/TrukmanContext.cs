@@ -250,6 +250,12 @@ namespace KAS.Trukman.AppContext
 			return points;
 		}
 
+        public static async Task<JobPoint[]> SelectJobPointsAsync()
+        {
+            var jobPoints = await _localStorage.SelectJobPointsAsync();
+            return jobPoints;
+        }
+
         public static async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {
             var company = await _localStorage.RegisterCompanyAsync(companyInfo);
