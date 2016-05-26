@@ -269,6 +269,18 @@ namespace KAS.Trukman.Languages
                 this.OwnerFuelRequestedSystemMessage = appLanguage.OwnerFuelRequestedSystemMessage;
                 this.OwnerLumperRequestedSystemMessage = appLanguage.OwnerLumperRequestedSystemMessage;
                 #endregion
+
+                #region Job Points text
+                this.BaseJobPointsText = appLanguage.BaseJobPointsText;
+                this.PickUpOnTimeJobPointsText = appLanguage.PickUpOnTimeJobPointsText;
+                this.PickUpOnTimeEarlyJobPointsText = appLanguage.PickUpOnTimeEarlyJobPointsText;
+                this.PickUpLateJobPointsText = appLanguage.PickUpLateJobPointsText;
+                this.PickUpPhotoJobPointsText = appLanguage.PickUpPhotoJobPointsText;
+                this.DeliveryOnTimeJobPointsText = appLanguage.DeliveryOnTimeJobPointsText;
+                this.DeliveryOnTimeEarlyJobPointsText = appLanguage.DeliveryOnTimeEarlyJobPointsText;
+                this.DeliveryLateJobPointsText = appLanguage.DeliveryLateJobPointsText;
+                this.DeliveryPhotoJobPointsText = appLanguage.DeliveryPhotoJobPointsText;
+                #endregion
             }
         }
 
@@ -1391,6 +1403,62 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("OwnerLumperRequestedSystemMessage"); }
             set { this.SetValue("OwnerLumperRequestedSystemMessage", value); }
+        }
+        #endregion
+
+        #region Job Points text
+        public string BaseJobPointsText
+        {
+            get { return (string)this.GetValue("BaseJobPointsText"); }
+            set { this.SetValue("BaseJobPointsText", value); }
+        }
+
+        public string PickUpOnTimeJobPointsText
+        {
+            get { return (string)this.GetValue("PickUpOnTimeJobPointsText"); }
+            set { this.SetValue("PickUpOnTimeJobPointsText", value); }
+        }
+
+        public string PickUpOnTimeEarlyJobPointsText
+        {
+            get { return (string)this.GetValue("PickUpOnTimeEarlyJobPointsText"); }
+            set { this.SetValue("PickUpOnTimeEarlyJobPointsText", value); }
+        }
+
+        public string PickUpLateJobPointsText
+        {
+            get { return (string)this.GetValue("PickUpOnTimeEarlyJobPointsText"); }
+            set { this.SetValue("PickUpOnTimeEarlyJobPointsText", value); }
+        }
+
+        public string PickUpPhotoJobPointsText
+        {
+            get { return (string)this.GetValue("PickUpPhotoJobPointsText"); }
+            set { this.SetValue("PickUpPhotoJobPointsText", value); }
+        }
+ 
+        public string DeliveryOnTimeJobPointsText
+        {
+            get { return (string)this.GetValue("DeliveryOnTimeJobPointsText"); }
+            set { this.SetValue("DeliveryOnTimeJobPointsText", value); }
+        }
+
+        public string DeliveryOnTimeEarlyJobPointsText
+        {
+            get { return (string)this.GetValue("DeliveryOnTimeEarlyJobPointsText"); }
+            set { this.SetValue("DeliveryOnTimeEarlyJobPointsText", value); }
+        }
+
+        public string DeliveryLateJobPointsText
+        {
+            get { return (string)this.GetValue("DeliveryLateJobPointsText"); }
+            set { this.SetValue("DeliveryLateJobPointsText", value); }
+        }
+
+        public string DeliveryPhotoJobPointsText
+        {
+            get { return (string)this.GetValue("DeliveryPhotoJobPointsText"); }
+            set { this.SetValue("DeliveryPhotoJobPointsText", value); }
         }
         #endregion
     }

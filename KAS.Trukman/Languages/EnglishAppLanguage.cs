@@ -259,6 +259,18 @@ namespace KAS.Trukman.Languages
             this.OwnerFuelRequestedSystemMessage = "Job # {0}. {1} requested a fuel advance";
             this.OwnerLumperRequestedSystemMessage = "Job # {0}. {1} requested a lumper advance";
             #endregion
+
+            #region Job Points text
+            this.BaseJobPointsText = "Job points";
+            this.PickUpOnTimeJobPointsText = "Pickup on time points";
+            this.PickUpOnTimeEarlyJobPointsText = "Pickup on time 15 mins early points";
+            this.PickUpLateJobPointsText = "Pickup late points";
+            this.PickUpPhotoJobPointsText = "Pickup photo points";
+            this.DeliveryOnTimeJobPointsText = "Delivery on time points";
+            this.DeliveryOnTimeEarlyJobPointsText = "Delivery on time 15 mins early points";
+            this.DeliveryLateJobPointsText = "Delivery late points";
+            this.DeliveryPhotoJobPointsText = "Delivery photo points";
+            #endregion
         }
     }
     #endregion
