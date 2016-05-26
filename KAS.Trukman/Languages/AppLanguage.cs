@@ -91,7 +91,9 @@ namespace KAS.Trukman.Languages
                 this.HomeArrivedOnTimeLabel = appLanguage.HomeArrivedOnTimeLabel;
                 this.HomeArrivedOnTimeBonusPointsLabel = appLanguage.HomeArrivedOnTimeBonusPointsLabel;
                 this.HomeArrivedOnTimeBonusPointsMinsLabel = appLanguage.HomeArrivedOnTimeBonusPointsMinsLabel;
-                this.HomeTotalPointsLabel = appLanguage.HomeTotalPointsLabel;
+				this.HomeArrivedTotalPointsLabel = appLanguage.HomeArrivedTotalPointsLabel;
+                this.HomeJobTotalPointsLabel = appLanguage.HomeJobTotalPointsLabel;
+				this.HomeDriverTotalPointsLabel = appLanguage.HomeDriverTotalPointsLabel;
                 this.HomeNextStepLabel = appLanguage.HomeNextStepLabel;
                 this.HomeBonusPointsForPickupPhotoLabel = appLanguage.HomeBonusPointsForPickupPhotoLabel;
                 this.HomeBonusPointsForDeliveryPhotoLabel = appLanguage.HomeBonusPointsForDeliveryPhotoLabel;
@@ -701,11 +703,23 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HomeArrivedOnTimeBonusPointsMinsLabel", value); }
         }
 
-        public string HomeTotalPointsLabel
+		public string HomeArrivedTotalPointsLabel
+		{
+			get { return (string)this.GetValue ("HomeArrivedTotalPointsLabel"); }
+			set { this.SetValue ("HomeArrivedTotalPointsLabel", value); }
+		}
+
+        public string HomeJobTotalPointsLabel
         {
-            get { return (string)this.GetValue("HomeTotalPointsLabel"); }
-            set { this.SetValue("HomeTotalPointsLabel", value); }
+			get { return (string)this.GetValue("HomeJobTotalPointsLabel"); }
+			set { this.SetValue("HomeJobTotalPointsLabel", value); }
         }
+
+		public string HomeDriverTotalPointsLabel
+		{
+			get { return (string)this.GetValue ("HomeDriverTotalPointsLabel"); }
+			set { this.SetValue ("HomeDriverTotalPointsLabel", value); }
+		}
 
         public string HomeNextStepLabel
         {

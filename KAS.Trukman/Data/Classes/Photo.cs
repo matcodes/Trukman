@@ -55,7 +55,7 @@ namespace KAS.Trukman.Data.Classes
 
 		public bool IsViewed
 		{
-			get { return (bool)this.GetValue ("IsViewed"); }
+			get { return (bool)this.GetValue ("IsViewed", false); }
 			set { this.SetValue ("IsViewed", value); }
 		}
     }

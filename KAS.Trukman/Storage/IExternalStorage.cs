@@ -108,6 +108,8 @@ namespace KAS.Trukman.Storage
         Task AddPointsAsync(string jobID, string text, int points);
 
         Task<int> GetPointsByJobIDAsync(string jobID);
+
+		Task<int> GetPointsByDriverIDAsync (string driverID);
     }
     #endregion
 }

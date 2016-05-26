@@ -244,6 +244,12 @@ namespace KAS.Trukman.AppContext
             return points;
         }
 
+		public static async Task<int> GetPointsByDriverIDAsync(string driverID)
+		{
+			var points = await _localStorage.GetPointsByDriverIDAsync (driverID);
+			return points;
+		}
+
         public static async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {
             var company = await _localStorage.RegisterCompanyAsync(companyInfo);

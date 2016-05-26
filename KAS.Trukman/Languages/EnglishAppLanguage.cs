@@ -97,7 +97,9 @@ namespace KAS.Trukman.Languages
             this.HomeArrivedOnTimeLabel = "Congrats for arriving on time! You received";
             this.HomeArrivedOnTimeBonusPointsLabel = "50 pts";
             this.HomeArrivedOnTimeBonusPointsMinsLabel = "Plus 5 points for arriving 15 mins early";
-            this.HomeTotalPointsLabel = "Total Points: {0}";
+			this.HomeArrivedTotalPointsLabel = "Total Points: {0}";
+            this.HomeJobTotalPointsLabel = "You've earned {0} points.";
+			this.HomeDriverTotalPointsLabel = "Total Points: {0}";
             this.HomeNextStepLabel = "Next Step";
             this.HomeBonusPointsForPickupPhotoLabel = "Send photo of Bill of Lading";
             this.HomeBonusPointsForDeliveryPhotoLabel = "Send photo of Delivery Proof";

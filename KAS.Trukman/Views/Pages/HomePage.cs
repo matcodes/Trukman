@@ -1021,13 +1021,13 @@ namespace KAS.Trukman.Views.Pages
                 FontAttributes = FontAttributes.Bold,
                 TextColor = PlatformHelper.HomeTextColor
             };
-            totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
+            totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
             var totalPointsContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
-                Padding = new Thickness(10, 0, 10, 5),
+                Padding = new Thickness(10, 20, 10, 5),
                 Content = totalPointsLabel
             };
 
@@ -1175,13 +1175,13 @@ namespace KAS.Trukman.Views.Pages
                 FontAttributes = FontAttributes.Bold,
                 TextColor = PlatformHelper.HomeTextColor
             };
-            totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
+			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
             var totalPointsContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
-                Padding = new Thickness(10, 0, 10, 5),
+                Padding = new Thickness(10, 20, 10, 5),
                 Content = totalPointsLabel
             };
 
@@ -1344,15 +1344,14 @@ namespace KAS.Trukman.Views.Pages
 				FontAttributes = FontAttributes.Bold,
 				TextColor = PlatformHelper.HomeTextColor
 			};
-			totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
+			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
 			var totalPointsContent = new ContentView {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 0, 10, 5),
+				Padding = new Thickness(10, 20, 10, 5),
 				Content = totalPointsLabel
 			};
-            totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
 
             var nextStepLabel = new Label {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -1495,13 +1494,13 @@ namespace KAS.Trukman.Views.Pages
 				FontAttributes = FontAttributes.Bold,
 				TextColor = PlatformHelper.HomeTextColor
 			};
-			totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
+			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
 			var totalPointsContent = new ContentView
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 0, 10, 5),
+				Padding = new Thickness(10, 20, 10, 5),
 				Content = totalPointsLabel
 			};
 
@@ -1566,7 +1565,7 @@ namespace KAS.Trukman.Views.Pages
 			var mapImage = new Image
 			{
 				HorizontalOptions = LayoutOptions.Center,
-				VerticalOptions = LayoutOptions.End,
+				VerticalOptions = LayoutOptions.Center,
 				HeightRequest = 180,
 				WidthRequest = 180,
 				Source = PlatformHelper.HomeMapImageSource
@@ -1591,11 +1590,11 @@ namespace KAS.Trukman.Views.Pages
 			var completedTripContent = new ContentView {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(20, 10, 20, 0),
+				Padding = new Thickness(20, 30, 5, 0),
 				Content = completedTripLabel
 			};
 
-			var totalPointsLabel = new Label
+			var totalJobPointsLabel = new Label
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
@@ -1604,14 +1603,33 @@ namespace KAS.Trukman.Views.Pages
 				FontAttributes = FontAttributes.Bold,
 				TextColor = PlatformHelper.HomeTextColor
 			};
-			totalPointsLabel.SetBinding(Label.TextProperty, "TotalPointsText", BindingMode.OneWay);
+			totalJobPointsLabel.SetBinding(Label.TextProperty, "TotalJobPointsText", BindingMode.OneWay);
 
-			var totalPointsContent = new ContentView
+			var totalJobPointsContent = new ContentView
 			{
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 0, 10, 5),
-				Content = totalPointsLabel
+				Padding = new Thickness(10, 0, 10, 30),
+				Content = totalJobPointsLabel
+			};
+
+			var totalDriverPointsLabel = new Label
+			{
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Start,
+				HorizontalTextAlignment = TextAlignment.Center,
+				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+				FontAttributes = FontAttributes.Bold,
+				TextColor = PlatformHelper.HomeTextColor
+			};
+			totalDriverPointsLabel.SetBinding(Label.TextProperty, "TotalDriverPointsText", BindingMode.OneWay);
+
+			var totalDriverPointsContent = new ContentView
+			{
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Start,
+				Padding = new Thickness(10, 30, 10, 30),
+				Content = totalDriverPointsLabel
 			};
 
 			var rewardsButton = new AppButton
@@ -1652,18 +1670,20 @@ namespace KAS.Trukman.Views.Pages
 				ColumnSpacing = 0,
 				RowSpacing = 0,
 				RowDefinitions = {
-					new RowDefinition { Height = new GridLength(4, GridUnitType.Star) },
-					new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
 				}
 			};
 			grid.Children.Add(mapContent, 0, 0);
 			grid.Children.Add(completedTripContent, 0, 1);
-			grid.Children.Add(totalPointsContent, 0, 2);
-			grid.Children.Add(rewardsContent, 0, 3);
-			grid.Children.Add (newTripContent, 0, 4);
+			grid.Children.Add (totalJobPointsContent, 0, 2);
+			grid.Children.Add(totalDriverPointsContent, 0, 3);
+			grid.Children.Add(rewardsContent, 0, 4);
+			grid.Children.Add (newTripContent, 0, 5);
 
 			var content = new ContentView 
 			{

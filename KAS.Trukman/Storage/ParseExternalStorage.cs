@@ -38,7 +38,7 @@ namespace KAS.Trukman.Storage
             ParseObject.RegisterSubclass<ParseNotification>();
 			ParseObject.RegisterSubclass<ParseJobAlert> ();
             ParseObject.RegisterSubclass<ParseInvoice>();
-            ParseObject.RegisterSubclass<ParseJob>();
+            ParseObject.RegisterSubclass<ParseJobPoint>();
 
             ParseClient.Initialize(PARSE_APPLICATION_ID, PARSE_DOTNET_KEY);
 
@@ -1278,6 +1278,25 @@ namespace KAS.Trukman.Storage
 
             return points;
         }
+
+		public async Task<int> GetPointsByDriverIDAsync(string driverID)
+		{
+			var driver = ParseUser.CreateWithoutData<ParseUser>(driverID);
+
+			var query = new ParseQuery<ParseJobPoint>()
+				.Include("Job")
+				.Include("Driver")
+				.Include("Company")
+				.WhereEqualTo("Driver", driver);
+
+			var parseJobPoints = await query.FindAsync();
+
+			var points = 0;
+			foreach (var parseJobPoint in parseJobPoints)
+				points += parseJobPoint.Value;
+
+			return points;
+		}
         #endregion
     }
     #endregion

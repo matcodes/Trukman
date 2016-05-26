@@ -397,6 +397,20 @@ namespace KAS.Trukman.Storage
             return points;
         }
 
+		public async Task<int> GetPointsByDriverIDAsync(string driverID)
+		{
+			var points = (int)0;
+			try
+			{
+				points = await _externalStorage.GetPointsByDriverIDAsync(driverID);
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception);
+				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+			}
+			return points;		}
+
         public async Task<Position> SelectDriverPosition(string tripID)
         {
             var position = new Position(0, 0);

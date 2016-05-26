@@ -16,6 +16,7 @@ using Trukman.Helpers;
 using Trukman.Messages;
 using System.Collections.ObjectModel;
 using KAS.Trukman.AppContext;
+using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -159,18 +160,27 @@ namespace KAS.Trukman.ViewModels.Pages
                 else if (this.State == HomeStates.TripComleted)
                 {
                 }
+				this.GetJobPoints ();
             }
             else if (propertyName == "SelectedContractor")
             {
                 this.SetContractorAddress();
             }
-            else if (propertyName == "TotalPoints")
+			else if ((propertyName == "TotalJobPoints") || (propertyName == "TotalDriverPoints"))
             {
                 this.Localize();
             }
             else if ((propertyName == "SelectedArrivedMenuItem") && (this.SelectedArrivedMenuItem != null))
                 this.SelectedArrivedMenuItem = null;
         }
+
+		private void GetJobPoints()
+		{
+			Task.Run (async() => {
+				this.TotalJobPoints = await TrukmanContext.GetPointsByJobIDAsync(TrukmanContext.Driver.TripID);
+				this.TotalDriverPoints = await TrukmanContext.GetPointsByDriverIDAsync(TrukmanContext.User.ID);
+			});
+		}
 
         private void SetContractorAddress()
         {
@@ -282,22 +292,24 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.AppName;
-            this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString((this.Trip.IsPickup ? this.Trip.DeliveryDatetime : this.Trip.PickupDatetime)) : "");
-            this.TripPoints = (this.Trip != null ? String.Format(AppLanguages.CurrentLanguage.HomePointsLabel, this.Trip.Points) : "");
-            this.TotalPointsText = String.Format(AppLanguages.CurrentLanguage.HomeTotalPointsLabel, this.TotalPoints);
+			Device.BeginInvokeOnMainThread (() => {
+				this.Title = AppLanguages.CurrentLanguage.AppName;
+				this.TripTime = (this.Trip != null ? AppLanguages.GetTimeString ((this.Trip.IsPickup ? this.Trip.DeliveryDatetime : this.Trip.PickupDatetime)) : "");
+				this.TripPoints = (this.Trip != null ? String.Format (AppLanguages.CurrentLanguage.HomePointsLabel, this.Trip.Points) : "");
+				this.ArrivedTotalPointsText = String.Format(AppLanguages.CurrentLanguage.HomeArrivedTotalPointsLabel, this.TotalJobPoints);
+				this.TotalJobPointsText = String.Format (AppLanguages.CurrentLanguage.HomeJobTotalPointsLabel, this.TotalJobPoints);
+				this.TotalDriverPointsText = String.Format(AppLanguages.CurrentLanguage.HomeDriverTotalPointsLabel, this.TotalDriverPoints);
 
-            if (_pickUpTakePhotoFromCameraMenuItem != null)
-            {
-                _pickUpTakePhotoFromCameraMenuItem.Label = AppLanguages.CurrentLanguage.HomeBonusPointsForPickupPhotoLabel;
-                _pickUpTakePhotoFromCameraMenuItem.Description = AppLanguages.CurrentLanguage.HomeBonusPointsForTimeLabel;
-            }
+				if (_pickUpTakePhotoFromCameraMenuItem != null) {
+					_pickUpTakePhotoFromCameraMenuItem.Label = AppLanguages.CurrentLanguage.HomeBonusPointsForPickupPhotoLabel;
+					_pickUpTakePhotoFromCameraMenuItem.Description = AppLanguages.CurrentLanguage.HomeBonusPointsForTimeLabel;
+				}
 
-            if (_deliveryTakePhotoFromCameraMenuItem != null)
-            {
-                _deliveryTakePhotoFromCameraMenuItem.Label = AppLanguages.CurrentLanguage.HomeBonusPointsForDeliveryPhotoLabel;
-                _deliveryTakePhotoFromCameraMenuItem.Description = AppLanguages.CurrentLanguage.HomeBonusPointsForTimeLabel;
-            }
+				if (_deliveryTakePhotoFromCameraMenuItem != null) {
+					_deliveryTakePhotoFromCameraMenuItem.Label = AppLanguages.CurrentLanguage.HomeBonusPointsForDeliveryPhotoLabel;
+					_deliveryTakePhotoFromCameraMenuItem.Description = AppLanguages.CurrentLanguage.HomeBonusPointsForTimeLabel;
+				}
+			});
         }
 
         private void DriverLocationChanged(DriverLocationChangedMessage message)
@@ -458,7 +470,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void MenuItemClick(object parameter)
         {
-            var menuItem = (parameter as MenuItem);
+            var menuItem = (parameter as KAS.Trukman.Classes.MenuItem);
             if ((menuItem != null) && (menuItem.Command != null) && (menuItem.Command.CanExecute(parameter)))
                 menuItem.Command.Execute(parameter);
         }
@@ -541,17 +553,35 @@ namespace KAS.Trukman.ViewModels.Pages
             set { this.SetValue("ArrivedBonusMinsVisible", value); }
         }
 
-        public int TotalPoints
+        public int TotalJobPoints
         {
-            get { return (int)this.GetValue("TotalPoints", (int)0); }
-            set { this.SetValue("TotalPoints", value); }
+			get { return (int)this.GetValue("TotalJobPoints", (int)0); }
+			set { this.SetValue("TotalJobPoints", value); }
         }
 
-        public string TotalPointsText
+		public int TotalDriverPoints
+		{
+			get { return (int)this.GetValue ("TotalDriverPoints", (int)0); }
+			set { this.SetValue ("TotalDriverPoints", value); }
+		}
+
+		public string ArrivedTotalPointsText
+		{
+			get { return (string)this.GetValue ("ArrivedTotalPointsText"); }
+			set { this.SetValue ("ArrivedTotalPointsText", value); }
+		}
+
+        public string TotalJobPointsText
         {
-            get { return (string)this.GetValue("TotalPointsText"); }
-            set { this.SetValue("TotalPointsText", value); }
+			get { return (string)this.GetValue("TotalJobPointsText"); }
+			set { this.SetValue("TotalJobPointsText", value); }
         }
+
+		public string TotalDriverPointsText
+		{
+			get { return (string)this.GetValue ("TotalDriverPointsText"); }
+			set { this.SetValue ("TotalDriverPointsText", value); }
+		}
 
         public Position ArrivedPosition
         {
@@ -589,9 +619,9 @@ namespace KAS.Trukman.ViewModels.Pages
 			set { this.SetValue ("CurrentPosition", value);}
 		}
 
-        public MenuItem SelectedArrivedMenuItem
+        public KAS.Trukman.Classes.MenuItem SelectedArrivedMenuItem
         {
-            get { return (this.GetValue("SelectedArrivedMenuItem") as MenuItem); }
+            get { return (this.GetValue("SelectedArrivedMenuItem") as KAS.Trukman.Classes.MenuItem); }
             set { this.SetValue("SelectedArrivedMenuItem", value); }
         }
 
