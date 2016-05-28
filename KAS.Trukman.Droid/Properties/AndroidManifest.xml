@@ -34,7 +34,7 @@
     </activity>
     <!-- Put your Google Maps V2 API Key here. -->
     <!-- KAS map key -->
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCG2u61Ejf_I-joHPXka__FcnLuakr63lQ" />
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJE-QQq6qht1tNZ1W--qVLJEHbrTYd94" />
     <!-- DKG map key -->
     <!-- Ключ для debug версии -->
     <!--<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBMQ-Lvsvw3ogHchfLH7AI57ug0muLz-Q8" />-->

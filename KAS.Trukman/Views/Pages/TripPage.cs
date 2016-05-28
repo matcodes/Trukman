@@ -59,20 +59,32 @@ namespace KAS.Trukman.Views.Pages
             shipperTitleLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
             shipperTitleLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
-            var shipperTitleContent = new ContentView {
-                HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(0, 10, 0, 0),
-                Content = shipperTitleLabel
+            var showShipperPosition = new ToolButton {
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                ImageSourceName = PlatformHelper.LocationImageSource,
+                WidthRequest = 48,
+                HeightRequest = 48
             };
+            showShipperPosition.SetBinding(ToolButton.CommandProperty, "ShowShipperLocationCommand");
 
-            var shipperNameLabel = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 0
+            var shipperTitleContent = new Grid {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0, 0, 0, 0),
+                ColumnSpacing = 0,
+                RowSpacing = 0
             };
-            shipperNameLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            shipperNameLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
-            shipperNameLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
+            shipperTitleContent.Children.Add(shipperTitleLabel);
+            shipperTitleContent.Children.Add(showShipperPosition);
+
+            //var shipperNameLabel = new TappedLabel
+            //{
+            //    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+            //    TapCommandParameter = 0
+            //};
+            //shipperNameLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            //shipperNameLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
+            //shipperNameLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var shipperNameValue = new TappedLabel
             {
@@ -89,7 +101,7 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0, 2, 0, 2),
                 Spacing = 5
             };
-            shipperName.Children.Add(shipperNameLabel);
+            //shipperName.Children.Add(shipperNameLabel);
             shipperName.Children.Add(shipperNameValue);
 
             var shipperPhoneLabel = new TappedLabel
@@ -146,14 +158,26 @@ namespace KAS.Trukman.Views.Pages
             shipperFax.Children.Add(shipperFaxLabel);
             shipperFax.Children.Add(shipperFaxValue);
 
-            var shipperAddressLabel = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 0
+            var shipperPhoneFaxLineContent = new Grid {
+                HorizontalOptions = LayoutOptions.Fill,
+                ColumnSpacing = 0,
+                RowSpacing = 0,
+                ColumnDefinitions = {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                }
             };
-            shipperAddressLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageAddressLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            shipperAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
-            shipperAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
+            shipperPhoneFaxLineContent.Children.Add(shipperPhone, 0, 0);
+            shipperPhoneFaxLineContent.Children.Add(shipperFax, 1, 0);
+
+            //var shipperAddressLabel = new TappedLabel
+            //{
+            //    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+            //    TapCommandParameter = 0
+            //};
+            //shipperAddressLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageAddressLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            //shipperAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
+            //shipperAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var shipperAddressValue = new TappedLabel
             {
@@ -170,8 +194,24 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0, 2, 0, 2),
                 Spacing = 5
             };
-            shipperAddress.Children.Add(shipperAddressLabel);
+            //shipperAddress.Children.Add(shipperAddressLabel);
             shipperAddress.Children.Add(shipperAddressValue);
+
+            var shipperSpecialInstruction = new TappedLabel
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TapCommandParameter = 0
+            };
+            shipperSpecialInstruction.SetBinding(TappedLabel.TextProperty, new Binding("TripSpecialInstructionLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            shipperSpecialInstruction.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
+            shipperSpecialInstruction.SetBinding(TappedLabel.TapCommandProperty, "ShipperSpecialInstructionCommand");
+
+            var shipperSpecialInstructionContent = new ContentView {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0, 5, 0, 5),
+                Content = shipperSpecialInstruction
+            };
 
             var receiverTitleLabel = new TappedLabel
             {
@@ -185,21 +225,34 @@ namespace KAS.Trukman.Views.Pages
             receiverTitleLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
             receiverTitleLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
-            var receiverTitleContent = new ContentView
+            var showReceiverPosition = new ToolButton
+            {
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                ImageSourceName = PlatformHelper.LocationImageSource,
+                WidthRequest = 48,
+                HeightRequest = 48
+            };
+            showReceiverPosition.SetBinding(ToolButton.CommandProperty, "ShowReceiverLocationCommand");
+
+            var receiverTitleContent = new Grid
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(0, 10, 0, 0),
-                Content = receiverTitleLabel
+                Padding = new Thickness(0, 0, 0, 0),
+                RowSpacing = 0,
+                ColumnSpacing = 0
             };
+            receiverTitleContent.Children.Add(receiverTitleLabel);
+            receiverTitleContent.Children.Add(showReceiverPosition);
 
-            var receiverNameLabel = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 1
-            };
-            receiverNameLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            receiverNameLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
-            receiverNameLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
+            //var receiverNameLabel = new TappedLabel
+            //{
+            //    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+            //    TapCommandParameter = 1
+            //};
+            //receiverNameLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageNameLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            //receiverNameLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
+            //receiverNameLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var receiverNameValue = new TappedLabel
             {
@@ -216,7 +269,7 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0, 2, 0, 2),
                 Spacing = 5
             };
-            receiverName.Children.Add(receiverNameLabel);
+            //receiverName.Children.Add(receiverNameLabel);
             receiverName.Children.Add(receiverNameValue);
 
             var receiverPhoneLabel = new TappedLabel
@@ -273,14 +326,26 @@ namespace KAS.Trukman.Views.Pages
             receiverFax.Children.Add(receiverFaxLabel);
             receiverFax.Children.Add(receiverFaxValue);
 
-            var receiverAddressLabel = new TappedLabel
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter = 1
+            var receiverPhoneFaxLineContent = new Grid {
+                HorizontalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                ColumnDefinitions = {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                }
             };
-            receiverAddressLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageAddressLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            receiverAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
-            receiverAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
+            receiverPhoneFaxLineContent.Children.Add(receiverPhone, 0, 0);
+            receiverPhoneFaxLineContent.Children.Add(receiverFax, 1, 0);
+
+            //var receiverAddressLabel = new TappedLabel
+            //{
+            //    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+            //    TapCommandParameter = 1
+            //};
+            //receiverAddressLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPageAddressLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            //receiverAddressLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
+            //receiverAddressLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
             var receiverAddressValue = new TappedLabel
             {
@@ -297,8 +362,25 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0, 2, 0, 2),
                 Spacing = 5
             };
-            receiverAddress.Children.Add(receiverAddressLabel);
+            //receiverAddress.Children.Add(receiverAddressLabel);
             receiverAddress.Children.Add(receiverAddressValue);
+
+            var receiverSpecialInstruction = new TappedLabel
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TapCommandParameter = 0
+            };
+            receiverSpecialInstruction.SetBinding(TappedLabel.TextProperty, new Binding("TripSpecialInstructionLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            receiverSpecialInstruction.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
+            receiverSpecialInstruction.SetBinding(TappedLabel.TapCommandProperty, "ReceiverSpecialInstructionCommand");
+
+            var receiverSpecialInstructionContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0, 5, 0, 5),
+                Content = receiverSpecialInstruction
+            };
 
             var info = new StackLayout
             {
@@ -306,16 +388,17 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(2, 0, 2, 5),
                 Spacing = 1
             };
+
             info.Children.Add(shipperTitleContent);
             info.Children.Add(shipperName);
-            info.Children.Add(shipperPhone);
-            info.Children.Add(shipperFax);
+            info.Children.Add(shipperPhoneFaxLineContent);
             info.Children.Add(shipperAddress);
+            info.Children.Add(shipperSpecialInstructionContent);
             info.Children.Add(receiverTitleContent);
             info.Children.Add(receiverName);
-            info.Children.Add(receiverPhone);
-            info.Children.Add(receiverFax);
+            info.Children.Add(receiverPhoneFaxLineContent);
             info.Children.Add(receiverAddress);
+            info.Children.Add(receiverSpecialInstructionContent);
 
             _map = new Map {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -338,7 +421,101 @@ namespace KAS.Trukman.Views.Pages
             content.Children.Add(info, 0, 1);
             content.Children.Add(_map, 0, 2);
 
+            var busyIndicator = new ActivityIndicator
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+            busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
+
+            var popupBackground = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
+            };
+            popupBackground.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.OneWay);
+
+            var pageContent = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0
+            };
+            pageContent.Children.Add(content);
+            pageContent.Children.Add(busyIndicator);
+            pageContent.Children.Add(popupBackground);
+            pageContent.Children.Add(this.CreateSpecialInstructionPopup());
+
             this.MapLocateAddress(_map, this.ViewModel.ContractorPosition);
+
+            return pageContent;
+        }
+
+        private View CreateSpecialInstructionPopup()
+        {
+            var appBoxView = new AppBoxView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Color = Color.White
+            };
+
+            var mainLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = Color.Black
+            };
+            mainLabel.SetBinding(Label.TextProperty, "ContractorSpecialInstruction");
+
+            var mainContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(20, 20, 20, 10),
+                Content = mainLabel
+            };
+
+            var continueButton = new AppPopupButton
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
+                AppStyle = AppButtonStyle.Normal
+            };
+            continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("TripPopupContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            continueButton.SetBinding(AppPopupButton.CommandProperty, "PopupContinueCommand");
+
+            var buttons = new Grid
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(0, 1, 0, 0)
+            };
+            buttons.Children.Add(continueButton, 0, 0);
+
+            var popupContent = new StackLayout
+            {
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Fill
+            };
+            popupContent.Children.Add(mainContent);
+            popupContent.Children.Add(buttons);
+
+            var content = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(40, 0, 40, 0)
+            };
+            content.SetBinding(Grid.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);
+
+            content.Children.Add(appBoxView);
+            content.Children.Add(popupContent);
 
             return content;
         }

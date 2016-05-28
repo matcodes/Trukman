@@ -15,7 +15,6 @@ namespace KAS.Trukman.Data.Classes
             this.Phone = "";
         }
 
-        #region IContractor
         public string Address
         {
             get { return (string)this.GetValue("AddressLineFirst"); }
@@ -39,7 +38,12 @@ namespace KAS.Trukman.Data.Classes
             get { return (string)this.GetValue("Phone"); }
             set { this.SetValue("Phone", value); }
         }
-        #endregion
+
+        public string SpecialInstruction
+        {
+            get { return (string)this.GetValue("SpecialInstruction"); }
+            set { this.SetValue("SpecialInstruction", value); }
+        }
     }
     #endregion
 }

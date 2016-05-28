@@ -68,9 +68,12 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Appering();
 
-            if (String.IsNullOrEmpty(this.UserName) ||
+            if ((String.IsNullOrEmpty(this.UserName)) ||
                 (String.IsNullOrEmpty(this.CompanyName)))
+            {
                 this.UpdateUserData();
+                this.DriverTripContextChanged(null);
+            }
         }
 
         private void DriverTripContextChanged(DriverTripContextChangedMessage message)

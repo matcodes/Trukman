@@ -159,7 +159,8 @@ namespace KAS.Trukman.Storage
                 Name = (parseJob.Shipper != null ? parseJob.Shipper.Name : ""),
                 Phone = (parseJob.Shipper != null ? parseJob.Shipper.Phone : ""),
                 Fax = (parseJob.Shipper != null ? parseJob.Shipper.Fax : ""),
-                Address = (parseJob.Shipper != null ? parseJob.Shipper.Address : parseJob.FromAddress)
+                Address = (parseJob.Shipper != null ? parseJob.Shipper.Address : parseJob.FromAddress),
+                SpecialInstruction = (parseJob.Shipper != null ? parseJob.Shipper.SpecialInstruction : "")
             };
             var receiver = new Contractor
             {
@@ -167,7 +168,8 @@ namespace KAS.Trukman.Storage
                 Name = (parseJob.Receiver != null ? parseJob.Receiver.Name : ""),
                 Phone = (parseJob.Receiver != null ? parseJob.Receiver.Phone : ""),
                 Fax = (parseJob.Receiver != null ? parseJob.Receiver.Fax : ""),
-                Address = (parseJob.Receiver != null ? parseJob.Receiver.Address : parseJob.ToAddress)
+                Address = (parseJob.Receiver != null ? parseJob.Receiver.Address : parseJob.ToAddress),
+                SpecialInstruction = (parseJob.Receiver != null ? parseJob.Receiver.SpecialInstruction : "")
             };
 			User driver = null;
 			if (parseJob.Driver != null)

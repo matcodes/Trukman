@@ -139,6 +139,9 @@ namespace KAS.Trukman.Languages
                 #region Trip page
                 this.TripReceiverTitleLabel = appLanguage.TripReceiverTitleLabel;
                 this.TripShipperTitleLabel = appLanguage.TripShipperTitleLabel;
+                this.TripSpecialInstructionLabel = appLanguage.TripSpecialInstructionLabel;
+                this.TripShowRouteButtonText = appLanguage.TripShowRouteButtonText;
+                this.TripPopupContinueButtonText = appLanguage.TripPopupContinueButtonText;
                 #endregion
 
                 #region Contractor page
@@ -865,6 +868,24 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("TripReceiverTitleLabel"); }
             set { this.SetValue("TripReceiverTitleLabel", value); }
+        }
+
+        public string TripSpecialInstructionLabel
+        {
+            get { return (string)this.GetValue("TripSpecialInstructionLabel"); }
+            set { this.SetValue("TripSpecialInstructionLabel", value); }
+        }
+
+        public string TripShowRouteButtonText
+        {
+            get { return (string)this.GetValue("TripShowRouteButtonText"); }
+            set { this.SetValue("TripShowRouteButtonText", value); }
+        }
+
+        public string TripPopupContinueButtonText
+        {
+            get { return (string)this.GetValue("TripPopupContinueButtonText"); }
+            set { this.SetValue("TripPopupContinueButtonText", value); }
         }
         #endregion
 

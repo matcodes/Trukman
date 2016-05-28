@@ -129,6 +129,9 @@ namespace KAS.Trukman.Languages
             #region Trip page
             this.TripShipperTitleLabel = "Shipper";
             this.TripReceiverTitleLabel = "Receiver";
+            this.TripSpecialInstructionLabel = "Special Instruction";
+            this.TripShowRouteButtonText = "Show Route";
+            this.TripPopupContinueButtonText = "Continue";
             #endregion
 
             #region Contractor page

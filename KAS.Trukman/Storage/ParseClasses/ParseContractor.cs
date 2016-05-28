@@ -36,6 +36,13 @@ namespace KAS.Trukman.Storage.ParseClasses
             get { return this.GetProperty<string>(); }
             set { this.SetProperty<string>(value); }
         }
+
+        [ParseFieldName("SpecialInstruction")]
+        public string SpecialInstruction
+        {
+            get { return this.GetProperty<string>(); }
+            set { this.SetProperty<string>(value); }
+        }
     }
     #endregion
 }

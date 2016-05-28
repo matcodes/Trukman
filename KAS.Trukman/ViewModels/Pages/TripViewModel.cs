@@ -21,6 +21,12 @@ namespace KAS.Trukman.ViewModels.Pages
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
             this.SelectItemCommand = new VisualCommand(this.SelectItem);
+            this.ShipperSpecialInstructionCommand = new VisualCommand(this.ShipperSpecialInstruction);
+            this.ReceiverSpecialInstructionCommand = new VisualCommand(this.ReceiverSpecialInstruction);
+            this.ShowShipperLocationCommand = new VisualCommand(this.ShowShipperLocation);
+            this.ShowReceiverLocationCommand = new VisualCommand(this.ShowReceiverLocation);
+            this.ShowRouteCommand = new VisualCommand(this.ShowRoute);
+            this.PopupContinueCommand = new VisualCommand(this.PopupContinue);
         }
 
         public override void Initialize(params object[] parameters)
@@ -30,6 +36,8 @@ namespace KAS.Trukman.ViewModels.Pages
             var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
             this.Shipper = (trip != null ? trip.Shipper : null);
             this.Receiver = (trip != null ? trip.Receiver : null);
+
+            this.ContractorSpecialInstruction = (this.SelectedItem == TripContractorItems.Shipper ? this.Shipper.SpecialInstruction : this.Receiver.SpecialInstruction);
 
             this.FindAddress();
         }
@@ -47,7 +55,10 @@ namespace KAS.Trukman.ViewModels.Pages
         protected override void DoPropertyChanged(string propertyName)
         {
             if (propertyName == "SelectedItem")
+            {
+                this.ContractorSpecialInstruction = (this.SelectedItem == TripContractorItems.Shipper ? this.Shipper.SpecialInstruction : this.Receiver.SpecialInstruction);
                 this.FindAddress();
+            }
 
             base.DoPropertyChanged(propertyName);
         }
@@ -83,6 +94,38 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.SelectedItem = (TripContractorItems)parameter;
         }
 
+        private void ShipperSpecialInstruction(object parameter)
+        {
+            this.PopupVisible = true;
+            this.SelectedItem = TripContractorItems.Shipper;
+        }
+
+        private void ReceiverSpecialInstruction(object parameter)
+        {
+            this.PopupVisible = true;
+            this.SelectedItem = TripContractorItems.Receiver;
+        }
+
+        private void ShowShipperLocation(object parameter)
+        {
+            this.SelectedItem = TripContractorItems.Shipper;
+        }
+
+        private void ShowReceiverLocation(object parameter)
+        {
+            this.SelectedItem = TripContractorItems.Receiver;
+        }
+
+        private void ShowRoute(object parameter)
+        {
+            ShowRoutePageMessage.Send(TrukmanContext.Driver.Trip);
+        }
+
+        private void PopupContinue(object parameter)
+        {
+            this.PopupVisible = false;
+        }
+
         public Contractor Shipper
         {
             get { return (this.GetValue("Shipper") as Contractor); }
@@ -107,11 +150,35 @@ namespace KAS.Trukman.ViewModels.Pages
             set { this.SetValue("ContractorPosition", value); }
         }
 
+        public string ContractorSpecialInstruction
+        {
+            get { return (string)this.GetValue("ContractorSpecialInstruction"); }
+            set { this.SetValue("ContractorSpecialInstruction", value); }
+        }
+
+        public bool PopupVisible
+        {
+            get { return (bool)this.GetValue("PopupVisible", false); }
+            set { this.SetValue("PopupVisible", value); }
+        }
+
         public VisualCommand ShowHomePageCommand { get; private set; }
 
         public VisualCommand ShowPrevPageCommand { get; private set; }
 
         public VisualCommand SelectItemCommand { get; private set; }
+
+        public VisualCommand ShipperSpecialInstructionCommand { get; private set; }
+
+        public VisualCommand ReceiverSpecialInstructionCommand { get; private set; }
+
+        public VisualCommand ShowShipperLocationCommand { get; private set; }
+
+        public VisualCommand ShowReceiverLocationCommand { get; private set; }
+
+        public VisualCommand ShowRouteCommand { get; private set; }
+
+        public VisualCommand PopupContinueCommand { get; private set; }
     }
     #endregion
 
