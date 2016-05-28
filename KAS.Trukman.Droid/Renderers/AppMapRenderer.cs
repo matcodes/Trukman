@@ -189,7 +189,7 @@ namespace KAS.Trukman.Droid.Renderers
                 {
                     if (_isFirstDraw)
                     {
-                        _map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(center, 12));
+                        _map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(center, 13));
                         _isFirstDraw = true;
                     }
                     else

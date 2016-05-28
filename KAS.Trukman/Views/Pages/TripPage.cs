@@ -382,6 +382,19 @@ namespace KAS.Trukman.Views.Pages
                 Content = receiverSpecialInstruction
             };
 
+            var showRoutePage = new AppButton {
+                HorizontalOptions = LayoutOptions.Fill,
+                AppStyle = AppButtonStyle.Normal
+            };
+            showRoutePage.SetBinding(AppButton.TextProperty, new Binding("TripShowRouteButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            showRoutePage.SetBinding(AppButton.CommandProperty, "ShowRouteCommand");
+
+            var showRoutePageContent = new ContentView {
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(20, 5, 20, 5),
+                Content = showRoutePage
+            };
+
             var info = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
@@ -399,6 +412,7 @@ namespace KAS.Trukman.Views.Pages
             info.Children.Add(receiverPhoneFaxLineContent);
             info.Children.Add(receiverAddress);
             info.Children.Add(receiverSpecialInstructionContent);
+            info.Children.Add(showRoutePageContent);
 
             _map = new Map {
                 HorizontalOptions = LayoutOptions.Fill,

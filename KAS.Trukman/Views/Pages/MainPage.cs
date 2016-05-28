@@ -130,6 +130,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowTripPage(ShowTripPageMessage message)
         {
+            this.RemovePage<TripPage>();
             var tripPage = new TripPage();
             tripPage.ViewModel.Initialize(message.Trip);
             this.PushPage(tripPage);
@@ -137,6 +138,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowShipperInfoPage(ShowShipperInfoPageMessage message)
         {
+            this.RemovePage<ShipperInfoPage>();
             var shipperInfoPage = new ShipperInfoPage();
             shipperInfoPage.ViewModel.Initialize(message.Shipper);
             this.PushPage(shipperInfoPage);
@@ -144,6 +146,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowReceiverInfoPage(ShowReceiverInfoPageMessage message)
         {
+            this.RemovePage<ReceiverInfoPage>();
             var receiverInfoPage = new ReceiverInfoPage();
             receiverInfoPage.ViewModel.Initialize(message.Receiver);
             this.PushPage(receiverInfoPage);
@@ -151,6 +154,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowRoutePage(ShowRoutePageMessage message)
         {
+            this.RemovePage<RoutePage>();
             var routePage = new RoutePage();
             routePage.ViewModel.Initialize(message.Trip);
             this.PushPage(routePage);
@@ -158,6 +162,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowAdvancesPage(ShowAdvancesPageMessage message)
         {
+            this.RemovePage<AdvancesPage>();
             var advancesPage = new AdvancesPage();
 			advancesPage.ViewModel.Initialize (message.Trip);
             this.PushPage(advancesPage);
@@ -165,6 +170,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowFuelAdvancePage(ShowFuelAdvancePageMessage message)
         {
+            this.RemovePage<FuelAdvancePage>();
             var fuelAdvancePage = new FuelAdvancePage();
             fuelAdvancePage.ViewModel.Initialize();
             this.PushPage(fuelAdvancePage);
@@ -172,6 +178,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowLumperPage(ShowLumperPageMessage message)
         {
+            this.RemovePage<LumperPage>();
             var lumperPage = new LumperPage();
             lumperPage.ViewModel.Initialize();
             this.PushPage(lumperPage);
@@ -179,6 +186,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowDelayEmergencyPage(ShowDelayEmergencyPageMessage message)
         {
+            this.RemovePage<DelayEmergencyPage>();
             var delayEmergencyPage = new DelayEmergencyPage();
 			delayEmergencyPage.ViewModel.Initialize(message.Trip);
             this.PushPage(delayEmergencyPage);
@@ -186,6 +194,7 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowPointsAndRewardsPage(ShowPointsAndRewardsPageMessage message)
         {
+            this.RemovePage<PointsAndRewardsPage>();
             var page = new PointsAndRewardsPage();
             page.ViewModel.Initialize();
             this.PushPage(page);
@@ -193,25 +202,32 @@ namespace KAS.Trukman.Views.Pages
 
         private void ShowSettingsPage(ShowSettingsPageMessage message)
         {
+            this.RemovePage<SettingsPage>();
             var page = new SettingsPage();
+            page.ViewModel.Initialize();
             this.PushPage(page);
         }
 
         private void ShowHelpPage(ShowHelpPageMessage message)
         {
+            this.RemovePage<HelpPage>();
             var page = new HelpPage();
+            page.ViewModel.Initialize();
             this.PushPage(page);
         }
 
-		//private void StartLocationService(StartLocationServiceMessage message)
-		//{
-		//	App.LocationServiceStarter.StartService (message.tag);
-		//}
-
-		//private void StopLocationService(StopLocationServiceMessage message)
-		//{
-		//	App.LocationServiceStarter.StopService ();
-		//}
+        private void RemovePage<T>()
+        {
+            Page existPage = null;
+            foreach (var page in _navigationPage.Navigation.NavigationStack)
+                if (page is T)
+                {
+                    existPage = page;
+                    break;
+                }
+            if (existPage != null)
+                _navigationPage.Navigation.RemovePage(existPage);
+        }
 
         public MainViewModel ViewModel
         {

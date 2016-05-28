@@ -44,6 +44,8 @@ namespace KAS.Trukman.ViewModels.Pages
         public override void Appering()
         {
             base.Appering();
+
+            this.SetCurrentPosition();
         }
 
         public override void Disappering()
@@ -220,6 +222,12 @@ namespace KAS.Trukman.ViewModels.Pages
                         if ((position.Latitude == 0) && (position.Longitude == 0) && (this.StartPosition != null))
                             position = this.StartPosition.Position;
 
+                        this.CurrentPosition = new CarInfo {
+                            Duration = (this.CurrentPosition != null ? this.CurrentPosition.Duration : 0),
+                            Distance = (this.CurrentPosition != null ? this.CurrentPosition.Distance : 0),
+                            Position = position
+                        };
+
                         var positionAddress = await RouteHelper.GetAddressByPosition(position);
 
                         var contractorAddress = (this.Trip.IsPickup ? this.Trip.Receiver.Address : this.Trip.Shipper.Address);
@@ -257,12 +265,13 @@ namespace KAS.Trukman.ViewModels.Pages
                             this.RoutePoints = routePoints;
                         }
 
-                        this.CurrentPosition = new CarInfo
-                        {
-                            Distance = leg.Distance.Value,
-                            Duration = leg.Duration.Value,
-                            Position = position
-                        };
+                        if (leg != null)
+                            this.CurrentPosition = new CarInfo
+                            {
+                                Distance = leg.Distance.Value,
+                                Duration = leg.Duration.Value,
+                                Position = position
+                            };
                     }
                 }
                 catch (Exception exception)
