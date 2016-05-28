@@ -36,6 +36,7 @@ namespace KAS.Trukman.Droid.Renderers
         private MapView _mapView = null;
         private GoogleMap _map = null;
         private bool _isMapProcess = false;
+        private bool _isFirstDraw = true;
 
         private PolylineOptions _polylineOptions = null;
         private PolylineOptions _basePolylineOptions = null;
@@ -175,6 +176,25 @@ namespace KAS.Trukman.Droid.Renderers
                     _polyline = _map.AddPolyline(_polylineOptions);
                 if (_carMarkerOptions != null)
                     _carMarker = _map.AddMarker(_carMarkerOptions);
+
+                LatLng center = null;
+                if (_carMarker != null)
+                    center = new LatLng(_carMarker.Position.Latitude, _carMarker.Position.Longitude);
+                else if (_startMarker != null)
+                    center = new LatLng(_startMarker.Position.Latitude, _startMarker.Position.Longitude);
+                else if (_endMarker != null)
+                    center = new LatLng(_endMarker.Position.Latitude, _endMarker.Position.Longitude);
+
+                if (center != null)
+                {
+                    if (_isFirstDraw)
+                    {
+                        _map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(center, 12));
+                        _isFirstDraw = true;
+                    }
+                    else
+                        _map.AnimateCamera(CameraUpdateFactory.NewLatLng(center));
+                }
             });
         }
 
