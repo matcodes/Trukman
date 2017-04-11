@@ -143,7 +143,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                         FirstName = this.FirstName,
                         LastName = this.LastName,
                         Phone = this.Phone,
-                        Company = this.SelectedCompany
+                        Company = this.SelectedCompany,
+                        EMail = this.EMail
                     };
                     var company = await TrukmanContext.RegisterDriverAsync(driverInfo);
 
@@ -208,6 +209,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             get { return (string)this.GetValue("Phone"); }
             set { this.SetValue("Phone", value); }
+        }
+
+        public string EMail
+        {
+            get { return (string)this.GetValue("EMail"); }
+            set { this.SetValue("EMail", value); }
         }
 
         public string CompanyName

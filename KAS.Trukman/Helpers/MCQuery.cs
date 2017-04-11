@@ -9,7 +9,7 @@ namespace Trukman.Helpers
     #region MCQuery
     public static class MCQuery
 	{
-		private static string ENDPOINT_ADDRESS = "http://safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+		private static string ENDPOINT_ADDRESS = "http://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
 
 		public static async Task<MCInfo> VerifyMC(string mc) 
 		{

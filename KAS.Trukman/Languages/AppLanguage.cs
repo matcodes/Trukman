@@ -233,6 +233,7 @@ namespace KAS.Trukman.Languages
                 this.SignUpDriverFirstNamePlaceholder = appLanguage.SignUpDriverFirstNamePlaceholder;
                 this.SignUpDriverLastNamePlaceholder = appLanguage.SignUpDriverLastNamePlaceholder;
                 this.SignUpDriverPhonePlaceholder = appLanguage.SignUpDriverPhonePlaceholder;
+                this.SignUpDriverEMailPlaceholder = appLanguage.SignUpDriverEMailPlaceholder;
                 this.SignUpDriverCompanyNamePlaceholder = appLanguage.SignUpDriverCompanyNamePlaceholder;
 
                 this.SignUpMCExceededMessageText = appLanguage.SignUpMCExceededMessageText;
@@ -1296,6 +1297,12 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("SignUpDriverPhonePlaceholder"); }
             set { this.SetValue("SignUpDriverPhonePlaceholder", value); }
+        }
+
+        public string SignUpDriverEMailPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDriverEMailPlaceholder"); }
+            set { this.SetValue("SignUpDriverEMailPlaceholder", value); }
         }
 
         public string SignUpDriverCompanyNamePlaceholder

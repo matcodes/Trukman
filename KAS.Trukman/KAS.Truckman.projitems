@@ -18,7 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\CommandItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\MenuItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\VisualCommend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\VisualCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppBoxView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppEntry.cs" />
@@ -43,6 +43,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\RouteStepTurnToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SignUpLanguageToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyCompany.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyJob.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyPhoto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyToken.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ErrorResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyLogin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Advance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Contractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobAlert.cs" />
@@ -74,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RouteHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\EnglishAppLanguage.cs" />
@@ -140,6 +148,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParseNotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseClasses\ParsePhoto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\ParseExternalStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\RestAPIExternalStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Commands\PageCommandsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\AdvancesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\ContractorInfoViewModel.cs" />

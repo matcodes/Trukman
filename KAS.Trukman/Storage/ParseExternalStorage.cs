@@ -699,7 +699,7 @@ namespace KAS.Trukman.Storage
                     UserName = userName,
                     Phone = companyInfo.MCCode.Trim(),
                     Email = companyInfo.EMail,
-                    Role = UserRole.UserRoleOwner,
+                    Role = UserRole.Owner,
                     Status = (int)DriverState.Waiting
                 };
                 user = await this.SignUpAsync(user);
@@ -736,7 +736,7 @@ namespace KAS.Trukman.Storage
                 {
                     UserName = userName,
                     Phone = driverInfo.Phone,
-                    Role = UserRole.UserRoleDriver,
+                    Role = UserRole.Driver,
                     FirstName = driverInfo.FirstName,
                     LastName = driverInfo.LastName, 
                     Status = (int)DriverState.Waiting
@@ -811,7 +811,7 @@ namespace KAS.Trukman.Storage
             if (company != null)
             {
                 var parseUser = await company.Requestings.Query
-                    .WhereEqualTo("role", (int)UserRole.UserRoleDriver)
+                    .WhereEqualTo("role", (int)UserRole.Driver)
                     .FirstOrDefaultAsync();
 
                 if (parseUser != null)

@@ -7,9 +7,9 @@ namespace KAS.Trukman.Data.Enums
     #region DriverState
     public enum DriverState
     {
-        Joined,
-        Declined,
-        Waiting
+        Waiting = 0,
+        Joined = 1,
+        Declined = 2,
     }
     #endregion
 }

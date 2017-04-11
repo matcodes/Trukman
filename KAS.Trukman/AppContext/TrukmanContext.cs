@@ -95,11 +95,11 @@ namespace KAS.Trukman.AppContext
 
         private static void InitializeContext()
         {
-            if (User.Role == UserRole.UserRoleDriver)
+            if (User.Role == UserRole.Driver)
                 Driver = new DriverContext(_localStorage);
-            else if (User.Role == UserRole.UserRoleDispatch)
+            else if (User.Role == UserRole.Dispatch)
                 Dispatcher = new DispatcherContext(_localStorage);
-            else if (User.Role == UserRole.UserRoleOwner)
+            else if (User.Role == UserRole.Owner)
                 Owner = new OwnerContext(_localStorage);
 
             Synchronize();
@@ -370,17 +370,17 @@ namespace KAS.Trukman.AppContext
                     {
                         if (User != null)
                         {
-                            if (User.Role == UserRole.UserRoleDriver)
+                            if (User.Role == UserRole.Driver)
                             {
                                 await _localStorage.SynchronizeDriverContext();
                                 Driver.Synchronize();
                             }
-                            else if (User.Role == UserRole.UserRoleOwner)
+                            else if (User.Role == UserRole.Owner)
                             {
                                 _localStorage.SynchronizeOwnerContext();
                                 Owner.Synchronize();
                             }
-                            else if (User.Role == UserRole.UserRoleDispatch)
+                            else if (User.Role == UserRole.Dispatch)
                             {
                                 _localStorage.SynchronyzeDispatcherContex();
                                 Dispatcher.Synchronize();

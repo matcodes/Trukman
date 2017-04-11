@@ -127,9 +127,9 @@ namespace KAS.Trukman
 
                     if (TrukmanContext.User == null)
                         this.MainPage = new SignUpNavigationPage();
-                    else if (TrukmanContext.User.Role == UserRole.UserRoleOwner)
+                    else if (TrukmanContext.User.Role == UserRole.Owner)
                         this.MainPage = new OwnerMainPage();
-                    else if (TrukmanContext.User.Role == UserRole.UserRoleDriver)
+                    else if (TrukmanContext.User.Role == UserRole.Driver)
                     {
                         var driverState = (DriverState)TrukmanContext.User.Status;
                         if (driverState == DriverState.Joined)

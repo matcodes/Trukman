@@ -131,6 +131,23 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = phone
             };
 
+            var email = new AppEntry
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                PlaceholderColor = PlatformHelper.EntryPlaceholderColor
+            };
+            email.SetBinding(AppEntry.TextProperty, "EMail", BindingMode.TwoWay);
+            email.SetBinding(AppEntry.PlaceholderProperty, new Binding("SignUpDriverEMailPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var emailContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Padding = new Thickness(20, 0, 20, 10),
+                Content = email
+            };
+
             var company = new AppEntry
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -178,6 +195,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                 }
             };
@@ -186,8 +204,9 @@ namespace KAS.Trukman.Views.Pages.SignUp
             content.Children.Add(firstNameContent, 0, 2);
             content.Children.Add(lastNameContent, 0, 3);
             content.Children.Add(phoneContent, 0, 4);
-            content.Children.Add(companyContent, 0, 5);
-            content.Children.Add(submitContent, 0, 6);
+            content.Children.Add(emailContent, 0, 5);
+            content.Children.Add(companyContent, 0, 6);
+            content.Children.Add(submitContent, 0, 7);
 
             var scroll = new ScrollView
             {
@@ -237,15 +256,23 @@ namespace KAS.Trukman.Views.Pages.SignUp
             pageContent.Children.Add(this.CreateSelectCompanyPopup());
             pageContent.Children.Add(busyIndicator);
 
-            firstName.Completed += (sender, args) => {
+            firstName.Completed += (sender, args) =>
+            {
                 lastName.Focus();
             };
 
-            lastName.Completed += (sender, args) => {
+            lastName.Completed += (sender, args) =>
+            {
                 phone.Focus();
             };
 
-            phone.Completed += (sender, args) => {
+            phone.Completed += (sender, args) =>
+            {
+                email.Focus();
+            };
+
+            email.Completed += (sender, args) =>
+            {
                 company.Focus();
             };
 
@@ -258,7 +285,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
-				Color = Color.White
+                Color = Color.White
             };
 
             _filter = new AppEntry
@@ -271,7 +298,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             _filter.SetBinding(Entry.TextProperty, "CompanyFilter", BindingMode.TwoWay);
             _filter.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-			var filterContent = new ContentView
+            var filterContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(10, 20, 10, 5),
@@ -344,11 +371,11 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Padding = new Thickness(40, 40, 40, 0)
             };
             content.SetBinding(Grid.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.TwoWay);
-			content.PropertyChanged += (sender, e) => 
-			{
-				if (this.ViewModel.SelectCompanyPopupVisible)
-					_filter.Focus();
-			};
+            content.PropertyChanged += (sender, e) =>
+            {
+                if (this.ViewModel.SelectCompanyPopupVisible)
+                    _filter.Focus();
+            };
 
             content.Children.Add(appBoxView);
             content.Children.Add(popupContent);

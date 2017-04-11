@@ -14,6 +14,8 @@ namespace KAS.Trukman.Data.Infos
 
         public string Phone { get; set; }
 
+        public string EMail { get; set; }
+
         public Company Company { get; set; }
     }
     #endregion

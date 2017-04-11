@@ -22,6 +22,12 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue("Email", value); }
 		}
 
+        public string Password
+        {
+            get { return (string)this.GetValue("Password"); }
+            set { this.SetValue("Password", value); }
+        }
+
         public string Phone
         {
             get { return (string)this.GetValue("Phone"); }
@@ -70,6 +76,12 @@ namespace KAS.Trukman.Data.Classes
 				return fullName;
 			}
 		}
+
+        public string Token
+        {
+            get { return (string)this.GetValue("Token"); }
+            set { this.SetValue("Token", value); }
+        }
 	}
     #endregion
 }

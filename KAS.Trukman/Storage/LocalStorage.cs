@@ -45,9 +45,9 @@ namespace KAS.Trukman.Storage
                 _connection.CreateTable<Trip>();
                 _connection.CreateTable<Photo>();
 
-                _externalStorage = new ParseExternalStorage(); // new TestExternalStorage();
+                _externalStorage = new RestAPIExternalStorage(); // new ParseExternalStorage(); // new TestExternalStorage();
 
-                //                this.TestInitialize();
+                //this.TestInitialize();
             }
             catch (Exception exception)
             {
@@ -199,18 +199,19 @@ namespace KAS.Trukman.Storage
         {
             try
             {
-//                this.Become();
+                //                this.Become();
 
                 var trip = await _externalStorage.SendPhoto(tripID, data, kind);
-            
-				var photo = new Photo {
-					ID = Guid.NewGuid().ToString(),
-					Type = kind,
-					TripID = trip.ID
-				};
-				this.SavePhoto(photo);
 
-				await this.SynchronizeTrip(tripID, trip);
+                var photo = new Photo
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    Type = kind,
+                    TripID = trip.ID
+                };
+                this.SavePhoto(photo);
+
+                await this.SynchronizeTrip(tripID, trip);
             }
             catch (Exception exception)
             {
@@ -219,26 +220,26 @@ namespace KAS.Trukman.Storage
             }
         }
 
-		public Photo GetPhoto(string tripID, string kind)
-		{
-			Photo photo = _connection.Table<Photo> ()
-				.Where (p => p.TripID == tripID && p.Type == kind)
-				.FirstOrDefault ();
-			return photo;
-		}
+        public Photo GetPhoto(string tripID, string kind)
+        {
+            Photo photo = _connection.Table<Photo>()
+                .Where(p => p.TripID == tripID && p.Type == kind)
+                .FirstOrDefault();
+            return photo;
+        }
 
-		private void SavePhoto(Photo photo)
-		{
-			_connection.Insert(photo);
-		}
+        private void SavePhoto(Photo photo)
+        {
+            _connection.Insert(photo);
+        }
 
-		private void ClearPhotos(string tripID)
-		{
-			var photos = _connection.Table<Photo> ()
-				.Where (p => p.TripID == tripID);
-			foreach (var photo in photos)
-				_connection.Delete (photo);
-		}
+        private void ClearPhotos(string tripID)
+        {
+            var photos = _connection.Table<Photo>()
+                .Where(p => p.TripID == tripID);
+            foreach (var photo in photos)
+                _connection.Delete(photo);
+        }
 
         public async Task AddLocation(string tripID, Position location)
         {
@@ -397,19 +398,19 @@ namespace KAS.Trukman.Storage
             return points;
         }
 
-		public async Task<int> GetPointsByDriverIDAsync(string driverID)
-		{
-			var points = (int)0;
-			try
-			{
-				points = await _externalStorage.GetPointsByDriverIDAsync(driverID);
-			}
-			catch (Exception exception)
-			{
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-			return points;
+        public async Task<int> GetPointsByDriverIDAsync(string driverID)
+        {
+            var points = (int)0;
+            try
+            {
+                points = await _externalStorage.GetPointsByDriverIDAsync(driverID);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return points;
         }
 
         public async Task<JobPoint[]> SelectJobPointsAsync()
@@ -461,40 +462,54 @@ namespace KAS.Trukman.Storage
         private void TestInitialize()
         {
             var userID = "9V1Y3Qh20m";
-            var companyID = "k3OWFMMp0W";
+            //var companyID = "k3OWFMMp0W";
 
-            var item = new SettingsItem
-            {
-                Key = USER_ID_SETTINGS_KEY,
-                Value = userID
-            };
-            this.SaveSettings(item);
+            //var item = new SettingsItem
+            //{
+            //    Key = USER_ID_SETTINGS_KEY,
+            //    Value = userID
+            //};
+            //this.SaveSettings(item);
 
-            item = new SettingsItem
-            {
-                Key = COMPANY_ID_SETTINGS_KEY,
-                Value = companyID
-            };
-            this.SaveSettings(item);
+            //item = new SettingsItem
+            //{
+            //    Key = COMPANY_ID_SETTINGS_KEY,
+            //    Value = companyID
+            //};
+            //this.SaveSettings(item);
 
-            var user = new User
-            {
-                ID = userID,
-                Role = UserRole.UserRoleDriver,
-                UserName = "alex flex",
-                Email = "rudy@rudy.con",
-                FirstName = "Alex",
-                LastName = "Flex"
-            };
-            this.SaveUser(user);
+            //var user = new User
+            //{
+            //    ID = userID,
+            //    Role = UserRole.Driver,
+            //    UserName = "alex flex",
+            //    Email = "rudy@rudy.con",
+            //    Phone = "12345",
+            //    FirstName = "Alex",
+            //    LastName = "Flex"
+            //};
+            //this.SaveUser(user);
 
-            var company = new Company
+            Task.Run(async () =>
             {
-                ID = companyID,
-                Name = "ultimate freight inc",
-                DisplayName = "ULTIMATE FREIGHT INC"
-            };
-            this.SaveCompany(company);
+                try
+                {
+                    var user = await _externalStorage.LogInAsync("dm1@gmail.com", "123");
+                    Console.WriteLine(user.ToString());
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
+                }
+            });
+
+            //var company = new Company
+            //{
+            //    ID = companyID,
+            //    Name = "ultimate freight inc",
+            //    DisplayName = "ULTIMATE FREIGHT INC"
+            //};
+            //this.SaveCompany(company);
         }
 
         public User Become()
@@ -692,65 +707,70 @@ namespace KAS.Trukman.Storage
             }
         }
 
-		public async Task<ComcheckRequestState> GetComcheckStateAsync (string tripID, ComcheckRequestType requestType)
-		{
-			try
-			{
-				return await _externalStorage.GetComcheckStateAsync(tripID, requestType);
-			}
-			catch (Exception exception) {
-				Console.WriteLine (exception);
-				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+        {
+            try
+            {
+                return await _externalStorage.GetComcheckStateAsync(tripID, requestType);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task<string> GetComcheckAsync (string tripID, ComcheckRequestType requestType)
-		{
-			try
-			{
-				return await _externalStorage.GetComcheckAsync(tripID, requestType);
-			}
-			catch (Exception exception){
-				Console.WriteLine (exception);
-				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
+        {
+            try
+            {
+                return await _externalStorage.GetComcheckAsync(tripID, requestType);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
-		{
-			try 
-			{
-				await _externalStorage.SendComcheckRequestAsync(tripID, requestType);
-			}
-			catch (Exception exception) {
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            try
+            {
+                await _externalStorage.SendComcheckRequestAsync(tripID, requestType);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
-		{
-			try 
-			{
-				await _externalStorage.CancelComcheckRequestAsync(tripID, requestType);
-			}
-			catch (Exception exception){
-				Console.WriteLine (exception);
-				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            try
+            {
+                await _externalStorage.CancelComcheckRequestAsync(tripID, requestType);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
-		{
-			try 
-			{
-				await _externalStorage.SendJobAlertAsync(tripID, alertType, alertText);
-			}
-			catch (Exception exception) {
-				Console.WriteLine (exception);
-				throw new Exception (AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+        {
+            try
+            {
+                await _externalStorage.SendJobAlertAsync(tripID, alertType, alertText);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
         public async Task<JobAlert[]> SelectJobAlertsAsync()
         {
@@ -783,7 +803,7 @@ namespace KAS.Trukman.Storage
         {
             try
             {
-				var advances = await _externalStorage.SelectFuelAdvancesAsync(requestType);
+                var advances = await _externalStorage.SelectFuelAdvancesAsync(requestType);
                 return advances;
             }
             catch (Exception exception)
@@ -793,17 +813,18 @@ namespace KAS.Trukman.Storage
             }
         }
 
-		public async Task SetAdvanceStateAsync(Advance advance)
-		{
-			try 
-			{
-				await _externalStorage.SetAdvanceStateAsync(advance);				
-			}
-			catch (Exception exception) {
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task SetAdvanceStateAsync(Advance advance)
+        {
+            try
+            {
+                await _externalStorage.SetAdvanceStateAsync(advance);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
         public async Task<User[]> SelectBrockersAsync()
         {
@@ -819,44 +840,47 @@ namespace KAS.Trukman.Storage
             }
         }
 
-		public async Task<User[]> SelectDriversAsync()
-		{
-			try 
-			{
-				var drivers = await _externalStorage.SelectDriversAsync();
-				return drivers;
-			}
-			catch (Exception exception) {
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}
-		}
+        public async Task<User[]> SelectDriversAsync()
+        {
+            try
+            {
+                var drivers = await _externalStorage.SelectDriversAsync();
+                return drivers;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task<Trip> CreateTripAsync(Trip trip)
-		{
-			try
-			{
-				var result = await _externalStorage.CreateTripAsync(trip);
-				return result;
-			}
-			catch (Exception exception) {
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}		
-		}
+        public async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            try
+            {
+                var result = await _externalStorage.CreateTripAsync(trip);
+                return result;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
-		public async Task<Photo[]> SelectPhotosAsync()
-		{
-			try 
-			{
-				var result = await _externalStorage.SelectPhotosAsync();
-				return result;
-			}
-			catch (Exception exception) {
-				Console.WriteLine(exception);
-				throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-			}		
-		}
+        public async Task<Photo[]> SelectPhotosAsync()
+        {
+            try
+            {
+                var result = await _externalStorage.SelectPhotosAsync();
+                return result;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
         public async Task<string> CreateInvoiceForJobAsync(string tripID)
         {
@@ -1005,7 +1029,7 @@ namespace KAS.Trukman.Storage
 
         public Trip RemoveTrip(Trip trip)
         {
-			this.ClearPhotos (trip.ID);
+            this.ClearPhotos(trip.ID);
             if (trip.Shipper != null)
                 _connection.Delete(trip.Shipper);
             if (trip.Receiver != null)

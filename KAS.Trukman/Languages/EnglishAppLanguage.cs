@@ -223,6 +223,7 @@ namespace KAS.Trukman.Languages
             this.SignUpDriverFirstNamePlaceholder = "First Name";
             this.SignUpDriverLastNamePlaceholder = "Last Name";
             this.SignUpDriverPhonePlaceholder = "Phone";
+            this.SignUpDriverEMailPlaceholder = "EMail";
             this.SignUpDriverCompanyNamePlaceholder = "Company Name";
 
             this.SignUpMCExceededMessageText = "Sorry you are having trouble signing up. Please email help@trukman.com for assistance.";
