@@ -27,6 +27,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
             this.CompanyName = (parameters != null && parameters.Length > 0 ? (parameters[0].ToString()) : "");
             this.Driver = (parameters != null && parameters.Length > 1 ? (parameters[1] as User) : null);
+            this.CompanyID = (parameters != null && parameters.Length > 0 ? (parameters[2].ToString()) : "");
 
             this.AssignIDNumber = "";
         }
@@ -83,7 +84,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.DisableCommands();
                 try
                 {
-                    await TrukmanContext.AcceptDriverToCompany(this.Driver as User); // await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
+                    await TrukmanContext.AcceptDriverToCompany(this.CompanyID, this.Driver.ID); // await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
                     PopPageMessage.Send();
                 }
                 catch (Exception exception)
@@ -106,7 +107,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 this.DisableCommands();
                 try
                 {
-                    await TrukmanContext.DeclineDriverToCompany(this.Driver as User); //  await App.ServerManager.DeclineUserFromCompany(this.CompanyName, this.Driver);
+                    await TrukmanContext.DeclineDriverToCompany(this.CompanyID, this.Driver.ID); //  await App.ServerManager.DeclineUserFromCompany(this.CompanyName, this.Driver);
                     PopPageMessage.Send();
                 }
                 catch (Exception exception)
@@ -132,6 +133,12 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             get { return (this.GetValue("Driver") as User); }
             set { this.SetValue("Driver", value); }
+        }
+
+        public string CompanyID
+        {
+            get { return (string)this.GetValue("CompanyID"); }
+            set { this.SetValue("CompanyID", value); }
         }
 
         public string FirstName

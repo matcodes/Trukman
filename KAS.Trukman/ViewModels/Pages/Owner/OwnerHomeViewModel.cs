@@ -118,7 +118,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     {
                         var user = await TrukmanContext.SelectRequestedUser(this.Company.ID); // App.ServerManager.GetRequestForCompany(this.Company.Name);
                         if (user != null)
-                            ShowOwnerDriverAuthorizationPageMessage.Send(this.Company.Name, user);
+                            ShowOwnerDriverAuthorizationPageMessage.Send(this.Company.Name, user, this.Company.ID);
                     }
                 }
                 catch (Exception exception)

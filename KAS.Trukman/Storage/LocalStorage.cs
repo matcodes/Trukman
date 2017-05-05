@@ -24,7 +24,6 @@ namespace KAS.Trukman.Storage
         public static readonly string COMPANY_ID_SETTINGS_KEY = "CompanyID";
         public static readonly string TRIP_ID_SETTINGS_KEY = "TripID";
         public static readonly string TRIP_STATE_SETTINGS_KEY = "TripState";
-        public static readonly string USER_SESSION_ID_KEY = "SessionID";
         #endregion
 
         private SQLiteConnection _connection;
@@ -517,9 +516,12 @@ namespace KAS.Trukman.Storage
             User user = null;
             try
             {
-                var session = this.GetSettings(USER_SESSION_ID_KEY);
-                if (!String.IsNullOrEmpty(session))
-                    user = _externalStorage.Become(session);
+                var userID = GetSettings(USER_ID_SETTINGS_KEY);
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    user =  this.GetUserByID(userID);
+                    _externalStorage.Become(user);
+                }
             }
             catch (Exception exception)
             {
@@ -581,8 +583,8 @@ namespace KAS.Trukman.Storage
             try
             {
                 company = await _externalStorage.RegisterCompany(companyInfo);
-                var sessionToken = await _externalStorage.GetSessionToken();
-                this.SetSettings(USER_SESSION_ID_KEY, sessionToken);
+                //var token = await _externalStorage.GetSessionToken();
+                //this.SetSettings(USER_SESSION_ID_KEY, sessionToken);
             }
             catch (Exception exception)
             {
@@ -598,8 +600,8 @@ namespace KAS.Trukman.Storage
             try
             {
                 company = await _externalStorage.RegisterDriver(driverInfo);
-                var sessionToken = await _externalStorage.GetSessionToken();
-                this.SetSettings(USER_SESSION_ID_KEY, sessionToken);
+                //var token = await _externalStorage.GetSessionToken();
+                //this.SetSettings(USER_TOKEN_KEY, token);
             }
             catch (Exception exception)
             {
@@ -639,12 +641,13 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
-        public async Task<DriverState> GetDriverState()
+        public async Task<DriverState> GetDriverState(string companyID, string driverID)
         {
             DriverState state = DriverState.Declined;
             try
             {
-                state = await _externalStorage.GetDriverState();
+                //User.
+                state = await _externalStorage.GetDriverState(companyID, driverID);
             }
             catch (Exception exception)
             {
@@ -654,11 +657,11 @@ namespace KAS.Trukman.Storage
             return state;
         }
 
-        public async Task AcceptDriverToCompany(User user)
+        public async Task AcceptDriverToCompany(string companyID, string driverID)
         {
             try
             {
-                await _externalStorage.AcceptDriverToCompany(user);
+                await _externalStorage.AcceptDriverToCompany(companyID, driverID);
             }
             catch (Exception exception)
             {
@@ -667,11 +670,11 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task DeclineDriverToCompany(User user)
+        public async Task DeclineDriverToCompany(string companyID, string driverID)
         {
             try
             {
-                await _externalStorage.DeclineDriverToCompany(user);
+                await _externalStorage.DeclineDriverToCompany(companyID, driverID);
             }
             catch (Exception exception)
             {

@@ -51,6 +51,8 @@ namespace KAS.Trukman.Storage
 
         User Become(string session);
 
+        void Become(User user);
+
         Task<User> SignUpAsync(User user);
 
         Task<User> LogInAsync(string userName, string password);
@@ -67,11 +69,15 @@ namespace KAS.Trukman.Storage
 
         Task<User> SelectRequestedUser(string companyID);
 
-        Task<DriverState> GetDriverState();
+        Task<DriverState> GetDriverState(string companyID, string driverID);
 
-        Task AcceptDriverToCompany(User user);
+        //Task AcceptDriverToCompany(User user);
 
-        Task DeclineDriverToCompany(User user);
+        Task AcceptDriverToCompany(string companyID, string driverID);
+
+        //Task DeclineDriverToCompany(User user);
+
+        Task DeclineDriverToCompany(string companyID, string driverID);
 
         Task<Notification> GetNotification();
 

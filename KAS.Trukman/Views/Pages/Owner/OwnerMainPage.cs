@@ -132,7 +132,7 @@ namespace KAS.Trukman.Views.Pages.Owner
         private void ShowOwnerDriverAuthorizationPage(ShowOwnerDriverAuthorizationPageMessage message)
         {
             var page = new DriverAuthorizationPage();
-            page.ViewModel.Initialize(message.CompanyName, message.Driver);
+            page.ViewModel.Initialize(message.CompanyName, message.Driver, message.CompanyID);
             this.PushPage(page);
         }
 

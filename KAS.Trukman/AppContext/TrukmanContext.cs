@@ -56,21 +56,30 @@ namespace KAS.Trukman.AppContext
                         {
                             User = user;
                             Company = await _localStorage.SelectUserCompany();
-
-                            _localStorage.SaveUser(User as User);
-                            _localStorage.SaveCompany(Company as Company);
-
-                            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
-                            _localStorage.SetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY, Company.ID);
+                            _localStorage.Become();
                         }
-                        else
-                        {
-							await ParseUser.LogOutAsync();
-//                            var userID = _localStorage.GetSettings(LocalStorage.USER_ID_SETTINGS_KEY);
-//                            var companyID = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
-//                            User = _localStorage.GetUserByID(userID);
-//                            Company = _localStorage.GetCompanyByID(companyID);
-                        }
+
+                        //var user = _localStorage.Become();
+                        //                 if (user != null)
+                        //                 {
+                        //                     User = user;
+                        //                     Company = await _localStorage.SelectUserCompany();
+
+                        //                     _localStorage.SaveUser(User as User);
+                        //                     _localStorage.SaveCompany(Company as Company);
+
+                        //                     _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
+                        //                     _localStorage.SetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY, Company.ID);
+                        //                 }
+                        //                 else
+                        //                 {
+                        //await ParseUser.LogOutAsync();
+
+                        //                     //var userID = _localStorage.GetSettings(LocalStorage.USER_ID_SETTINGS_KEY);
+                        //                     //var companyID = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
+                        //                     //User = _localStorage.GetUserByID(userID);
+                        //                     //Company = _localStorage.GetCompanyByID(companyID);
+                        //                 }
                         if (User != null)
                             InitializeContext();
                         _state = States.Completed;
@@ -171,20 +180,20 @@ namespace KAS.Trukman.AppContext
             return trip;
         }
 
-		public static async Task<ComcheckRequestState> GetComcheckStateAsync (string tripID, ComcheckRequestType requestType)
-		{
-			var state = await _localStorage.GetComcheckStateAsync (tripID, requestType);
-			return state;
-		}
+        public static async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var state = await _localStorage.GetComcheckStateAsync(tripID, requestType);
+            return state;
+        }
 
-		public static async Task<string> GetComcheckAsync (string tripID, ComcheckRequestType requestType)
-		{
-			var comcheck = await _localStorage.GetComcheckAsync(tripID, requestType);
-			return comcheck;
-		}
+        public static async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var comcheck = await _localStorage.GetComcheckAsync(tripID, requestType);
+            return comcheck;
+        }
 
-		public static async Task SendComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
-		{
+        public static async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
             try
             {
                 await _localStorage.SendComcheckRequestAsync(tripID, requestType);
@@ -199,17 +208,17 @@ namespace KAS.Trukman.AppContext
                 Console.WriteLine(exception.Message);
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
-		}
+        }
 
-		public static async Task CancelComcheckRequestAsync (string tripID, ComcheckRequestType requestType)
-		{
-			await _localStorage.CancelComcheckRequestAsync (tripID, requestType);
-		}
+        public static async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            await _localStorage.CancelComcheckRequestAsync(tripID, requestType);
+        }
 
-		public static async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
-		{
-			await _localStorage.SendJobAlertAsync (tripID, alertType, alertText);
-		}
+        public static async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+        {
+            await _localStorage.SendJobAlertAsync(tripID, alertType, alertText);
+        }
 
         public static async Task<JobAlert[]> SelectJobAlertsAsync()
         {
@@ -224,14 +233,14 @@ namespace KAS.Trukman.AppContext
 
         public static async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
-			var advances = await _localStorage.SelectFuelAdvancesAsync(requestType);
+            var advances = await _localStorage.SelectFuelAdvancesAsync(requestType);
             return advances;
         }
 
-		public static async Task SetAdvanceStateAsync(Advance advance)
-		{
-			await _localStorage.SetAdvanceStateAsync (advance);
-		}
+        public static async Task SetAdvanceStateAsync(Advance advance)
+        {
+            await _localStorage.SetAdvanceStateAsync(advance);
+        }
 
         public static async Task AddPointsAsync(string jobID, string text, int points)
         {
@@ -244,11 +253,11 @@ namespace KAS.Trukman.AppContext
             return points;
         }
 
-		public static async Task<int> GetPointsByDriverIDAsync(string driverID)
-		{
-			var points = await _localStorage.GetPointsByDriverIDAsync (driverID);
-			return points;
-		}
+        public static async Task<int> GetPointsByDriverIDAsync(string driverID)
+        {
+            var points = await _localStorage.GetPointsByDriverIDAsync(driverID);
+            return points;
+        }
 
         public static async Task<JobPoint[]> SelectJobPointsAsync()
         {
@@ -291,11 +300,12 @@ namespace KAS.Trukman.AppContext
             var state = (User != null ? (DriverState)User.Status : DriverState.Waiting);
             try
             {
-                var user = await _localStorage.GetCurrentUser();
-                if (state != (DriverState)user.Status)
+                //var user = await _localStorage.GetCurrentUser();
+                var _driverState = await _localStorage.GetDriverState(Company.ID, User.ID);
+                if (state != _driverState)
                 {
-                    User = user;
-                    state = (DriverState)User.Status;
+                    User = await _localStorage.GetCurrentUser();
+                    state = _driverState;
                 }
             }
             catch (Exception exception)
@@ -305,33 +315,33 @@ namespace KAS.Trukman.AppContext
             return state;
         }
 
-        public static async Task AcceptDriverToCompany(User user)
+        public static async Task AcceptDriverToCompany(string companyID, string driverID)
         {
-            await _localStorage.AcceptDriverToCompany(user);
+            await _localStorage.AcceptDriverToCompany(companyID, driverID);
         }
 
-        public static async Task DeclineDriverToCompany(User user)
+        public static async Task DeclineDriverToCompany(string companyID, string driverID)
         {
-            await _localStorage.DeclineDriverToCompany(user);
+            await _localStorage.DeclineDriverToCompany(companyID, driverID);
         }
 
-		public static async Task<Trip> CreateTripAsync(Trip trip)
-		{
-			var result = await _localStorage.CreateTripAsync(trip);
-			return result;
-		}
+        public static async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            var result = await _localStorage.CreateTripAsync(trip);
+            return result;
+        }
 
-		public static async Task<User[]> SelectBrockersAsync()
-		{
+        public static async Task<User[]> SelectBrockersAsync()
+        {
             var brockers = await _localStorage.SelectBrockersAsync();
             return brockers;
-		}
+        }
 
-		public static async Task<User[]> SelectDriversAsync()
-		{
-			var users = await _localStorage.SelectDriversAsync ();
-			return users;
-		}
+        public static async Task<User[]> SelectDriversAsync()
+        {
+            var users = await _localStorage.SelectDriversAsync();
+            return users;
+        }
 
         public static async Task<string> CreateInvoiceForJobAsync(string tripID)
         {
@@ -339,10 +349,10 @@ namespace KAS.Trukman.AppContext
         }
 
         public static async Task<Photo[]> SelectPhotosAsync()
-		{
-			var photos = await _localStorage.SelectPhotosAsync ();
-			return photos;
-		}
+        {
+            var photos = await _localStorage.SelectPhotosAsync();
+            return photos;
+        }
 
         private static void StartSynchronizeTimer()
         {
@@ -361,7 +371,8 @@ namespace KAS.Trukman.AppContext
 
         private static void Synchronize()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 if (!_inSynchronization)
                 {
                     StopSynchronizeTimer();

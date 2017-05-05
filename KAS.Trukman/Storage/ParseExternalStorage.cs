@@ -648,6 +648,10 @@ namespace KAS.Trukman.Storage
             return currentUser;
         }
 
+        public void Become(User user)
+        {
+        }
+
         public async Task<User> SignUpAsync(User user)
         {
             var parseUser = new ParseUser
@@ -761,7 +765,7 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
-        public async Task<DriverState> GetDriverState()
+        public async Task<DriverState> GetDriverState(string companyID, string driverID)
         {
             var user = await this.GetCurrentUserAsync();
             return (DriverState)user.Status;
@@ -842,6 +846,11 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
+        public Task AcceptDriverToCompany(string companyID, string driverID)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task AcceptDriverToCompany(User user)
         {
             var company = await this.SelectUserParseCompanyAsync();
@@ -863,6 +872,11 @@ namespace KAS.Trukman.Storage
 
             company.Requestings.Remove(parseUser);
             await company.SaveAsync();
+        }
+
+        public Task DeclineDriverToCompany(string companyID, string driverID)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Notification> GetNotification()

@@ -12,25 +12,25 @@ namespace KAS.Trukman.Data.Classes
 	{
 		public string UserName
 		{
-			get { return (string)this.GetValue("UserName"); }
+			get { return (string)this.GetValue("UserName", default(string)); }
 			set { this.SetValue("UserName", value); }
 		}
 
 		public string Email
 		{
-			get { return (string)this.GetValue("Email"); }
+			get { return (string)this.GetValue("Email", default(string)); }
 			set { this.SetValue("Email", value); }
 		}
 
         public string Password
         {
-            get { return (string)this.GetValue("Password"); }
+            get { return (string)this.GetValue("Password", default(string)); }
             set { this.SetValue("Password", value); }
         }
 
         public string Phone
         {
-            get { return (string)this.GetValue("Phone"); }
+            get { return (string)this.GetValue("Phone", default(string)); }
             set { this.SetValue("Phone", value); }
         }
 
@@ -49,19 +49,19 @@ namespace KAS.Trukman.Data.Classes
 
         public string FirstName
         {
-            get { return (string)this.GetValue("FirstName"); }
+            get { return (string)this.GetValue("FirstName", default(string)); }
 			set { this.SetValue("FirstName", value); }
         }
 
         public string LastName
         {
-            get { return (string)this.GetValue("LastName"); }
+            get { return (string)this.GetValue("LastName", default(string)); }
 			set { this.SetValue("LastName", value); }
         }
 
         public int Status
         {
-            get { return (int)this.GetValue("Status"); }
+            get { return (int)this.GetValue("Status", 0); }
             set { this.SetValue("Status", value); }
         }
 
@@ -71,7 +71,7 @@ namespace KAS.Trukman.Data.Classes
 			get 
 			{
 				var fullName = String.Format ("{0} {1}", this.FirstName, this.LastName);
-				if (String.IsNullOrEmpty (fullName.Trim()))
+				if (string.IsNullOrEmpty(fullName.Trim()))
 					fullName = this.UserName;
 				return fullName;
 			}
@@ -79,7 +79,7 @@ namespace KAS.Trukman.Data.Classes
 
         public string Token
         {
-            get { return (string)this.GetValue("Token"); }
+            get { return (string)this.GetValue("Token", default(string)); }
             set { this.SetValue("Token", value); }
         }
 	}
