@@ -315,6 +315,18 @@ namespace KAS.Trukman.AppContext
             return state;
         }
 
+        public static async Task CancelDriverRequest()
+        {
+            await _localStorage.CancelDriverRequest(Company.ID, User.ID);
+
+            _localStorage.RemoveUser(User);
+            _localStorage.RemoveCompany(Company);
+            _localStorage.SetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY, string.Empty);
+            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, string.Empty);
+            User = null;
+            Company = null;
+        }
+
         public static async Task AcceptDriverToCompany(string companyID, string driverID)
         {
             await _localStorage.AcceptDriverToCompany(companyID, driverID);

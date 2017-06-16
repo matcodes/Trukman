@@ -26,6 +26,7 @@ namespace KAS.Trukman.Storage
         private static readonly string VERIFICATION_ENDPOINT = "accounts/verification";
         private static readonly string SELECT_COMPANIES_BY_FILTER_ENDPOINT = "accounts/selectcompaniesbyfilter";
 
+        private static readonly string GET_OWNER_COMPANY_ENDPOINT = "owners/getcompany";
         private static readonly string GET_DRIVER_REQUESTS_ENDPOINT = "owners/getdriverrequests";
         private static readonly string ANSWER_DRIVER_REQUEST_ENDPOINT = "owners/answerdriverrequest";
         private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
@@ -33,6 +34,7 @@ namespace KAS.Trukman.Storage
         private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
+        private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
         private static readonly string GET_DRIVER_COMPANY_ENDPOINT = "drivers/getdrivercompany";
         private static readonly string GET_LAST_DRIVER_REQUEST_ENDPOINT = "drivers/getlastdriverrequest";
         private static readonly string FIND_TASK_REQUEST_ENDPOINT = "drivers/findtaskrequest";
@@ -203,16 +205,16 @@ namespace KAS.Trukman.Storage
         //    return proxyCompany;
         //}
 
-        //private Company ProxyCompanyToCompany(ProxyCompany proxyCompany)
-        //{
-        //    return new Company
-        //    {
-        //        DisplayName = proxyCompany.Name,
-        //        ID = proxyCompany.Id,
-        //        FleetSize = proxyCompany.FleetSize,
-        //        Name = proxyCompany.Name
-        //    };
-        //}
+        private Company OwnerToCompany(Owner owner)
+        {
+            return new Company
+            {
+                DisplayName = owner.Name,
+                FleetSize = owner.FeetSize,
+                ID = owner.Id.ToString(),
+                Name = owner.Name,
+            };
+        }
 
         //private User ProxyUserToUser(ProxyUser proxyUser)
         //{
@@ -494,9 +496,26 @@ namespace KAS.Trukman.Storage
             return state;
         }
 
+        public async Task CancelDriverRequest(string companyID, string driverID)
+        {
+            var cancelDriverRequest = new CancelDriverRequestRequest
+            {
+                OwnerId = Guid.Parse(companyID),
+                DriverId = Guid.Parse(driverID)
+            };
+            var requestContent = SerializeObject(cancelDriverRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CANCEL_DRIVER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CancelDriverRequestResponse>(request);
+        }
+
         public Task<Notification> GetNotification()
         {
-            throw new NotImplementedException();
+            // TODO:
+            return Task.FromResult<Notification>(default(Notification));
+            // TODO: throw new NotImplementedException();
         }
 
         public Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -519,7 +538,7 @@ namespace KAS.Trukman.Storage
 
         public void InitializeOwnerNotification()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Task<User> LogInAsync(string userName, string password)
@@ -595,14 +614,8 @@ namespace KAS.Trukman.Storage
                 Token = _token
             };
 
-            var company = new Company
-            {
-                DisplayName = owner.Name,
-                FleetSize = owner.FeetSize,
-                ID = owner.Id.ToString(),
-                Name = owner.Name,
-                UpdateTime = DateTime.Now
-            };
+            var company = OwnerToCompany(owner);
+            company.UpdateTime = DateTime.Now;
 
             return company;
         }
@@ -692,13 +705,7 @@ namespace KAS.Trukman.Storage
             }
             else
             {
-                return new Company
-                {
-                    ID = _company.Id.ToString(),
-                    DisplayName = _company.DBA,
-                    Name = _company.Name,
-                    FleetSize = _company.FeetSize
-                };
+                return OwnerToCompany(_company);
             }
         }
 
@@ -739,13 +746,7 @@ namespace KAS.Trukman.Storage
             List<Company> companies = new List<Company>();
             foreach (var owner in result.Companies)
             {
-                var company = new Company
-                {
-                    ID = owner.Id.ToString(),
-                    Name = owner.Name,
-                    DisplayName = owner.DBA,
-                    FleetSize = owner.FeetSize
-                };
+                var company = OwnerToCompany(owner);
 
                 companies.Add(company);
             }
@@ -842,17 +843,35 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
+        private async Task<Owner> GetCompanyById(string companyId)
+        {
+            var getCompantRequest = new GetCompanyRequest
+            {
+                CompanyId = Guid.Parse(companyId)
+            };
+            var requestContent = SerializeObject(getCompantRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GET_OWNER_COMPANY_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<GetCompanyResponse>(request);
+            return result.Company;
+        }
+
         public async Task<Company> SelectUserCompanyAsync()
         {
             Company company = null;
+            Owner owner = null;
+            if (_currentUser.Role == UserRole.Owner)
+                owner = await GetCompanyById(_currentUser.ID);
+            else if (_currentUser.Role == UserRole.Dispatch)
+            {
+            }
+            else if (_currentUser.Role == UserRole.Driver)
+                owner = await GetDriverCompany(Guid.Parse(_currentUser.ID));
 
-            //string companyId = await this.SelectProxyUserCompanyAsync(_currentUser.ID);
-            //if (!companyId.IsNullOrEmpty())
-            //{
-            //    var proxyCompany = await SelectCompanyByIdAsync(companyId);
-            //    if (proxyCompany != null)
-            //        company = ProxyCompanyToCompany(proxyCompany);
-            //}
+            if (owner != null)
+                company = OwnerToCompany(owner);
 
             return company;
         }

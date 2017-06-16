@@ -37,6 +37,7 @@ namespace KAS.Trukman.Droid.Renderers
 
                 this.Control.SetBackgroundResource(resource);
                 this.Control.SetTextColor(Forms.Context.Resources.GetColor(Resource.Color.appbutton_textcolor));
+                this.Control.SetAllCaps(false);
             }
         }
     }

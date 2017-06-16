@@ -771,6 +771,11 @@ namespace KAS.Trukman.Storage
             return (DriverState)user.Status;
         }
 
+        public Task CancelDriverRequest(string companyID, string driverID)
+        {
+            return Task.Delay(0);
+        }
+
         private async Task<bool> DriverIsJoinedToCompany(ParseCompany company)
         {
             var joined = false;

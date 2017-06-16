@@ -124,6 +124,23 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
 
         private void Cancel(object parameter)
         {
+            Task.Run(async () => {
+                this.IsBusy = true;
+                try
+                {
+                    await TrukmanContext.CancelDriverRequest();
+                    ShowTopPageMessage.Send();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                }
+            });
         }
 
         public SignUpLanguage SelectedLanguage

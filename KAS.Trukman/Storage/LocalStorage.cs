@@ -646,7 +646,6 @@ namespace KAS.Trukman.Storage
             DriverState state = DriverState.Declined;
             try
             {
-                //User.
                 state = await _externalStorage.GetDriverState(companyID, driverID);
             }
             catch (Exception exception)
@@ -655,6 +654,19 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return state;
+        }
+
+        public async Task CancelDriverRequest(string companyID, string driverID)
+        {
+            try
+            {
+                await _externalStorage.CancelDriverRequest(companyID, driverID);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(exception.Message);
+            }
         }
 
         public async Task AcceptDriverToCompany(string companyID, string driverID)
@@ -951,6 +963,12 @@ namespace KAS.Trukman.Storage
         {
             return (_connection.Table<User>().Where(u => u.ID == id).Count() > 0);
         }
+
+        public void RemoveUser(User user)
+        {
+            if (this.UserExistDb(user.ID))
+                _connection.Delete<User>(user.ID);
+        }
         #endregion
 
         #region Company
@@ -972,6 +990,12 @@ namespace KAS.Trukman.Storage
         private bool CompanyExist(string id)
         {
             return (_connection.Table<Company>().Where(c => c.ID == id).Count() > 0);
+        }
+
+        public void RemoveCompany(Company company)
+        {
+            if (this.CompanyExist(company.ID))
+                _connection.Delete<Company>(company.ID);
         }
         #endregion
 

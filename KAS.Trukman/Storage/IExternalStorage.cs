@@ -71,6 +71,8 @@ namespace KAS.Trukman.Storage
 
         Task<DriverState> GetDriverState(string companyID, string driverID);
 
+        Task CancelDriverRequest(string companyID, string driverID);
+
         //Task AcceptDriverToCompany(User user);
 
         Task AcceptDriverToCompany(string companyID, string driverID);

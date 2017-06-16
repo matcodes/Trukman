@@ -56,8 +56,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\BaseRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CancelDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DriverLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DriverRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetCompanyRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverCompanyRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetLastDriverRequestRequest.cs" />
@@ -67,7 +69,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\BaseResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CancelDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\DriverLoginResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetCompanyResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverCompanyResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverRequestsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetLastDriverRequestResponse.cs" />
