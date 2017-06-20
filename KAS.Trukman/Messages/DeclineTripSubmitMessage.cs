@@ -11,9 +11,9 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "DeclineTripSubmitMessage";
 
-        public static void Send(string reasonText)
+        public static void Send(int declineReason, string reasonText)
         {
-            var message = new DeclineTripSubmitMessage(reasonText);
+            var message = new DeclineTripSubmitMessage(declineReason, reasonText);
             MessagingCenter.Send<DeclineTripSubmitMessage>(message, MESSAGE_KEY);
         }
 
@@ -28,10 +28,13 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public DeclineTripSubmitMessage(string reasonText)
+        public DeclineTripSubmitMessage(int declineReason, string reasonText)
         {
+            this.DeclineReason = declineReason;
             this.ReasonText = reasonText;
         }
+
+        public int DeclineReason { get; private set; }
 
         public string ReasonText { get; private set; }
     }

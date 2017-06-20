@@ -336,7 +336,7 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task<Trip> DeclineTrip(string id, string reasonText)
+        public async Task<Trip> DeclineTrip(string id, int declineReason, string reasonText)
         {
             Trip trip = null;
             var parseJob = await this.GetParseJobByID(id);

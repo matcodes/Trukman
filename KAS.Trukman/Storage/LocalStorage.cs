@@ -130,11 +130,11 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task TripDeclined(string tripID, string reasonText)
+        public async Task TripDeclined(string tripID, int declineReason, string reasonText)
         {
             try
             {
-                var trip = await _externalStorage.DeclineTrip(tripID, reasonText);
+                var trip = await _externalStorage.DeclineTrip(tripID, declineReason, reasonText);
                 this.RemoveTrip(trip);
                 this.SetSettings(TRIP_ID_SETTINGS_KEY, "");
             }
@@ -369,32 +369,35 @@ namespace KAS.Trukman.Storage
             return trips;
         }
 
-        public async Task AddPointsAsync(string jobID, string text, int points)
-        {
-            try
-            {
-                await _externalStorage.AddPointsAsync(jobID, text, points);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-        }
+        //public async Task AddPointsAsync(string jobID, string text, int points)
+        //{
+        //    try
+        //    {
+        //        await _externalStorage.AddPointsAsync(jobID, text, points);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //}
 
-        public async Task<int> GetPointsByJobIDAsync(string jobID)
+        public Task<int> GetPointsByJobIDAsync(string jobID)
         {
             var points = (int)0;
             try
             {
-                points = await _externalStorage.GetPointsByJobIDAsync(jobID);
+                //points = await _externalStorage.GetPointsByJobIDAsync(jobID);
+                var trip = this.SelectTripByID(jobID);
+                if (trip != null)
+                    points = trip.Points;
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
-            return points;
+            return Task.FromResult<int>(points);
         }
 
         public async Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -519,7 +522,7 @@ namespace KAS.Trukman.Storage
                 var userID = GetSettings(USER_ID_SETTINGS_KEY);
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    user =  this.GetUserByID(userID);
+                    user = this.GetUserByID(userID);
                     _externalStorage.Become(user);
                 }
             }

@@ -17,6 +17,7 @@ using Trukman.Messages;
 using System.Collections.ObjectModel;
 using KAS.Trukman.AppContext;
 using Xamarin.Forms;
+using KAS.Trukman.Data.Enums;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -411,15 +412,26 @@ namespace KAS.Trukman.ViewModels.Pages
 			else
             {
                 this.IsBusy = true;
+                TaskRequestDeclineReasons declineReason = TaskRequestDeclineReasons.None;
                 var reasonText = "";
                 if (this.SelectedDeclinedReason == DeclinedReasonItems.Reason_1)
-                    reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_1;
+                {
+                    declineReason = TaskRequestDeclineReasons.Reason1;
+                    //reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_1;
+                }
                 else if (this.SelectedDeclinedReason == DeclinedReasonItems.Reason_2)
-                    reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_2;
+                {
+                    declineReason = TaskRequestDeclineReasons.Reason2;
+                    //reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_2;
+                }
                 else if (this.SelectedDeclinedReason == DeclinedReasonItems.Other)
-                    reasonText = this.OtherReasonText;
+                {
+                    declineReason = TaskRequestDeclineReasons.Other;
+                    //reasonText = this.OtherReasonText;
+                }
+                reasonText = this.OtherReasonText;
                 this.IsBusy = true;
-                DeclineTripSubmitMessage.Send(reasonText);
+                DeclineTripSubmitMessage.Send((int)declineReason, reasonText);
 			}
         }
 

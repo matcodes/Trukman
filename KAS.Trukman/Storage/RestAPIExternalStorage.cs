@@ -29,15 +29,16 @@ namespace KAS.Trukman.Storage
         private static readonly string GET_OWNER_COMPANY_ENDPOINT = "owners/getcompany";
         private static readonly string GET_DRIVER_REQUESTS_ENDPOINT = "owners/getdriverrequests";
         private static readonly string ANSWER_DRIVER_REQUEST_ENDPOINT = "owners/answerdriverrequest";
-        private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
-        private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
-        private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
+        //private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
+        //private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
+        //private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
         private static readonly string GET_DRIVER_COMPANY_ENDPOINT = "drivers/getdrivercompany";
         private static readonly string GET_LAST_DRIVER_REQUEST_ENDPOINT = "drivers/getlastdriverrequest";
         private static readonly string FIND_TASK_REQUEST_ENDPOINT = "drivers/findtaskrequest";
+        private static readonly string CHECK_DRIVER_TASK_REQUEST_ENDPOINT = "drivers/checktaskrequest";
         private static readonly string ANSWER_TASK_REQUEST_ENDPOINT = "drivers/answertaskrequest";
 
         private User _currentUser = null;
@@ -120,68 +121,6 @@ namespace KAS.Trukman.Storage
             return new Uri(url);
         }
 
-        //private async Task<Company> SaveCompanyAsync(Company company)
-        //{
-        //    var saved = await this.SelectCompanyByIdAsync(company.ID);
-        //    if (saved == null)
-        //        saved = new ProxyCompany();
-        //    saved.Owner = _currentUser.UserName;
-        //    saved.Name = company.Name;
-        //    saved.DisplayName = company.DisplayName;
-        //    saved.FleetSize = company.FleetSize;
-
-        //    var uri = CreateRequestUri(_saveCompanyEndpoint);
-        //    var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
-        //    string jsonContent = SerializeObject(saved);
-        //    requestMessage.Content = new StringContent(jsonContent, Encoding.UTF8);
-        //    var proxyCompany = await ExecuteRequestAsync<ProxyCompany>(requestMessage);
-
-        //    return this.ProxyCompanyToCompany(proxyCompany);
-        //}
-
-        //private async Task<bool> DriverIsJoinedToCompany(ProxyCompany company)
-        //{
-        //    var joined = false;
-
-        //    //var companyUser = await company.Drivers.Query
-        //    //    .WhereEqualTo("username", ParseUser.CurrentUser.Username)
-        //    //    .FirstOrDefaultAsync();
-
-        //    //joined = (companyUser != null);
-        //    return await Task.FromResult(joined);
-        //}
-
-        //private async Task JoinDriverToCompany(ProxyCompany company)
-        //{
-        //    //var companyUser = await company.Requestings.Query
-        //    //    .WhereEqualTo("username", ParseUser.CurrentUser.Username)
-        //    //    .FirstOrDefaultAsync();
-
-        //    //if (companyUser == null)
-        //    //{
-        //    //    company.Requestings.Add(ParseUser.CurrentUser);
-        //    //    await company.SaveAsync();
-        //    //}
-
-        //}
-
-        //private async Task<string> SelectProxyUserCompanyAsync(string userId)
-        //{
-        //    var uri = CreateRequestUri(_getSelectUserCompanyEndpoint, userId);
-        //    var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-
-        //    //TODO: проверить возвращаются ли компании для водителей, которые в статусе waiting
-        //    var companyId = await ExecuteRequestAsync<string>(requestMessage);
-        //    //if (parseCompany == null)
-        //    //{
-        //    //    query = new ParseQuery<ParseCompany>()
-        //    //        .WhereEqualTo("requesting", ParseUser.CurrentUser);
-        //    //    parseCompany = await query.FirstOrDefaultAsync();
-        //    //}
-
-        //    return companyId;
-        //}
-
         private async Task<Owner> GetDriverCompany(Guid driverId)
         {
             var getDriverCompanyRequest = new GetDriverCompanyRequest
@@ -197,14 +136,6 @@ namespace KAS.Trukman.Storage
             return result.Company;
         }
 
-        //private async Task<ProxyCompany> SelectCompanyByIdAsync(string companyId)
-        //{
-        //    var uri = CreateRequestUri(_getCompanyByIdEndpoint, companyId);
-        //    var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-        //    var proxyCompany = await ExecuteRequestAsync<ProxyCompany>(requestMessage);
-        //    return proxyCompany;
-        //}
-
         private Company OwnerToCompany(Owner owner)
         {
             return new Company
@@ -216,133 +147,43 @@ namespace KAS.Trukman.Storage
             };
         }
 
-        //private User ProxyUserToUser(ProxyUser proxyUser)
-        //{
-        //    return new User
-        //    {
-        //        Email = proxyUser.EMail,
-        //        FirstName = proxyUser.FirstName,
-        //        LastName = proxyUser.LastName,
-        //        Phone = proxyUser.Phone,
-        //        Password = proxyUser.Password,
-        //        Role = (UserRole)(Enum.Parse(typeof(UserRole), proxyUser.Role, true)),
-        //        Status = proxyUser.Status,
-        //        UserName = proxyUser.UserName,
-        //        ID = proxyUser.Id
-        //    };
-        //}
-
-        //private async Task<ProxyJob> GetProxyJobByID(string id)
-        //{
-        //    var uri = CreateRequestUri(_getJobByIdEndpoint, id);
-        //    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-        //    var proxyJob = await ExecuteRequestAsync<ProxyJob>(requestMessage);
-        //    return proxyJob;
-        //}
-
-        //private async Task SaveProxyJob(ProxyJob proxyJob)
-        //{
-        //    var uri = CreateRequestUri(_save)
-
-        //}
-
-        //private Trip ProxyJobToTrip(ProxyJob proxyJob)
-        //{
-        //    //var shipper = new Contractor
-        //    //{
-        //    //    ID = (proxyJob.Shipper != null ? parseJob.Shipper.ObjectId : Guid.NewGuid().ToString()),
-        //    //    Name = (parseJob.Shipper != null ? parseJob.Shipper.Name : ""),
-        //    //    Phone = (parseJob.Shipper != null ? parseJob.Shipper.Phone : ""),
-        //    //    Fax = (parseJob.Shipper != null ? parseJob.Shipper.Fax : ""),
-        //    //    Address = (parseJob.Shipper != null ? parseJob.Shipper.Address : parseJob.FromAddress),
-        //    //    SpecialInstruction = (parseJob.Shipper != null ? parseJob.Shipper.SpecialInstruction : "")
-        //    //};
-        //    //var receiver = new Contractor
-        //    //{
-        //    //    ID = (parseJob.Receiver != null ? parseJob.Receiver.ObjectId : Guid.NewGuid().ToString()),
-        //    //    Name = (parseJob.Receiver != null ? parseJob.Receiver.Name : ""),
-        //    //    Phone = (parseJob.Receiver != null ? parseJob.Receiver.Phone : ""),
-        //    //    Fax = (parseJob.Receiver != null ? parseJob.Receiver.Fax : ""),
-        //    //    Address = (parseJob.Receiver != null ? parseJob.Receiver.Address : parseJob.ToAddress),
-        //    //    SpecialInstruction = (parseJob.Receiver != null ? parseJob.Receiver.SpecialInstruction : "")
-        //    //};
-        //    //User driver = null;
-        //    //if (parseJob.Driver != null)
-        //    //    driver = this.ParseUserToUser(parseJob.Driver);
-        //    //User broker = null;
-        //    //if (parseJob.Broker != null)
-        //    //    broker = this.ParseUserToUser(parseJob.Broker);
-        //    //Company company = null;
-        //    //if (parseJob.Company != null)
-        //    //    company = this.ParseCompanyToCompany(parseJob.Company);
-
-        //    var trip = new Trip
-        //    {
-        //        ID = proxyJob.Id,
-        //        //ID = proxyJob.ObjectId,
-        //        //DeclineReason = parseJob.DeclineReason,
-        //        //DeliveryDatetime = parseJob.DeliveryDatetime,
-        //        DriverAccepted = proxyJob.DriverAccepted,
-        //        //IsDelivery = (parseJob.DriverOnTimeDelivery != 0),
-        //        //IsPickup = (parseJob.DriverOnTimePickup != 0),
-        //        //JobCancelled = parseJob.JobCancelled,
-        //        //JobCompleted = parseJob.JobCompleted,
-        //        //IsDeleted = parseJob.IsDeleted,
-        //        //PickupDatetime = parseJob.PickupDatetime,
-        //        //Points = parseJob.Price,
-        //        //Shipper = shipper,
-        //        //Receiver = receiver,
-        //        //JobRef = parseJob.JobRef,
-        //        //FromAddress = parseJob.FromAddress,
-        //        //ToAddress = parseJob.ToAddress,
-        //        //Weight = parseJob.Weight,
-        //        //Location = new Position(parseJob.Location.Latitude, parseJob.Location.Longitude),
-        //        //UpdateTime = (parseJob.UpdatedAt != null ? (DateTime)parseJob.UpdatedAt : DateTime.Now),
-        //        //Driver = driver,
-        //        //Broker = broker,
-        //        //Company = company,
-        //        //InvoiceUri = (parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
-        //        //DriverDisplayName = (driver != null ? driver.UserName : "")
-        //    };
-
-        //    return trip;
-        //}
-
-        //private async Task SaveProxyPhoto(ProxyPhoto photo)
-        //{
-        //    var uri = CreateRequestUri(_saveJobPhotoEndpoint);
-        //    var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
-        //    var content = SerializeObject(photo);
-        //    requestMessage.Content = new StringContent(content, Encoding.UTF8);
-
-        //    var successMessage = await ExecuteRequestAsync<string>(requestMessage);
-        //    //if (!successMessage.IsNullOrEmpty())
-        //    //{
-
-        //    //}
-        //}
-
         #region IExternalStorage
         public async Task AcceptDriverToCompany(string companyID, string driverID)
         {
             await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID), true);
         }
 
+        private async Task<TrukmanTask> AnswerTaskRequest(Guid taskRequestId, int answer, 
+            int declineReason = (int)TaskRequestDeclineReasons.None, string declineText = "")
+        {
+            var answerTaskRequestRequest = new AnswerTaskRequestRequest
+            {
+                TaskRequestId = taskRequestId,
+                Answer = answer,
+                DeclineReason = declineReason,
+                DeclineText = declineText
+            };
+            var requestContent = SerializeObject(answerTaskRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ANSWER_TASK_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AnswerTaskRequestResponse>(request);
+            return result.Task;
+        }
+
         public async Task<Trip> AcceptTrip(string id)
         {
+            var taskRequest = await this.GetTaskRequestByTaskID(id);
+            var trukmanTask = await this.AnswerTaskRequest(taskRequest.Id, (int)TaskRequestAnswers.Accept);
+
             Trip trip = null;
+            if (trukmanTask != null)
+            {
+                taskRequest.Task = trukmanTask;
+                trip = TaskRequestToTrip(taskRequest);
+            }
 
-            //var proxyJob = await this.GetProxyJobByID(id);
-            //if (proxyJob != null)
-            //{
-            //    proxyJob.DriverAccepted = true;
-
-            //    var uri = CreateRequestUri(_acceptJobEndpoint, id);
-            //    var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-            //    var successMessage = await ExecuteRequestAsync<string>(requestMessage);
-            //    if (!successMessage.IsNullOrEmpty())
-            //        trip = this.ProxyJobToTrip(proxyJob);
-            //}
             return trip;
         }
 
@@ -371,16 +212,83 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
+        private Trip TaskRequestToTrip(TaskRequest taskRequest)
+        {
+            var shipper = new Contractor
+            {
+                ID = Guid.NewGuid().ToString(),
+                Name = taskRequest.Task.LoadingName,
+                Phone = "",
+                Fax = "",
+                Address = taskRequest.Task.LoadingAddress,
+                SpecialInstruction = ""
+            };
+            var receiver = new Contractor
+            {
+                ID = Guid.NewGuid().ToString(),
+                Name = taskRequest.Task.UnloadingName,
+                Phone = "",
+                Fax = "",
+                Address = taskRequest.Task.UnloadingAddress,
+                SpecialInstruction = ""
+            };
+
+            TaskLocation location = null;
+            //if (taskRequest.Task.TaskLocations != null)
+            //    location = taskRequest.Task.TaskLocations.OrderByDescending(l => l.CreateTime).FirstOrDefault();
+
+            return new Trip
+            {
+                ID = taskRequest.TaskId.ToString(),
+                DeclineReason = "", // taskRequest.DeclineReason.ToString(),
+                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime,
+                DriverAccepted = (taskRequest.Answer == (int)TaskRequestAnswers.Accept),
+                IsDelivery = (taskRequest.Task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
+                IsPickup = (taskRequest.Task.LoadingDoneRealTime.GetValueOrDefault() != DateTime.MinValue),
+                JobCancelled = taskRequest.IsCancelled,
+                //JobCompleted = taskRequest.JobCompleted,
+                //IsDeleted = taskRequest.IsDeleted,
+                PickupDatetime = taskRequest.Task.LoadingPlanTime,
+                Points = taskRequest.Task.PlanPoints,
+                Shipper = shipper,
+                Receiver = receiver,
+                JobRef = "", //taskRequest.Task.JobRef, 
+                FromAddress = taskRequest.Task.LoadingAddress,
+                ToAddress = taskRequest.Task.UnloadingAddress,
+                //Weight = taskRequest.Task.Weight,
+                Location = (location != null ? new Position((double)location.Latitude, (double)location.Longitude) : default(Position)),
+                UpdateTime = DateTime.Now,
+                Driver = new User
+                {
+                    ID = taskRequest.Driver.Id.ToString(),
+                    UserName = string.Format("{0} {1}", taskRequest.Driver.FirstName, taskRequest.Driver.LastName),
+                    FirstName = taskRequest.Driver.FirstName,
+                    LastName = taskRequest.Driver.LastName,
+                    Phone = taskRequest.Driver.Phone
+                },
+                Broker = new User(), // broker,
+                Company = this.OwnerToCompany(taskRequest.Task.Owner),
+                InvoiceUri = "", //(parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
+                DriverDisplayName = (taskRequest.Driver != null ? string.Format("{0} {1}", taskRequest.Driver.FirstName, taskRequest.Driver.LastName) : "")
+            };
+        }
+
         public async Task<Trip> CheckNewTripForDriver(string userID)
         {
+            var findTaskRequestRequest = new FindTaskRequestRequest
+            {
+                DriverId = Guid.Parse(userID)
+            };
+            var requestContent = SerializeObject(findTaskRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(FIND_TASK_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<FindTaskRequestResponse>(request);
+            
             Trip trip = null;
-
-            //var uri = CreateRequestUri(_getNewJobForDriver);
-            //var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-            //var tripId = await ExecuteRequestAsync<string>(requestMessage);
-            //var proxyJob = await this.GetProxyJobByID(tripId);
-            //if (proxyJob != null)
-            //    trip = this.ProxyJobToTrip(proxyJob);
+            if (result.TaskRequest != null)
+                trip = TaskRequestToTrip(result.TaskRequest);
 
             return trip;
         }
@@ -433,20 +341,18 @@ namespace KAS.Trukman.Storage
             await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID), false);
         }
 
-        public async Task<Trip> DeclineTrip(string id, string reasonText)
+        public async Task<Trip> DeclineTrip(string id, int declineReason, string reasonText)
         {
+            var taskRequest = await this.GetTaskRequestByTaskID(id);
+            var trukmanTask = await this.AnswerTaskRequest(taskRequest.Id, (int)TaskRequestAnswers.Decline, declineReason, reasonText);
+
             Trip trip = null;
-            //var proxyJob = await this.GetProxyJobByID(id);
-            //if (proxyJob != null)
-            //{
-            //    proxyJob.DeclineReason = reasonText;
-            //    var uri = CreateRequestUri(_declineTripEndpoint, id);
-            //    var requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
-            //    // TODO: передать decline reason
-            //    var successMessage = await ExecuteRequestAsync<string>(requestMessage);
-            //    if (!successMessage.IsNullOrEmpty())
-            //        trip = this.ProxyJobToTrip(proxyJob);
-            //}
+            if (trukmanTask != null)
+            {
+                taskRequest.Task = trukmanTask;
+                trip = TaskRequestToTrip(taskRequest);
+            }
+
             return trip;
         }
 
@@ -513,14 +419,15 @@ namespace KAS.Trukman.Storage
 
         public Task<Notification> GetNotification()
         {
-            // TODO:
             return Task.FromResult<Notification>(default(Notification));
             // TODO: throw new NotImplementedException();
         }
 
         public Task<int> GetPointsByDriverIDAsync(string driverID)
         {
-            throw new NotImplementedException();
+            // TODO:
+            return Task.FromResult<int>(0);
+            //throw new NotImplementedException();
         }
 
         public Task<int> GetPointsByJobIDAsync(string jobID)
@@ -538,7 +445,6 @@ namespace KAS.Trukman.Storage
 
         public void InitializeOwnerNotification()
         {
-            //throw new NotImplementedException();
         }
 
         public Task<User> LogInAsync(string userName, string password)
@@ -607,7 +513,7 @@ namespace KAS.Trukman.Storage
             _currentUser = new User
             {
                 ID = owner.Id.ToString(),
-                UserName = owner.Name, // TODO: phone???
+                UserName = owner.Name,
                 Role = UserRole.Owner,
                 Email = owner.Email,
                 Phone = owner.Phone,
@@ -688,7 +594,7 @@ namespace KAS.Trukman.Storage
             };
 
             var _company = await GetDriverCompany(_driver.Id);
-            if ((_company != null) && (_company.Id == Guid.Parse(driverInfo.Company.ID)))
+            if ((_company != null) && (_company.Id != Guid.Parse(driverInfo.Company.ID)))
                 throw new Exception(String.Format("Your are approved to company {0}.", _company.Name));
 
             if (_company == null)
@@ -705,6 +611,8 @@ namespace KAS.Trukman.Storage
             }
             else
             {
+                await this.GetDriverState(_company.Id.ToString(), _currentUser.ID);
+
                 return OwnerToCompany(_company);
             }
         }
@@ -756,13 +664,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Company> SelectCompanyByName(string name)
         {
-            //var uri = CreateRequestUri(_getCompanyByNameEndpoint, name);
-            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-            //requestMessage.Headers.Add("Authorization", _currentUser.Token);
-            //var proxyCompany = await ExecuteRequestAsync<ProxyCompany>(requestMessage);
-            //var company = this.ProxyCompanyToCompany(proxyCompany);
-            //return company;
-            return null;
+            throw new NotImplementedException();
         }
 
         public Task<Trip[]> SelectCompletedTrips()
@@ -824,8 +726,6 @@ namespace KAS.Trukman.Storage
                 {
                     ID = driverRequests[0].Driver.Id.ToString(),
                     UserName = string.Format("{0} {1}", driverRequests[0].Driver.FirstName, driverRequests[0].Driver.LastName),
-                    //Role = (UserRole)role,
-                    //Status = status,
                     FirstName = driverRequests[0].Driver.FirstName,
                     LastName = driverRequests[0].Driver.LastName
                 };
@@ -834,12 +734,27 @@ namespace KAS.Trukman.Storage
             return null;
         }
 
+        private async Task<TaskRequest> GetTaskRequestByTaskID(string taskId)
+        {
+            var checkTaskRequestRequest = new CheckTaskRequestRequest
+            {
+                TaskId = Guid.Parse(taskId)
+            };
+            var requestContent = SerializeObject(checkTaskRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CHECK_DRIVER_TASK_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CheckTaskRequestResponse>(request);
+            return result.TaskRequest;
+        }
+
         public async Task<Trip> SelectTripByID(string id)
         {
             Trip trip = null;
-            //var proxyJob = await this.GetProxyJobByID(id);
-            //if (proxyJob != null)
-            //    trip = this.ProxyJobToTrip(proxyJob);
+            var taskRequest = await this.GetTaskRequestByTaskID(id);
+            if (taskRequest != null)
+                trip = this.TaskRequestToTrip(taskRequest);
             return trip;
         }
 
@@ -922,27 +837,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<User> SignUpAsync(User user)
         {
-            //var uri = CreateRequestUri(_signUpUserEndpoint);
-            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
-
-            //ProxyUser proxyUser = new ProxyUser
-            //{
-            //    UserName = user.UserName,
-            //    Phone = user.Phone,
-            //    Password = user.Password,
-            //    FirstName = user.FirstName,
-            //    LastName = user.LastName,
-            //    Role = user.Role.ToString().ToLower(),
-            //    Status = user.Status
-            //};
-
-            //string jsonContent = this.SerializeObject(proxyUser);
-            //requestMessage.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-            //proxyUser = await ExecuteRequestAsync<ProxyUser>(requestMessage);
-
-            //return ProxyUserToUser(proxyUser);
-            return null;
+            return await Task.FromResult<User>(default(User));
         }
 
         public Task<Trip> TripInDelivery(string id, int minutes)

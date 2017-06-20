@@ -145,7 +145,7 @@ namespace KAS.Trukman.Data.Classes
 
         public bool IsDeleted
         {
-            get { return (bool)this.GetValue("IsDeleted"); }
+            get { return (bool)this.GetValue("IsDeleted", false); }
             set { this.SetValue("IsDeleted", value); }
         }
 

@@ -42,7 +42,7 @@ namespace KAS.Trukman.AppContext
             SendPhotoMessage.Subscribe(this, this.SendPhoto);
             CompletedTripChangedMessage.Subscribe(this, this.CompletedTripChanged);
 
-            this.TripState = _localStorage.GetTripState(); ;
+            this.TripState = _localStorage.GetTripState();
         }
 
         private bool _inSynchronize = false;
@@ -194,7 +194,7 @@ namespace KAS.Trukman.AppContext
                 var tripState = this.TripState;
                 try
                 {
-                    await _localStorage.TripDeclined(this.TripID, message.ReasonText);
+                    await _localStorage.TripDeclined(this.TripID, message.DeclineReason, message.ReasonText);
                     this.Trip = null;
                     tripState = 0;
 					if (this.TripState != tripState)
@@ -224,7 +224,7 @@ namespace KAS.Trukman.AppContext
                     else
                     {
                         Trip = await _localStorage.TripAccepted(this.TripID);
-                        await _localStorage.AddPointsAsync(this.TripID, AppLanguages.CurrentLanguage.BaseJobPointsText, Trip.Points);
+                        //await _localStorage.AddPointsAsync(this.TripID, AppLanguages.CurrentLanguage.BaseJobPointsText, Trip.Points);
                         tripState = 4;
                     }
                     if (this.TripState != tripState)
@@ -321,7 +321,7 @@ namespace KAS.Trukman.AppContext
 					}
                     await _localStorage.SendPhoto(this.TripID, message.Data, kind);
 
-                    await _localStorage.AddPointsAsync(this.TripID, pointsText, 5);
+                    //await _localStorage.AddPointsAsync(this.TripID, pointsText, 5);
 
                     await _localStorage.SendNotification(this.Trip, notificationMessage);
 
@@ -463,13 +463,11 @@ namespace KAS.Trukman.AppContext
 
                     var trip = await _localStorage.TripInPickup(this.TripID, (int)minutes);
 
-                    var pointsText = (minutes >= 0 ? AppLanguages.CurrentLanguage.PickUpOnTimeJobPointsText : AppLanguages.CurrentLanguage.PickUpLateJobPointsText);
-                    var points = (minutes >= 0 ? 50 : -10);
-
-                    await _localStorage.AddPointsAsync(trip.ID, pointsText, points);
-
-                    if (minutes >= 15)
-                        await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.PickUpOnTimeEarlyJobPointsText, 5);
+                    //var pointsText = (minutes >= 0 ? AppLanguages.CurrentLanguage.PickUpOnTimeJobPointsText : AppLanguages.CurrentLanguage.PickUpLateJobPointsText);
+                    //var points = (minutes >= 0 ? 50 : -10);
+                    //await _localStorage.AddPointsAsync(trip.ID, pointsText, points);
+                    //if (minutes >= 15)
+                    //    await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.PickUpOnTimeEarlyJobPointsText, 5);
 
                     var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToPickupSystemMessage, trip.JobRef, TrukmanContext.User.FullName);
                     await _localStorage.SendNotification(Trip, message);
@@ -517,13 +515,11 @@ namespace KAS.Trukman.AppContext
 
                     var trip = await _localStorage.TripInDelivery(this.TripID, (int)minutes);
 
-                    var pointsText = (minutes >= 0 ? AppLanguages.CurrentLanguage.DeliveryOnTimeJobPointsText : AppLanguages.CurrentLanguage.DeliveryLateJobPointsText);
-                    var points = (minutes >= 0 ? 50 : -10);
-
-                    await _localStorage.AddPointsAsync(trip.ID, pointsText, points);
-
-                    if (minutes >= 15)
-                        await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.DeliveryOnTimeEarlyJobPointsText, 5);
+                    //var pointsText = (minutes >= 0 ? AppLanguages.CurrentLanguage.DeliveryOnTimeJobPointsText : AppLanguages.CurrentLanguage.DeliveryLateJobPointsText);
+                    //var points = (minutes >= 0 ? 50 : -10);
+                    //await _localStorage.AddPointsAsync(trip.ID, pointsText, points);
+                    //if (minutes >= 15)
+                    //    await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.DeliveryOnTimeEarlyJobPointsText, 5);
 
                     var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToDeliverySystemMessage, trip.JobRef, trip.Driver.FullName);
                     await _localStorage.SendNotification(Trip, message);

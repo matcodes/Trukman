@@ -23,7 +23,7 @@ namespace KAS.Trukman.Storage
 
         Task<Trip> CompleteTrip(string id);
 
-        Task<Trip> DeclineTrip(string id, string reasonText);
+        Task<Trip> DeclineTrip(string id, int declineReason, string reasonText);
 
         Task<Trip> TripInPickup(string id, int minutes);
 
