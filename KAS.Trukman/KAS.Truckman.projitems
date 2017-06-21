@@ -56,6 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\ErrorResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\ProxyLogin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddDriverRequestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddTaskLocationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerTaskRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\BaseRequest.cs" />
@@ -68,10 +69,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverCompanyRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetLastDriverRequestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetPointsByDriverRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\OwnerLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\VerificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddDriverRequestResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddTaskLocationResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerTaskRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\BaseResponse.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverCompanyResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverRequestsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetLastDriverRequestResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetPointsByDriverResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\OwnerLoginResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskLocation.cs" />

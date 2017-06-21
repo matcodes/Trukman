@@ -113,18 +113,19 @@ OVER_QUERY_LIMIT
             var longitude = 0.0d;
             try
             {
-                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
-                {
-                    try
-                    {
-                        latitude = (double)(t.Result["lat"]);
-                        longitude = (double)(t.Result["lng"]);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                    }
-                });
+                // TODO: 
+                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
+                //{
+                //    try
+                //    {
+                //        latitude = (double)(t.Result["lat"]);
+                //        longitude = (double)(t.Result["lng"]);
+                //    }
+                //    catch (Exception exception)
+                //    {
+                //        Console.WriteLine(exception);
+                //    }
+                //});
             }
             catch (Exception exception)
             {
