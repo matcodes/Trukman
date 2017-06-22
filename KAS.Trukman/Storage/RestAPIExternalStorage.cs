@@ -29,9 +29,11 @@ namespace KAS.Trukman.Storage
         private static readonly string GET_OWNER_COMPANY_ENDPOINT = "owners/getcompany";
         private static readonly string GET_DRIVER_REQUESTS_ENDPOINT = "owners/getdriverrequests";
         private static readonly string ANSWER_DRIVER_REQUEST_ENDPOINT = "owners/answerdriverrequest";
+        private static readonly string SELECT_DRIVERS_ENDPOINT = "owners/selectdrivers";
         //private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
         //private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
         //private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
+        //private static readonly string CANCEL_TASK_REQUEST_ENDPOINT = "owners/canceltaskrequest";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -40,6 +42,13 @@ namespace KAS.Trukman.Storage
         private static readonly string FIND_TASK_REQUEST_ENDPOINT = "drivers/findtaskrequest";
         private static readonly string CHECK_DRIVER_TASK_REQUEST_ENDPOINT = "drivers/checktaskrequest";
         private static readonly string ANSWER_TASK_REQUEST_ENDPOINT = "drivers/answertaskrequest";
+        private static readonly string GET_DRIVER_POINTS_ENDPOINT = "drivers/getpointsbydriver";
+        private static readonly string TASK_ARRIVAL_LOADING_ENDPOINT = "drivers/taskarrivalloading";
+        private static readonly string TASK_ARRIVAL_UNLOADING_ENDPOINT = "drivers/taskarrivalunloading";
+        private static readonly string TASK_DONE_LOADING_ENDPOINT = "drivers/taskdoneloading";
+        private static readonly string TASK_DONE_UNLOADING_ENDPOINT = "drivers/taskdoneunloading";
+        private static readonly string TASK_DONE_ENDPOINT = "drivers/taskdone";
+        private static readonly string ADD_TASK_LOCATION_ENDPOINT = "drivers/addtasklocation";
 
         private User _currentUser = null;
         private string _token { get; set; }
@@ -180,16 +189,12 @@ namespace KAS.Trukman.Storage
             Trip trip = null;
             if (trukmanTask != null)
             {
+                taskRequest.Answer = (int)TaskRequestAnswers.Accept;
                 taskRequest.Task = trukmanTask;
                 trip = TaskRequestToTrip(taskRequest);
             }
 
             return trip;
-        }
-
-        public Task<Trip> AddLocation(string id, Position location)
-        {
-            throw new NotImplementedException();
         }
 
         public Task AddPointsAsync(string jobID, string text, int points)
@@ -241,14 +246,14 @@ namespace KAS.Trukman.Storage
             {
                 ID = taskRequest.TaskId.ToString(),
                 DeclineReason = "", // taskRequest.DeclineReason.ToString(),
-                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime,
+                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime.ToLocalTime(),
                 DriverAccepted = (taskRequest.Answer == (int)TaskRequestAnswers.Accept),
                 IsDelivery = (taskRequest.Task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
-                IsPickup = (taskRequest.Task.LoadingDoneRealTime.GetValueOrDefault() != DateTime.MinValue),
+                IsPickup = (taskRequest.Task.LoadingRealTime.GetValueOrDefault() != DateTime.MinValue),
                 JobCancelled = taskRequest.IsCancelled,
                 //JobCompleted = taskRequest.JobCompleted,
                 //IsDeleted = taskRequest.IsDeleted,
-                PickupDatetime = taskRequest.Task.LoadingPlanTime,
+                PickupDatetime = taskRequest.Task.LoadingPlanTime.ToLocalTime(),
                 Points = taskRequest.Task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
@@ -423,11 +428,20 @@ namespace KAS.Trukman.Storage
             // TODO: throw new NotImplementedException();
         }
 
-        public Task<int> GetPointsByDriverIDAsync(string driverID)
+        public async Task<int> GetPointsByDriverIDAsync(string driverID)
         {
-            // TODO:
-            return Task.FromResult<int>(0);
-            //throw new NotImplementedException();
+            var getPointsByDriverRequest = new GetPointsByDriverRequest
+            {
+                DriverId = Guid.Parse(driverID)
+            };
+            var requestContent = SerializeObject(getPointsByDriverRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GET_DRIVER_POINTS_ENDPOINT, null);
+            var response = await ExecuteRequestAsync<GetPointsByDriverResponse>(request);
+
+            return response.Points;
         }
 
         public Task<int> GetPointsByJobIDAsync(string jobID)
@@ -617,20 +631,43 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public Task<Trip> SaveLocation(string id, Position location)
+        public async Task<Trip> AddLocation(string id, Position location)
         {
-            throw new NotImplementedException();
+            var addTaskLocationRequest = new AddTaskLocationRequest
+            {
+                TaskId = Guid.Parse(id),
+                Latitude = (decimal)location.Latitude,
+                Longtitude = (decimal)location.Longitude,
+                Speed = 0,
+                CreateTime = DateTime.UtcNow
+            };
+            var requestContent = SerializeObject(addTaskLocationRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ADD_TASK_LOCATION_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddTaskLocationResponse>(request);
+
+            Trip trip = null;
+            if (result.TaskRequest != null)
+                trip = this.TaskRequestToTrip(result.TaskRequest);
+
+            trip.Location = location;
+
+            return trip;
+        }
+
+        public async Task<Trip> SaveLocation(string id, Position location)
+        {
+            // TODO: refresh last location
+            Trip trip = await this.SelectTripByID(id);
+            trip.Location = location;
+
+            return trip;
         }
 
         public async Task<Trip[]> SelectActiveTrips()
         {
-            //var uri = CreateRequestUri(_selectActiveTripsEndpoint);
-            //var requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
-            //var successMessage = await ExecuteRequestAsync<string>(requestMessage);
-            //// TODO: возвращается successMessage, а нужен массив id
-            //if (!successMessage.IsNullOrEmpty())
-            //{
-            //}
             return new Trip[] { };
         }
 
@@ -801,9 +838,11 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public Task SendNotification(Trip trip, string message)
+        public async Task SendNotification(Trip trip, string message)
         {
-            throw new NotImplementedException();
+            // TODO: Send notification
+            await Task.Delay(0);
+            //throw new NotImplementedException();
         }
 
         public async Task<Trip> SendPhoto(string id, byte[] data, string kind)
@@ -842,12 +881,30 @@ namespace KAS.Trukman.Storage
 
         public Task<Trip> TripInDelivery(string id, int minutes)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new Trip { });
+            //throw new NotImplementedException();
         }
 
-        public Task<Trip> TripInPickup(string id, int minutes)
+        public async Task<Trip> TripInPickup(string id, int minutes)
         {
-            throw new NotImplementedException();
+            var taskArrivalLoadingRequest = new TaskArrivalLoadingRequest
+            {
+                TaskId = Guid.Parse(id),
+                ArrivalTime = DateTime.UtcNow
+            };
+            var requestContent = SerializeObject(taskArrivalLoadingRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(TASK_ARRIVAL_LOADING_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskArrivalLoadingResponse>(request);
+
+            Trip trip = null;
+            var taskRequest = await this.GetTaskRequestByTaskID(result.Task.Id.ToString());
+            if (taskRequest != null && taskRequest.Task != null)
+                trip = this.TaskRequestToTrip(taskRequest);
+
+            return trip;
         }
 
         public Task<bool> UserExistAsync(string userName)

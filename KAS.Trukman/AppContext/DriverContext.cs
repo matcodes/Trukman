@@ -443,7 +443,8 @@ namespace KAS.Trukman.AppContext
         {
             if ((this.Trip != null) && (this.Trip.DriverAccepted) &&
                 (!this.Trip.IsPickup) && (this.DistanceToShipper < DISTANCE) &&
-				(_localStorage.GetPhoto(Trip.ID, PICKUP_PHOTO_KIND) == null))
+				(_localStorage.GetPhoto(Trip.ID, PICKUP_PHOTO_KIND) == null) /*&&
+                this.Trip.Location != default(Position)*/)
             {
                 //                _inSynchronize = true;
                 try
@@ -495,7 +496,8 @@ namespace KAS.Trukman.AppContext
                 (this.Trip.IsPickup) && (!this.Trip.IsDelivery) &&
 				(this.DistanceToReceiver < DISTANCE) && 
 				(_localStorage.GetPhoto(Trip.ID, PICKUP_PHOTO_KIND) != null) &&
-				(_localStorage.GetPhoto(Trip.ID, DELIVERY_PHOTO_KIND) == null))
+				(_localStorage.GetPhoto(Trip.ID, DELIVERY_PHOTO_KIND) == null)/* &&
+                this.Trip.Location != default(Position)*/)
             {
 //                _inSynchronize = true;
                 try

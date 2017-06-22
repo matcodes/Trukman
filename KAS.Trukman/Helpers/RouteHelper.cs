@@ -1,7 +1,7 @@
 ﻿using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Route;
 using Newtonsoft.Json;
-using Parse;
+//using Parse;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -44,18 +44,19 @@ namespace KAS.Trukman.Helpers
                 par.Add("origin", origin);
                 par.Add("destination", destination);
 
-                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t => {
-                    try
-                    {
-                        resultData = t.Result["text"].ToString();
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        // To do: Exception message
-                        throw new Exception("Check internet connection");
-                    }
-                });
+                // TODO: add restapi
+                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t => {
+                //    try
+                //    {
+                //        resultData = t.Result["text"].ToString();
+                //    }
+                //    catch (Exception exception)
+                //    {
+                //        Console.WriteLine(exception);
+                //        // To do: Exception message
+                //        throw new Exception("Check internet connection");
+                //    }
+                //});
 
                 if (!String.IsNullOrEmpty(resultData))
                     try
@@ -113,18 +114,19 @@ OVER_QUERY_LIMIT
             var longitude = 0.0d;
             try
             {
-                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
-                {
-                    try
-                    {
-                        latitude = (double)(t.Result["lat"]);
-                        longitude = (double)(t.Result["lng"]);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                    }
-                });
+                // TODO: add restapi
+                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
+                //{
+                //    try
+                //    {
+                //        latitude = (double)(t.Result["lat"]);
+                //        longitude = (double)(t.Result["lng"]);
+                //    }
+                //    catch (Exception exception)
+                //    {
+                //        Console.WriteLine(exception);
+                //    }
+                //});
             }
             catch (Exception exception)
             {
@@ -143,17 +145,18 @@ OVER_QUERY_LIMIT
             var address = "";
             try
             {
-                await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("reverseGeocodeAddress", parameters).ContinueWith(t =>
-                {
-                    try
-                    {
-                        address = (string)(t.Result["address"]);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                    }
-                });
+                // TODO: add restapi
+                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("reverseGeocodeAddress", parameters).ContinueWith(t =>
+                //{
+                //    try
+                //    {
+                //        address = (string)(t.Result["address"]);
+                //    }
+                //    catch (Exception exception)
+                //    {
+                //        Console.WriteLine(exception);
+                //    }
+                //});
             }
             catch (Exception exception)
             {
