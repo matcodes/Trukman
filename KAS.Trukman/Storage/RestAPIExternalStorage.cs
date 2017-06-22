@@ -885,26 +885,9 @@ namespace KAS.Trukman.Storage
             //throw new NotImplementedException();
         }
 
-        public async Task<Trip> TripInPickup(string id, int minutes)
+        public Task<Trip> TripInPickup(string id, int minutes)
         {
-            var taskArrivalLoadingRequest = new TaskArrivalLoadingRequest
-            {
-                TaskId = Guid.Parse(id),
-                ArrivalTime = DateTime.UtcNow
-            };
-            var requestContent = SerializeObject(taskArrivalLoadingRequest);
-            var request = new HttpRequestMessage();
-            request.Method = HttpMethod.Post;
-            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
-            request.RequestUri = CreateRequestUri(TASK_ARRIVAL_LOADING_ENDPOINT, null);
-            var result = await ExecuteRequestAsync<TaskArrivalLoadingResponse>(request);
-
-            Trip trip = null;
-            var taskRequest = await this.GetTaskRequestByTaskID(result.Task.Id.ToString());
-            if (taskRequest != null && taskRequest.Task != null)
-                trip = this.TaskRequestToTrip(taskRequest);
-
-            return trip;
+            throw new NotImplementedException();
         }
 
         public Task<bool> UserExistAsync(string userName)
