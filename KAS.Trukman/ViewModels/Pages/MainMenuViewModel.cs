@@ -80,10 +80,12 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() => 
             {
+                var enabled = false;
                 if (TrukmanContext.Driver != null)
+                {
                     _trip = TrukmanContext.Driver.Trip;
-
-                var enabled = ((_trip != null) && (_trip.DriverAccepted));
+                    enabled = ((_trip != null) && (_trip.DriverAccepted));
+                }
 
                 this.ShowTripPageMenuItem.IsEnabled = enabled;
                 this.ShowAdvancesPageMenuItem.IsEnabled = enabled;

@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Messages;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,10 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             if (propertyName == "Photo")
             {
-                this.Title = (this.Photo != null ? this.Photo.Type : "");
+                if (this.Photo != null)
+                    this.Title = (this.Photo.Type == (int)PhotoKind.Pickup ? "Pickup" : "Delivery");
+                else
+                    this.Title = "";
                 this.PhotoUri = (this.Photo != null ? this.Photo.Uri : null);
             }
 

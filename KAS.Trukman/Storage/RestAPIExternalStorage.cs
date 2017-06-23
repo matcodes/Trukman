@@ -14,12 +14,13 @@ using System.Collections.Generic;
 using KAS.Trukman.Data.API.Requests;
 using System.Net;
 using KAS.Trukman.Data.API.Responses;
+using System.Net.Http.Headers;
 
 namespace KAS.Trukman.Storage
 {
     public class RestAPIExternalStorage : IExternalStorage
     {
-        private static readonly string API_BASE_URI = "http://193.124.114.38/Trukman.Server/";
+        private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/"; //"http://193.124.114.38/Trukman.Server/";
 
         private static readonly string OWNER_LOGIN_ENDPOINT = "accounts/owner";
         private static readonly string DRIVER_LOGIN_ENDPOINT = "accounts/driver";
@@ -49,6 +50,8 @@ namespace KAS.Trukman.Storage
         private static readonly string TASK_DONE_UNLOADING_ENDPOINT = "drivers/taskdoneunloading";
         private static readonly string TASK_DONE_ENDPOINT = "drivers/taskdone";
         private static readonly string ADD_TASK_LOCATION_ENDPOINT = "drivers/addtasklocation";
+        private static readonly string CHECK_FUEL_REQUEST_ENDPOINT = "drivers/checkfuelrequest";
+        private static readonly string ADD_FUEL_REQUEST_ENDPOINT = "drivers/addfuelrequest";
 
         private User _currentUser = null;
         private string _token { get; set; }
@@ -300,17 +303,23 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip> CompleteTrip(string id)
         {
+            var taskDoneRequest = new TaskDoneRequest
+            {
+                TaskId = Guid.Parse(id),
+                DoneTime = DateTime.UtcNow
+            };
+            var requestContent = SerializeObject(taskDoneRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(TASK_DONE_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskDoneResponse>(request);
+
+            var taskRequest = await this.GetTaskRequestByTaskID(id);
             Trip trip = null;
-            //var proxyJob = await this.GetProxyJobByID(id);
-            //if (proxyJob != null)
-            //{
-            //    proxyJob.JobCompleted = true;
-            //    var uri = CreateRequestUri(_completeTripEndpoint, id);
-            //    var requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
-            //    var successMessage = await ExecuteRequestAsync<string>(requestMessage);
-            //    if (!successMessage.IsNullOrEmpty())
-            //        trip = this.ProxyJobToTrip(proxyJob);
-            //}
+            if (taskRequest != null)
+                trip = TaskRequestToTrip(taskRequest);
+
             return trip;
         }
 
@@ -366,9 +375,46 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+        public async Task<FuelRequest> CheckFuelRequest(Guid taskId)
         {
-            throw new NotImplementedException();
+            var checkFuelRequestRequest = new CheckFuelRequestRequest
+            {
+                TaskId = taskId
+            };
+            var requestContent = SerializeObject(checkFuelRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CHECK_FUEL_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CheckFuelRequestResponse>(request);
+            return result.FuelRequest;
+
+        }
+
+        public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+        {
+            if (requestType == ComcheckRequestType.FuelAdvance)
+            {
+                var fuelRequest = await this.CheckFuelRequest(Guid.Parse(tripID));
+                if (fuelRequest != null)
+                {
+                    if (fuelRequest.Answer == (int)FuelRequestAnswers.None)
+                        return ComcheckRequestState.Requested;
+                    else if (fuelRequest.Answer == (int)FuelRequestAnswers.Accept)
+                        return ComcheckRequestState.Visible;
+                    else //if (fuelRequest.Answer == (int)FuelRequestAnswers.Decline)
+                        return ComcheckRequestState.None;
+                }
+                else
+                    return ComcheckRequestState.None;
+            }
+            else if (requestType == ComcheckRequestType.Lumper)
+            {
+                // TODO: check lumper request
+                return ComcheckRequestState.None;
+            }
+
+            return ComcheckRequestState.None;
         }
 
         public Task<User> GetCurrentUser()
@@ -828,9 +874,31 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
-        public Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        private async Task AddFuelRequest(Guid taskId, DateTime requestTime)
         {
-            throw new NotImplementedException();
+            var addFuelRequestRequest = new AddFuelRequestRequest
+            {
+                TaskId = taskId,
+                RequestTime = requestTime
+            };
+            var requestContent = SerializeObject(addFuelRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ADD_FUEL_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddFuelRequestResponse>(request);
+        }
+
+        public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            if (requestType == ComcheckRequestType.FuelAdvance)
+            {
+                await this.AddFuelRequest(Guid.Parse(tripID), DateTime.UtcNow);
+            }
+            else if (requestType == ComcheckRequestType.Lumper)
+            {
+                // TODO: Send lumper request
+            }
         }
 
         public Task SendJobAlertAsync(string tripID, int alertType, string alertText)
@@ -845,22 +913,67 @@ namespace KAS.Trukman.Storage
             //throw new NotImplementedException();
         }
 
-        public async Task<Trip> SendPhoto(string id, byte[] data, string kind)
+        private async Task<TrukmanTask> TaskDoneLoading(Guid taskId, DateTime doneTime, byte[] photoData)
         {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+
+            var fileContent = new ByteArrayContent(photoData);
+
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = Guid.NewGuid() + ".jpg"
+            };
+            content.Add(fileContent);
+
+            content.Add(new StringContent(taskId.ToString()), "TaskId");
+            content.Add(new StringContent(doneTime.ToString()), "DoneTime");
+
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = content;
+            request.RequestUri = CreateRequestUri(TASK_DONE_LOADING_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskDoneLoadingResponse>(request);
+
+            return result.Task;
+        }
+
+        private async Task<TrukmanTask> TaskDoneUnloading(Guid taskId, DateTime doneTime, byte[] photoData)
+        {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+
+            var fileContent = new ByteArrayContent(photoData);
+
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = Guid.NewGuid() + ".jpg"
+            };
+            content.Add(fileContent);
+
+            content.Add(new StringContent(taskId.ToString()), "TaskId");
+            content.Add(new StringContent(doneTime.ToString()), "DoneTime");
+
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = content;
+            request.RequestUri = CreateRequestUri(TASK_DONE_UNLOADING_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskDoneUnloadingResponse>(request);
+            return result.Task;
+        }
+
+        public async Task<Trip> SendPhoto(string id, byte[] data, PhotoKind kind)
+        {
+            var doneDate = DateTime.UtcNow;
+            TrukmanTask task = null;
+            if (kind == PhotoKind.Pickup)
+                task = await this.TaskDoneLoading(Guid.Parse(id), doneDate, data);
+            else if (kind == PhotoKind.Delivery)
+                task = await this.TaskDoneUnloading(Guid.Parse(id), doneDate, data);
+            var taskRequest = await this.GetTaskRequestByTaskID(id);
+
             Trip trip = null;
-            //ProxyJob proxyJob = await this.GetProxyJobByID(id);
-            //if (proxyJob != null)
-            //{
-            //    var photo = new ProxyPhoto
-            //    {
-            //        Kind = kind,
-            //        Data = data,
-            //        //Job = job,
-            //        //Company = job.Company
-            //    };
-            //    await this.SaveProxyPhoto(photo);
-            //    trip = this.ProxyJobToTrip(proxyJob);
-            //}
+            if (taskRequest != null)
+                trip = this.TaskRequestToTrip(taskRequest);
+
             return trip;
         }
 
@@ -879,10 +992,26 @@ namespace KAS.Trukman.Storage
             return await Task.FromResult<User>(default(User));
         }
 
-        public Task<Trip> TripInDelivery(string id, int minutes)
+        public async Task<Trip> TripInDelivery(string id, int minutes)
         {
-            return Task.FromResult(new Trip { });
-            //throw new NotImplementedException();
+            var taskArrivalUnloadingRequest = new TaskArrivalUnloadingRequest
+            {
+                TaskId = Guid.Parse(id),
+                ArrivalTime = DateTime.UtcNow
+            };
+            var requestContent = SerializeObject(taskArrivalUnloadingRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(TASK_ARRIVAL_UNLOADING_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
+
+            Trip trip = null;
+            var taskRequest = await this.GetTaskRequestByTaskID(result.Task.Id.ToString());
+            if (taskRequest != null && taskRequest.Task != null)
+                trip = this.TaskRequestToTrip(taskRequest);
+
+            return trip;
         }
 
         public async Task<Trip> TripInPickup(string id, int minutes)

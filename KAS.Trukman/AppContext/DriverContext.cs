@@ -12,6 +12,7 @@ using KAS.Trukman.Helpers;
 using System.Threading.Tasks;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Data.Enums;
 
 namespace KAS.Trukman.AppContext
 {
@@ -22,8 +23,8 @@ namespace KAS.Trukman.AppContext
         public static readonly double DISTANCE = 1609.34d;
         public static readonly double SAVE_LOCATION_DISTANCE = 100d;
 
-		public static readonly string PICKUP_PHOTO_KIND = "Pickup";
-		public static readonly string DELIVERY_PHOTO_KIND = "Delivery";
+        //public static readonly string PICKUP_PHOTO_KIND = "Pickup";
+        //public static readonly string DELIVERY_PHOTO_KIND = "Delivery";
         #endregion
 
         private LocalStorage _localStorage = null;
@@ -49,7 +50,7 @@ namespace KAS.Trukman.AppContext
 
         public void Synchronize()
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 if (!_inSynchronize)
                 {
@@ -71,8 +72,8 @@ namespace KAS.Trukman.AppContext
                         if (this.TripState != tripState)
                             this.TripContextChanged(tripState);
 
-						if (((Location.Latitude != NewLocation.Latitude) || (Location.Longitude != NewLocation.Longitude)) && 
-							((NewLocation.Latitude != 0) || (NewLocation.Longitude != 0)))
+                        if (((Location.Latitude != NewLocation.Latitude) || (Location.Longitude != NewLocation.Longitude)) &&
+                            ((NewLocation.Latitude != 0) || (NewLocation.Longitude != 0)))
                         {
                             Location = NewLocation;
                             DriverLocationChangedMessage.Send();
@@ -112,19 +113,19 @@ namespace KAS.Trukman.AppContext
                 {
                     if ((this.NewLocation.Latitude != message.Latitude) || (this.NewLocation.Longitude != message.Longitude))
                     {
-//                        var oldLocation = this.Location;
+                        //                        var oldLocation = this.Location;
                         this.NewLocation = new Position(message.Latitude, message.Longitude);
-//                        DriverLocationChangedMessage.Send();
-//                        this.CalcDistanceToShipper();
-//                        this.CalcDistanceToReceiver();
+                        //                        DriverLocationChangedMessage.Send();
+                        //                        this.CalcDistanceToShipper();
+                        //                        this.CalcDistanceToReceiver();
 
-//                        if ((this.Trip != null) && (this.Trip.DriverAccepted))
-//                        {
-//                            if (RouteHelper.Distance(oldLocation, this.Location) >= SAVE_LOCATION_DISTANCE)
-//                                _localStorage.AddLocation(this.Trip.ID, this.Location);
-//                            else if ((this.Location.Latitude != 0) && (this.Location.Longitude != 0))
-//                                _localStorage.SaveLocation(this.Trip.ID, this.Location);
-//                        }
+                        //                        if ((this.Trip != null) && (this.Trip.DriverAccepted))
+                        //                        {
+                        //                            if (RouteHelper.Distance(oldLocation, this.Location) >= SAVE_LOCATION_DISTANCE)
+                        //                                _localStorage.AddLocation(this.Trip.ID, this.Location);
+                        //                            else if ((this.Location.Latitude != 0) && (this.Location.Longitude != 0))
+                        //                                _localStorage.SaveLocation(this.Trip.ID, this.Location);
+                        //                        }
                     }
                 }
                 catch (Exception exception)
@@ -136,7 +137,7 @@ namespace KAS.Trukman.AppContext
 
         private void DeclinedTripChanged(DeclineTripChangedMessage message)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
@@ -146,8 +147,8 @@ namespace KAS.Trukman.AppContext
                         tripState = 3;
                     else
                         tripState = 2;
-					if (this.TripState != tripState)
-						this.TripContextChanged(tripState);
+                    if (this.TripState != tripState)
+                        this.TripContextChanged(tripState);
                 }
                 catch (Exception exception)
                 {
@@ -162,7 +163,7 @@ namespace KAS.Trukman.AppContext
 
         private void DeclineTripChangedBack(DeclineTripChangedBackMessage message)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
@@ -172,8 +173,8 @@ namespace KAS.Trukman.AppContext
                         tripState = 3;
                     else
                         tripState = 1;
-					if (this.TripState != tripState)
-						this.TripContextChanged(tripState);
+                    if (this.TripState != tripState)
+                        this.TripContextChanged(tripState);
                 }
                 catch (Exception exception)
                 {
@@ -188,7 +189,7 @@ namespace KAS.Trukman.AppContext
 
         private void DeclineTripSubmit(DeclineTripSubmitMessage message)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
@@ -197,8 +198,8 @@ namespace KAS.Trukman.AppContext
                     await _localStorage.TripDeclined(this.TripID, message.DeclineReason, message.ReasonText);
                     this.Trip = null;
                     tripState = 0;
-					if (this.TripState != tripState)
-						this.TripContextChanged(tripState);
+                    if (this.TripState != tripState)
+                        this.TripContextChanged(tripState);
                 }
                 catch (Exception exception)
                 {
@@ -213,7 +214,7 @@ namespace KAS.Trukman.AppContext
 
         private void AcceptTripChanged(AcceptTripChangedMessage message)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
@@ -253,8 +254,8 @@ namespace KAS.Trukman.AppContext
                     this.Trip = null;
                     this.TripID = null;
                     tripState = 0;
-					if (this.TripState != tripState)
-						this.TripContextChanged(tripState);
+                    if (this.TripState != tripState)
+                        this.TripContextChanged(tripState);
                 }
                 catch (Exception exception)
                 {
@@ -269,7 +270,7 @@ namespace KAS.Trukman.AppContext
 
         private void CompletedTripChanged(CompletedTripChangedMessage message)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
@@ -279,8 +280,8 @@ namespace KAS.Trukman.AppContext
                     this.Trip = null;
                     this.TripID = null;
                     tripState = 0;
-					if (this.TripState != tripState)
-						this.TripContextChanged(tripState);
+                    if (this.TripState != tripState)
+                        this.TripContextChanged(tripState);
                 }
                 catch (Exception exception)
                 {
@@ -299,43 +300,42 @@ namespace KAS.Trukman.AppContext
             {
                 _inSynchronize = true;
                 var tripState = this.TripState;
-				var newTripState = this.TripState;
+                var newTripState = this.TripState;
                 try
                 {
-                    var kind = "Other";
+                    var kind = PhotoKind.Other; // "Other";
                     var notificationMessage = "";
                     var pointsText = "";
                     if ((this.TripState == 5) || (this.TripState == 6))
                     {
-						kind = PICKUP_PHOTO_KIND;
+                        kind = PhotoKind.Pickup; // PICKUP_PHOTO_KIND;
                         tripState = 4;
                         notificationMessage = "Bill of lading was uploaded";
                         pointsText = AppLanguages.CurrentLanguage.PickUpPhotoJobPointsText;
                     }
                     else if ((this.TripState == 7) || (this.TripState == 8))
                     {
-						kind = DELIVERY_PHOTO_KIND;
+                        kind = PhotoKind.Delivery; // DELIVERY_PHOTO_KIND;
                         tripState = 9;
                         notificationMessage = "Delivery proof was uploaded";
                         pointsText = AppLanguages.CurrentLanguage.DeliveryPhotoJobPointsText;
-					}
+                    }
                     await _localStorage.SendPhoto(this.TripID, message.Data, kind);
-
                     //await _localStorage.AddPointsAsync(this.TripID, pointsText, 5);
 
                     await _localStorage.SendNotification(this.Trip, notificationMessage);
 
-					if (this.TripState != tripState)
-					{
-						this.TripContextChanged(tripState);
-						if (this.TripState == 4)
-							ShowAdvancesPageMessage.Send(this.Trip);
-					}
+                    if (this.TripState != tripState)
+                    {
+                        this.TripContextChanged(tripState);
+                        if (this.TripState == 4)
+                            ShowAdvancesPageMessage.Send(this.Trip);
+                    }
                 }
                 catch (Exception exception)
                 {
                     ShowToastMessage.Send(exception.Message);
-					StopBusyMessage.Send();
+                    StopBusyMessage.Send();
                 }
                 finally
                 {
@@ -409,7 +409,8 @@ namespace KAS.Trukman.AppContext
 
         private void CalcDistanceToShipper()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 try
                 {
                     var distance = RouteHelper.Distance(this.Location, this.ShipperPosition);
@@ -425,7 +426,8 @@ namespace KAS.Trukman.AppContext
 
         private void CalcDistanceToReceiver()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 try
                 {
                     var distance = RouteHelper.Distance(this.Location, this.ReceiverPosition);
@@ -443,7 +445,7 @@ namespace KAS.Trukman.AppContext
         {
             if ((this.Trip != null) && (this.Trip.DriverAccepted) &&
                 (!this.Trip.IsPickup) && (this.DistanceToShipper < DISTANCE) &&
-				(_localStorage.GetPhoto(Trip.ID, PICKUP_PHOTO_KIND) == null) /*&&
+                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Pickup) == null) /*&&
                 this.Trip.Location != default(Position)*/)
             {
                 //                _inSynchronize = true;
@@ -485,7 +487,7 @@ namespace KAS.Trukman.AppContext
                 }
                 finally
                 {
-//                    _inSynchronize = false;
+                    //                    _inSynchronize = false;
                 }
             }
         }
@@ -494,12 +496,12 @@ namespace KAS.Trukman.AppContext
         {
             if ((this.Trip != null) && (this.Trip.DriverAccepted) &&
                 (this.Trip.IsPickup) && (!this.Trip.IsDelivery) &&
-				(this.DistanceToReceiver < DISTANCE) && 
-				(_localStorage.GetPhoto(Trip.ID, PICKUP_PHOTO_KIND) != null) &&
-				(_localStorage.GetPhoto(Trip.ID, DELIVERY_PHOTO_KIND) == null)/* &&
+                (this.DistanceToReceiver < DISTANCE) &&
+                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Pickup) != null) &&
+                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Delivery) == null)/* &&
                 this.Trip.Location != default(Position)*/)
             {
-//                _inSynchronize = true;
+                //                _inSynchronize = true;
                 try
                 {
                     var now = DateTime.Now;
@@ -542,7 +544,7 @@ namespace KAS.Trukman.AppContext
                 }
                 finally
                 {
-//                    _inSynchronize = false;
+                    //                    _inSynchronize = false;
                 }
             }
         }

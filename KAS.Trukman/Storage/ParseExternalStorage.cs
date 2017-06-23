@@ -371,7 +371,7 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task<Trip> SendPhoto(string id, byte[] data, string kind)
+        public async Task<Trip> SendPhoto(string id, byte[] data, PhotoKind kind)
         {
             Trip trip = null;
             ParseJob job = await this.GetParseJobByID(id);
@@ -379,7 +379,7 @@ namespace KAS.Trukman.Storage
             {
                 var photo = new ParsePhoto
                 {
-                    Kind = kind,
+                    Kind = (int)kind,
                     Data = new ParseFile(kind + ".jpg", data),
                     Job = job,
 					Company = job.Company

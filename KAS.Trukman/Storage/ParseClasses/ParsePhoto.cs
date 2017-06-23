@@ -10,10 +10,10 @@ namespace KAS.Trukman.Storage.ParseClasses
     public class ParsePhoto : ParseObject
     {
         [ParseFieldName("type")]
-        public string Kind
+        public int Kind
         {
-            get { return this.GetProperty<string>(); }
-            set { this.SetProperty<string>(value); }
+            get { return this.GetProperty<int>(); }
+            set { this.SetProperty<int>(value); }
         }
 
         [ParseFieldName("job")]

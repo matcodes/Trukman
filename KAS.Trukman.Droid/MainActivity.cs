@@ -26,9 +26,9 @@ using Android.Support.V7.App;
 namespace KAS.Trukman.Droid
 {
     #region MainActivity
-    [Activity (Label = "TRUKMAN", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
-	{
+    [Activity(Label = "TRUKMAN", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
+    {
         #region Static members
         public static readonly int TAKE_PHOTO_REQUEST_CODE = 1;
 
@@ -40,46 +40,51 @@ namespace KAS.Trukman.Droid
             {
                 Manifest.Permission.AccessCoarseLocation,
                 Manifest.Permission.AccessFineLocation,
-				Manifest.Permission.WriteExternalStorage,
-				Manifest.Permission.Camera
-			};
-        private readonly string[] _permissionsWriteExternal= 
+                Manifest.Permission.WriteExternalStorage,
+                Manifest.Permission.Camera
+            };
+        private readonly string[] _permissionsWriteExternal =
             {
                 Manifest.Permission.WriteExternalStorage
             };
 
         private TrukmanServiceHelper _trukmanServiceHelper = null;
 
-        protected override void OnCreate (Bundle bundle)
-		{
-			base.OnCreate (bundle);
+        private Java.IO.File _pictureDirectory = null;
+        private Java.IO.File _pictureFile = null;
 
-			CrashManager.Register(this, "a775372499f441429cd55ce97a432cfe");
+        protected override void OnCreate(Bundle bundle)
+        {
+            base.OnCreate(bundle);
+
+            CrashManager.Register(this, "a775372499f441429cd55ce97a432cfe");
 
 
             //Trip trip = null;
             //trip.ID = Guid.NewGuid().ToString();
 
-//            var appDomain = AppDomain.CurrentDomain;
-//            appDomain.UnhandledException += (senderm, args) => {
-//               Console.WriteLine(args.ExceptionObject);
-//            };
+            //            var appDomain = AppDomain.CurrentDomain;
+            //            appDomain.UnhandledException += (senderm, args) => {
+            //               Console.WriteLine(args.ExceptionObject);
+            //            };
 
-			if ((int)Build.VERSION.SdkInt >= 23) {
-				LocationHelper.IsSelfPermission = this.IsSelfPermission ();
-				if (!LocationHelper.IsSelfPermission)
-					this.RequestPermissions (_permissionsLocation, REQUEST_LOCATION_ID);
+            if ((int)Build.VERSION.SdkInt >= 23)
+            {
+                LocationHelper.IsSelfPermission = this.IsSelfPermission();
+                if (!LocationHelper.IsSelfPermission)
+                    this.RequestPermissions(_permissionsLocation, REQUEST_LOCATION_ID);
 
-//                permission = Manifest.Permission.WriteExternalStorage;
-//                if (this.CheckSelfPermission(permission) == Permission.Denied)
-//                    this.RequestPermissions(_permissionsWriteExternal, REQUEST_WRITE_EXTERNAL_ID);
-			} else
-				LocationHelper.IsSelfPermission = true;
+                //                permission = Manifest.Permission.WriteExternalStorage;
+                //                if (this.CheckSelfPermission(permission) == Permission.Denied)
+                //                    this.RequestPermissions(_permissionsWriteExternal, REQUEST_WRITE_EXTERNAL_ID);
+            }
+            else
+                LocationHelper.IsSelfPermission = true;
 
             var platformHelper = new AndroidPlatformHelper(this);
 
             PlatformHelper.Initialize(platformHelper);
-			global::Xamarin.Forms.Forms.Init (this, bundle);
+            global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.Forms.Forms.SetTitleBarVisibility(Xamarin.Forms.AndroidTitleBarVisibility.Never);
 
             Xamarin.FormsMaps.Init(this, bundle);
@@ -89,37 +94,39 @@ namespace KAS.Trukman.Droid
             _trukmanServiceHelper = new TrukmanServiceHelper(this);
             _trukmanServiceHelper.OnCreate();
 
-            LoadApplication(new KAS.Trukman.App ());
-		}
+            CreateDirectoryForPictures();
+
+            LoadApplication(new KAS.Trukman.App());
+        }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             var message = "";
             if (requestCode == REQUEST_LOCATION_ID)
             {
-				LocationHelper.IsSelfPermission = this.IsSelfPermission();
-//                if (grantResults[0] == Permission.Granted)
-//                    message = "Location permission is available";
-//                else
-//                    message = "Location permission is denied";
+                LocationHelper.IsSelfPermission = this.IsSelfPermission();
+                //                if (grantResults[0] == Permission.Granted)
+                //                    message = "Location permission is available";
+                //                else
+                //                    message = "Location permission is denied";
             }
             else if (requestCode == REQUEST_WRITE_EXTERNAL_ID)
             {
-//                if (grantResults[0] == Permission.Granted)
-//                    message = "Write external storage permission is available";
-//                else
-//                    message = "Write external storage permission is denied";
+                //                if (grantResults[0] == Permission.Granted)
+                //                    message = "Write external storage permission is available";
+                //                else
+                //                    message = "Write external storage permission is denied";
             }
 
             if (!String.IsNullOrEmpty(message))
                 this.ShowToast(new ShowToastMessage(message));
         }
 
-		private bool IsSelfPermission()
-		{
-			var permission = Manifest.Permission.AccessFineLocation;
-			return (this.CheckSelfPermission (permission) == Permission.Granted);
-		}
+        private bool IsSelfPermission()
+        {
+            var permission = Manifest.Permission.AccessFineLocation;
+            return (this.CheckSelfPermission(permission) == Permission.Granted);
+        }
 
         protected override void OnResume()
         {
@@ -141,7 +148,8 @@ namespace KAS.Trukman.Droid
 
         private void ShowToast(ShowToastMessage message)
         {
-            this.RunOnUiThread(() => {
+            this.RunOnUiThread(() =>
+            {
                 Toast.MakeText(this, message.Text, ToastLength.Long).Show();
             });
         }
@@ -154,9 +162,21 @@ namespace KAS.Trukman.Droid
 
         private void TakePhotoFromCamera(TakePhotoFromCameraMessage message)
         {
-			LocationHelper.IsSelfIntent = false;
+            LocationHelper.IsSelfIntent = false;
             Intent intent = new Intent(MediaStore.ActionImageCapture);
+
+            _pictureFile = new Java.IO.File(_pictureDirectory, String.Format("invoice_{0}.jpg", Guid.NewGuid()));
+            intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(_pictureFile));
             StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+        }
+
+        private void CreateDirectoryForPictures()
+        {
+            _pictureDirectory = new Java.IO.File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "Trukman");
+            if (!_pictureDirectory.Exists())
+            {
+                _pictureDirectory.Mkdirs();
+            }
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -167,29 +187,32 @@ namespace KAS.Trukman.Droid
             {
                 if (requestCode == TAKE_PHOTO_REQUEST_CODE)
                 {
-					LocationHelper.IsSelfIntent = true;
-					if (data.Data != null) {
-						var result = data.Data.ToString ();
-						this.SavePhotoToStore (result);
-					} else {
-						this.ShowToast (new ShowToastMessage ("Photo not found!!!"));
-						StopBusyMessage.Send ();
-					}
-//                    ShowAdvancesPageMessage.Send(_trip);
+                    LocationHelper.IsSelfIntent = true;
+                    if (_pictureFile.Exists())
+                    {
+                        //var result = Android.Net.Uri.FromFile(_pictureFile).ToString();
+                        this.SavePhotoToStore();
+                    }
+                    else
+                    {
+                        this.ShowToast(new ShowToastMessage("Photo not found!!!"));
+                        StopBusyMessage.Send();
+                    }
+                    //                    ShowAdvancesPageMessage.Send(_trip);
                 }
             }
         }
 
-        private void SavePhotoToStore(string uri)
+        private void SavePhotoToStore()
         {
             Task.Run(async () =>
             {
                 try
                 {
                     var data = new byte[] { };
-                    var bitmap = MediaStore.Images.Media.GetBitmap(this.ContentResolver, Android.Net.Uri.Parse(uri));
+                    var bitmap = MediaStore.Images.Media.GetBitmap(this.ContentResolver, Android.Net.Uri.FromFile(_pictureFile));
 
-                    var rotate = this.GetRotation(uri);
+                    var rotate = this.GetRotation();
 
                     if (rotate > 0)
                     {
@@ -224,13 +247,14 @@ namespace KAS.Trukman.Droid
             });
         }
 
-        private int GetRotation(string uri)
+        private int GetRotation()
         {
             var rotate = 0;
-            var fileName = this.GetPathToImage(Android.Net.Uri.Parse(uri));
-            if (!String.IsNullOrEmpty(fileName))
+            //var fileName = 
+            //var fileName = this.GetPathToImage(Android.Net.Uri.Parse(uri));
+            if (_pictureFile.Exists())
             {
-                ExifInterface exif = new ExifInterface(fileName);
+                ExifInterface exif = new ExifInterface(_pictureFile.AbsolutePath);
                 //int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 var orientation = exif.GetAttributeInt(ExifInterface.TagOrientation, (int)Android.Media.Orientation.Normal);
                 switch (orientation)
@@ -249,37 +273,37 @@ namespace KAS.Trukman.Droid
             return rotate;
         }
 
-        private string GetPathToImage(Android.Net.Uri uri)
-        {
-            string doc_id = "";
-            using (var c1 = ContentResolver.Query(uri, null, null, null, null))
-            {
-                c1.MoveToFirst();
-                String document_id = c1.GetString(0);
-                doc_id = document_id.Substring(document_id.LastIndexOf(":") + 1);
-            }
+        //private string GetPathToImage(Android.Net.Uri uri)
+        //{
+        //    string doc_id = "";
+        //    using (var c1 = ContentResolver.Query(uri, null, null, null, null))
+        //    {
+        //        c1.MoveToFirst();
+        //        String document_id = c1.GetString(0);
+        //        doc_id = document_id.Substring(document_id.LastIndexOf(":") + 1);
+        //    }
 
-            string path = null;
+        //    string path = null;
 
-            // The projection contains the columns we want to return in our query.
-            string selection = Android.Provider.MediaStore.Images.Media.InterfaceConsts.Id + " =? ";
-            using (var cursor = this.ManagedQuery(Android.Provider.MediaStore.Images.Media.ExternalContentUri, null, selection, new string[] { doc_id }, null))
-            {
-                if (cursor != null)
-                {
-                    try
-                    {
-                        var columnIndex = cursor.GetColumnIndexOrThrow(Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data);
-                        cursor.MoveToFirst();
-                        path = cursor.GetString(columnIndex);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-            return path;
-        }
+        //    // The projection contains the columns we want to return in our query.
+        //    string selection = Android.Provider.MediaStore.Images.Media.InterfaceConsts.Id + " =? ";
+        //    using (var cursor = this.ManagedQuery(Android.Provider.MediaStore.Images.Media.ExternalContentUri, null, selection, new string[] { doc_id }, null))
+        //    {
+        //        if (cursor != null)
+        //        {
+        //            try
+        //            {
+        //                var columnIndex = cursor.GetColumnIndexOrThrow(Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data);
+        //                cursor.MoveToFirst();
+        //                path = cursor.GetString(columnIndex);
+        //            }
+        //            catch
+        //            {
+        //            }
+        //        }
+        //    }
+        //    return path;
+        //}
     }
     #endregion
 }

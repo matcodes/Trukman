@@ -29,7 +29,7 @@ namespace KAS.Trukman.Storage
 
         Task<Trip> TripInDelivery(string id, int minutes);
 
-        Task<Trip> SendPhoto(string id, byte[] data, string kind);
+        Task<Trip> SendPhoto(string id, byte[] data, PhotoKind kind);
 
         Task<Trip> AddLocation(string id, Position location);
 

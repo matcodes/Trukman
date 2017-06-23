@@ -194,7 +194,7 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task SendPhoto(string tripID, byte[] data, string kind)
+        public async Task SendPhoto(string tripID, byte[] data, PhotoKind kind)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace KAS.Trukman.Storage
                 var photo = new Photo
                 {
                     ID = Guid.NewGuid().ToString(),
-                    Type = kind,
+                    Type = (int)kind,
                     TripID = trip.ID
                 };
                 this.SavePhoto(photo);
@@ -219,10 +219,10 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public Photo GetPhoto(string tripID, string kind)
+        public Photo GetPhoto(string tripID, PhotoKind kind)
         {
             Photo photo = _connection.Table<Photo>()
-                .Where(p => p.TripID == tripID && p.Type == kind)
+                .Where(p => p.TripID == tripID && p.Type == (int)kind)
                 .FirstOrDefault();
             return photo;
         }
@@ -933,11 +933,18 @@ namespace KAS.Trukman.Storage
 
         public SettingsItem SaveSettings(SettingsItem item)
         {
-            if (this.SettingsExist(item.Key))
-                _connection.Update(item);
-            else
-                _connection.Insert(item);
-            return item;
+            try
+            {
+                if (this.SettingsExist(item.Key))
+                    _connection.Update(item);
+                else
+                    _connection.Insert(item);
+                return item;
+            }
+            catch(Exception exc)
+            {
+                throw new Exception("Error of saveing settings!", exc);
+            }
         }
 
         private bool SettingsExist(string key)
@@ -1027,13 +1034,20 @@ namespace KAS.Trukman.Storage
         #region Trip
         public Trip SelectTripByID(string id)
         {
-            var trip = _connection.Table<Trip>().Where(t => t.ID == id).FirstOrDefault();
-            if (trip != null)
+            try
             {
-                trip.Shipper = this.SelectContractorByID(trip.ShipperID);
-                trip.Receiver = this.SelectContractorByID(trip.ReceiverID);
+                var trip = _connection.Table<Trip>().Where(t => t.ID == id).FirstOrDefault();
+                if (trip != null)
+                {
+                    trip.Shipper = this.SelectContractorByID(trip.ShipperID);
+                    trip.Receiver = this.SelectContractorByID(trip.ReceiverID);
+                }
+                return trip;
             }
-            return trip;
+            catch(Exception exc)
+            {
+                throw exc;
+            }
         }
 
         public Trip SaveTrip(Trip trip)

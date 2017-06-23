@@ -21,9 +21,9 @@ namespace KAS.Trukman.Data.Classes
             set { this.SetValue("TripID", value); }
         }
 
-        public string Type
+        public int Type
         {
-            get { return (string)this.GetValue("Type"); }
+            get { return (int)this.GetValue("Type"); }
             set { this.SetValue("Type", value); }
         }
 
