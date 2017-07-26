@@ -77,6 +77,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskDoneRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TrukmanDirectionRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TrukmanGeocodeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TrukmanReverseGeocodeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\VerificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddFuelRequestResponse.cs" />
@@ -101,6 +104,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneUnloadingResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanDirectionResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanGeocodeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanReverseGeocodeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskPhoto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskPoint.cs" />
@@ -129,6 +135,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\AddressInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\CarInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Maps\RouteStepInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\AddressComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\GeocodeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\GeocodeResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\Geometry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\Location.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\ReverseGeocodeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\Route.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteBounds.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteLeg.cs" />
@@ -137,6 +149,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteStep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Route\ViewPort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />

@@ -15,12 +15,13 @@ using KAS.Trukman.Data.API.Requests;
 using System.Net;
 using KAS.Trukman.Data.API.Responses;
 using System.Net.Http.Headers;
+using KAS.Trukman.Data.Route;
 
 namespace KAS.Trukman.Storage
 {
     public class RestAPIExternalStorage : IExternalStorage
     {
-        private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/"; //"http://193.124.114.38/Trukman.Server/";
+        private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/"; 
 
         private static readonly string OWNER_LOGIN_ENDPOINT = "accounts/owner";
         private static readonly string DRIVER_LOGIN_ENDPOINT = "accounts/driver";
@@ -52,6 +53,16 @@ namespace KAS.Trukman.Storage
         private static readonly string ADD_TASK_LOCATION_ENDPOINT = "drivers/addtasklocation";
         private static readonly string CHECK_FUEL_REQUEST_ENDPOINT = "drivers/checkfuelrequest";
         private static readonly string ADD_FUEL_REQUEST_ENDPOINT = "drivers/addfuelrequest";
+
+        private static readonly string GOOGLE_GEOCODE_ENDPOINT = "google/geocode";
+        private static readonly string GOOGLE_REVERSE_GEOCODE_ENDPOINT = "google/reversegeocode";
+        private static readonly string GOOGLE_DIRECTION_ENDPOINT = "google/direction";
+        //private static readonly string GOOGLE_TEXT_SEARCH_ENDPOINT = "google/textsearch";
+
+        public static readonly string DIRECTION_MOVE_TYPE_DRIVING = "driving";
+        //public static readonly string DIRECTION_MOVE_TYPE_WALKING = "walking";
+        //public static readonly string DIRECTION_MOVE_TYPE_BICYCLING = "bicycling";
+        //public static readonly string DIRECTION_MOVE_TYPE_TRANSIT = "transit";
 
         private User _currentUser = null;
         private string _token { get; set; }
@@ -165,7 +176,7 @@ namespace KAS.Trukman.Storage
             await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID), true);
         }
 
-        private async Task<TrukmanTask> AnswerTaskRequest(Guid taskRequestId, int answer, 
+        private async Task<TrukmanTask> AnswerTaskRequest(Guid taskRequestId, int answer,
             int declineReason = (int)TaskRequestDeclineReasons.None, string declineText = "")
         {
             var answerTaskRequestRequest = new AnswerTaskRequestRequest
@@ -293,7 +304,7 @@ namespace KAS.Trukman.Storage
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(FIND_TASK_REQUEST_ENDPOINT, null);
             var result = await ExecuteRequestAsync<FindTaskRequestResponse>(request);
-            
+
             Trip trip = null;
             if (result.TaskRequest != null)
                 trip = TaskRequestToTrip(result.TaskRequest);
@@ -1039,6 +1050,70 @@ namespace KAS.Trukman.Storage
         public Task<bool> UserExistAsync(string userName)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Position> GetPositionByAddress(string address)
+        {
+            var trukmanGeocodeRequest = new TrukmanGeocodeRequest
+            {
+                Address = address
+            };
+            var requestContent = SerializeObject(trukmanGeocodeRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GOOGLE_GEOCODE_ENDPOINT, null);
+            var response = await ExecuteRequestAsync<TrukmanGeocodeResponse>(request);
+
+            Position position = default(Position);
+            if (response.Result != null && response.Result.Results != null && response.Result.Results.Length > 0)
+            {
+                var location = response.Result.Results[0].Geometry.Location;
+                position = new Position(location.Latitude, location.Longitude);
+            }
+            return position;
+        }
+
+        public async Task<string> GetAddressByPosition(Position position)
+        {
+            var trukmanReverseGeocodeRequest = new TrukmanReverseGeocodeRequest
+            {
+                Latitude = position.Latitude,
+                Longitude = position.Longitude
+            };
+            var requestContent = SerializeObject(trukmanReverseGeocodeRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GOOGLE_REVERSE_GEOCODE_ENDPOINT, null);
+            var response = await ExecuteRequestAsync<TrukmanReverseGeocodeResponse>(request);
+
+            var address = "";
+            var addressInfo = (response.Result != null && response.Result.Results != null && response.Result.Results.Length > 0 ? response.Result.Results[0] : null);
+            if (addressInfo != null)
+                address = addressInfo.FormattedAddress;
+
+            return address;
+        }
+
+        public async Task<RouteResult> GetMapRoute(Position startPosition, Position endPosition)
+        {
+            var trukmanDirectionRequest = new TrukmanDirectionRequest
+            {
+                StartLatitude = startPosition.Latitude,
+                StartLongitude = startPosition.Longitude,
+                EndLatitude = endPosition.Latitude,
+                EndLongitude = endPosition.Longitude,
+                MoveType = DIRECTION_MOVE_TYPE_DRIVING
+            };
+            var requestContent = SerializeObject(trukmanDirectionRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GOOGLE_DIRECTION_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TrukmanDirectionResponse>(request);
+
+            return result.Result;
         }
         #endregion
     }

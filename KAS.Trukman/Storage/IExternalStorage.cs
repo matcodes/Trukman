@@ -9,6 +9,7 @@ using Xamarin.Forms.Maps;
 using KAS.Trukman.Storage.ParseClasses;
 using Parse;
 using Trukman.Helpers;
+using KAS.Trukman.Data.Route;
 
 namespace KAS.Trukman.Storage
 {
@@ -120,6 +121,12 @@ namespace KAS.Trukman.Storage
 		Task<int> GetPointsByDriverIDAsync (string driverID);
 
         Task<JobPoint[]> SelectJobPointsAsync();
+
+        Task<Position> GetPositionByAddress(string address);
+
+        Task<string> GetAddressByPosition(Position position);
+
+        Task<RouteResult> GetMapRoute(Position startPosition, Position endPosition);
     }
     #endregion
 }

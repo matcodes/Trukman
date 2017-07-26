@@ -1,5 +1,7 @@
-﻿using KAS.Trukman.Data.Classes;
+﻿using KAS.Trukman.AppContext;
+using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Route;
+using KAS.Trukman.Storage;
 using Newtonsoft.Json;
 //using Parse;
 using System;
@@ -14,7 +16,12 @@ namespace KAS.Trukman.Helpers
     #region RouteHelper
     public static class RouteHelper
     {
-        //        private static string GOOGLE_DIRECTION_URI = "https://maps.googleapis.com/maps/api/directions/json?origin={0}&destination={1}&key=AIzaSyBfw1myqNDTtcxotCKgGwTukxWqQeI6vAw";
+        private static LocalStorage _localStorage = null;
+
+        public static void Initialize(LocalStorage localStorage)
+        {
+            _localStorage = localStorage;
+        }
 
         public static async Task<RouteResult> FindRouteForTrip(string origin, string destination)
         {
@@ -22,30 +29,18 @@ namespace KAS.Trukman.Helpers
 
             if ((!String.IsNullOrEmpty(origin)) && (!String.IsNullOrEmpty(destination)))
             {
-                var resultData = "";
-                /*
-                using (var client = new WebClient())
-                {
-                    try
-                    {
-                        var uri = String.Format(GOOGLE_DIRECTION_URI, origin, destination);
-                        resultData = await client.DownloadStringTaskAsync(new Uri(uri));
-                        Console.WriteLine(resultData);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        // To do: Show exception message
-                    }
-                }
-                */
+                //string resultData = "";
 
                 var par = new Dictionary<string, object>();
                 par.Add("origin", origin);
                 par.Add("destination", destination);
 
-                // TODO: add restapi
-                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t => {
+                var startPosition = await _localStorage.GetPositionByAddress(origin);
+                var endPosition = await _localStorage.GetPositionByAddress(destination);
+                result = await _localStorage.GetMapRoute(startPosition, endPosition);
+
+                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t =>
+                //{
                 //    try
                 //    {
                 //        resultData = t.Result["text"].ToString();
@@ -58,17 +53,17 @@ namespace KAS.Trukman.Helpers
                 //    }
                 //});
 
-                if (!String.IsNullOrEmpty(resultData))
-                    try
-                    {
-                        result = JsonConvert.DeserializeObject<RouteResult>(resultData);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        // To do: Exception message
-                        throw new Exception("Bad route response");
-                    }
+                //if (!string.IsNullOrEmpty(resultData))
+                //    try
+                //    {
+                //        result = JsonConvert.DeserializeObject<RouteResult>(resultData);
+                //    }
+                //    catch (Exception exception)
+                //    {
+                //        Console.WriteLine(exception);
+                //        // To do: Exception message
+                //        throw new Exception("Bad route response");
+                //    }
             }
             return result;
         }
@@ -106,63 +101,65 @@ OVER_QUERY_LIMIT
 
         public static async Task<Position> GetPositionByAddress(string address)
         {
-            IDictionary<string, object> parameters = new Dictionary<string, object>
-                {
-                    { "address", address }
-                };
-            var latitude = 0.0d;
-            var longitude = 0.0d;
-            try
-            {
-                // TODO: add restapi
-                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
-                //{
-                //    try
-                //    {
-                //        latitude = (double)(t.Result["lat"]);
-                //        longitude = (double)(t.Result["lng"]);
-                //    }
-                //    catch (Exception exception)
-                //    {
-                //        Console.WriteLine(exception);
-                //    }
-                //});
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-            return new Position(latitude, longitude);
+            return await _localStorage.GetPositionByAddress(address);
+
+            //IDictionary<string, object> parameters = new Dictionary<string, object>
+            //    {
+            //        { "address", address }
+            //    };
+            //var latitude = 0.0d;
+            //var longitude = 0.0d;
+            //try
+            //{
+            //    await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
+            //    {
+            //        try
+            //        {
+            //            latitude = (double)(t.Result["lat"]);
+            //            longitude = (double)(t.Result["lng"]);
+            //        }
+            //        catch (Exception exception)
+            //        {
+            //            Console.WriteLine(exception);
+            //        }
+            //    });
+            //}
+            //catch (Exception exception)
+            //{
+            //    Console.WriteLine(exception);
+            //}
+            //return new Position(latitude, longitude);
         }
 
         public static async Task<string> GetAddressByPosition(Position position)
         {
-            IDictionary<string, object> parameters = new Dictionary<string, object>
-                {
-                    { "lat", position.Latitude },
-                    { "lng", position.Longitude }
-                };
-            var address = "";
-            try
-            {
-                // TODO: add restapi
-                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("reverseGeocodeAddress", parameters).ContinueWith(t =>
-                //{
-                //    try
-                //    {
-                //        address = (string)(t.Result["address"]);
-                //    }
-                //    catch (Exception exception)
-                //    {
-                //        Console.WriteLine(exception);
-                //    }
-                //});
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-            return address;
+            return await _localStorage.GetAddressByPosition(position);
+
+            //IDictionary<string, object> parameters = new Dictionary<string, object>
+            //    {
+            //        { "lat", position.Latitude },
+            //        { "lng", position.Longitude }
+            //    };
+            //var address = "";
+            //try
+            //{
+            //    await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("reverseGeocodeAddress", parameters).ContinueWith(t =>
+            //    {
+            //        try
+            //        {
+            //            address = (string)(t.Result["address"]);
+            //        }
+            //        catch (Exception exception)
+            //        {
+            //            Console.WriteLine(exception);
+            //        }
+            //    });
+            //}
+            //catch (Exception exception)
+            //{
+            //    Console.WriteLine(exception);
+            //}
+            //return address;
         }
 
         public static double Distance(Position positionFrom, Position positionTo)

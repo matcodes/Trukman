@@ -11,6 +11,7 @@ using KAS.Trukman.Data.Infos;
 using KAS.Trukman.Data.Enums;
 using System.Threading;
 using Trukman.Helpers;
+using KAS.Trukman.Data.Route;
 
 namespace KAS.Trukman.Storage
 {
@@ -1362,6 +1363,21 @@ namespace KAS.Trukman.Storage
             };
 
             return jobPoint;
+        }
+
+        public Task<Position> GetPositionByAddress(string address)
+        {
+            return Task.FromResult<Position>(new Position());
+        }
+
+        public Task<string> GetAddressByPosition(Position position)
+        {
+            return Task.FromResult<string>(default(string));
+        }
+
+        public Task<RouteResult> GetMapRoute(Position startPosition, Position endPosition)
+        {
+            return Task.FromResult<RouteResult>(default(RouteResult));
         }
         #endregion
     }

@@ -11,6 +11,7 @@ using Xamarin.Forms.Maps;
 using Parse;
 using KAS.Trukman.Storage.ParseClasses;
 using Trukman.Helpers;
+using KAS.Trukman.Data.Route;
 
 namespace KAS.Trukman.Storage
 {
@@ -459,6 +460,51 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return trip;
+        }
+
+        public async Task<Position> GetPositionByAddress(string address)
+        {
+            Position position = default(Position);
+            try
+            {
+                position = await _externalStorage.GetPositionByAddress(address);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return position;
+        }
+
+        public async Task<string> GetAddressByPosition(Position position)
+        {
+            string address = "";
+            try
+            {
+                address = await _externalStorage.GetAddressByPosition(position);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return address;
+        }
+
+        public async Task<RouteResult> GetMapRoute(Position startPosition, Position endPosition)
+        {
+            RouteResult routeResult = null;
+            try
+            {
+                routeResult = await _externalStorage.GetMapRoute(startPosition, endPosition);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return routeResult;
         }
 
         private void TestInitialize()

@@ -15,6 +15,8 @@ using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Storage.ParseClasses;
 using Parse;
 using Trukman.Helpers;
+using KAS.Trukman.Data.Route;
+using KAS.Trukman.Helpers;
 
 namespace KAS.Trukman.AppContext
 {
@@ -40,6 +42,7 @@ namespace KAS.Trukman.AppContext
         {
             _state = States.None;
             _localStorage = new LocalStorage();
+            RouteHelper.Initialize(_localStorage);
         }
 
         public static void Initialize()
