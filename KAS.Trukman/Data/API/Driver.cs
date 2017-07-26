@@ -10,7 +10,7 @@ namespace KAS.Trukman.Data.API
     {
         public override string ToString()
         {
-            return String.Format("{0} {1}", this.FirstName, this.LastName);
+            return String.Format("{0} {1} ({2})", this.FirstName, this.LastName, (this.IsActive ? "Enabled" : "Disabled"));
         }
 
         [JsonProperty("FirstName")]
@@ -21,6 +21,14 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("Phone")]
         public string Phone { get; set; }
+
+        [JsonProperty("DriverLock")]
+        public DriverLock DriverLock { get; set; }
+
+        public bool IsActive
+        {
+            get { return (this.DriverLock == null); }
+        }
     }
     #endregion
 }

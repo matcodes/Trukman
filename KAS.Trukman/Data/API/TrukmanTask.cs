@@ -62,6 +62,21 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("PlanPoints")]
         public int PlanPoints { get; set; }
 
+        [JsonProperty("BrokerId")]
+        public Guid? BrokerId { get; set; }
+
+        [JsonProperty("Latitude")]
+        public double Latitude { get; set; }
+
+        [JsonProperty("Longitude")]
+        public double Longitude { get; set; }
+
+        [JsonProperty("CompleteTime")]
+        public DateTime? CompleteTime { get; set; }
+
+        [JsonProperty("CancelTime")]
+        public DateTime? CancelTime { get; set; }
+
         [JsonProperty("Owner")]
         public Owner Owner { get; set; }
 
@@ -79,6 +94,9 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("TaskPoints")]
         public TaskPoint[] TaskPoints { get; set; }
+
+        [JsonProperty("Broker")]
+        public Broker Broker { get; set; }
     }
     #endregion
 }

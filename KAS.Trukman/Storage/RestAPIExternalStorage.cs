@@ -21,7 +21,7 @@ namespace KAS.Trukman.Storage
 {
     public class RestAPIExternalStorage : IExternalStorage
     {
-        private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/"; 
+        private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/";
 
         private static readonly string OWNER_LOGIN_ENDPOINT = "accounts/owner";
         private static readonly string DRIVER_LOGIN_ENDPOINT = "accounts/driver";
@@ -252,43 +252,54 @@ namespace KAS.Trukman.Storage
                 SpecialInstruction = ""
             };
 
-            TaskLocation location = null;
-            //if (taskRequest.Task.TaskLocations != null)
-            //    location = taskRequest.Task.TaskLocations.OrderByDescending(l => l.CreateTime).FirstOrDefault();
-
-            return new Trip
-            {
-                ID = taskRequest.TaskId.ToString(),
-                DeclineReason = "", // taskRequest.DeclineReason.ToString(),
-                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime.ToLocalTime(),
-                DriverAccepted = (taskRequest.Answer == (int)TaskRequestAnswers.Accept),
-                IsDelivery = (taskRequest.Task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
-                IsPickup = (taskRequest.Task.LoadingRealTime.GetValueOrDefault() != DateTime.MinValue),
-                JobCancelled = taskRequest.IsCancelled,
-                //JobCompleted = taskRequest.JobCompleted,
-                //IsDeleted = taskRequest.IsDeleted,
-                PickupDatetime = taskRequest.Task.LoadingPlanTime.ToLocalTime(),
-                Points = taskRequest.Task.PlanPoints,
-                Shipper = shipper,
-                Receiver = receiver,
-                JobRef = "", //taskRequest.Task.JobRef, 
-                FromAddress = taskRequest.Task.LoadingAddress,
-                ToAddress = taskRequest.Task.UnloadingAddress,
-                //Weight = taskRequest.Task.Weight,
-                Location = (location != null ? new Position((double)location.Latitude, (double)location.Longitude) : default(Position)),
-                UpdateTime = DateTime.Now,
-                Driver = new User
+            User driver = null;
+            if (taskRequest.Driver != null)
+                driver = new User
                 {
                     ID = taskRequest.Driver.Id.ToString(),
                     UserName = string.Format("{0} {1}", taskRequest.Driver.FirstName, taskRequest.Driver.LastName),
                     FirstName = taskRequest.Driver.FirstName,
                     LastName = taskRequest.Driver.LastName,
                     Phone = taskRequest.Driver.Phone
-                },
-                Broker = new User(), // broker,
+                };
+
+            User broker = null;
+            if (taskRequest.Task.Broker != null)
+                broker = new User
+                {
+                    ID = taskRequest.Task.Broker.Id.ToString(),
+                    UserName = taskRequest.Task.Broker.Name,
+                    FirstName = taskRequest.Task.Broker.ContactName,
+                    LastName = taskRequest.Task.Broker.ContactName,
+                    Phone = taskRequest.Task.Broker.Phone
+                };
+
+            return new Trip
+            {
+                ID = taskRequest.TaskId.ToString(),
+                DeclineReason = taskRequest.DeclineText,
+                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime.ToLocalTime(),
+                DriverAccepted = (taskRequest.Answer == (int)TaskRequestAnswers.Accept),
+                IsDelivery = (taskRequest.Task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
+                IsPickup = (taskRequest.Task.LoadingRealTime.GetValueOrDefault() != DateTime.MinValue),
+                JobCancelled = taskRequest.IsCancelled,
+                JobCompleted = (taskRequest.Task.CompleteTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
+                IsDeleted = taskRequest.IsCancelled, // (taskRequest.Task.CancelTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
+                PickupDatetime = taskRequest.Task.LoadingPlanTime.ToLocalTime(),
+                Points = taskRequest.Task.PlanPoints,
+                Shipper = shipper,
+                Receiver = receiver,
+                JobRef = "", // taskRequest.Task.JobRef, 
+                FromAddress = taskRequest.Task.LoadingAddress,
+                ToAddress = taskRequest.Task.UnloadingAddress,
+                Weight = 0, // taskRequest.Task.Weight,
+                Location = new Position(taskRequest.Task.Latitude, taskRequest.Task.Longitude),
+                UpdateTime = DateTime.Now,
+                Driver = driver,
+                Broker = broker,
                 Company = this.OwnerToCompany(taskRequest.Task.Owner),
                 InvoiceUri = "", //(parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
-                DriverDisplayName = (taskRequest.Driver != null ? string.Format("{0} {1}", taskRequest.Driver.FirstName, taskRequest.Driver.LastName) : "")
+                DriverDisplayName = (driver != null ? driver.UserName : "")
             };
         }
 

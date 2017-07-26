@@ -44,7 +44,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SignUpLanguageToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\BaseEntity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Broker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Driver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\DriverLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\FuelRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\LumperRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Owner.cs" />

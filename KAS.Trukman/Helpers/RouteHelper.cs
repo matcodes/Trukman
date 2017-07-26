@@ -3,7 +3,6 @@ using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Route;
 using KAS.Trukman.Storage;
 using Newtonsoft.Json;
-//using Parse;
 using System;
 using System.Collections.Generic;
 using System.Net;

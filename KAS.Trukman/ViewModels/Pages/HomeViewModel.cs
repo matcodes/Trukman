@@ -417,19 +417,19 @@ namespace KAS.Trukman.ViewModels.Pages
                 if (this.SelectedDeclinedReason == DeclinedReasonItems.Reason_1)
                 {
                     declineReason = TaskRequestDeclineReasons.Reason1;
-                    //reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_1;
+                    reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_1;
                 }
                 else if (this.SelectedDeclinedReason == DeclinedReasonItems.Reason_2)
                 {
                     declineReason = TaskRequestDeclineReasons.Reason2;
-                    //reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_2;
+                    reasonText = AppLanguages.CurrentLanguage.HomeDeclinedReason_2;
                 }
                 else if (this.SelectedDeclinedReason == DeclinedReasonItems.Other)
                 {
                     declineReason = TaskRequestDeclineReasons.Other;
-                    //reasonText = this.OtherReasonText;
+                    reasonText = this.OtherReasonText;
                 }
-                reasonText = this.OtherReasonText;
+                //reasonText = this.OtherReasonText;
                 this.IsBusy = true;
                 DeclineTripSubmitMessage.Send((int)declineReason, reasonText);
 			}
