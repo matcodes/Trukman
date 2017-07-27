@@ -96,14 +96,20 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void ShipperSpecialInstruction(object parameter)
         {
-            this.PopupVisible = true;
-            this.SelectedItem = TripContractorItems.Shipper;
+            if (!string.IsNullOrEmpty(this.Shipper.SpecialInstruction))
+            {
+                this.PopupVisible = true;
+                this.SelectedItem = TripContractorItems.Shipper;
+            }
         }
 
         private void ReceiverSpecialInstruction(object parameter)
         {
-            this.PopupVisible = true;
-            this.SelectedItem = TripContractorItems.Receiver;
+            if (!string.IsNullOrEmpty(this.Receiver.SpecialInstruction))
+            {
+                this.PopupVisible = true;
+                this.SelectedItem = TripContractorItems.Receiver;
+            }
         }
 
         private void ShowShipperLocation(object parameter)

@@ -432,7 +432,7 @@ namespace KAS.Trukman.AppContext
                 {
                     var distance = RouteHelper.Distance(this.Location, this.ReceiverPosition);
                     this.DistanceToReceiver = distance;
-                    await this.CheckArrivedToDelivery();
+                    //await this.CheckArrivedToDelivery();
                 }
                 catch (Exception exception)
                 {
@@ -445,8 +445,7 @@ namespace KAS.Trukman.AppContext
         {
             if ((this.Trip != null) && (this.Trip.DriverAccepted) &&
                 (!this.Trip.IsPickup) && (this.DistanceToShipper < DISTANCE) &&
-                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Pickup) == null) /*&&
-                this.Trip.Location != default(Position)*/)
+                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Pickup) == null))
             {
                 //                _inSynchronize = true;
                 try
@@ -498,8 +497,7 @@ namespace KAS.Trukman.AppContext
                 (this.Trip.IsPickup) && (!this.Trip.IsDelivery) &&
                 (this.DistanceToReceiver < DISTANCE) &&
                 (_localStorage.GetPhoto(Trip.ID, PhotoKind.Pickup) != null) &&
-                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Delivery) == null)/* &&
-                this.Trip.Location != default(Position)*/)
+                (_localStorage.GetPhoto(Trip.ID, PhotoKind.Delivery) == null))
             {
                 //                _inSynchronize = true;
                 try

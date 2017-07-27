@@ -51,8 +51,12 @@ namespace KAS.Trukman.Storage
         private static readonly string TASK_DONE_UNLOADING_ENDPOINT = "drivers/taskdoneunloading";
         private static readonly string TASK_DONE_ENDPOINT = "drivers/taskdone";
         private static readonly string ADD_TASK_LOCATION_ENDPOINT = "drivers/addtasklocation";
-        private static readonly string CHECK_FUEL_REQUEST_ENDPOINT = "drivers/checkfuelrequest";
         private static readonly string ADD_FUEL_REQUEST_ENDPOINT = "drivers/addfuelrequest";
+        private static readonly string CHECK_FUEL_REQUEST_ENDPOINT = "drivers/checkfuelrequest";
+        private static readonly string CANCEL_FUEL_REQUEST_ENDPOINT = "drivers/cancelfuelrequest";
+        private static readonly string ADD_LUMPER_REQUEST_ENDPOINT = "drivers/addlumperrequest";
+        private static readonly string CHECK_LUMPER_REQUEST_ENDPOINT = "drivers/checklumperrequest";
+        private static readonly string CANCEL_LUMPER_REQUEST_ENDPOINT = "drivers/cancellumperrequest";
 
         private static readonly string GOOGLE_GEOCODE_ENDPOINT = "google/geocode";
         private static readonly string GOOGLE_REVERSE_GEOCODE_ENDPOINT = "google/reversegeocode";
@@ -226,9 +230,44 @@ namespace KAS.Trukman.Storage
             _currentUser = user;
         }
 
-        public Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        private async Task CancelFuelRequest(Guid taskId)
         {
-            throw new NotImplementedException();
+            var cancelFuelRequestRequest = new CancelFuelRequestRequest
+            {
+                TaskId = taskId
+            };
+            var requestContent = SerializeObject(cancelFuelRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CANCEL_FUEL_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CancelFuelRequestResponse>(request);
+        }
+
+        private async Task CancelLumperRequest(Guid taskId)
+        {
+            var cancelLumperRequestRequest = new CancelLumperRequestRequest
+            {
+                TaskId = taskId
+            };
+            var requestContent = SerializeObject(cancelLumperRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CANCEL_LUMPER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CancelLumperRequestResponse>(request);
+        }
+
+        public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            if (requestType == ComcheckRequestType.FuelAdvance)
+            {
+                await this.CancelFuelRequest(Guid.Parse(tripID));
+            }
+            else if (requestType == ComcheckRequestType.Lumper)
+            {
+                await this.CancelLumperRequest(Guid.Parse(tripID));
+            }
         }
 
         private Trip TaskRequestToTrip(TaskRequest taskRequest)
@@ -392,9 +431,26 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
+        public async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
         {
-            throw new NotImplementedException();
+            if (requestType == ComcheckRequestType.FuelAdvance)
+            {
+                var fuelRequest = await this.CheckFuelRequest(Guid.Parse(tripID));
+                if (fuelRequest != null)
+                    return fuelRequest.Comcheck;
+                else
+                    return "";
+            }
+            else if (requestType == ComcheckRequestType.Lumper)
+            {
+                var lumperRequest = await this.CheckLumperRequest(Guid.Parse(tripID));
+                if (lumperRequest != null)
+                    return lumperRequest.Comcheck;
+                else
+                    return "";
+            }
+
+            return "";
         }
 
         public async Task<FuelRequest> CheckFuelRequest(Guid taskId)
@@ -413,6 +469,22 @@ namespace KAS.Trukman.Storage
 
         }
 
+        public async Task<LumperRequest> CheckLumperRequest(Guid taskId)
+        {
+            var checkLumperRequestRequest = new CheckLumperRequestRequest
+            {
+                TaskId = taskId
+            };
+            var requestContent = SerializeObject(checkLumperRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CHECK_LUMPER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CheckLumperRequestResponse>(request);
+            return result.LumperRequest;
+
+        }
+
         public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
         {
             if (requestType == ComcheckRequestType.FuelAdvance)
@@ -424,7 +496,7 @@ namespace KAS.Trukman.Storage
                         return ComcheckRequestState.Requested;
                     else if (fuelRequest.Answer == (int)FuelRequestAnswers.Accept)
                         return ComcheckRequestState.Visible;
-                    else //if (fuelRequest.Answer == (int)FuelRequestAnswers.Decline)
+                    else
                         return ComcheckRequestState.None;
                 }
                 else
@@ -432,8 +504,18 @@ namespace KAS.Trukman.Storage
             }
             else if (requestType == ComcheckRequestType.Lumper)
             {
-                // TODO: check lumper request
-                return ComcheckRequestState.None;
+                var lumperRequest = await this.CheckLumperRequest(Guid.Parse(tripID));
+                if (lumperRequest != null)
+                {
+                    if (lumperRequest.Answer == (int)LumperRequestAnswers.None)
+                        return ComcheckRequestState.Requested;
+                    else if (lumperRequest.Answer == (int)LumperRequestAnswers.Accept)
+                        return ComcheckRequestState.Visible;
+                    else
+                        return ComcheckRequestState.None;
+                }
+                else
+                    return ComcheckRequestState.None;
             }
 
             return ComcheckRequestState.None;
@@ -911,6 +993,21 @@ namespace KAS.Trukman.Storage
             var result = await ExecuteRequestAsync<AddFuelRequestResponse>(request);
         }
 
+        private async Task AddLumperRequest(Guid taskId, DateTime requestTime)
+        {
+            var addLumperRequestRequest = new AddLumperRequestRequest
+            {
+                TaskId = taskId,
+                RequestTime = requestTime
+            };
+            var requestContent = SerializeObject(addLumperRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ADD_LUMPER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddLumperRequestResponse>(request);
+        }
+
         public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
         {
             if (requestType == ComcheckRequestType.FuelAdvance)
@@ -919,7 +1016,7 @@ namespace KAS.Trukman.Storage
             }
             else if (requestType == ComcheckRequestType.Lumper)
             {
-                // TODO: Send lumper request
+                await this.AddLumperRequest(Guid.Parse(tripID), DateTime.UtcNow);
             }
         }
 

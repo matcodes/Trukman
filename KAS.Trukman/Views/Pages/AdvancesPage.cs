@@ -13,7 +13,7 @@ namespace KAS.Trukman.Views.Pages
     #region AdvancesPage
     public class AdvancesPage : TrukmanPage
     {
-        public AdvancesPage() 
+        public AdvancesPage()
             : base()
         {
             this.BindingContext = new AdvancesViewModel();
@@ -29,7 +29,8 @@ namespace KAS.Trukman.Views.Pages
             titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowMainMenuCommand", BindingMode.OneWay);
             titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
 
-            var grid = new Grid {
+            var grid = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
@@ -58,7 +59,8 @@ namespace KAS.Trukman.Views.Pages
             };
             lumperBusyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "LumperIsBusy", BindingMode.TwoWay);
 
-            var content = new Grid {
+            var content = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
@@ -110,7 +112,8 @@ namespace KAS.Trukman.Views.Pages
                 Content = stateText
             };
 
-            var grid = new Grid {
+            var grid = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
@@ -200,7 +203,8 @@ namespace KAS.Trukman.Views.Pages
             };
             receivedStateInfoContent.SetBinding(ContentView.IsVisibleProperty, "FuelReceivedTextInfoVisible", BindingMode.OneWay);
 
-            var content = new Grid {
+            var content = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
