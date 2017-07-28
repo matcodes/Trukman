@@ -36,6 +36,11 @@ namespace KAS.Trukman.Storage
         //private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
         //private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
         //private static readonly string CANCEL_TASK_REQUEST_ENDPOINT = "owners/canceltaskrequest";
+        private static readonly string SELECT_BROKERS_ENDPOINT = "owners/selectbrokers";
+        private static readonly string FIND_FUEL_REQUESTS_ENDPOINT = "owners/findfuelrequests";
+        private static readonly string FIND_LUMPER_REQUESTS_ENDPOINT = "owners/findlumperrequests";
+        private static readonly string ANSWER_FUEL_REQUEST_ENDPOINT = "owners/answerfuelrequest";
+        private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -107,7 +112,11 @@ namespace KAS.Trukman.Storage
                     if (response.IsSuccessStatusCode)
                     {
                         if (content != null)
+                        {
                             result = DeserializeObject<T>(content);
+                            if (!string.IsNullOrEmpty(result.ErrorText))
+                                throw new Exception(result.ErrorText);
+                        }
                         else
                             throw new Exception("Response content is Empty!");
                     }
@@ -261,13 +270,9 @@ namespace KAS.Trukman.Storage
         public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
         {
             if (requestType == ComcheckRequestType.FuelAdvance)
-            {
                 await this.CancelFuelRequest(Guid.Parse(tripID));
-            }
             else if (requestType == ComcheckRequestType.Lumper)
-            {
                 await this.CancelLumperRequest(Guid.Parse(tripID));
-            }
         }
 
         private Trip TaskRequestToTrip(TaskRequest taskRequest)
@@ -611,10 +616,11 @@ namespace KAS.Trukman.Storage
         {
         }
 
-        public Task<User> LogInAsync(string userName, string password)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<User> LogInAsync(string userName, string password)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
         private async Task<Owner> OwnerLoginAsync(Owner owner)
         {
@@ -810,6 +816,7 @@ namespace KAS.Trukman.Storage
         public async Task<Trip> SaveLocation(string id, Position location)
         {
             // TODO: refresh last location
+            // addtasklocation
             Trip trip = await this.SelectTripByID(id);
             trip.Location = location;
 
@@ -821,9 +828,36 @@ namespace KAS.Trukman.Storage
             return new Trip[] { };
         }
 
-        public Task<User[]> SelectBrockersAsync()
+        public async Task<User[]> SelectBrockersAsync()
         {
-            throw new NotImplementedException();
+            var selectBrokersRequest = new SelectBrokersRequest();
+            var requestContent = SerializeObject(selectBrokersRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_BROKERS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SelectBrokersResponse>(request);
+            List<User> users = new List<User>();
+            if (result.Brokers != null)
+            {
+                foreach (var broker in result.Brokers)
+                {
+                    var user = new User
+                    {
+                        ID = broker.BrokerId.ToString(),
+                        UserName = broker.Name,
+                        Role = UserRole.Broker,
+                        Status = 0,
+                        Email = broker.Email,
+                        FirstName = broker.Name,
+                        LastName = broker.ContactName,
+                    };
+
+                    users.Add(user);
+                }
+            }
+
+            return users.ToArray();
         }
 
         public async Task<Company[]> SelectCompanies(string filter)
@@ -869,9 +903,87 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
+        private async Task<Advance[]> SelectFuelAdvances()
         {
-            throw new NotImplementedException();
+            var findFuelRequestsRequest = new FindFuelRequestsRequest
+            {
+                OwnerId = Guid.Parse(_currentUser.ID)
+            };
+            var requestContent = SerializeObject(findFuelRequestsRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(FIND_FUEL_REQUESTS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<FindFuelRequestsResponse>(request);
+            List<Advance> advances = new List<Advance>();
+            if (result.FuelRequests != null)
+            {
+                foreach(var fuelRequest in result.FuelRequests)
+                {
+                    var trip = await this.SelectTripByID(fuelRequest.TaskId.ToString());
+                    var driver = trip.Driver;
+
+                    var advance = new Advance
+                    {
+                        ID = fuelRequest.Id.ToString(),
+                        Comcheck = fuelRequest.Comcheck,
+                        Driver = driver,
+                        Trip = trip,
+                        RequestDateTime = fuelRequest.RequestTime,
+                        RequestType = (int)ComcheckRequestType.FuelAdvance,
+                        State = fuelRequest.Answer
+                    };
+                }
+            }
+
+            return advances.ToArray();
+        }
+
+        private async Task<Advance[]> SelectLumperAdvances()
+        {
+            var findLumperRequestsRequest = new FindLumperRequestsRequest
+            {
+                OwnerId = Guid.Parse(_currentUser.ID)
+            };
+            var requestContent = SerializeObject(findLumperRequestsRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(FIND_LUMPER_REQUESTS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<FindLumperRequestsResponse>(request);
+            List<Advance> advances = new List<Advance>();
+            if (result.LumperRequests != null)
+            {
+                foreach (var fuelRequest in result.LumperRequests)
+                {
+                    var trip = await this.SelectTripByID(fuelRequest.TaskId.ToString());
+                    var driver = trip.Driver;
+
+                    var advance = new Advance
+                    {
+                        ID = fuelRequest.Id.ToString(),
+                        Comcheck = fuelRequest.Comcheck,
+                        Driver = driver,
+                        Trip = trip,
+                        RequestDateTime = fuelRequest.RequestTime,
+                        RequestType = (int)ComcheckRequestType.Lumper,
+                        State = fuelRequest.Answer
+                    };
+                }
+            }
+
+            return advances.ToArray();
+        }
+
+        public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
+        {
+            Advance[] advances = null;
+            if (requestType == (int)ComcheckRequestType.FuelAdvance)
+                advances = await this.SelectFuelAdvances();
+            else if (requestType == (int)ComcheckRequestType.Lumper)
+                advances = await this.SelectLumperAdvances();
+
+            return advances;
         }
 
         public Task<JobAlert[]> SelectJobAlertsAsync()
@@ -1011,13 +1123,9 @@ namespace KAS.Trukman.Storage
         public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
         {
             if (requestType == ComcheckRequestType.FuelAdvance)
-            {
                 await this.AddFuelRequest(Guid.Parse(tripID), DateTime.UtcNow);
-            }
             else if (requestType == ComcheckRequestType.Lumper)
-            {
                 await this.AddLumperRequest(Guid.Parse(tripID), DateTime.UtcNow);
-            }
         }
 
         public Task SendJobAlertAsync(string tripID, int alertType, string alertText)
@@ -1096,9 +1204,58 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public Task SetAdvanceStateAsync(Advance advance)
+        private async Task SetFuelAdvanceState(Advance advance)
         {
-            throw new NotImplementedException();
+            int answer = 0;
+            if (advance.State == (int)ComcheckRequestState.Visible)
+                answer = (int)FuelRequestAnswers.Accept;
+            else //if (advance.State == (int)ComcheckRequestState.Requested)
+                answer = (int)FuelRequestAnswers.None;
+
+            var answerFuelRequestRequest = new AnswerFuelRequestRequest
+            {
+                TaskId = Guid.Parse(advance.Trip.ID),
+                Answer = answer,
+                AnswerTime = DateTime.UtcNow,
+                Comcheck = advance.Comcheck
+            };
+            var requestContent = SerializeObject(answerFuelRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ANSWER_FUEL_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
+        }
+
+        private async Task SetLumperAdvanceState(Advance advance)
+        {
+            int answer = 0;
+            if (advance.State == (int)ComcheckRequestState.Visible)
+                answer = (int)LumperRequestAnswers.Accept;
+            else //if (advance.State == (int)ComcheckRequestState.Requested)
+                answer = (int)LumperRequestAnswers.None;
+
+            var answerLumperRequestRequest = new AnswerLumperRequestRequest
+            {
+                TaskId = Guid.Parse(advance.Trip.ID),
+                Answer = answer,
+                AnswerTime = DateTime.UtcNow,
+                Comcheck = advance.Comcheck
+            };
+            var requestContent = SerializeObject(answerLumperRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ANSWER_LUMPER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
+        }
+
+        public async Task SetAdvanceStateAsync(Advance advance)
+        {
+            if (advance.RequestType == (int)ComcheckRequestType.FuelAdvance)
+                await this.SetFuelAdvanceState(advance);
+            else if (advance.RequestType == (int)ComcheckRequestType.FuelAdvance)
+                await this.SetLumperAdvanceState(advance);
         }
 
         public Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
@@ -1106,10 +1263,11 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public async Task<User> SignUpAsync(User user)
-        {
-            return await Task.FromResult<User>(default(User));
-        }
+        //public async Task<User> SignUpAsync(User user)
+        //{
+        //    // not used
+        //    return await Task.FromResult<User>(default(User));
+        //}
 
         public async Task<Trip> TripInDelivery(string id, int minutes)
         {
@@ -1155,10 +1313,11 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public Task<bool> UserExistAsync(string userName)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<bool> UserExistAsync(string userName)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
         public async Task<Position> GetPositionByAddress(string address)
         {

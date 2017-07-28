@@ -54,11 +54,11 @@ namespace KAS.Trukman.Storage
 
         void Become(User user);
 
-        Task<User> SignUpAsync(User user);
+        //Task<User> SignUpAsync(User user);
 
-        Task<User> LogInAsync(string userName, string password);
+        //Task<User> LogInAsync(string userName, string password);
 
-        Task<bool> UserExistAsync(string userName);
+        //Task<bool> UserExistAsync(string userName);
 
         Task<Company> RegisterCompany(CompanyInfo companyInfo);
 

@@ -509,7 +509,7 @@ namespace KAS.Trukman.Storage
 
         private void TestInitialize()
         {
-            var userID = "9V1Y3Qh20m";
+            //var userID = "9V1Y3Qh20m";
             //var companyID = "k3OWFMMp0W";
 
             //var item = new SettingsItem
@@ -538,18 +538,18 @@ namespace KAS.Trukman.Storage
             //};
             //this.SaveUser(user);
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var user = await _externalStorage.LogInAsync("dm1@gmail.com", "123");
-                    Console.WriteLine(user.ToString());
-                }
-                catch (Exception exc)
-                {
-                    Console.WriteLine(exc.Message);
-                }
-            });
+            //Task.Run(async () =>
+            //{
+            //    try
+            //    {
+            //        var user = await _externalStorage.LogInAsync("dm1@gmail.com", "123");
+            //        Console.WriteLine(user.ToString());
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        Console.WriteLine(exc.Message);
+            //    }
+            //});
 
             //var company = new Company
             //{
@@ -581,50 +581,50 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
-        public async Task<User> SignUpAsync(User user)
-        {
-            User currentUser = null;
-            try
-            {
-                currentUser = await _externalStorage.SignUpAsync(user);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-            return currentUser;
-        }
+        //public async Task<User> SignUpAsync(User user)
+        //{
+        //    User currentUser = null;
+        //    try
+        //    {
+        //        currentUser = await _externalStorage.SignUpAsync(user);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //    return currentUser;
+        //}
 
-        public async Task<User> LogInAsync(string userName, string password)
-        {
-            User user = null;
-            try
-            {
-                user = await _externalStorage.LogInAsync(userName, password);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-            return user;
-        }
+        //public async Task<User> LogInAsync(string userName, string password)
+        //{
+        //    User user = null;
+        //    try
+        //    {
+        //        user = await _externalStorage.LogInAsync(userName, password);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //    return user;
+        //}
 
-        public async Task<bool> UserExist(string userName)
-        {
-            var exist = false;
-            try
-            {
-                exist = await _externalStorage.UserExistAsync(userName);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-            return exist;
-        }
+        //public async Task<bool> UserExist(string userName)
+        //{
+        //    var exist = false;
+        //    try
+        //    {
+        //        exist = await _externalStorage.UserExistAsync(userName);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //    return exist;
+        //}
 
         public async Task<Company> RegisterCompanyAsync(CompanyInfo companyInfo)
         {

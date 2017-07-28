@@ -10,7 +10,8 @@ namespace KAS.Trukman.Data.Enums
     {
         Owner = 0,
         Dispatch = 1,
-        Driver = 2
+        Driver = 2,
+        Broker = 3
     }
     #endregion
 }

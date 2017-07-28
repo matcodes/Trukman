@@ -49,7 +49,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.OwnerFuelAdvancePageName;
+            this.Title = AppLanguages.CurrentLanguage.OwnerLumperPageName;
         }
 
         private void SelectAdvances()

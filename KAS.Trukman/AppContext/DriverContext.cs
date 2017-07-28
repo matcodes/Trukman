@@ -432,7 +432,7 @@ namespace KAS.Trukman.AppContext
                 {
                     var distance = RouteHelper.Distance(this.Location, this.ReceiverPosition);
                     this.DistanceToReceiver = distance;
-                    //await this.CheckArrivedToDelivery();
+                    await this.CheckArrivedToDelivery();
                 }
                 catch (Exception exception)
                 {
