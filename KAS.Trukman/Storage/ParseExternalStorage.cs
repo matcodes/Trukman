@@ -1264,23 +1264,23 @@ namespace KAS.Trukman.Storage
             return result;
         }
 
-        public async Task AddPointsAsync(string jobID, string text, int points)
-        {
-            var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
-            var driver = ParseUser.CurrentUser;
-            var company = await this.SelectUserParseCompanyAsync();
+        //public async Task AddPointsAsync(string jobID, string text, int points)
+        //{
+        //    var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
+        //    var driver = ParseUser.CurrentUser;
+        //    var company = await this.SelectUserParseCompanyAsync();
 
-            var parseJobPoint = new ParseJobPoint
-            {
-                Text = text,
-                Value = points,
-                Job = job,
-                Driver = driver,
-                Company = company
-            };
+        //    var parseJobPoint = new ParseJobPoint
+        //    {
+        //        Text = text,
+        //        Value = points,
+        //        Job = job,
+        //        Driver = driver,
+        //        Company = company
+        //    };
 
-            await parseJobPoint.SaveAsync();
-        }
+        //    await parseJobPoint.SaveAsync();
+        //}
 
         //public async Task<int> GetPointsByJobIDAsync(string jobID)
         //{

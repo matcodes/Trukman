@@ -224,11 +224,11 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public Task AddPointsAsync(string jobID, string text, int points)
-        {
-            // TODO:
-            throw new NotImplementedException();
-        }
+        //public Task AddPointsAsync(string jobID, string text, int points)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
         public void Become(User user)
         {
