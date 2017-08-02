@@ -282,11 +282,11 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
-        public async Task<string> GetSessionToken()
-        {
-            var parseSession = await ParseSession.GetCurrentSessionAsync();
-            return parseSession.SessionToken;
-        }
+        //public async Task<string> GetSessionToken()
+        //{
+        //    var parseSession = await ParseSession.GetCurrentSessionAsync();
+        //    return parseSession.SessionToken;
+        //}
 
         private async Task<ParseCompany> SelectParseCompanyByIDAsync(string id)
         {
@@ -631,23 +631,23 @@ namespace KAS.Trukman.Storage
             });
         }
 
-        public User Become(string session)
-        {
-            User currentUser = null;
+        //public User Become(string session)
+        //{
+        //    User currentUser = null;
 
-            Task.Run(async() => {
-                try
-                {
-                    //await ParseUser.BecomeAsync(session);
-                    currentUser = await this.GetCurrentUserAsync();
-                }
-                catch
-                {
-                }
-            }).Wait(15000);
+        //    Task.Run(async() => {
+        //        try
+        //        {
+        //            //await ParseUser.BecomeAsync(session);
+        //            currentUser = await this.GetCurrentUserAsync();
+        //        }
+        //        catch
+        //        {
+        //        }
+        //    }).Wait(15000);
 
-            return currentUser;
-        }
+        //    return currentUser;
+        //}
 
         public void Become(User user)
         {
@@ -1186,32 +1186,32 @@ namespace KAS.Trukman.Storage
 			return drivers.ToArray();
 		}
 
-		public async Task<Trip> CreateTripAsync(Trip trip)
-		{
-			var company = ParseObject.CreateWithoutData<ParseCompany> (trip.Company.ID);
-			var driver = ParseObject.CreateWithoutData<ParseUser> (trip.Driver.ID);
-			var broker = ParseObject.CreateWithoutData<ParseUser> (trip.Broker.ID);
+		//public async Task<Trip> CreateTripAsync(Trip trip)
+		//{
+		//	var company = ParseObject.CreateWithoutData<ParseCompany> (trip.Company.ID);
+		//	var driver = ParseObject.CreateWithoutData<ParseUser> (trip.Driver.ID);
+		//	var broker = ParseObject.CreateWithoutData<ParseUser> (trip.Broker.ID);
 
-			var parseJob = new ParseJob { 
-				DeliveryDatetime = trip.DeliveryDatetime,
-				DriverAccepted = false,
-				JobCancelled = false,
-				JobCompleted = false,
-				IsDeleted = false,
-				PickupDatetime = trip.PickupDatetime,
-				Price = trip.Points,
-				JobRef = trip.JobRef,
-				FromAddress = trip.FromAddress,
-				ToAddress = trip.ToAddress,
-				Weight = trip.Weight,
-				Company = company,
-				Driver = driver,
-				Broker = broker
-			};
-			await parseJob.SaveAsync ();
-			trip.ID = parseJob.ObjectId;
-			return trip;
-		}
+		//	var parseJob = new ParseJob { 
+		//		DeliveryDatetime = trip.DeliveryDatetime,
+		//		DriverAccepted = false,
+		//		JobCancelled = false,
+		//		JobCompleted = false,
+		//		IsDeleted = false,
+		//		PickupDatetime = trip.PickupDatetime,
+		//		Price = trip.Points,
+		//		JobRef = trip.JobRef,
+		//		FromAddress = trip.FromAddress,
+		//		ToAddress = trip.ToAddress,
+		//		Weight = trip.Weight,
+		//		Company = company,
+		//		Driver = driver,
+		//		Broker = broker
+		//	};
+		//	await parseJob.SaveAsync ();
+		//	trip.ID = parseJob.ObjectId;
+		//	return trip;
+		//}
 
 		public async Task<Photo[]> SelectPhotosAsync()
 		{
@@ -1282,24 +1282,24 @@ namespace KAS.Trukman.Storage
             await parseJobPoint.SaveAsync();
         }
 
-        public async Task<int> GetPointsByJobIDAsync(string jobID)
-        {
-            var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
+        //public async Task<int> GetPointsByJobIDAsync(string jobID)
+        //{
+        //    var job = ParseJob.CreateWithoutData<ParseJob>(jobID);
 
-            var query = new ParseQuery<ParseJobPoint>()
-                .Include("Job")
-                .Include("Driver")
-                .Include("Company")
-                .WhereEqualTo("Job", job);
+        //    var query = new ParseQuery<ParseJobPoint>()
+        //        .Include("Job")
+        //        .Include("Driver")
+        //        .Include("Company")
+        //        .WhereEqualTo("Job", job);
 
-            var parseJobPoints = await query.FindAsync();
+        //    var parseJobPoints = await query.FindAsync();
 
-            var points = 0;
-            foreach (var parseJobPoint in parseJobPoints)
-                points += parseJobPoint.Value;
+        //    var points = 0;
+        //    foreach (var parseJobPoint in parseJobPoints)
+        //        points += parseJobPoint.Value;
 
-            return points;
-        }
+        //    return points;
+        //}
 
 		public async Task<int> GetPointsByDriverIDAsync(string driverID)
 		{

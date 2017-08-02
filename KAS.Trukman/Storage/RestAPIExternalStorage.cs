@@ -226,11 +226,7 @@ namespace KAS.Trukman.Storage
 
         public Task AddPointsAsync(string jobID, string text, int points)
         {
-            throw new NotImplementedException();
-        }
-
-        public User Become(string session)
-        {
+            // TODO:
             throw new NotImplementedException();
         }
 
@@ -298,25 +294,11 @@ namespace KAS.Trukman.Storage
 
             User driver = null;
             if (taskRequest.Driver != null)
-                driver = new User
-                {
-                    ID = taskRequest.Driver.Id.ToString(),
-                    UserName = string.Format("{0} {1}", taskRequest.Driver.FirstName, taskRequest.Driver.LastName),
-                    FirstName = taskRequest.Driver.FirstName,
-                    LastName = taskRequest.Driver.LastName,
-                    Phone = taskRequest.Driver.Phone
-                };
+                driver = this.DriverToUser(taskRequest.Driver);
 
             User broker = null;
             if (taskRequest.Task.Broker != null)
-                broker = new User
-                {
-                    ID = taskRequest.Task.Broker.Id.ToString(),
-                    UserName = taskRequest.Task.Broker.Name,
-                    FirstName = taskRequest.Task.Broker.ContactName,
-                    LastName = taskRequest.Task.Broker.ContactName,
-                    Phone = taskRequest.Task.Broker.Phone
-                };
+                broker = this.BrokerToUser(taskRequest.Task.Broker);
 
             return new Trip
             {
@@ -333,17 +315,29 @@ namespace KAS.Trukman.Storage
                 Points = taskRequest.Task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
-                JobRef = "", // taskRequest.Task.JobRef, 
+                JobRef = "", //TODO:  taskRequest.Task.JobRef, 
                 FromAddress = taskRequest.Task.LoadingAddress,
                 ToAddress = taskRequest.Task.UnloadingAddress,
-                Weight = 0, // taskRequest.Task.Weight,
+                Weight = 0, // TODO:  taskRequest.Task.Weight,
                 Location = new Position(taskRequest.Task.Latitude, taskRequest.Task.Longitude),
                 UpdateTime = DateTime.Now,
                 Driver = driver,
                 Broker = broker,
                 Company = this.OwnerToCompany(taskRequest.Task.Owner),
-                InvoiceUri = "", //(parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
+                InvoiceUri = "", // TODO: (parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
                 DriverDisplayName = (driver != null ? driver.UserName : "")
+            };
+        }
+
+        private User BrokerToUser(Broker broker)
+        {
+            return new User
+            {
+                ID = broker.Id.ToString(),
+                UserName = broker.Name,
+                FirstName = broker.ContactName,
+                LastName = broker.ContactName,
+                Phone = broker.Phone
             };
         }
 
@@ -391,13 +385,15 @@ namespace KAS.Trukman.Storage
 
         public Task<string> CreateInvoiceForJobAsync(string tripID)
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
-        public Task<Trip> CreateTripAsync(Trip trip)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Trip> CreateTripAsync(Trip trip)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
         public async Task<bool> AnswerDriverRequest(Guid ownerId, Guid driverId, bool isAllowed)
         {
@@ -471,7 +467,6 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(CHECK_FUEL_REQUEST_ENDPOINT, null);
             var result = await ExecuteRequestAsync<CheckFuelRequestResponse>(request);
             return result.FuelRequest;
-
         }
 
         public async Task<LumperRequest> CheckLumperRequest(Guid taskId)
@@ -487,7 +482,6 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(CHECK_LUMPER_REQUEST_ENDPOINT, null);
             var result = await ExecuteRequestAsync<CheckLumperRequestResponse>(request);
             return result.LumperRequest;
-
         }
 
         public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
@@ -579,8 +573,8 @@ namespace KAS.Trukman.Storage
 
         public Task<Notification> GetNotification()
         {
+            // TODO:
             return Task.FromResult<Notification>(default(Notification));
-            // TODO: throw new NotImplementedException();
         }
 
         public async Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -599,18 +593,20 @@ namespace KAS.Trukman.Storage
             return response.Points;
         }
 
-        public Task<int> GetPointsByJobIDAsync(string jobID)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<int> GetPointsByJobIDAsync(string jobID)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
-        public Task<string> GetSessionToken()
-        {
-            if (_currentUser != null)
-                return Task.FromResult(_currentUser.Token);
-            else
-                return Task.FromResult(string.Empty);
-        }
+        //public Task<string> GetSessionToken()
+        //{
+        //    // not used
+        //    if (_currentUser != null)
+        //        return Task.FromResult(_currentUser.Token);
+        //    else
+        //        return Task.FromResult(string.Empty);
+        //}
 
         public void InitializeOwnerNotification()
         {
@@ -825,6 +821,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip[]> SelectActiveTrips()
         {
+            // TODO:
             return new Trip[] { };
         }
 
@@ -841,20 +838,7 @@ namespace KAS.Trukman.Storage
             if (result.Brokers != null)
             {
                 foreach (var broker in result.Brokers)
-                {
-                    var user = new User
-                    {
-                        ID = broker.BrokerId.ToString(),
-                        UserName = broker.Name,
-                        Role = UserRole.Broker,
-                        Status = 0,
-                        Email = broker.Email,
-                        FirstName = broker.Name,
-                        LastName = broker.ContactName,
-                    };
-
-                    users.Add(user);
-                }
+                    users.Add(this.BrokerToUser(broker));
             }
 
             return users.ToArray();
@@ -883,24 +867,60 @@ namespace KAS.Trukman.Storage
             return companies.ToArray();
         }
 
-        public async Task<Company> SelectCompanyByName(string name)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<Company> SelectCompanyByName(string name)
+        //{
+        //    // not used
+        //    throw new NotImplementedException();
+        //}
 
         public Task<Trip[]> SelectCompletedTrips()
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
-        public Task<Position> SelectDriverPosition(string tripID)
+        public async Task<Position> SelectDriverPosition(string tripID)
         {
-            throw new NotImplementedException();
+            var trip = await this.SelectTripByID(tripID);
+            return trip.Location;
         }
 
-        public Task<User[]> SelectDriversAsync()
+        private User DriverToUser(Driver driver)
         {
-            throw new NotImplementedException();
+            return new User
+            {
+                ID = driver.Id.ToString(),
+                UserName = string.Format("{0} {1}", driver.FirstName, driver.LastName),
+                FirstName = driver.FirstName,
+                LastName = driver.LastName,
+                Phone = driver.Phone
+            };
+        }
+
+        public async Task<User[]> SelectDriversAsync()
+        {
+            var selectDriversRequest = new SelectDriversRequest
+            {
+                OwnerId = Guid.Parse(_currentUser.ID)
+            };
+            var requestContent = SerializeObject(selectDriversRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_DRIVERS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SelectDriversResponse>(request);
+            var driverUsers = new User[] { };
+            if (result.Drivers != null)
+            {
+                driverUsers = result.Drivers.Select(driver =>
+                {
+                    User user = DriverToUser(driver);
+
+                    return user;
+                }).ToArray<User>();
+            }
+
+            return driverUsers;
         }
 
         private async Task<Advance[]> SelectFuelAdvances()
@@ -988,16 +1008,19 @@ namespace KAS.Trukman.Storage
 
         public Task<JobAlert[]> SelectJobAlertsAsync()
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
         public Task<JobPoint[]> SelectJobPointsAsync()
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
         public Task<Photo[]> SelectPhotosAsync()
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
@@ -1021,13 +1044,7 @@ namespace KAS.Trukman.Storage
             var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
             if (driverRequests.Length > 0)
             {
-                return new User
-                {
-                    ID = driverRequests[0].Driver.Id.ToString(),
-                    UserName = string.Format("{0} {1}", driverRequests[0].Driver.FirstName, driverRequests[0].Driver.LastName),
-                    FirstName = driverRequests[0].Driver.FirstName,
-                    LastName = driverRequests[0].Driver.LastName
-                };
+                return DriverToUser(driverRequests[0].Driver);
             }
 
             return null;
@@ -1130,6 +1147,7 @@ namespace KAS.Trukman.Storage
 
         public Task SendJobAlertAsync(string tripID, int alertType, string alertText)
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
@@ -1260,14 +1278,9 @@ namespace KAS.Trukman.Storage
 
         public Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
         {
+            // TODO:
             throw new NotImplementedException();
         }
-
-        //public async Task<User> SignUpAsync(User user)
-        //{
-        //    // not used
-        //    return await Task.FromResult<User>(default(User));
-        //}
 
         public async Task<Trip> TripInDelivery(string id, int minutes)
         {
@@ -1312,12 +1325,6 @@ namespace KAS.Trukman.Storage
 
             return trip;
         }
-
-        //public Task<bool> UserExistAsync(string userName)
-        //{
-        //    // not used
-        //    throw new NotImplementedException();
-        //}
 
         public async Task<Position> GetPositionByAddress(string address)
         {

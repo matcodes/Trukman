@@ -38,7 +38,7 @@ namespace KAS.Trukman.Storage
 
         Task<Company[]> SelectCompanies(string filter);
 
-        Task<Company> SelectCompanyByName(string name);
+        //Task<Company> SelectCompanyByName(string name);
 
         Task<Company> SelectUserCompanyAsync();
 
@@ -50,7 +50,7 @@ namespace KAS.Trukman.Storage
 
         void InitializeOwnerNotification();
 
-        User Become(string session);
+        //User Become(string session);
 
         void Become(User user);
 
@@ -66,7 +66,7 @@ namespace KAS.Trukman.Storage
 
         Task<User> GetCurrentUser();
 
-        Task<string> GetSessionToken();
+        //Task<string> GetSessionToken();
 
         Task<User> SelectRequestedUser(string companyID);
 
@@ -108,7 +108,7 @@ namespace KAS.Trukman.Storage
 
 		Task<User[]> SelectDriversAsync ();
 
-		Task<Trip> CreateTripAsync (Trip trip);
+		//Task<Trip> CreateTripAsync (Trip trip);
 
 		Task<Photo[]> SelectPhotosAsync ();
 
@@ -116,7 +116,7 @@ namespace KAS.Trukman.Storage
 
         Task AddPointsAsync(string jobID, string text, int points);
 
-        Task<int> GetPointsByJobIDAsync(string jobID);
+        //Task<int> GetPointsByJobIDAsync(string jobID);
 
 		Task<int> GetPointsByDriverIDAsync (string driverID);
 

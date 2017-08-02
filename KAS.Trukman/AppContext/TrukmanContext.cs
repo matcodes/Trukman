@@ -147,10 +147,10 @@ namespace KAS.Trukman.AppContext
             return await _localStorage.SelectCompanies(filter);
         }
 
-        public static async Task<Company> SelectCompanyByName(string name)
-        {
-            return await _localStorage.SelectCompanyByName(name);
-        }
+        //public static async Task<Company> SelectCompanyByName(string name)
+        //{
+        //    return await _localStorage.SelectCompanyByName(name);
+        //}
 
         public static async Task<Company> SelectUserCompany()
         {
@@ -340,11 +340,11 @@ namespace KAS.Trukman.AppContext
             await _localStorage.DeclineDriverToCompany(companyID, driverID);
         }
 
-        public static async Task<Trip> CreateTripAsync(Trip trip)
-        {
-            var result = await _localStorage.CreateTripAsync(trip);
-            return result;
-        }
+        //public static async Task<Trip> CreateTripAsync(Trip trip)
+        //{
+        //    var result = await _localStorage.CreateTripAsync(trip);
+        //    return result;
+        //}
 
         public static async Task<User[]> SelectBrockersAsync()
         {

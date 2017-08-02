@@ -79,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\OwnerLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectBrokersRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskDoneRequest.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\OwnerLoginResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectBrokersResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalUnloadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneLoadingResponse.cs" />

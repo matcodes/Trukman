@@ -300,20 +300,20 @@ namespace KAS.Trukman.Storage
             return companies;
         }
 
-        public async Task<Company> SelectCompanyByName(string name)
-        {
-            Company company = null;
-            try
-            {
-                company = await _externalStorage.SelectCompanyByName(name);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-            return company;
-        }
+        //public async Task<Company> SelectCompanyByName(string name)
+        //{
+        //    Company company = null;
+        //    try
+        //    {
+        //        company = await _externalStorage.SelectCompanyByName(name);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //    return company;
+        //}
 
         public async Task<Company> SelectUserCompany()
         {
@@ -918,19 +918,19 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task<Trip> CreateTripAsync(Trip trip)
-        {
-            try
-            {
-                var result = await _externalStorage.CreateTripAsync(trip);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-        }
+        //public async Task<Trip> CreateTripAsync(Trip trip)
+        //{
+        //    try
+        //    {
+        //        var result = await _externalStorage.CreateTripAsync(trip);
+        //        return result;
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //}
 
         public async Task<Photo[]> SelectPhotosAsync()
         {
