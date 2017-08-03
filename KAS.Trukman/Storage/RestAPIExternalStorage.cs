@@ -41,6 +41,7 @@ namespace KAS.Trukman.Storage
         private static readonly string FIND_LUMPER_REQUESTS_ENDPOINT = "owners/findlumperrequests";
         private static readonly string ANSWER_FUEL_REQUEST_ENDPOINT = "owners/answerfuelrequest";
         private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
+        private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "selecttaskbyid";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -215,11 +216,7 @@ namespace KAS.Trukman.Storage
 
             Trip trip = null;
             if (trukmanTask != null)
-            {
-                taskRequest.Answer = (int)TaskRequestAnswers.Accept;
-                taskRequest.Task = trukmanTask;
-                trip = TaskRequestToTrip(taskRequest);
-            }
+                trip = TaskToTrip(trukmanTask);
 
             return trip;
         }
@@ -271,60 +268,62 @@ namespace KAS.Trukman.Storage
                 await this.CancelLumperRequest(Guid.Parse(tripID));
         }
 
-        private Trip TaskRequestToTrip(TaskRequest taskRequest)
+        private Trip TaskToTrip(TrukmanTask task)
         {
+            //var task = taskRequest.Task;
+
             var shipper = new Contractor
             {
                 ID = Guid.NewGuid().ToString(),
-                Name = taskRequest.Task.LoadingName,
-                Phone = "",
-                Fax = "",
-                Address = taskRequest.Task.LoadingAddress,
-                SpecialInstruction = ""
+                Name = task.LoadingName,
+                Phone = task.LoadingPhone,
+                Fax = task.LoadingFax,
+                Address = task.LoadingAddress,
+                SpecialInstruction = task.LoadingInstructions,
             };
             var receiver = new Contractor
             {
                 ID = Guid.NewGuid().ToString(),
-                Name = taskRequest.Task.UnloadingName,
-                Phone = "",
-                Fax = "",
-                Address = taskRequest.Task.UnloadingAddress,
-                SpecialInstruction = ""
+                Name = task.UnloadingName,
+                Phone = task.UnloadingPhone,
+                Fax = task.UnloadingFax,
+                Address = task.UnloadingAddress,
+                SpecialInstruction = task.UnloadingInstructions
             };
 
             User driver = null;
-            if (taskRequest.Driver != null)
-                driver = this.DriverToUser(taskRequest.Driver);
+            if (task.Driver != null)
+                driver = this.DriverToUser(task.Driver);
 
             User broker = null;
-            if (taskRequest.Task.Broker != null)
-                broker = this.BrokerToUser(taskRequest.Task.Broker);
+            if (task.Broker != null)
+                broker = this.BrokerToUser(task.Broker);
 
             return new Trip
             {
-                ID = taskRequest.TaskId.ToString(),
-                DeclineReason = taskRequest.DeclineText,
-                DeliveryDatetime = taskRequest.Task.UnloadingPlanTime.ToLocalTime(),
-                DriverAccepted = (taskRequest.Answer == (int)TaskRequestAnswers.Accept),
-                IsDelivery = (taskRequest.Task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
-                IsPickup = (taskRequest.Task.LoadingRealTime.GetValueOrDefault() != DateTime.MinValue),
-                JobCancelled = taskRequest.IsCancelled,
-                JobCompleted = (taskRequest.Task.CompleteTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
-                IsDeleted = taskRequest.IsCancelled, // (taskRequest.Task.CancelTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
-                PickupDatetime = taskRequest.Task.LoadingPlanTime.ToLocalTime(),
-                Points = taskRequest.Task.PlanPoints,
+                ID = task.Id.ToString(),
+                //DeclineReason = taskRequest.DeclineText,
+                DeliveryDatetime = task.UnloadingPlanTime.ToLocalTime(),
+                DriverAccepted = (task.StartTime.GetValueOrDefault() != DateTime.MinValue),
+                IsDelivery = (task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
+                IsPickup = (task.LoadingRealTime.GetValueOrDefault() != DateTime.MinValue),
+                JobCancelled = (task.CancelTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
+                JobCompleted = (task.CompleteTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
+                IsDeleted = (task.RemovedTime.GetValueOrDefault() != DateTime.MinValue ? true : false),
+                PickupDatetime = task.LoadingPlanTime.ToLocalTime(),
+                Points = task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
-                JobRef = "", //TODO:  taskRequest.Task.JobRef, 
-                FromAddress = taskRequest.Task.LoadingAddress,
-                ToAddress = taskRequest.Task.UnloadingAddress,
-                Weight = 0, // TODO:  taskRequest.Task.Weight,
-                Location = new Position(taskRequest.Task.Latitude, taskRequest.Task.Longitude),
+                JobRef = task.Number, 
+                FromAddress = task.LoadingAddress,
+                ToAddress = task.UnloadingAddress,
+                Weight = task.Weight,
+                Location = new Position(task.Latitude, task.Longitude),
                 UpdateTime = DateTime.Now,
                 Driver = driver,
                 Broker = broker,
-                Company = this.OwnerToCompany(taskRequest.Task.Owner),
-                InvoiceUri = "", // TODO: (parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
+                Company = this.OwnerToCompany(task.Owner),
+                InvoiceUri = task.InvoiceUri,
                 DriverDisplayName = (driver != null ? driver.UserName : "")
             };
         }
@@ -356,7 +355,7 @@ namespace KAS.Trukman.Storage
 
             Trip trip = null;
             if (result.TaskRequest != null)
-                trip = TaskRequestToTrip(result.TaskRequest);
+                trip = TaskToTrip(result.TaskRequest.Task);
 
             return trip;
         }
@@ -375,10 +374,9 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(TASK_DONE_ENDPOINT, null);
             var result = await ExecuteRequestAsync<TaskDoneResponse>(request);
 
-            var taskRequest = await this.GetTaskRequestByTaskID(id);
             Trip trip = null;
-            if (taskRequest != null)
-                trip = TaskRequestToTrip(taskRequest);
+            if (result.Task != null)
+                trip = TaskToTrip(result.Task);
 
             return trip;
         }
@@ -424,10 +422,7 @@ namespace KAS.Trukman.Storage
 
             Trip trip = null;
             if (trukmanTask != null)
-            {
-                taskRequest.Task = trukmanTask;
-                trip = TaskRequestToTrip(taskRequest);
-            }
+                trip = TaskToTrip(trukmanTask);
 
             return trip;
         }
@@ -801,10 +796,10 @@ namespace KAS.Trukman.Storage
             var result = await ExecuteRequestAsync<AddTaskLocationResponse>(request);
 
             Trip trip = null;
-            if (result.TaskRequest != null)
-                trip = this.TaskRequestToTrip(result.TaskRequest);
+            if (result.TaskRequest != null && result.TaskRequest.Task != null)
+                trip = this.TaskToTrip(result.TaskRequest.Task);
 
-            trip.Location = location;
+            //trip.Location = location;
 
             return trip;
         }
@@ -812,7 +807,6 @@ namespace KAS.Trukman.Storage
         public async Task<Trip> SaveLocation(string id, Position location)
         {
             // TODO: refresh last location
-            // addtasklocation
             Trip trip = await this.SelectTripByID(id);
             trip.Location = location;
 
@@ -938,7 +932,7 @@ namespace KAS.Trukman.Storage
             List<Advance> advances = new List<Advance>();
             if (result.FuelRequests != null)
             {
-                foreach(var fuelRequest in result.FuelRequests)
+                foreach (var fuelRequest in result.FuelRequests)
                 {
                     var trip = await this.SelectTripByID(fuelRequest.TaskId.ToString());
                     var driver = trip.Driver;
@@ -1067,10 +1061,20 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip> SelectTripByID(string id)
         {
+            var selectTaskByIdRequest = new SelectTaskByIdRequest
+            {
+                TaskId = Guid.Parse(id)
+            };
+            var requestContent = SerializeObject(selectTaskByIdRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_TASK_BY_ID_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SelectTaskByIdResponse>(request);
+
             Trip trip = null;
-            var taskRequest = await this.GetTaskRequestByTaskID(id);
-            if (taskRequest != null)
-                trip = this.TaskRequestToTrip(taskRequest);
+            if (result.Task != null)
+                trip = this.TaskToTrip(result.Task);
             return trip;
         }
 
@@ -1213,11 +1217,10 @@ namespace KAS.Trukman.Storage
                 task = await this.TaskDoneLoading(Guid.Parse(id), doneDate, data);
             else if (kind == PhotoKind.Delivery)
                 task = await this.TaskDoneUnloading(Guid.Parse(id), doneDate, data);
-            var taskRequest = await this.GetTaskRequestByTaskID(id);
 
             Trip trip = null;
-            if (taskRequest != null)
-                trip = this.TaskRequestToTrip(taskRequest);
+            if (task != null)
+                trip = this.TaskToTrip(task);
 
             return trip;
         }
@@ -1278,7 +1281,19 @@ namespace KAS.Trukman.Storage
 
         public Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed)
         {
-            // TODO:
+            //var taskSetDeletedStateRequest = new TaskSetIsReceiveStateRequest
+            //{
+            //    TaskId = taskId,
+            //    NewState = isViewed
+            //};
+            //var requestContent = TrukmanAPI.SerializeObject(taskSetDeletedStateRequest);
+            //var request = new HttpRequestMessage();
+            //request.Method = HttpMethod.Post;
+            //request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            //request.RequestUri = CreateRequestUri(TASK_SET_IS_RECEIVE_STATE_ENDPOINT, null);
+            //var result = await ExecuteRequestAsync<TaskSetIsReceiveStateResponse>(request);
+            //return result.Task;
+
             throw new NotImplementedException();
         }
 
@@ -1297,9 +1312,8 @@ namespace KAS.Trukman.Storage
             var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
 
             Trip trip = null;
-            var taskRequest = await this.GetTaskRequestByTaskID(result.Task.Id.ToString());
-            if (taskRequest != null && taskRequest.Task != null)
-                trip = this.TaskRequestToTrip(taskRequest);
+            if (result.Task != null)
+                trip = this.TaskToTrip(result.Task);
 
             return trip;
         }
@@ -1319,9 +1333,8 @@ namespace KAS.Trukman.Storage
             var result = await ExecuteRequestAsync<TaskArrivalLoadingResponse>(request);
 
             Trip trip = null;
-            var taskRequest = await this.GetTaskRequestByTaskID(result.Task.Id.ToString());
-            if (taskRequest != null && taskRequest.Task != null)
-                trip = this.TaskRequestToTrip(taskRequest);
+            if (result.Task != null)
+                trip = this.TaskToTrip(result.Task);
 
             return trip;
         }

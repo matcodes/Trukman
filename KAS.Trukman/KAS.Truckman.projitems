@@ -80,6 +80,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectBrokersRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTaskByIdRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskDoneRequest.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectBrokersResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTaskByIdResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalUnloadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneLoadingResponse.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanDirectionResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanGeocodeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TrukmanReverseGeocodeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskPhoto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\TaskPoint.cs" />

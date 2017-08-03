@@ -77,6 +77,42 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("CancelTime")]
         public DateTime? CancelTime { get; set; }
 
+        [JsonProperty("RemoveTime")]
+        public DateTime? RemovedTime { get; set; }
+
+        [JsonProperty("Number")]
+        public string Number { get; set; }
+
+        [JsonProperty("InvoiceUri")]
+        public string InvoiceUri { get; set; }
+
+        [JsonProperty("LoadingPhone")]
+        public string LoadingPhone { get; set; }
+
+        [JsonProperty("UnloadingPhone")]
+        public string UnloadingPhone { get; set; }
+
+        [JsonProperty("LoadingFax")]
+        public string LoadingFax { get; set; }
+
+        [JsonProperty("UnloadingFax")]
+        public string UnloadingFax { get; set; }
+
+        [JsonProperty("LoadingInstructions")]
+        public string LoadingInstructions { get; set; }
+
+        [JsonProperty("UnloadingInstructions")]
+        public string UnloadingInstructions { get; set; }
+
+        [JsonProperty("IsAlertReceive")]
+        public bool IsAlertReceive { get; set; }
+
+        [JsonProperty("RequestedDriverId")]
+        public Guid? RequestedDriverId { get; set; }
+
+        [JsonProperty("Weight")]
+        public int Weight { get; set; }
+
         [JsonProperty("Owner")]
         public Owner Owner { get; set; }
 
@@ -97,6 +133,12 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("Broker")]
         public Broker Broker { get; set; }
+
+        [JsonProperty("Alerts")]
+        public TaskAlert[] Alerts { get; set; }
+
+        [JsonProperty("RequestedDriver")]
+        public Driver RequestedDriver { get; set; }
     }
     #endregion
 }

@@ -125,13 +125,13 @@ namespace KAS.Trukman.Data.Classes
 			set { this.SetValue("DriverAccepted", value); }
 		}
 
-		public string DeclineReason 
-		{
-			get { return (string)this.GetValue("DeclineReason", null); }
-			set { this.SetValue("DeclineReason", value); }
-		}
+        public string DeclineReason
+        {
+            get { return (string)this.GetValue("DeclineReason", null); }
+            set { this.SetValue("DeclineReason", value); }
+        }
 
-		public bool JobCancelled 
+        public bool JobCancelled 
 		{
 			get { return (bool)this.GetValue("JobCancelled", false); }
 			set { this.SetValue("JobCancelled", value); }
