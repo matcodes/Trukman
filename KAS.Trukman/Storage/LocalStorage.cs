@@ -744,7 +744,7 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task<Notification> GetNotification()
+        public async Task<JobNotification> GetNotification()
         {
             try
             {
@@ -758,18 +758,18 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task SendNotification(Trip trip, string message)
-        {
-            try
-            {
-                await _externalStorage.SendNotification(trip, message);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-            }
-        }
+        //public async Task SendNotification(Trip trip, string message)
+        //{
+        //    try
+        //    {
+        //        await _externalStorage.SendNotification(trip, message);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception);
+        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //    }
+        //}
 
         public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
         {

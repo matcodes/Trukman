@@ -49,12 +49,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\DriverLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\FuelRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\LumperRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Notification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Owner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\ErrorResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddFuelRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddLumperRequestRequest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddTaskLocationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddLocationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddTaskAlertRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerFuelRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerLumperRequestRequest.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectBrokersRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectNotificationsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTaskByIdRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
@@ -91,7 +94,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddFuelRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddLumperRequestResponse.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddTaskLocationResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddLocationResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddTaskAlertResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerFuelRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerLumperRequestResponse.cs" />
@@ -116,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectBrokersResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectNotificationsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTaskByIdResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalUnloadingResponse.cs" />
@@ -136,7 +141,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobAlert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\MainData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Notification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\JobNotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Photo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Trip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\User.cs" />

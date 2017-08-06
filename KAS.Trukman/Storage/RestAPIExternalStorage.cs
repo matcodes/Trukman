@@ -41,7 +41,8 @@ namespace KAS.Trukman.Storage
         private static readonly string FIND_LUMPER_REQUESTS_ENDPOINT = "owners/findlumperrequests";
         private static readonly string ANSWER_FUEL_REQUEST_ENDPOINT = "owners/answerfuelrequest";
         private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
-        private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "selecttaskbyid";
+        private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "owners/selecttaskbyid";
+        private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -56,13 +57,14 @@ namespace KAS.Trukman.Storage
         private static readonly string TASK_DONE_LOADING_ENDPOINT = "drivers/taskdoneloading";
         private static readonly string TASK_DONE_UNLOADING_ENDPOINT = "drivers/taskdoneunloading";
         private static readonly string TASK_DONE_ENDPOINT = "drivers/taskdone";
-        private static readonly string ADD_TASK_LOCATION_ENDPOINT = "drivers/addtasklocation";
         private static readonly string ADD_FUEL_REQUEST_ENDPOINT = "drivers/addfuelrequest";
         private static readonly string CHECK_FUEL_REQUEST_ENDPOINT = "drivers/checkfuelrequest";
         private static readonly string CANCEL_FUEL_REQUEST_ENDPOINT = "drivers/cancelfuelrequest";
         private static readonly string ADD_LUMPER_REQUEST_ENDPOINT = "drivers/addlumperrequest";
         private static readonly string CHECK_LUMPER_REQUEST_ENDPOINT = "drivers/checklumperrequest";
         private static readonly string CANCEL_LUMPER_REQUEST_ENDPOINT = "drivers/cancellumperrequest";
+        private static readonly string ADD_LOCATION_ENDPOINT = "drivers/addlocation";
+        private static readonly string ADD_TASK_ALERT_ENDPOINT = "drivers/addtaskalert";
 
         private static readonly string GOOGLE_GEOCODE_ENDPOINT = "google/geocode";
         private static readonly string GOOGLE_REVERSE_GEOCODE_ENDPOINT = "google/reversegeocode";
@@ -381,10 +383,14 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public Task<string> CreateInvoiceForJobAsync(string tripID)
+        public async Task<string> CreateInvoiceForJobAsync(string tripID)
         {
-            // TODO:
-            throw new NotImplementedException();
+            string uri = "";
+            var task = await this.SelectTaskById(Guid.Parse(tripID));
+            if (task != null)
+                uri = task.InvoiceUri;
+
+            return uri;
         }
 
         //public Task<Trip> CreateTripAsync(Trip trip)
@@ -566,10 +572,51 @@ namespace KAS.Trukman.Storage
             var result = await ExecuteRequestAsync<CancelDriverRequestResponse>(request);
         }
 
-        public Task<Notification> GetNotification()
+        private JobNotification NotificationToJobNotification(Notification notification)
         {
+            //Trip trip = null;
+            //User sender = null;
+            //User receiver = null;
+
+            //if (notification.Trip != null)
+            //    trip = this.ParseJobToTrip(notification.Trip);
+            //if (notification.Sender != null)
+            //    sender = this.ParseUserToUser(notification.Sender);
+            //if (notification.Receiver != null)
+            //    sender = this.ParseUserToUser(notification.Receiver);
+
+            var jobNotification = new JobNotification
+            {
+                //ID = notification.ObjectId,
+                //Text = notification.Text,
+                //IsSending = notification.IsSending,
+                //IsReading = notification.IsReading,
+                //Trip = trip,
+                //Sender = sender,
+                //Receiver = receiver
+            };
+            return jobNotification;
+        }
+
+        public async Task<JobNotification> GetNotification()
+        {
+            var selectNotificationsRequest = new SelectNotificationsRequest
+            {
+                ReceiverId = Guid.Parse(_currentUser.ID),
+                Skip = 0,
+                Limit = 0
+            };
+            var requestContent = SerializeObject(selectNotificationsRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_NOTIFICATIONS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SelectNotificationsResponse>(request);
+
+            //return result.Notifications;
+
             // TODO:
-            return Task.FromResult<Notification>(default(Notification));
+            return default(JobNotification);
         }
 
         public async Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -780,26 +827,25 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip> AddLocation(string id, Position location)
         {
-            var addTaskLocationRequest = new AddTaskLocationRequest
+
+            var addLocationRequest = new AddLocationRequest
             {
-                TaskId = Guid.Parse(id),
+                DriverId = Guid.Parse(_currentUser.ID),
                 Latitude = (decimal)location.Latitude,
                 Longtitude = (decimal)location.Longitude,
                 Speed = 0,
                 CreateTime = DateTime.UtcNow
             };
-            var requestContent = SerializeObject(addTaskLocationRequest);
+            var requestContent = SerializeObject(addLocationRequest);
             var request = new HttpRequestMessage();
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
-            request.RequestUri = CreateRequestUri(ADD_TASK_LOCATION_ENDPOINT, null);
-            var result = await ExecuteRequestAsync<AddTaskLocationResponse>(request);
+            request.RequestUri = CreateRequestUri(ADD_LOCATION_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddLocationResponse>(request);
 
             Trip trip = null;
-            if (result.TaskRequest != null && result.TaskRequest.Task != null)
-                trip = this.TaskToTrip(result.TaskRequest.Task);
-
-            //trip.Location = location;
+            if (result.Task != null && result.Task != null)
+                trip = this.TaskToTrip(result.Task);
 
             return trip;
         }
@@ -813,10 +859,10 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task<Trip[]> SelectActiveTrips()
+        public Task<Trip[]> SelectActiveTrips()
         {
             // TODO:
-            return new Trip[] { };
+            return Task.FromResult(new Trip[] { });
         }
 
         public async Task<User[]> SelectBrockersAsync()
@@ -876,7 +922,10 @@ namespace KAS.Trukman.Storage
         public async Task<Position> SelectDriverPosition(string tripID)
         {
             var trip = await this.SelectTripByID(tripID);
-            return trip.Location;
+            if (trip != null)
+                return trip.Location;
+            else
+                return new Position();
         }
 
         private User DriverToUser(Driver driver)
@@ -1008,8 +1057,8 @@ namespace KAS.Trukman.Storage
 
         public Task<JobPoint[]> SelectJobPointsAsync()
         {
-            // TODO:
-            throw new NotImplementedException();
+            return Task.FromResult(new JobPoint[] { });
+            //throw new NotImplementedException();
         }
 
         public Task<Photo[]> SelectPhotosAsync()
@@ -1061,9 +1110,19 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip> SelectTripByID(string id)
         {
+            TrukmanTask task = await SelectTaskById(Guid.Parse(id));
+
+            Trip trip = null;
+            if (task != null)
+                trip = this.TaskToTrip(task);
+            return trip;
+        }
+
+        private async Task<TrukmanTask> SelectTaskById(Guid taskId)
+        {
             var selectTaskByIdRequest = new SelectTaskByIdRequest
             {
-                TaskId = Guid.Parse(id)
+                TaskId = taskId
             };
             var requestContent = SerializeObject(selectTaskByIdRequest);
             var request = new HttpRequestMessage();
@@ -1071,11 +1130,7 @@ namespace KAS.Trukman.Storage
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(SELECT_TASK_BY_ID_ENDPOINT, null);
             var result = await ExecuteRequestAsync<SelectTaskByIdResponse>(request);
-
-            Trip trip = null;
-            if (result.Task != null)
-                trip = this.TaskToTrip(result.Task);
-            return trip;
+            return result.Task;
         }
 
         private async Task<Owner> GetCompanyById(string companyId)
@@ -1149,17 +1204,26 @@ namespace KAS.Trukman.Storage
                 await this.AddLumperRequest(Guid.Parse(tripID), DateTime.UtcNow);
         }
 
-        public Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+        public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
         {
-            // TODO:
-            throw new NotImplementedException();
+            var addTaskAlertRequest = new AddTaskAlertRequest
+            {
+                TaskId = Guid.Parse(tripID),
+                Time = DateTime.UtcNow,
+                Kind = alertType,
+                Text = alertText
+            };
+            var requestContent = SerializeObject(addTaskAlertRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ADD_TASK_ALERT_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddTaskAlertResponse>(request);
         }
 
-        public async Task SendNotification(Trip trip, string message)
+        public Task SendNotification(Trip trip, string message)
         {
-            // TODO: Send notification
-            await Task.Delay(0);
-            //throw new NotImplementedException();
+            return Task.Delay(0);
         }
 
         private async Task<TrukmanTask> TaskDoneLoading(Guid taskId, DateTime doneTime, byte[] photoData)
@@ -1245,7 +1309,7 @@ namespace KAS.Trukman.Storage
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(ANSWER_FUEL_REQUEST_ENDPOINT, null);
-            var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
+            var result = await ExecuteRequestAsync<AnswerFuelRequestResponse>(request);
         }
 
         private async Task SetLumperAdvanceState(Advance advance)
@@ -1268,7 +1332,7 @@ namespace KAS.Trukman.Storage
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(ANSWER_LUMPER_REQUEST_ENDPOINT, null);
-            var result = await ExecuteRequestAsync<TaskArrivalUnloadingResponse>(request);
+            var result = await ExecuteRequestAsync<AnswerLumperRequestResponse>(request);
         }
 
         public async Task SetAdvanceStateAsync(Advance advance)

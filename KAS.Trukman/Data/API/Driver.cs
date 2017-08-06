@@ -25,6 +25,12 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("DriverLock")]
         public DriverLock DriverLock { get; set; }
 
+        [JsonProperty("Latitude")]
+        public decimal Latitude { get; set; }
+
+        [JsonProperty("Longitude")]
+        public decimal Longitude { get; set; }
+
         public bool IsActive
         {
             get { return (this.DriverLock == null); }

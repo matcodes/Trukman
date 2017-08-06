@@ -201,10 +201,10 @@ namespace KAS.Trukman.AppContext
             {
                 await _localStorage.SendComcheckRequestAsync(tripID, requestType);
 
-                var message = (requestType == ComcheckRequestType.FuelAdvance ? AppLanguages.CurrentLanguage.OwnerFuelRequestedSystemMessage : AppLanguages.CurrentLanguage.OwnerLumperRequestedSystemMessage);
-                message = String.Format(message, Driver.Trip.JobRef, User.FullName);
+                //var message = (requestType == ComcheckRequestType.FuelAdvance ? AppLanguages.CurrentLanguage.OwnerFuelRequestedSystemMessage : AppLanguages.CurrentLanguage.OwnerLumperRequestedSystemMessage);
+                //message = String.Format(message, Driver.Trip.JobRef, User.FullName);
 
-                await _localStorage.SendNotification(Driver.Trip, message);
+                //await _localStorage.SendNotification(Driver.Trip, message);
             }
             catch (Exception exception)
             {

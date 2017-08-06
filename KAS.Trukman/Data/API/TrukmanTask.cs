@@ -113,6 +113,9 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("Weight")]
         public int Weight { get; set; }
 
+        [JsonProperty("Cost")]
+        public decimal Cost { get; set; }
+
         [JsonProperty("Owner")]
         public Owner Owner { get; set; }
 

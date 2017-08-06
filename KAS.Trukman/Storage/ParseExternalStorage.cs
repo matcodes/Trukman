@@ -885,9 +885,9 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public async Task<Notification> GetNotification()
+        public async Task<JobNotification> GetNotification()
         {
-            Notification notification = null;
+            JobNotification notification = null;
 
             var query = new ParseQuery<ParseNotification>()
                 .WhereEqualTo("Receiver", ParseUser.CurrentUser)
@@ -937,7 +937,7 @@ namespace KAS.Trukman.Storage
 			}
         }
 	
-        private Notification ParseNotificationToNotification(ParseNotification parseNotification)
+        private JobNotification ParseNotificationToNotification(ParseNotification parseNotification)
         {
             Trip trip = null;
             User sender = null;
@@ -950,7 +950,7 @@ namespace KAS.Trukman.Storage
             if (parseNotification.Receiver != null)
                 sender = this.ParseUserToUser(parseNotification.Receiver);
 
-            var notification = new Notification
+            var jobNotification = new JobNotification
             {
                 ID = parseNotification.ObjectId,
                 Text = parseNotification.Text,
@@ -960,7 +960,7 @@ namespace KAS.Trukman.Storage
                 Sender = sender,
                 Receiver = receiver
             };
-            return notification;
+            return jobNotification;
         }
 
         private async Task SetDriverState(string userID, int state)

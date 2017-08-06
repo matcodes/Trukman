@@ -304,26 +304,26 @@ namespace KAS.Trukman.AppContext
                 try
                 {
                     var kind = PhotoKind.Other; // "Other";
-                    var notificationMessage = "";
+                    //var notificationMessage = "";
                     var pointsText = "";
                     if ((this.TripState == 5) || (this.TripState == 6))
                     {
                         kind = PhotoKind.Pickup; // PICKUP_PHOTO_KIND;
                         tripState = 4;
-                        notificationMessage = "Bill of lading was uploaded";
+                        //notificationMessage = "Bill of lading was uploaded";
                         pointsText = AppLanguages.CurrentLanguage.PickUpPhotoJobPointsText;
                     }
                     else if ((this.TripState == 7) || (this.TripState == 8))
                     {
                         kind = PhotoKind.Delivery; // DELIVERY_PHOTO_KIND;
                         tripState = 9;
-                        notificationMessage = "Delivery proof was uploaded";
+                        //notificationMessage = "Delivery proof was uploaded";
                         pointsText = AppLanguages.CurrentLanguage.DeliveryPhotoJobPointsText;
                     }
                     await _localStorage.SendPhoto(this.TripID, message.Data, kind);
                     //await _localStorage.AddPointsAsync(this.TripID, pointsText, 5);
 
-                    await _localStorage.SendNotification(this.Trip, notificationMessage);
+                    //await _localStorage.SendNotification(this.Trip, notificationMessage);
 
                     if (this.TripState != tripState)
                     {
@@ -471,8 +471,8 @@ namespace KAS.Trukman.AppContext
                     //if (minutes >= 15)
                     //    await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.PickUpOnTimeEarlyJobPointsText, 5);
 
-                    var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToPickupSystemMessage, trip.JobRef, TrukmanContext.User.FullName);
-                    await _localStorage.SendNotification(Trip, message);
+                    //var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToPickupSystemMessage, trip.JobRef, TrukmanContext.User.FullName);
+                    //await _localStorage.SendNotification(Trip, message);
 
                     Trip = trip;
 
@@ -523,8 +523,8 @@ namespace KAS.Trukman.AppContext
                     //if (minutes >= 15)
                     //    await _localStorage.AddPointsAsync(trip.ID, AppLanguages.CurrentLanguage.DeliveryOnTimeEarlyJobPointsText, 5);
 
-                    var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToDeliverySystemMessage, trip.JobRef, trip.Driver.FullName);
-                    await _localStorage.SendNotification(Trip, message);
+                    //var message = String.Format(AppLanguages.CurrentLanguage.OwnerArrivedToDeliverySystemMessage, trip.JobRef, trip.Driver.FullName);
+                    //await _localStorage.SendNotification(Trip, message);
 
                     Trip = trip;
 

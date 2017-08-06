@@ -5,11 +5,11 @@ using System.Text;
 
 namespace KAS.Trukman.Data.API.Requests
 {
-    #region AddTaskLocationRequest
-    public class AddTaskLocationRequest : BaseRequest
+    #region AddLocationRequest
+    public class AddLocationRequest : BaseRequest
     {
-        [JsonProperty("TaskId")]
-        public Guid TaskId { get; set; }
+        [JsonProperty("DriverId")]
+        public Guid DriverId { get; set; }
 
         [JsonProperty("Latitude")]
         public decimal Latitude { get; set; }
