@@ -84,6 +84,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectNotificationsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTaskByIdRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTasksByDriverIdRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SetNotificationIsViewedRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskDoneRequest.cs" />
@@ -122,6 +124,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectNotificationsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTaskByIdResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTasksByDriverIdResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SetNotificationIsViewedResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalUnloadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskDoneLoadingResponse.cs" />

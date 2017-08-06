@@ -32,10 +32,6 @@ namespace KAS.Trukman.Storage
         private static readonly string GET_DRIVER_REQUESTS_ENDPOINT = "owners/getdriverrequests";
         private static readonly string ANSWER_DRIVER_REQUEST_ENDPOINT = "owners/answerdriverrequest";
         private static readonly string SELECT_DRIVERS_ENDPOINT = "owners/selectdrivers";
-        //private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
-        //private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
-        //private static readonly string CHECK_TASK_REQUEST_ENDPOINT = "owners/checktaskrequest";
-        //private static readonly string CANCEL_TASK_REQUEST_ENDPOINT = "owners/canceltaskrequest";
         private static readonly string SELECT_BROKERS_ENDPOINT = "owners/selectbrokers";
         private static readonly string FIND_FUEL_REQUESTS_ENDPOINT = "owners/findfuelrequests";
         private static readonly string FIND_LUMPER_REQUESTS_ENDPOINT = "owners/findlumperrequests";
@@ -43,6 +39,7 @@ namespace KAS.Trukman.Storage
         private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
         private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "owners/selecttaskbyid";
         private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
+        private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -65,16 +62,13 @@ namespace KAS.Trukman.Storage
         private static readonly string CANCEL_LUMPER_REQUEST_ENDPOINT = "drivers/cancellumperrequest";
         private static readonly string ADD_LOCATION_ENDPOINT = "drivers/addlocation";
         private static readonly string ADD_TASK_ALERT_ENDPOINT = "drivers/addtaskalert";
+        private static readonly string SELECT_TASKS_BY_DRIVER_ID_ENDPOINT = "drivers/selecttasksbydriverid";
 
         private static readonly string GOOGLE_GEOCODE_ENDPOINT = "google/geocode";
         private static readonly string GOOGLE_REVERSE_GEOCODE_ENDPOINT = "google/reversegeocode";
         private static readonly string GOOGLE_DIRECTION_ENDPOINT = "google/direction";
-        //private static readonly string GOOGLE_TEXT_SEARCH_ENDPOINT = "google/textsearch";
 
         public static readonly string DIRECTION_MOVE_TYPE_DRIVING = "driving";
-        //public static readonly string DIRECTION_MOVE_TYPE_WALKING = "walking";
-        //public static readonly string DIRECTION_MOVE_TYPE_BICYCLING = "bicycling";
-        //public static readonly string DIRECTION_MOVE_TYPE_TRANSIT = "transit";
 
         private User _currentUser = null;
         private string _token { get; set; }
@@ -574,28 +568,43 @@ namespace KAS.Trukman.Storage
 
         private JobNotification NotificationToJobNotification(Notification notification)
         {
-            //Trip trip = null;
-            //User sender = null;
-            //User receiver = null;
+            Trip trip = null;
+            User sender = null;
+            User receiver = null;
 
-            //if (notification.Trip != null)
-            //    trip = this.ParseJobToTrip(notification.Trip);
-            //if (notification.Sender != null)
-            //    sender = this.ParseUserToUser(notification.Sender);
-            //if (notification.Receiver != null)
-            //    sender = this.ParseUserToUser(notification.Receiver);
+            if (notification.Task != null)
+                trip = this.TaskToTrip(notification.Task);
+            if (notification.Task != null && notification.Task.Driver != null)
+                sender = this.DriverToUser(notification.Task.Driver);
+            if (notification.Task != null && notification.Task.Owner != null)
+                sender = this.OwnerToUser(notification.Task.Owner);
 
             var jobNotification = new JobNotification
             {
-                //ID = notification.ObjectId,
-                //Text = notification.Text,
+                ID = notification.Id.ToString(),
+                Text = notification.Text,
                 //IsSending = notification.IsSending,
                 //IsReading = notification.IsReading,
-                //Trip = trip,
-                //Sender = sender,
-                //Receiver = receiver
+                Trip = trip,
+                Sender = sender,
+                Receiver = receiver
             };
             return jobNotification;
+        }
+
+        private async Task<Notification> SetNotificationIsViewed(Guid notificationId)
+        {
+            var setNotificationIsViewedRequest = new SetNotificationIsViewedRequest
+            {
+                NotificationId = notificationId
+            };
+            var requestContent = SerializeObject(setNotificationIsViewedRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SET_NOTIFICATION_IS_VIEWED_ENDPOINT);
+            var result = await ExecuteRequestAsync<SetNotificationIsViewedResponse>(request);
+            return result.Notification;
         }
 
         public async Task<JobNotification> GetNotification()
@@ -613,10 +622,15 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(SELECT_NOTIFICATIONS_ENDPOINT, null);
             var result = await ExecuteRequestAsync<SelectNotificationsResponse>(request);
 
-            //return result.Notifications;
-
-            // TODO:
-            return default(JobNotification);
+            if (result.Notifications != null)
+            {
+                var notification = result.Notifications.FirstOrDefault();
+                // this.SetNotificationIsViewed(notification.Id);  TODO: 
+                var jobNotification = this.NotificationToJobNotification(notification);
+                return jobNotification;
+            }
+            else
+                return null;
         }
 
         public async Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -940,6 +954,18 @@ namespace KAS.Trukman.Storage
             };
         }
 
+        private User OwnerToUser(Owner owner)
+        {
+            return new User
+            {
+                ID = owner.Id.ToString(),
+                UserName = owner.Name,
+                FirstName = owner.Name,
+                LastName = owner.Name,
+                Phone = owner.Phone
+            };
+        }
+
         public async Task<User[]> SelectDriversAsync()
         {
             var selectDriversRequest = new SelectDriversRequest
@@ -1055,9 +1081,28 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public Task<JobPoint[]> SelectJobPointsAsync()
+        private async Task<TrukmanTask[]> SelectTasksByDriverId(Guid driverId, int skip, int limit)
         {
-            return Task.FromResult(new JobPoint[] { });
+            var selectTasksByDriverIdRequest = new SelectTasksByDriverIdRequest
+            {
+                DriverId = driverId,
+                Skip = skip,
+                Limit = limit
+            };
+            var requestContent = SerializeObject(selectTasksByDriverIdRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_TASKS_BY_DRIVER_ID_ENDPOINT);
+            var result = await ExecuteRequestAsync<SelectTasksByDriverIdResponse>(request);
+            return result.Tasks;
+        }
+
+        public async Task<JobPoint[]> SelectJobPointsAsync()
+        {
+            var taskPoints = await this.SelectTasksByDriverId(Guid.Parse(_currentUser.ID), 0, 0);
+
+            //return Task.FromResult(new JobPoint[] { });
             //throw new NotImplementedException();
         }
 
