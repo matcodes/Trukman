@@ -8,7 +8,6 @@ using Xamarin.Forms.Maps;
 using System.Net.Http;
 using KAS.Trukman.Data.API;
 using Newtonsoft.Json;
-using KAS.Trukman.Droid.Helpers;
 using System.Linq;
 using System.Collections.Generic;
 using KAS.Trukman.Data.API.Requests;
@@ -40,6 +39,7 @@ namespace KAS.Trukman.Storage
         private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "owners/selecttaskbyid";
         private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
         private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
+        private static readonly string SELECT_TASKS_BY_OWNER_ID_ENDPOINT = "owners/selecttasksbyownerid";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -266,8 +266,6 @@ namespace KAS.Trukman.Storage
 
         private Trip TaskToTrip(TrukmanTask task)
         {
-            //var task = taskRequest.Task;
-
             var shipper = new Contractor
             {
                 ID = Guid.NewGuid().ToString(),
@@ -805,7 +803,7 @@ namespace KAS.Trukman.Storage
             _currentUser = new User
             {
                 ID = _driver.Id.ToString(),
-                UserName = string.Format("{0} {1}", driverInfo.FirstName.Trim(), driverInfo.LastName.Trim()).ToLower(), // TODO: phone???
+                UserName = string.Format("{0} {1}", driverInfo.FirstName.Trim(), driverInfo.LastName.Trim()).ToLower(),
                 Phone = driverInfo.Phone,
                 Role = UserRole.Driver,
                 FirstName = driverInfo.FirstName,
@@ -1075,10 +1073,37 @@ namespace KAS.Trukman.Storage
             return advances;
         }
 
-        public Task<JobAlert[]> SelectJobAlertsAsync()
+        private JobAlert[] TaskAlertsToJobAlerts(TrukmanTask task)
         {
-            // TODO:
-            throw new NotImplementedException();
+            Company company = null;
+            if (task.Owner != null)
+                company = this.OwnerToCompany(task.Owner);
+            Trip job = this.TaskToTrip(task);
+
+            var jobAlerts = task.Alerts.Select(alert =>
+            {
+                var jobAlert = new JobAlert
+                {
+                    ID = alert.Id.ToString(),
+                    AlertType = alert.Kind,
+                    AlertText = alert.Text,
+                    Company = company,
+                    Job = job,
+                    //IsViewed = alert.IsViewed
+                };
+
+                return jobAlert;
+            }).ToArray<JobAlert>();
+
+            return jobAlerts;
+        }
+
+        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        {
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+
+            var jobAlerts = tasks.SelectMany(task => this.TaskAlertsToJobAlerts(task)).ToArray<JobAlert>();
+            return jobAlerts;
         }
 
         private async Task<TrukmanTask[]> SelectTasksByDriverId(Guid driverId, int skip, int limit)
@@ -1098,18 +1123,93 @@ namespace KAS.Trukman.Storage
             return result.Tasks;
         }
 
-        public async Task<JobPoint[]> SelectJobPointsAsync()
+        private JobPoint[] TaskPointsToJobPoints(TrukmanTask task)
         {
-            var taskPoints = await this.SelectTasksByDriverId(Guid.Parse(_currentUser.ID), 0, 0);
+            Trip job = null;
+            if (task != null)
+                job = this.TaskToTrip(task);
 
-            //return Task.FromResult(new JobPoint[] { });
-            //throw new NotImplementedException();
+            User driver = null;
+            if (task.Driver != null)
+                driver = this.DriverToUser(task.Driver);
+
+            Company company = null;
+            if (task.Owner != null)
+                company = this.OwnerToCompany(task.Owner);
+
+            var jobPoints = task.TaskPoints
+                .Select(point =>
+                {
+                    var jobPoint = new JobPoint
+                    {
+                        ID = point.Id.ToString(),
+                        //Text = point.Kind,
+                        Value = point.Points,
+                        Job = job,
+                        Driver = driver,
+                        Company = company
+                    };
+
+                    return jobPoint;
+                }).ToArray<JobPoint>();
+
+            return jobPoints;
         }
 
-        public Task<Photo[]> SelectPhotosAsync()
+        private async Task<TrukmanTask[]> SelectTasksByOwnerId(Guid ownerId, int skip, int limit)
         {
-            // TODO:
-            throw new NotImplementedException();
+            var selectTasksByOwnerIdRequest = new SelectTasksByOwnerIdRequest
+            {
+                OwnerId = ownerId,
+                Skip = skip,
+                Limit = limit
+            };
+            var requestContent = SerializeObject(selectTasksByOwnerIdRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SELECT_TASKS_BY_OWNER_ID_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SelectTasksByOwnerIdResponse>(request);
+            return result.Tasks;
+        }
+
+        public async Task<JobPoint[]> SelectJobPointsAsync()
+        {
+            var tasks = await this.SelectTasksByDriverId(Guid.Parse(_currentUser.ID), 0, 0);
+
+            var jobPoints = tasks.SelectMany(task => this.TaskPointsToJobPoints(task)).ToArray<JobPoint>();
+            return jobPoints;
+        }
+
+        private Photo[] TaskPhotosToPhotos(TrukmanTask task)
+        {
+            var photos = task.TaskPhotos.Select(taskPhoto =>
+            {
+                var job = this.TaskToTrip(task);
+                var company = this.OwnerToCompany(task.Owner);
+
+                var photo = new Photo
+                {
+                    ID = taskPhoto.Id.ToString(),
+                    Job = job,
+                    Company = company,
+                    Type = taskPhoto.Kind,
+                    Uri = new Uri(taskPhoto.Uri),
+                    //IsViewed = taskPhoto.IsViewed
+                };
+
+                return photo;
+            }).ToArray<Photo>();
+
+            return photos;
+        }
+
+        public async Task<Photo[]> SelectPhotosAsync()
+        {
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+
+            var jobPhotos = tasks.SelectMany(task => this.TaskPhotosToPhotos(task)).ToArray<Photo>();
+            return jobPhotos;
         }
 
         private async Task<DriverRequest[]> GetDriverRequests(Guid ownerId)
@@ -1131,9 +1231,7 @@ namespace KAS.Trukman.Storage
         {
             var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
             if (driverRequests.Length > 0)
-            {
                 return DriverToUser(driverRequests[0].Driver);
-            }
 
             return null;
         }
@@ -1402,7 +1500,7 @@ namespace KAS.Trukman.Storage
             //request.RequestUri = CreateRequestUri(TASK_SET_IS_RECEIVE_STATE_ENDPOINT, null);
             //var result = await ExecuteRequestAsync<TaskSetIsReceiveStateResponse>(request);
             //return result.Task;
-
+            // TODO: 
             throw new NotImplementedException();
         }
 

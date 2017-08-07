@@ -85,6 +85,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectNotificationsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTaskByIdRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTasksByDriverIdRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectTasksByOwnerIdRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SetNotificationIsViewedRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalLoadingRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\TaskArrivalUnloadingRequest.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectNotificationsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTaskByIdResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTasksByDriverIdResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectTasksByOwnerIdResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SetNotificationIsViewedResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalLoadingResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\TaskArrivalUnloadingResponse.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\PhotoKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\SignUpContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\SignUpLanguage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\TaskPointKinds.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\TaskRequestAnswers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\TaskRequestDeclineReasons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\UserRole.cs" />
@@ -180,11 +183,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\ViewPort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TaskPointKindsExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RouteHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\AppLanguages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Languages\EnglishAppLanguage.cs" />

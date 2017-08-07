@@ -286,6 +286,12 @@ namespace KAS.Trukman.Languages
                 this.DeliveryOnTimeEarlyJobPointsText = appLanguage.DeliveryOnTimeEarlyJobPointsText;
                 this.DeliveryLateJobPointsText = appLanguage.DeliveryLateJobPointsText;
                 this.DeliveryPhotoJobPointsText = appLanguage.DeliveryPhotoJobPointsText;
+                this.ArrivalLoadingJobPointsText = appLanguage.ArrivalLoadingJobPointsText;
+                this.EndLoadingJobPointsText = appLanguage.EndLoadingJobPointsText;
+                this.ArrivalUnloadingJobPointsText = appLanguage.ArrivalUnloadingJobPointsText;
+                this.EndUnloadingJobPointsText = appLanguage.EndUnloadingJobPointsText;
+                this.DoneTaskJobPointsText = appLanguage.DoneTaskJobPointsText;
+                this.SendPhotoJobPointsText = appLanguage.SendPhotoJobPointsText;
                 #endregion
             }
         }
@@ -1501,6 +1507,42 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("DeliveryPhotoJobPointsText"); }
             set { this.SetValue("DeliveryPhotoJobPointsText", value); }
+        }
+
+        public string ArrivalLoadingJobPointsText
+        {
+            get { return (string)this.GetValue("ArrivalLoadingJobPointsText"); }
+            set { this.SetValue("ArrivalLoadingJobPointsText", value); }
+        }
+
+        public string EndLoadingJobPointsText
+        {
+            get { return (string)this.GetValue("EndLoadingJobPointsText"); }
+            set { this.SetValue("EndLoadingJobPointsText", value); }
+        }
+
+        public string ArrivalUnloadingJobPointsText
+        {
+            get { return (string)this.GetValue("ArrivalUnloadingJobPointsText"); }
+            set { this.SetValue("ArrivalUnloadingJobPointsText", value); }
+        }
+
+        public string EndUnloadingJobPointsText
+        {
+            get { return (string)this.GetValue("EndUnloadingJobPointsText"); }
+            set { this.SetValue("EndUnloadingJobPointsText", value); }
+        }
+
+        public string DoneTaskJobPointsText
+        {
+            get { return (string)this.GetValue("DoneTaskJobPointsText"); }
+            set { this.SetValue("DoneTaskJobPointsText", value); }
+        }
+
+        public string SendPhotoJobPointsText
+        {
+            get { return (string)this.GetValue("SendPhotoJobPointsText"); }
+            set { this.SetValue("SendPhotoJobPointsText", value); }
         }
         #endregion
     }

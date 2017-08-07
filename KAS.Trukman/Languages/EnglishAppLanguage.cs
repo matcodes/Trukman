@@ -7,7 +7,7 @@ namespace KAS.Trukman.Languages
     #region EnglishAppLanguage
     public class EnglishAppLanguage : AppLanguage
     {
-        public EnglishAppLanguage() 
+        public EnglishAppLanguage()
             : base("English")
         {
             this.AppName = "TRUKMAN";
@@ -21,7 +21,7 @@ namespace KAS.Trukman.Languages
             this.OwnerInvoiceListPageName = "INVOICE";
             this.OwnerInvoiceViewerPageName = "INVOICE";
             this.OwnerDeliveryUpdatePageName = "UPDATES";
-			this.OwnerDelayAlertsPageName = "DELAY ALERTS";
+            this.OwnerDelayAlertsPageName = "DELAY ALERTS";
             this.TripPageName = "TRIP";
             this.ShipperInfoPageName = "SHIPPER INFO";
             this.ReceiverInfoPageName = "RECEIVER INFO";
@@ -36,20 +36,20 @@ namespace KAS.Trukman.Languages
             this.DriverAuthorizePageName = "DRIVER AUTHORIZATION";
             #endregion
 
-			#region Lists
-			this.AdvanceListJobNumberLabel = "Job#:";
-			this.AdvanceListDriverNameLabel = "Driver:";
+            #region Lists
+            this.AdvanceListJobNumberLabel = "Job#:";
+            this.AdvanceListDriverNameLabel = "Driver:";
             this.InvoiceListJobNumberLabel = "Job#:";
             this.InvoiceListDriverNameLabel = "Driver:";
-			this.JobAlertListJobNumberLabel = "Job#:";
-			this.JobAlertListDriverNameLabel = "Driver:";
+            this.JobAlertListJobNumberLabel = "Job#:";
+            this.JobAlertListDriverNameLabel = "Driver:";
             #endregion
 
             #region ComcheckPopup
             this.ComcheckPopupEntryPlaceholer = "Comcheck";
-			this.ComcheckPopupCancelButtonText = "Cancel";
-			this.ComcheckPopupAcceptButtonText = "Accept";
-			#endregion
+            this.ComcheckPopupCancelButtonText = "Cancel";
+            this.ComcheckPopupAcceptButtonText = "Accept";
+            #endregion
 
             #region Main menu
             this.MainMenuHomeLabel = "Home";
@@ -97,9 +97,9 @@ namespace KAS.Trukman.Languages
             this.HomeArrivedOnTimeLabel = "Congrats for arriving on time! You received";
             this.HomeArrivedOnTimeBonusPointsLabel = "50 pts";
             this.HomeArrivedOnTimeBonusPointsMinsLabel = "Plus 5 points for arriving 15 mins early";
-			this.HomeArrivedTotalPointsLabel = "Total Points: {0}";
+            this.HomeArrivedTotalPointsLabel = "Total Points: {0}";
             this.HomeJobTotalPointsLabel = "You've earned {0} points.";
-			this.HomeDriverTotalPointsLabel = "Total Points: {0}";
+            this.HomeDriverTotalPointsLabel = "Total Points: {0}";
             this.HomeNextStepLabel = "Next Step";
             this.HomeBonusPointsForPickupPhotoLabel = "Send photo of Bill of Lading";
             this.HomeBonusPointsForDeliveryPhotoLabel = "Send photo of Delivery Proof";
@@ -121,9 +121,9 @@ namespace KAS.Trukman.Languages
             this.HomeGPSPopupSettingsButtonText = "Settings";
             this.HomeGPSPopupCancelButtonText = "Cancel";
 
-			this.HomeCongratulations = "Congratulations!";
-			this.HomeRewardsButtonText = "Rewards";
-			this.HomeNewTripButtonText = "New Trip";
+            this.HomeCongratulations = "Congratulations!";
+            this.HomeRewardsButtonText = "Rewards";
+            this.HomeNewTripButtonText = "New Trip";
             #endregion
 
             #region Trip page
@@ -276,6 +276,12 @@ namespace KAS.Trukman.Languages
             this.DeliveryOnTimeEarlyJobPointsText = "Delivery on time 15 mins early points";
             this.DeliveryLateJobPointsText = "Delivery late points";
             this.DeliveryPhotoJobPointsText = "Delivery photo points";
+            this.ArrivalLoadingJobPointsText = "Arrived at pickup points";
+            this.EndLoadingJobPointsText = "End loading points";
+            this.ArrivalUnloadingJobPointsText = "Arrived at destination points";
+            this.EndUnloadingJobPointsText = "End unloading points";
+            this.DoneTaskJobPointsText = "Trip Completed points";
+            this.SendPhotoJobPointsText = "Send photo of Bill of lading points";
             #endregion
         }
     }
