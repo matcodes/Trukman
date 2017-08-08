@@ -12,6 +12,7 @@ using Parse;
 using KAS.Trukman.Storage.ParseClasses;
 using Trukman.Helpers;
 using KAS.Trukman.Data.Route;
+using System.Globalization;
 
 namespace KAS.Trukman.Storage
 {
@@ -751,9 +752,10 @@ namespace KAS.Trukman.Storage
             {
                 var settings = this.GetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY);
                 var utcTime = DateTime.MinValue;
-                DateTime.TryParse(settings, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out utcTime);
+                var culture = new CultureInfo("en-US");
+                DateTime.TryParse(settings,  culture, System.Globalization.DateTimeStyles.AdjustToUniversal, out utcTime);
                 var notification = await _externalStorage.GetNotification(utcTime);
-                this.SetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY, notification.Time.ToString());
+                this.SetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY, notification.Time.ToString(culture));
                 return notification;
             }
             catch (Exception exception)

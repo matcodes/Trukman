@@ -619,15 +619,16 @@ namespace KAS.Trukman.Storage
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(SELECT_NOTIFICATIONS_ENDPOINT, null);
+            // Get ordered notifications
             var result = await ExecuteRequestAsync<SelectNotificationsResponse>(request);
 
             JobNotification jobNotification = null;
             if (result.Notifications != null)
             {
-                var notification = result.Notifications.OrderBy(n => n.Time).FirstOrDefault(n => n.Time > fromUtcTime);
+                var notification = result.Notifications.FirstOrDefault(n => n.Time > fromUtcTime);
                 if (notification != null)
                 {
-                    // this.SetNotificationIsViewed(notification.Id);  TODO: Notifications are marked as viewed only from web app, not from mobile app!!!
+                    // this.SetNotificationIsViewed(notification.Id);  // Notifications are marked as viewed only from web app, not from mobile app!!!
                     jobNotification = this.NotificationToJobNotification(notification);
                 }
             }
@@ -867,17 +868,18 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip> SaveLocation(string id, Position location)
         {
-            // TODO: refresh last location
-            Trip trip = await this.SelectTripByID(id);
-            trip.Location = location;
-
-            return trip;
+            return await this.SelectTripByID(id);
         }
 
-        public Task<Trip[]> SelectActiveTrips()
+        public async Task<Trip[]> SelectActiveTrips()
         {
-            // TODO:
-            return Task.FromResult(new Trip[] { });
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() == DateTime.MinValue).Take(3).ToList<TrukmanTask>();
+            var trips = new List<Trip>();
+            foreach (var task in tasks)
+                trips.Add(this.TaskToTrip(task));
+
+            return trips.ToArray();
         }
 
         public async Task<User[]> SelectBrockersAsync()
@@ -928,10 +930,15 @@ namespace KAS.Trukman.Storage
         //    throw new NotImplementedException();
         //}
 
-        public Task<Trip[]> SelectCompletedTrips()
+        public async Task<Trip[]> SelectCompletedTrips()
         {
-            // TODO:
-            throw new NotImplementedException();
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() != DateTime.MinValue).Take(3).ToList();
+            var trips = new List<Trip>();
+            foreach (var task in tasks)
+                trips.Add(this.TaskToTrip(task));
+
+            return trips.ToArray();
         }
 
         public async Task<Position> SelectDriverPosition(string tripID)
@@ -1103,7 +1110,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<JobAlert[]> SelectJobAlertsAsync()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 3);
 
             var jobAlerts = tasks.SelectMany(task => this.TaskAlertsToJobAlerts(task)).ToArray<JobAlert>();
             return jobAlerts;
@@ -1159,7 +1166,7 @@ namespace KAS.Trukman.Storage
             return jobPoints;
         }
 
-        private async Task<TrukmanTask[]> SelectTasksByOwnerId(Guid ownerId, int skip, int limit)
+        private async Task<IEnumerable<TrukmanTask>> SelectTasksByOwnerId(Guid ownerId, int skip, int limit)
         {
             var selectTasksByOwnerIdRequest = new SelectTasksByOwnerIdRequest
             {
@@ -1178,7 +1185,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<JobPoint[]> SelectJobPointsAsync()
         {
-            var tasks = await this.SelectTasksByDriverId(Guid.Parse(_currentUser.ID), 0, 0);
+            var tasks = await this.SelectTasksByDriverId(Guid.Parse(_currentUser.ID), 0, 3);
 
             var jobPoints = tasks.SelectMany(task => this.TaskPointsToJobPoints(task)).ToArray<JobPoint>();
             return jobPoints;
@@ -1209,7 +1216,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Photo[]> SelectPhotosAsync()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 3);
 
             var jobPhotos = tasks.SelectMany(task => this.TaskPhotosToPhotos(task)).ToArray<Photo>();
             return jobPhotos;
