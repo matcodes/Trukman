@@ -38,7 +38,7 @@ namespace KAS.Trukman.Storage
         private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
         private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "owners/selecttaskbyid";
         private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
-        private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
+        //private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
         private static readonly string SELECT_TASKS_BY_OWNER_ID_ENDPOINT = "owners/selecttasksbyownerid";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
@@ -585,27 +585,28 @@ namespace KAS.Trukman.Storage
                 //IsReading = notification.IsReading,
                 Trip = trip,
                 Sender = sender,
-                Receiver = receiver
+                Receiver = receiver,
+                Time = notification.Time
             };
             return jobNotification;
         }
 
-        private async Task<Notification> SetNotificationIsViewed(Guid notificationId)
-        {
-            var setNotificationIsViewedRequest = new SetNotificationIsViewedRequest
-            {
-                NotificationId = notificationId
-            };
-            var requestContent = SerializeObject(setNotificationIsViewedRequest);
-            var request = new HttpRequestMessage();
-            request.Method = HttpMethod.Post;
-            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
-            request.RequestUri = CreateRequestUri(SET_NOTIFICATION_IS_VIEWED_ENDPOINT);
-            var result = await ExecuteRequestAsync<SetNotificationIsViewedResponse>(request);
-            return result.Notification;
-        }
+        //private async Task<Notification> SetNotificationIsViewed(Guid notificationId)
+        //{
+        //    var setNotificationIsViewedRequest = new SetNotificationIsViewedRequest
+        //    {
+        //        NotificationId = notificationId
+        //    };
+        //    var requestContent = SerializeObject(setNotificationIsViewedRequest);
+        //    var request = new HttpRequestMessage();
+        //    request.Method = HttpMethod.Post;
+        //    request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+        //    request.RequestUri = CreateRequestUri(SET_NOTIFICATION_IS_VIEWED_ENDPOINT);
+        //    var result = await ExecuteRequestAsync<SetNotificationIsViewedResponse>(request);
+        //    return result.Notification;
+        //}
 
-        public async Task<JobNotification> GetNotification()
+        public async Task<JobNotification> GetNotification(DateTime fromUtcTime)
         {
             var selectNotificationsRequest = new SelectNotificationsRequest
             {
@@ -620,15 +621,17 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(SELECT_NOTIFICATIONS_ENDPOINT, null);
             var result = await ExecuteRequestAsync<SelectNotificationsResponse>(request);
 
+            JobNotification jobNotification = null;
             if (result.Notifications != null)
             {
-                var notification = result.Notifications.FirstOrDefault();
-                // this.SetNotificationIsViewed(notification.Id);  TODO: 
-                var jobNotification = this.NotificationToJobNotification(notification);
-                return jobNotification;
+                var notification = result.Notifications.OrderBy(n => n.Time).FirstOrDefault(n => n.Time > fromUtcTime);
+                if (notification != null)
+                {
+                    // this.SetNotificationIsViewed(notification.Id);  TODO: Notifications are marked as viewed only from web app, not from mobile app!!!
+                    jobNotification = this.NotificationToJobNotification(notification);
+                }
             }
-            else
-                return null;
+            return jobNotification;
         }
 
         public async Task<int> GetPointsByDriverIDAsync(string driverID)
@@ -1500,8 +1503,9 @@ namespace KAS.Trukman.Storage
             //request.RequestUri = CreateRequestUri(TASK_SET_IS_RECEIVE_STATE_ENDPOINT, null);
             //var result = await ExecuteRequestAsync<TaskSetIsReceiveStateResponse>(request);
             //return result.Task;
+
             // TODO: 
-            throw new NotImplementedException();
+            return Task.Delay(0);
         }
 
         public async Task<Trip> TripInDelivery(string id, int minutes)

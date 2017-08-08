@@ -82,7 +82,7 @@ namespace KAS.Trukman.Storage
 
         Task DeclineDriverToCompany(string companyID, string driverID);
 
-        Task<JobNotification> GetNotification();
+        Task<JobNotification> GetNotification(DateTime fromUtcTime);
 
         Task SendNotification(Trip trip, string message);
 

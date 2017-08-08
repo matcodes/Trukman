@@ -885,7 +885,7 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
-        public async Task<JobNotification> GetNotification()
+        public async Task<JobNotification> GetNotification(DateTime fromUtcTime)
         {
             JobNotification notification = null;
 

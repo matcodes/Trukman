@@ -25,6 +25,7 @@ namespace KAS.Trukman.Storage
         public static readonly string COMPANY_ID_SETTINGS_KEY = "CompanyID";
         public static readonly string TRIP_ID_SETTINGS_KEY = "TripID";
         public static readonly string TRIP_STATE_SETTINGS_KEY = "TripState";
+        public static readonly string LAST_NOTIFICATION_TIME_SETTINGS_KEY = "LastNotificationTime";
         #endregion
 
         private SQLiteConnection _connection;
@@ -748,7 +749,11 @@ namespace KAS.Trukman.Storage
         {
             try
             {
-                var notification = await _externalStorage.GetNotification();
+                var settings = this.GetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY);
+                var utcTime = DateTime.MinValue;
+                DateTime.TryParse(settings, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out utcTime);
+                var notification = await _externalStorage.GetNotification(utcTime);
+                this.SetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY, notification.Time.ToString());
                 return notification;
             }
             catch (Exception exception)

@@ -43,6 +43,11 @@ namespace KAS.Trukman.Data.Classes
             set { this.SetValue("Receiver", value); }
         }
 
+        public DateTime Time
+        {
+            get { return (DateTime)this.GetValue("Time", DateTime.MinValue); }
+            set { this.SetValue("Time", value); }
+        }
     }
     #endregion
 }
