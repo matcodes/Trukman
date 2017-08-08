@@ -322,7 +322,7 @@ namespace KAS.Trukman.Storage
             Company company = null;
             try
             {
-                company = await _externalStorage.SelectUserCompanyAsync();
+                company = await _externalStorage.SelectUserCompanyAsync();              
             }
             catch (Exception exception)
             {

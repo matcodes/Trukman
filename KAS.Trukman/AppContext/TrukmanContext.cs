@@ -58,7 +58,14 @@ namespace KAS.Trukman.AppContext
                         if (user != null)
                         {
                             User = user;
-                            Company = await _localStorage.SelectUserCompany();
+                            var state = (User != null ? (DriverState)User.Status : DriverState.Waiting);
+                            if (state == DriverState.Waiting)
+                            {
+                                var companyId = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
+                                Company = _localStorage.GetCompanyByID(companyId);
+                            }
+                            else
+                                Company = await _localStorage.SelectUserCompany();
                             _localStorage.Become();
                         }
 
