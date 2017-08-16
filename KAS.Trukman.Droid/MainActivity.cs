@@ -96,6 +96,9 @@ namespace KAS.Trukman.Droid
 
             CreateDirectoryForPictures();
 
+            this.Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
+            //this.Window.AddFlags(WindowManagerFlags.TranslucentStatus);
+
             LoadApplication(new KAS.Trukman.App());
         }
 

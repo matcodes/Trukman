@@ -30,7 +30,9 @@ namespace KAS.Trukman.iOS
 			hockeyManager.Configure ("d30cee35c8b5469d8987e7d557b150f8");
 			hockeyManager.StartManager ();
 
-			TaskScheduler.UnobservedTaskException += (sender, args) => {
+            UIApplication.SharedApplication.IdleTimerDisabled = true;
+
+            TaskScheduler.UnobservedTaskException += (sender, args) => {
 				Console.WriteLine(args.Exception);
 			};
 
