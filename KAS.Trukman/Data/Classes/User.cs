@@ -82,6 +82,15 @@ namespace KAS.Trukman.Data.Classes
             get { return (string)this.GetValue("Token", default(string)); }
             set { this.SetValue("Token", value); }
         }
-	}
+
+        [Ignore]
+        public bool Verified
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.Token);
+            }
+        }
+    }
     #endregion
 }

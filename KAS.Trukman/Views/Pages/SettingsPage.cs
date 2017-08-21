@@ -24,8 +24,8 @@ namespace KAS.Trukman.Views.Pages
                 RightIcon = PlatformHelper.HomeImageSource
             };
             titleBar.SetBinding(TitleBar.TitleProperty, "Title", BindingMode.OneWay);
-            titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
-            titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowPrevPageCommand", BindingMode.OneWay);
+            titleBar.SetBinding(TitleBar.LeftCommandProperty, "ShowMainMenuCommand", BindingMode.OneWay);
+            titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowHomePageCommand", BindingMode.OneWay);
 
             var content = new Grid
             {

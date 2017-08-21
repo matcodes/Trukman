@@ -131,11 +131,18 @@ namespace KAS.Trukman
                         this.MainPage = new OwnerMainPage();
                     else if (TrukmanContext.User.Role == UserRole.Driver)
                     {
-                        var driverState = (DriverState)TrukmanContext.User.Status;
-                        if (driverState == DriverState.Joined)
-                            this.MainPage = new MainPage();
+                        if (TrukmanContext.Company == null)
+                        {
+                            this.MainPage = new SignUpNavigationPage();
+                        }
                         else
-                            this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
+                        {
+                            var driverState = (DriverState)TrukmanContext.User.Status;
+                            if (driverState == DriverState.Joined)
+                                this.MainPage = new MainPage();
+                            else
+                                this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
+                        }
                     }
 
                     if (isEmpty)

@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Trukman.Helpers;
+using System.Timers;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -23,6 +24,10 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             this.EspanolLanguageCommand = new VisualCommand(this.EspanolLanguage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
             this.SubmitCommand = new VisualCommand(this.Submit);
+            this.SubmitCodeCommand = new VisualCommand(this.SubmitCode);
+            this.CancelConfirmationCodeCommand = new VisualCommand(this.CancelConfirmationCode);
+            this.ResendConfirmationCodeCommand = new VisualCommand(this.ResendConfirmationCode);
+            this.ContinueCommand = new VisualCommand(this.Continue);
         }
 
         public override void Initialize(params object[] parameters)
@@ -101,8 +106,109 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     };
 
                     var company = await TrukmanContext.RegisterCompanyAsync(companyInfo);
+                    if (TrukmanContext.User.Verified)
+                        ShowSignUpOwnerWelcomePageMessage.Send(company);
+                    else
+                        this.EnterConfirmationCodePopupVisible = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                }
+            });
+        }
 
-                    ShowSignUpOwnerWelcomePageMessage.Send(company);
+
+        public void SubmitCode(object parameter)
+        {
+            Task.Run(async () =>
+            {
+                this.IsBusy = true;
+                try
+                {
+                    var verified = await TrukmanContext.Verification(this.ConfirmationCode);
+                    if (verified)
+                    {
+                        this.EnterConfirmationCodePopupVisible = false;
+                        this.ConfirmationCodeAcceptedPopupVisible = true;
+                    }
+                    else
+                    {
+                        this.ConfirmationCodeInvalidVisible = true;
+                        Timer _timer = new Timer(10000);
+                        _timer.Elapsed += ((sender, args) =>
+                        {
+                            this.ConfirmationCodeInvalidVisible = false;
+                        });
+                        _timer.Start();
+                    }
+                    this.ConfirmationCode = "";
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                }
+            });
+        }
+
+        public void CancelConfirmationCode(object parameter)
+        {
+            this.EnterConfirmationCodePopupVisible = false;
+            this.ConfirmationCodeSentVisible = false;
+            this.ConfirmationCodeInvalidVisible = false;
+            this.ConfirmationCodeAcceptedPopupVisible = false;
+        }
+
+        public void ResendConfirmationCode(object parameter)
+        {
+            if (!this.ConfirmationCodeSentVisible)
+            {
+                Task.Run(async () =>
+                {
+                    this.IsBusy = true;
+                    try
+                    {
+                        await TrukmanContext.ResendVerificationCode();
+                        this.ConfirmationCodeInvalidVisible = false;
+                        this.ConfirmationCodeSentVisible = true;
+                        Timer _timer = new Timer(10000);
+                        _timer.Elapsed += ((sender, args) =>
+                        {
+                            this.ConfirmationCodeSentVisible = false;
+                        });
+                        _timer.Start();
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        ShowToastMessage.Send(exception.Message);
+                    }
+                    finally
+                    {
+                        this.IsBusy = false;
+                    }
+                });
+            }
+        }
+
+        public void Continue(object parameter)
+        {
+            Task.Run(() =>
+            {
+                this.IsBusy = true;
+                try
+                {
+                    ShowSignUpOwnerWelcomePageMessage.Send(TrukmanContext.Company);
                 }
                 catch (Exception exception)
                 {
@@ -164,6 +270,36 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             set { this.SetValue("FleetSize", value); }
         }
 
+        public bool EnterConfirmationCodePopupVisible
+        {
+            get { return (bool)this.GetValue("EnterConfirmationCodePopupVisible", false); }
+            set { this.SetValue("EnterConfirmationCodePopupVisible", value); }
+        }
+
+        public bool ConfirmationCodeSentVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeSentVisible", false); }
+            set { this.SetValue("ConfirmationCodeSentVisible", value); }
+        }
+
+        public bool ConfirmationCodeInvalidVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeInvalidVisible", false); }
+            set { this.SetValue("ConfirmationCodeInvalidVisible", value); }
+        }
+
+        public bool ConfirmationCodeAcceptedPopupVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeAcceptedPopupVisible", false); }
+            set { this.SetValue("ConfirmationCodeAcceptedPopupVisible", value); }
+        }
+
+        public string ConfirmationCode
+        {
+            get { return (string)this.GetValue("ConfirmationCode"); }
+            set { this.SetValue("ConfirmationCode", value); }
+        }
+
         public VisualCommand ShowPrevPageCommand { get; private set; }
 
         public VisualCommand EnglishLanguageCommand { get; private set; }
@@ -171,6 +307,14 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public VisualCommand EspanolLanguageCommand { get; private set; }
 
         public VisualCommand SubmitCommand { get; private set; }
+
+        public VisualCommand SubmitCodeCommand { get; private set; }
+
+        public VisualCommand CancelConfirmationCodeCommand { get; private set; }
+
+        public VisualCommand ResendConfirmationCodeCommand { get; private set; }
+
+        public VisualCommand ContinueCommand { get; private set; }
     }
     #endregion
 }

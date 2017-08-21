@@ -37,8 +37,9 @@
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJE-QQq6qht1tNZ1W-qVLJEHbrTYd94" /> -->
 		
     <!-- DKG map key -->
+    
 		<!-- Ключ для debug версии -->
-		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" />
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" />
 		
     <!-- Ключ для release-версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBnFtQuoFKUXWgZyhJ9clT7FFEcWDP1m7E" /> -->
@@ -47,7 +48,7 @@
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnnCN2nhWxLnzpBiJw0VHmd-KkGsSakfE" /> -->
     
 		<!-- Ключ для HOME release версии -->
-		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAJ1rediA1KBZAytTLifchS11542xoSA58" /> -->
+		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAfSIM0JvTiwacD6xDf-1bIi66Q1YUhzbU " /> -->
     
 		<receiver android:name="parse.ParsePushBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
 			<intent-filter>

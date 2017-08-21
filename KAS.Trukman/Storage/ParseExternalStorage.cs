@@ -725,6 +725,11 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
+        public Task<User> DriverLogin(DriverInfo driverInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Company> RegisterDriver(DriverInfo driverInfo)
         {
             var userName = String.Format("{0} {1}", driverInfo.FirstName.Trim(), driverInfo.LastName.Trim()).ToLower();
@@ -764,6 +769,16 @@ namespace KAS.Trukman.Storage
 
 
             return company;
+        }
+
+        public Task<bool> Verification(Guid accountId, string code)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> ResendVerificationCode(Guid accountId)
+        {
+            return Task.FromResult(true);
         }
 
         public async Task<DriverState> GetDriverState(string companyID, string driverID)

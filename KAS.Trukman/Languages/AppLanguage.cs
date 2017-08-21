@@ -242,6 +242,13 @@ namespace KAS.Trukman.Languages
                 this.SignUpCompanyPhoneEmptyErrorMessageText = appLanguage.SignUpCompanyPhoneEmptyErrorMessageText;
                 this.SignUpCompanyIncorectEMailErrorMessageText = appLanguage.SignUpCompanyIncorectEMailErrorMessageText;
                 this.SignUpCompanyFleetSizeErrorMessageText = appLanguage.SignUpCompanyFleetSizeErrorMessageText;
+
+                this.SignUpConfirmationCodeInfoLabel = appLanguage.SignUpConfirmationCodeInfoLabel;
+                this.SignUpConfirmationCodePlaceholder = appLanguage.SignUpConfirmationCodePlaceholder;
+                this.SignUpConfirmationCodeResentButtonText = appLanguage.SignUpConfirmationCodeResentButtonText;
+                this.SignUpConfirmationCodeSentLabel = appLanguage.SignUpConfirmationCodeSentLabel;
+                this.SignUpConfirmationCodeInvalidCodeLabel = appLanguage.SignUpConfirmationCodeInvalidCodeLabel;
+                this.SignUpConfirmationCodeSuccessLabel = appLanguage.SignUpConfirmationCodeSuccessLabel;
                 #endregion
 
                 #region Driver authorization page
@@ -1345,6 +1352,42 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("SignUpCompanyFleetSizeErrorMessageText"); }
             set { this.SetValue("SignUpCompanyFleetSizeErrorMessageText", value); }
+        }
+
+        public string SignUpConfirmationCodeInfoLabel
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodeInfoLabel"); }
+            set { this.SetValue("SignUpConfirmationCodeInfoLabel", value); }
+        }
+
+        public string SignUpConfirmationCodePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodePlaceholder"); }
+            set { this.SetValue("SignUpConfirmationCodePlaceholder", value); }
+        }
+
+        public string SignUpConfirmationCodeResentButtonText
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodeResentButtonText"); }
+            set { this.SetValue("SignUpConfirmationCodeResentButtonText", value); }
+        }
+
+        public string SignUpConfirmationCodeSentLabel
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodeSentLabel"); }
+            set { this.SetValue("SignUpConfirmationCodeSentLabel", value); }
+        }
+
+        public string SignUpConfirmationCodeInvalidCodeLabel
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodeInvalidCodeLabel"); }
+            set { this.SetValue("SignUpConfirmationCodeInvalidCodeLabel", value); }
+        }
+
+        public string SignUpConfirmationCodeSuccessLabel
+        {
+            get { return (string)this.GetValue("SignUpConfirmationCodeSuccessLabel"); }
+            set { this.SetValue("SignUpConfirmationCodeSuccessLabel", value); }
         }
         #endregion
 

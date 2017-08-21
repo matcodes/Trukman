@@ -107,7 +107,7 @@ namespace KAS.Trukman.Storage
                 await this.SynchronizeTrip(tripID, null);
 
                 var trip = this.SelectTripByID(tripID);
-                isCancelled = ((trip != null) && (trip.JobCancelled));
+                isCancelled = ((trip != null) && (trip.JobCancelled || trip.IsDeleted));
             }
             catch (Exception exception)
             {
@@ -322,7 +322,7 @@ namespace KAS.Trukman.Storage
             Company company = null;
             try
             {
-                company = await _externalStorage.SelectUserCompanyAsync();              
+                company = await _externalStorage.SelectUserCompanyAsync();
             }
             catch (Exception exception)
             {
@@ -598,21 +598,6 @@ namespace KAS.Trukman.Storage
         //    return currentUser;
         //}
 
-        //public async Task<User> LogInAsync(string userName, string password)
-        //{
-        //    User user = null;
-        //    try
-        //    {
-        //        user = await _externalStorage.LogInAsync(userName, password);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-        //    }
-        //    return user;
-        //}
-
         //public async Task<bool> UserExist(string userName)
         //{
         //    var exist = false;
@@ -645,6 +630,21 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
+        public async Task<User> DriverLogin(DriverInfo driverInfo)
+        {
+            User user = null;
+            try
+            {
+                user = await _externalStorage.DriverLogin(driverInfo);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+            return user;
+        }
+
         public async Task<Company> RegisterDriverAsync(DriverInfo driverInfo)
         {
             Company company = null;
@@ -660,6 +660,32 @@ namespace KAS.Trukman.Storage
                 throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
             }
             return company;
+        }
+
+        public async Task<bool> Verification(Guid accountId, string code)
+        {
+            try
+            {
+                return await _externalStorage.Verification(accountId, code);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw exception;
+            }
+        }
+
+        public async Task<bool> ResendVerificationCode(Guid accountId)
+        {
+            try
+            {
+                return await _externalStorage.ResendVerificationCode(accountId);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw exception;
+            }
         }
 
         public async Task<User> GetCurrentUser()
@@ -753,9 +779,10 @@ namespace KAS.Trukman.Storage
                 var settings = this.GetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY);
                 var utcTime = DateTime.MinValue;
                 var culture = new CultureInfo("en-US");
-                DateTime.TryParse(settings,  culture, System.Globalization.DateTimeStyles.AdjustToUniversal, out utcTime);
+                DateTime.TryParse(settings, culture, System.Globalization.DateTimeStyles.AdjustToUniversal, out utcTime);
                 var notification = await _externalStorage.GetNotification(utcTime);
-                this.SetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY, notification.Time.ToString(culture));
+                if (notification != null)
+                    this.SetSettings(LAST_NOTIFICATION_TIME_SETTINGS_KEY, notification.Time.ToString(culture));
                 return notification;
             }
             catch (Exception exception)
@@ -994,7 +1021,7 @@ namespace KAS.Trukman.Storage
                     _connection.Insert(item);
                 return item;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw new Exception("Error of saveing settings!", exc);
             }
@@ -1097,7 +1124,7 @@ namespace KAS.Trukman.Storage
                 }
                 return trip;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw exc;
             }

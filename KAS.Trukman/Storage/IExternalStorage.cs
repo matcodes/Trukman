@@ -62,7 +62,13 @@ namespace KAS.Trukman.Storage
 
         Task<Company> RegisterCompany(CompanyInfo companyInfo);
 
+        Task<User> DriverLogin(DriverInfo driverInfo);
+
         Task<Company> RegisterDriver(DriverInfo driverInfo);
+
+        Task<bool> Verification(Guid accountId, string code);
+
+        Task<bool> ResendVerificationCode(Guid accountId);
 
         Task<User> GetCurrentUser();
 

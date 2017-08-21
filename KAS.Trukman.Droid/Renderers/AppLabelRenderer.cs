@@ -26,8 +26,14 @@ namespace KAS.Trukman.Droid.Renderers
 
             if (this.Control != null)
             {
+                var element = (this.Element as AppLabel);
                 var resource = Resource.Drawable.applabel;
-
+                if (element.AppLabelStyle == Data.Enums.AppLabelStyles.InfoGray)
+                    resource = Resource.Drawable.applabel_gray;
+                else if (element.AppLabelStyle == Data.Enums.AppLabelStyles.Error)
+                    resource = Resource.Drawable.applabel_error;
+                else if (element.AppLabelStyle == Data.Enums.AppLabelStyles.Success)
+                    resource = Resource.Drawable.applabel_success;
                 this.Control.SetBackgroundResource(resource);
             }
         }

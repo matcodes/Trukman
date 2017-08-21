@@ -290,6 +290,14 @@ namespace KAS.Trukman.AppContext
             return company;
         }
 
+        public static async Task<bool> DriverLogin(DriverInfo driverInfo)
+        {
+            User = await _localStorage.DriverLogin(driverInfo);
+            _localStorage.SaveUser(User as User);
+            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
+            return true;
+        }
+
         public static async Task<Company> RegisterDriverAsync(DriverInfo driverInfo)
         {
             var company = await _localStorage.RegisterDriverAsync(driverInfo);
@@ -303,6 +311,32 @@ namespace KAS.Trukman.AppContext
             _localStorage.SetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY, Company.ID);
 
             return company;
+        }
+
+        public static async Task<bool> Verification(string code)
+        {
+            try
+            {
+                var guid = Guid.Parse(User.ID);
+                var verified = await _localStorage.Verification(guid, code);
+                if (verified)
+                {
+                    User = await _localStorage.GetCurrentUser();
+                    _localStorage.SaveUser(User as User);
+                }
+                return verified;
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine(exception);
+                return false;
+            }
+        }
+
+        public static async Task<bool> ResendVerificationCode()
+        {
+            var guid = Guid.Parse(User.ID);
+            return await _localStorage.ResendVerificationCode(guid);
         }
 
         public static async Task<DriverState> GetDriverState()

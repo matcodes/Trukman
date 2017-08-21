@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Timers;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -31,6 +32,10 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             this.SelectCompanyCommand = new VisualCommand(this.SelectCompany);
             this.SelectCompanyAcceptCommand = new VisualCommand(this.SelectCompanyAccept);
             this.SelectCompanyCancelCommand = new VisualCommand(this.SelectCompanyCancel);
+            this.SubmitCodeCommand = new VisualCommand(this.SubmitCode);
+            this.CancelConfirmationCodeCommand = new VisualCommand(this.CancelConfirmationCode);
+            this.ResendConfirmationCodeCommand = new VisualCommand(this.ResendConfirmationCode);
+            this.ContinueCommand = new VisualCommand(this.Continue);
         }
 
         public override void Appering()
@@ -78,7 +83,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     try
                     {
                         var companies = await TrukmanContext.SelectCompanies(this.CompanyFilter);
-						this.ShowCompanies(companies);
+                        this.ShowCompanies(companies);
                     }
                     catch (Exception exception)
                     {
@@ -93,23 +98,24 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             _selectCompaniesTimer.Start();
         }
 
-		private void ShowCompanies(Company[] companies)
-		{
-			Device.BeginInvokeOnMainThread (() => {
-				this.Companies.Clear();
-				Company selected = null;
-				this.SelectedCompany = null;
-				foreach (var company in companies)
-				{
-					this.Companies.Add(company);
-					if (selected == null)
-					{
-						selected = company;
-						this.SelectedCompany = selected;
-					}
-				}
-			});
-		}
+        private void ShowCompanies(Company[] companies)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                this.Companies.Clear();
+                Company selected = null;
+                this.SelectedCompany = null;
+                foreach (var company in companies)
+                {
+                    this.Companies.Add(company);
+                    if (selected == null)
+                    {
+                        selected = company;
+                        this.SelectedCompany = selected;
+                    }
+                }
+            });
+        }
 
         private void StopSelectCompaniesTimer()
         {
@@ -134,7 +140,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
 
         private void Submit(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -146,15 +153,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                         Company = this.SelectedCompany,
                         EMail = this.EMail
                     };
-                    var company = await TrukmanContext.RegisterDriverAsync(driverInfo);
 
-					var state = (DriverState)TrukmanContext.User.Status; //await TrukmanContext.GetDriverState();
-                    if (state == DriverState.Joined)
-                        await TrukmanContext.InitializeDriverContext();
-                    else if (state == DriverState.Waiting)
-                        ShowSignUpDriverPendingPageMessage.Send(company);
-                    else if (state == DriverState.Declined)
-                        ShowSignUpDriverDeclinedPageMessage.Send(company);
+                    await TrukmanContext.DriverLogin(driverInfo);
+                    if (TrukmanContext.User.Verified)
+                        await RegisterDriver(driverInfo);
+                    else
+                        this.EnterConfirmationCodePopupVisible = true;
                 }
                 catch (Exception exception)
                 {
@@ -166,6 +170,21 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     this.IsBusy = false;
                 }
             });
+        }
+
+        private async Task RegisterDriver(DriverInfo driverInfo)
+        {
+            var company = await TrukmanContext.RegisterDriverAsync(driverInfo);
+
+            var state = (DriverState)TrukmanContext.User.Status; //await TrukmanContext.GetDriverState();
+            if (state == DriverState.Joined)
+                await TrukmanContext.InitializeDriverContext();
+            else if (state == DriverState.Waiting)
+            {
+                ShowSignUpDriverPendingPageMessage.Send(company);
+            }
+            else if (state == DriverState.Declined)
+                ShowSignUpDriverDeclinedPageMessage.Send(company);
         }
 
         public void SelectCompany(object parameter)
@@ -185,6 +204,114 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             this.SelectedCompany = null;
             this.SelectCompanyPopupVisible = false;
+        }
+
+        public void SubmitCode(object parameter)
+        {
+            Task.Run(async () =>
+            {
+                this.IsBusy = true;
+                try
+                {
+                    var verified = await TrukmanContext.Verification(this.ConfirmationCode);
+                    if (verified)
+                    {
+                        this.EnterConfirmationCodePopupVisible = false;
+                        this.ConfirmationCodeAcceptedPopupVisible = true;
+                    }
+                    else
+                    {
+                        this.ConfirmationCodeInvalidVisible = true;
+                        Timer _timer = new Timer(10000);
+                        _timer.Elapsed += ((sender, args) =>
+                        {
+                            this.ConfirmationCodeInvalidVisible = false;
+                        });
+                        _timer.Start();
+                    }
+                    this.ConfirmationCode = "";
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                }
+            });
+        }
+
+        public void CancelConfirmationCode(object parameter)
+        {
+            this.EnterConfirmationCodePopupVisible = false;
+            this.ConfirmationCodeSentVisible = false;
+            this.ConfirmationCodeInvalidVisible = false;
+            this.ConfirmationCodeAcceptedPopupVisible = false;
+        }
+
+        public void ResendConfirmationCode(object parameter)
+        {
+            if (!this.ConfirmationCodeSentVisible)
+            {
+                Task.Run(async () =>
+                {
+                    this.IsBusy = true;
+                    try
+                    {
+                        await TrukmanContext.ResendVerificationCode();
+                        this.ConfirmationCodeInvalidVisible = false;
+                        this.ConfirmationCodeSentVisible = true;
+                        Timer _timer = new Timer(10000);
+                        _timer.Elapsed += ((sender, args) =>
+                        {
+                            this.ConfirmationCodeSentVisible = false;
+                        });
+                        _timer.Start();
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        ShowToastMessage.Send(exception.Message);
+                    }
+                    finally
+                    {
+                        this.IsBusy = false;
+                    }
+                });
+            }
+        }
+
+        public void Continue(object parameter)
+        {
+            Task.Run(async () =>
+            {
+                this.IsBusy = true;
+                try
+                {
+                    var driverInfo = new DriverInfo
+                    {
+                        FirstName = this.FirstName,
+                        LastName = this.LastName,
+                        Phone = this.Phone,
+                        Company = this.SelectedCompany,
+                        EMail = this.EMail
+                    };
+
+                    this.ConfirmationCodeAcceptedPopupVisible = false;
+                    await RegisterDriver(driverInfo);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.IsBusy = false;
+                }
+            });
         }
 
         public SignUpLanguage SelectedLanguage
@@ -235,10 +362,40 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             set { this.SetValue("SelectCompanyPopupVisible", value); }
         }
 
+        public bool EnterConfirmationCodePopupVisible
+        {
+            get { return (bool)this.GetValue("EnterConfirmationCodePopupVisible", false); }
+            set { this.SetValue("EnterConfirmationCodePopupVisible", value); }
+        }
+
+        public bool ConfirmationCodeSentVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeSentVisible", false); }
+            set { this.SetValue("ConfirmationCodeSentVisible", value); }
+        }
+
+        public bool ConfirmationCodeInvalidVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeInvalidVisible", false); }
+            set { this.SetValue("ConfirmationCodeInvalidVisible", value); }
+        }
+
+        public bool ConfirmationCodeAcceptedPopupVisible
+        {
+            get { return (bool)this.GetValue("ConfirmationCodeAcceptedPopupVisible", false); }
+            set { this.SetValue("ConfirmationCodeAcceptedPopupVisible", value); }
+        }
+
         public string CompanyFilter
         {
             get { return (string)this.GetValue("CompanyFilter"); }
             set { this.SetValue("CompanyFilter", value); }
+        }
+
+        public string ConfirmationCode
+        {
+            get { return (string)this.GetValue("ConfirmationCode"); }
+            set { this.SetValue("ConfirmationCode", value); }
         }
 
         public ObservableCollection<Company> Companies { get; private set; }
@@ -256,6 +413,14 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public VisualCommand SelectCompanyAcceptCommand { get; private set; }
 
         public VisualCommand SelectCompanyCancelCommand { get; private set; }
+
+        public VisualCommand SubmitCodeCommand { get; private set; }
+
+        public VisualCommand CancelConfirmationCodeCommand { get; private set; }
+
+        public VisualCommand ResendConfirmationCodeCommand { get; private set; }
+
+        public VisualCommand ContinueCommand { get; private set; }
     }
     #endregion
 }

@@ -25,6 +25,7 @@ namespace KAS.Trukman.Storage
         private static readonly string OWNER_LOGIN_ENDPOINT = "accounts/owner";
         private static readonly string DRIVER_LOGIN_ENDPOINT = "accounts/driver";
         private static readonly string VERIFICATION_ENDPOINT = "accounts/verification";
+        private static readonly string RESEND_VERIFICATION_CODE_ENDPOINT = "accounts/resendverificationcode";
         private static readonly string SELECT_COMPANIES_BY_FILTER_ENDPOINT = "accounts/selectcompaniesbyfilter";
 
         private static readonly string GET_OWNER_COMPANY_ENDPOINT = "owners/getcompany";
@@ -318,6 +319,7 @@ namespace KAS.Trukman.Storage
                 Broker = broker,
                 Company = this.OwnerToCompany(task.Owner),
                 InvoiceUri = task.InvoiceUri,
+                ReportUri = task.ReportUri,
                 DriverDisplayName = (driver != null ? driver.UserName : "")
             };
         }
@@ -380,7 +382,7 @@ namespace KAS.Trukman.Storage
             string uri = "";
             var task = await this.SelectTaskById(Guid.Parse(tripID));
             if (task != null)
-                uri = task.InvoiceUri;
+                uri = task.ReportUri;
 
             return uri;
         }
@@ -692,7 +694,7 @@ namespace KAS.Trukman.Storage
             return result.Owner;
         }
 
-        private async Task<bool> Verification(Guid accountId, string code)
+        public async Task<bool> Verification(Guid accountId, string code)
         {
             var verificationRequest = new VerificationRequest
             {
@@ -706,7 +708,25 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(VERIFICATION_ENDPOINT, null);
             var result = await ExecuteRequestAsync<DriverLoginResponse>(request);
             _token = result.Token;
+            if (_currentUser != null)
+                _currentUser.Token = _token;
+
             return true;
+        }
+
+        public async Task<bool> ResendVerificationCode(Guid accountId)
+        {
+            var resendVerificationCodeRequest = new ResendVerificationCodeRequest
+            {
+                UserId = accountId
+            };
+            var requestContent = SerializeObject(resendVerificationCodeRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(RESEND_VERIFICATION_CODE_ENDPOINT);
+            var result = await ExecuteRequestAsync<ResendVerificationCodeResponse>(request);
+            return (result != null);
         }
 
         public async Task<Company> RegisterCompany(CompanyInfo companyInfo)
@@ -722,16 +742,6 @@ namespace KAS.Trukman.Storage
             };
             owner = await OwnerLoginAsync(owner);
             Console.WriteLine("Компания: {0}", owner);
-            Console.WriteLine();
-
-            if (string.IsNullOrEmpty(_token))
-            {
-                await Verification(owner.Id, "5555");
-                Console.WriteLine("Телефон подтвержден: {0}", owner.Phone);
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("Token: {0}", _token);
             Console.WriteLine();
 
             _currentUser = new User
@@ -782,7 +792,7 @@ namespace KAS.Trukman.Storage
             return true;
         }
 
-        public async Task<Company> RegisterDriver(DriverInfo driverInfo)
+        public async Task<User> DriverLogin(DriverInfo driverInfo)
         {
             var _driver = new Driver
             {
@@ -792,16 +802,6 @@ namespace KAS.Trukman.Storage
             };
             _driver = await DriverLoginAsync(_driver);
             Console.WriteLine("Водитель: {0}", _driver);
-            Console.WriteLine();
-
-            if (string.IsNullOrEmpty(_token))
-            {
-                await Verification(_driver.Id, "5555");
-                Console.WriteLine("Телефон подтвержден: {0}", _driver.Phone);
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("Token: {0}", _token);
             Console.WriteLine();
 
             _currentUser = new User
@@ -814,19 +814,59 @@ namespace KAS.Trukman.Storage
                 LastName = driverInfo.LastName,
                 Email = driverInfo.EMail,
                 Token = _token,
-                Status = (int)DriverState.Waiting
+                //Status = (int)DriverState.Waiting
             };
 
-            var _company = await GetDriverCompany(_driver.Id);
+            return _currentUser;
+        }
+
+        public async Task<Company> RegisterDriver(DriverInfo driverInfo)
+        {
+            //var _driver = new Driver
+            //{
+            //    FirstName = driverInfo.FirstName,
+            //    LastName = driverInfo.LastName,
+            //    Phone = driverInfo.Phone,
+            //};
+            //_driver = await DriverLoginAsync(_driver);
+            //Console.WriteLine("Водитель: {0}", _driver);
+            //Console.WriteLine();
+
+            //if (string.IsNullOrEmpty(_token))
+            //{
+            //    await Verification(_driver.Id, "5555");
+            //    Console.WriteLine("Телефон подтвержден: {0}", _driver.Phone);
+            //    Console.WriteLine();
+            //}
+
+            //Console.WriteLine("Token: {0}", _token);
+            //Console.WriteLine();
+
+            //_currentUser = new User
+            //{
+            //    ID = _driver.Id.ToString(),
+            //    UserName = string.Format("{0} {1}", driverInfo.FirstName.Trim(), driverInfo.LastName.Trim()).ToLower(),
+            //    Phone = driverInfo.Phone,
+            //    Role = UserRole.Driver,
+            //    FirstName = driverInfo.FirstName,
+            //    LastName = driverInfo.LastName,
+            //    Email = driverInfo.EMail,
+            //    Token = _token,
+            //    Status = (int)DriverState.Waiting
+            //};
+
+            var userId = Guid.Parse(_currentUser.ID);
+            _currentUser.Status = (int)DriverState.Waiting;
+            var _company = await GetDriverCompany(userId);
             if ((_company != null) && (_company.Id != Guid.Parse(driverInfo.Company.ID)))
                 throw new Exception(String.Format("Your are approved to company {0}.", _company.Name));
 
             if (_company == null)
             {
-                var driverRequest = await GetLastDriverRequest(Guid.Parse(driverInfo.Company.ID), _driver.Id);
+                var driverRequest = await GetLastDriverRequest(Guid.Parse(driverInfo.Company.ID), userId);
                 if ((driverRequest == null) || (driverRequest.Answer != (int)DriverRequestAnswers.None))
                 {
-                    await AddDriverRequest(Guid.Parse(driverInfo.Company.ID), _driver.Id);
+                    await AddDriverRequest(Guid.Parse(driverInfo.Company.ID), userId);
                     Console.WriteLine("Добавлен запрос на прием на работу в компанию {0}...", driverInfo.Company.Name);
                     Console.WriteLine();
                 }

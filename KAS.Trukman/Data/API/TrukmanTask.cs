@@ -77,7 +77,7 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("CancelTime")]
         public DateTime? CancelTime { get; set; }
 
-        [JsonProperty("RemoveTime")]
+        [JsonProperty("RemovedTime")]
         public DateTime? RemovedTime { get; set; }
 
         [JsonProperty("Number")]
@@ -115,6 +115,9 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("Cost")]
         public decimal Cost { get; set; }
+
+        [JsonProperty("ReportUri")]
+        public string ReportUri { get; set; }
 
         [JsonProperty("Owner")]
         public Owner Owner { get; set; }

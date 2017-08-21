@@ -232,6 +232,13 @@ namespace KAS.Trukman.Languages
             this.SignUpCompanyPhoneEmptyErrorMessageText = "Phone# cannot be blank.";
             this.SignUpCompanyIncorectEMailErrorMessageText = "Email is incorrect.";
             this.SignUpCompanyFleetSizeErrorMessageText = "Fleet should be a number.";
+
+            this.SignUpConfirmationCodeInfoLabel = "We have sent you a confirmation code by SMS. Please enter it here.";
+            this.SignUpConfirmationCodePlaceholder = "Confirmation Code";
+            this.SignUpConfirmationCodeResentButtonText = "Resend";
+            this.SignUpConfirmationCodeSentLabel = "Sent";
+            this.SignUpConfirmationCodeInvalidCodeLabel = "Invalid code";
+            this.SignUpConfirmationCodeSuccessLabel = "Success!";
             #endregion
 
             #region Driver authorization page

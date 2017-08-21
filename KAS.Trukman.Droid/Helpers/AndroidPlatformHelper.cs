@@ -104,6 +104,11 @@ namespace KAS.Trukman.Droid
             get { return Xamarin.Forms.Color.White; }
         }
 
+        public Xamarin.Forms.Color HomeLabelTextColor
+        {
+            get { return Xamarin.Forms.Color.Gray; }
+        }
+
         public Xamarin.Forms.Color HomeItemColor
         {
             get { return Xamarin.Forms.Color.Gray; }

@@ -79,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetLastDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetPointsByDriverRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\OwnerLoginRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\ResendVerificationCodeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectBrokersRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetLastDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetPointsByDriverResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\OwnerLoginResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\ResendVerificationCodeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectBrokersResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Photo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\Trip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Classes\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\AppLabelStyles.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\DriverRequestAnswers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\DriverState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\FuelRequestAnswers.cs" />

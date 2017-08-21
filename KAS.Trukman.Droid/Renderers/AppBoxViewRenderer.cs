@@ -14,6 +14,7 @@ using KAS.Trukman.Controls;
 using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms;
 using KAS.Trukman.Droid.Renderers;
+using KAS.Trukman.Data.Enums;
 
 [assembly: ExportRenderer(typeof(AppBoxView), typeof(AppBoxViewRenderer))]
 namespace KAS.Trukman.Droid.Renderers

@@ -39,6 +39,8 @@ namespace KAS.Trukman.Helpers
 
         Color HomeTextColor { get; }
 
+        Color HomeLabelTextColor { get; }
+
         Color HomeItemColor { get; }
 
         Color HomeSelectedItemColor { get; }
@@ -215,6 +217,11 @@ namespace KAS.Trukman.Helpers
         public static Color HomeTextColor
         {
             get { return (_platformHelper != null ? _platformHelper.HomeTextColor : Color.White); }
+        }
+
+        public static Color HomeLabelTextColor
+        {
+            get { return (_platformHelper != null ? _platformHelper.HomeLabelTextColor : Color.Gray); }
         }
 
         public static Color HomeItemColor
