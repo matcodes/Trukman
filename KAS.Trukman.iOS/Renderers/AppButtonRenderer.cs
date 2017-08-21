@@ -6,7 +6,7 @@ using KAS.Trukman.iOS;
 using UIKit;
 using CoreGraphics;
 
-[assembly: ExportRenderer(typeof(ToolButton), typeof(ToolButtonRenderer))]
+[assembly: ExportRenderer(typeof(AppButton), typeof(AppButtonRenderer))]
 namespace KAS.Trukman.iOS
 {
 	#region AppButtonRenderer
@@ -16,14 +16,15 @@ namespace KAS.Trukman.iOS
 		{
 			base.OnElementChanged (args);
 
-			var button = (this.Control as UIButton);
-			if (button != null) {
-				button.Layer.CornerRadius = 25.0f;
-				button.Layer.BorderWidth = 2.0f;
-				button.Layer.BorderColor = UIColor.Black.CGColor; // new CGColor(0xe6, 0xe6, 0xe6);
-				button.Layer.SetNeedsDisplay();
-//				button.ClipsToBounds = true;
-			}
+//			var button = (this.Control as UIButton);
+//			if (button != null) {
+//				button.Layer.CornerRadius = 25.0f;
+//				button.Layer.BorderWidth = 2.0f;
+//				button.Layer.BorderColor = UIColor.Black.CGColor; // new CGColor(0xe6, 0xe6, 0xe6);
+//                button.Layer.BackgroundColor = UIColor.Black.CGColor;
+//                button.Layer.SetNeedsDisplay();
+////				button.ClipsToBounds = true;
+//			}
 		}
 	}
 	#endregion

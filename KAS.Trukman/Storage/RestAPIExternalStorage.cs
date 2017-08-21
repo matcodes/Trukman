@@ -387,11 +387,11 @@ namespace KAS.Trukman.Storage
             return uri;
         }
 
-        //public Task<Trip> CreateTripAsync(Trip trip)
-        //{
-        //    // not used
-        //    throw new NotImplementedException();
-        //}
+        public Task<Trip> CreateTripAsync(Trip trip)
+        {
+            // TODO: 
+            return Task.FromResult<Trip>(new Trip());
+        }
 
         public async Task<bool> AnswerDriverRequest(Guid ownerId, Guid driverId, bool isAllowed)
         {

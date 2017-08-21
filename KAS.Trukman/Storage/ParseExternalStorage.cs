@@ -1201,34 +1201,35 @@ namespace KAS.Trukman.Storage
 			return drivers.ToArray();
 		}
 
-		//public async Task<Trip> CreateTripAsync(Trip trip)
-		//{
-		//	var company = ParseObject.CreateWithoutData<ParseCompany> (trip.Company.ID);
-		//	var driver = ParseObject.CreateWithoutData<ParseUser> (trip.Driver.ID);
-		//	var broker = ParseObject.CreateWithoutData<ParseUser> (trip.Broker.ID);
+        public async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            var company = ParseObject.CreateWithoutData<ParseCompany>(trip.Company.ID);
+            var driver = ParseObject.CreateWithoutData<ParseUser>(trip.Driver.ID);
+            var broker = ParseObject.CreateWithoutData<ParseUser>(trip.Broker.ID);
 
-		//	var parseJob = new ParseJob { 
-		//		DeliveryDatetime = trip.DeliveryDatetime,
-		//		DriverAccepted = false,
-		//		JobCancelled = false,
-		//		JobCompleted = false,
-		//		IsDeleted = false,
-		//		PickupDatetime = trip.PickupDatetime,
-		//		Price = trip.Points,
-		//		JobRef = trip.JobRef,
-		//		FromAddress = trip.FromAddress,
-		//		ToAddress = trip.ToAddress,
-		//		Weight = trip.Weight,
-		//		Company = company,
-		//		Driver = driver,
-		//		Broker = broker
-		//	};
-		//	await parseJob.SaveAsync ();
-		//	trip.ID = parseJob.ObjectId;
-		//	return trip;
-		//}
+            var parseJob = new ParseJob
+            {
+                DeliveryDatetime = trip.DeliveryDatetime,
+                DriverAccepted = false,
+                JobCancelled = false,
+                JobCompleted = false,
+                IsDeleted = false,
+                PickupDatetime = trip.PickupDatetime,
+                Price = trip.Points,
+                JobRef = trip.JobRef,
+                FromAddress = trip.FromAddress,
+                ToAddress = trip.ToAddress,
+                Weight = trip.Weight,
+                Company = company,
+                Driver = driver,
+                Broker = broker
+            };
+            await parseJob.SaveAsync();
+            trip.ID = parseJob.ObjectId;
+            return trip;
+        }
 
-		public async Task<Photo[]> SelectPhotosAsync()
+        public async Task<Photo[]> SelectPhotosAsync()
 		{
 			var parseCompany = await this.SelectUserParseCompanyAsync ();
 

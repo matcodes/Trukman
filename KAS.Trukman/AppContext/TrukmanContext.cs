@@ -381,11 +381,11 @@ namespace KAS.Trukman.AppContext
             await _localStorage.DeclineDriverToCompany(companyID, driverID);
         }
 
-        //public static async Task<Trip> CreateTripAsync(Trip trip)
-        //{
-        //    var result = await _localStorage.CreateTripAsync(trip);
-        //    return result;
-        //}
+        public static async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            var result = await _localStorage.CreateTripAsync(trip);
+            return result;
+        }
 
         public static async Task<User[]> SelectBrockersAsync()
         {

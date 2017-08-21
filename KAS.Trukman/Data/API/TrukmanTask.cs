@@ -128,8 +128,8 @@ namespace KAS.Trukman.Data.API
         [JsonProperty("FuelRequests")]
         public FuelRequest[] FuelRequests { get; set; }
 
-        [JsonProperty("LumperRequest")]
-        public LumperRequest[] LumperRequest { get; set; }
+        [JsonProperty("LumperRequests")]
+        public LumperRequest[] LumperRequests { get; set; }
 
         [JsonProperty("TaskPhotos")]
         public TaskPhoto[] TaskPhotos { get; set; }

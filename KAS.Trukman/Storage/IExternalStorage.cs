@@ -114,7 +114,7 @@ namespace KAS.Trukman.Storage
 
 		Task<User[]> SelectDriversAsync ();
 
-		//Task<Trip> CreateTripAsync (Trip trip);
+		Task<Trip> CreateTripAsync (Trip trip);
 
 		Task<Photo[]> SelectPhotosAsync ();
 

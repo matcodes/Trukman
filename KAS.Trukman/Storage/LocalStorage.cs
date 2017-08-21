@@ -952,19 +952,19 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        //public async Task<Trip> CreateTripAsync(Trip trip)
-        //{
-        //    try
-        //    {
-        //        var result = await _externalStorage.CreateTripAsync(trip);
-        //        return result;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
-        //    }
-        //}
+        public async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            try
+            {
+                var result = await _externalStorage.CreateTripAsync(trip);
+                return result;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            }
+        }
 
         public async Task<Photo[]> SelectPhotosAsync()
         {
