@@ -28,15 +28,16 @@ namespace KAS.Trukman.Droid.Renderers
 
             if (this.Control != null)
             {
-                var appButton = (this.Element as AppButton);
-                var resource = Resource.Drawable.appbutton;
-                if (appButton.AppStyle == AppButtonStyle.Left)
-                    resource = Resource.Drawable.appbutton_left;
-                else if (appButton.AppStyle == AppButtonStyle.Right)
-                    resource = Resource.Drawable.appbutton_right;
+                this.Control.SetPadding(4, 7, 4, 7);
+                //var appButton = (this.Element as AppButton);
+                //var resource = Resource.Drawable.appbutton;
+                //if (appButton.AppStyle == AppButtonStyle.Left)
+                //    resource = Resource.Drawable.appbutton_left;
+                //else if (appButton.AppStyle == AppButtonStyle.Right)
+                //    resource = Resource.Drawable.appbutton_right;
+                //this.Control.SetBackgroundResource(resource);
+                //this.Control.SetTextColor(Forms.Context.Resources.GetColor(Resource.Color.appbutton_textcolor));
 
-                this.Control.SetBackgroundResource(resource);
-                this.Control.SetTextColor(Forms.Context.Resources.GetColor(Resource.Color.appbutton_textcolor));
                 this.Control.SetAllCaps(false);
             }
         }

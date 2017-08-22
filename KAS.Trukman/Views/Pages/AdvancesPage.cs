@@ -147,7 +147,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             resendButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedResendButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppButton.CommandProperty, "FuelResendCommand");
@@ -156,7 +156,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             cancelButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "FuelCancelCommand");
@@ -296,7 +296,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             resendButton.SetBinding(AppButton.TextProperty, new Binding("LumperReceivedResendButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppButton.CommandProperty, "LumperResendCommand");
@@ -305,7 +305,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             cancelButton.SetBinding(AppButton.TextProperty, new Binding("LumperReceivedCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "LumperCancelCommand");

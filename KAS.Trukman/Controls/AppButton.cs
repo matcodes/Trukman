@@ -8,28 +8,12 @@ namespace KAS.Trukman.Controls
     #region AppButton
     public class AppButton : Button
     {
-        #region Static members
-        public static BindableProperty AppStyleProperty = BindableProperty.Create("AppStyle", typeof(AppButtonStyle), typeof(AppButton), AppButtonStyle.Normal);
-        #endregion
-
         public AppButton() : base()
         {
+            this.BorderRadius = 25;
+            this.BackgroundColor = Color.Black;
+            this.TextColor = Color.White;
         }
-
-        public AppButtonStyle AppStyle
-        {
-            get { return (AppButtonStyle)this.GetValue(AppStyleProperty); }
-            set { this.SetValue(AppStyleProperty, value); }
-        }
-    }
-    #endregion
-
-    #region AppButtonStyle
-    public enum AppButtonStyle
-    {
-        Normal,
-        Left,
-        Right
     }
     #endregion
 }

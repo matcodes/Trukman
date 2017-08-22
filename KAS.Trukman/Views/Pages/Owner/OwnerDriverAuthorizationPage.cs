@@ -76,7 +76,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             authorizeButton.SetBinding(AppButton.TextProperty, new Binding("DriverAuthorizationAuthorizeButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             authorizeButton.SetBinding(AppButton.CommandProperty, "AuthorizeCommand");
@@ -85,7 +85,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             declineButton.SetBinding(AppButton.TextProperty, new Binding("DriverAuthorizationDeclineButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             declineButton.SetBinding(AppButton.CommandProperty, "DeclineCommand");

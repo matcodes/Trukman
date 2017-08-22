@@ -80,7 +80,7 @@ namespace KAS.Trukman.Views.Pages
             var resendButton = new AppButton {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             resendButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedResendButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppButton.CommandProperty, "ResendCommand");
@@ -88,7 +88,7 @@ namespace KAS.Trukman.Views.Pages
             var cancelButton = new AppButton {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             cancelButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "CancelCommand");

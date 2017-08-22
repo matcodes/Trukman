@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Android.Gms.Maps.Model;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Data.Classes;
+using Xamarin.Forms.Maps;
 
 [assembly: ExportRenderer(typeof(AppMap), typeof(AppMapRenderer))]
 namespace KAS.Trukman.Droid.Renderers
@@ -50,9 +51,9 @@ namespace KAS.Trukman.Droid.Renderers
         private Marker _endMarker = null;
         private Marker _carMarker = null;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.View> args)
+        protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
-            base.OnElementChanged(args);
+            base.OnElementChanged(e);
 
             _mapView = (this.Control as MapView);
         }

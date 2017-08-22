@@ -171,7 +171,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 			{
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Fill,
-				AppStyle = AppButtonStyle.Left,
+				//AppStyle = AppButtonStyle.Left,
 				Text = "Cancel"
 			};
 			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
@@ -181,7 +181,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 			{
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Fill,
-				AppStyle = AppButtonStyle.Right,
+				//AppStyle = AppButtonStyle.Right,
 				Text = "Accept"
 			};
 			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));

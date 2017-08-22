@@ -384,7 +384,7 @@ namespace KAS.Trukman.Views.Pages
 
             var showRoutePage = new AppButton {
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Normal
+                //AppStyle = AppButtonStyle.Normal
             };
             showRoutePage.SetBinding(AppButton.TextProperty, new Binding("TripShowRouteButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             showRoutePage.SetBinding(AppButton.CommandProperty, "ShowRouteCommand");
@@ -495,7 +495,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Normal
+                //AppStyle = AppButtonStyle.Normal
             };
             continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("TripPopupContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             continueButton.SetBinding(AppPopupButton.CommandProperty, "PopupContinueCommand");

@@ -252,7 +252,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             declineButton.SetBinding(AppButton.TextProperty, new Binding("HomeDeclineButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             declineButton.SetBinding(AppButton.CommandProperty, "DeclineCommand");
@@ -261,7 +261,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             acceptButton.SetBinding(AppButton.TextProperty, new Binding("HomeAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             acceptButton.SetBinding(AppButton.CommandProperty, "AcceptCommand");
@@ -1739,7 +1739,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "GPSPopupCancelCommand");
@@ -1748,7 +1748,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             settingsButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupSettingsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             settingsButton.SetBinding(AppPopupButton.CommandProperty, "GPSPopupSettingsCommand");

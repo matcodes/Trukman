@@ -14,8 +14,9 @@ namespace KAS.Trukman.Views.Pages.SignUp
     #region SignUpOwnerMCPage
     public class SignUpOwnerMCPage : TrukmanPage
     {
-        public SignUpOwnerMCPage()
-            : base()
+        private Color lineColor = Color.FromHex("#808080");
+
+        public SignUpOwnerMCPage(): base()
         {
             this.BindingContext = new SignUpOwnerMCViewModel();
         }
@@ -138,14 +139,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
             };
             busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
 
-            var popupBackground = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-            };
-            popupBackground.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.OneWay);
-
             var pageContent = new Grid
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -155,7 +148,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
             };
             pageContent.Children.Add(content);
             pageContent.Children.Add(busyIndicator);
-            pageContent.Children.Add(popupBackground);
             pageContent.Children.Add(this.CreatePopup());
 
             return pageContent;
@@ -163,12 +155,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
 
         private View CreatePopup()
         {
-            var appBoxView = new AppBoxView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
-            };
-
             var message = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -191,7 +177,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Normal
             };
             continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             continueButton.SetBinding(AppPopupButton.CommandProperty, "ContinueCommand");
@@ -201,28 +186,57 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 HorizontalOptions = LayoutOptions.Fill,
                 HeightRequest = this.Height / 2,
                 ColumnSpacing = 0,
+                RowSpacing = 1,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
-                },
+                }
             };
             popupContent.Children.Add(messageContent, 0, 0);
-            popupContent.Children.Add(continueButton, 0, 1);
+            popupContent.Children.Add(this.CreateLine(), 0, 1);
+            popupContent.Children.Add(continueButton, 0, 2);
 
-            var content = new Grid
+            var frameBackground = Color.FromHex("#F0F0F0");
+
+            var frame = new Frame
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 40, 40, 40)
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 25,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                Content = popupContent
             };
-            content.SetBinding(Grid.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);
 
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 40),
+                Content = frame
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);
 
             return content;
+        }
+
+        private View CreateLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HeightRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
         }
 
         public new SignUpOwnerMCViewModel ViewModel

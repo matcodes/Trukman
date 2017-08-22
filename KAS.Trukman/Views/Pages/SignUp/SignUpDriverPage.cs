@@ -337,7 +337,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "SelectCompanyCancelCommand");
@@ -346,7 +346,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             acceptButton.SetBinding(AppPopupButton.CommandProperty, "SelectCompanyAcceptCommand");
@@ -503,7 +503,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Left
+                //AppStyle = AppButtonStyle.Left
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "CancelConfirmationCodeCommand");
@@ -512,7 +512,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Right
+                //AppStyle = AppButtonStyle.Right
             };
             resendButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpConfirmationCodeResentButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppPopupButton.CommandProperty, "ResendConfirmationCodeCommand");
@@ -604,7 +604,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                AppStyle = AppButtonStyle.Normal
+                //AppStyle = AppButtonStyle.Normal
             };
             continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             continueButton.SetBinding(AppPopupButton.CommandProperty, "ContinueCommand");

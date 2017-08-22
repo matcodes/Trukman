@@ -19,13 +19,9 @@ namespace KAS.Trukman.iOS
 
             if (this.Control != null)
             {
-                var button = (this.Control as UIButton);
-                button.ContentEdgeInsets = new UIEdgeInsets(7, 4, 7, 4);
-                button.Layer.BorderWidth = 1.0f;
-                button.Layer.BorderColor = new CGColor(128, 128, 128);
+                this.Control.ContentEdgeInsets = new UIEdgeInsets(7, 4, 7, 4);
 
-                button.Layer.SetNeedsDisplay();
-                button.ClipsToBounds = true;
+                this.Control.Layer.SetNeedsDisplay();
             }
         }
     }
