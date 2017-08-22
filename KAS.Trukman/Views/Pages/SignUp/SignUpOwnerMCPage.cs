@@ -200,12 +200,11 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HeightRequest = this.Height / 2,
-                RowSpacing = 0,
                 ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
-                }
+                },
             };
             popupContent.Children.Add(messageContent, 0, 0);
             popupContent.Children.Add(continueButton, 0, 1);

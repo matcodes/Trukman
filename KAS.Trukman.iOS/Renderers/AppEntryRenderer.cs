@@ -10,30 +10,48 @@ using CoreGraphics;
 [assembly: ExportRenderer(typeof(AppEntry), typeof(AppEntryRenderer))]
 namespace KAS.Trukman.iOS
 {
+    #region PaddingUITextField
+    public class PaddingUITextField: UITextField
+    {
+        private UIEdgeInsets EdgeInsets { get; set; }
+
+        public PaddingUITextField()
+        {
+            this.BorderStyle = UITextBorderStyle.None;
+
+            //this.Layer.BorderWidth = 1;
+            //this.Layer.BorderColor = UIColor.White.CGColor;
+            this.Layer.CornerRadius = 25.0f;
+            this.BackgroundColor = UIColor.White;
+            this.AutocapitalizationType = UITextAutocapitalizationType.None;
+            this.ClipsToBounds = true;
+
+            EdgeInsets = new UIEdgeInsets(10, 25, 10, 25);
+        }
+
+        public override CGRect TextRect(CGRect forBounds)
+        {
+            return base.TextRect(EdgeInsets.InsetRect(forBounds));
+        }
+
+        public override CGRect EditingRect(CGRect forBounds)
+        {
+            return base.EditingRect(EdgeInsets.InsetRect(forBounds));
+        }
+    }
+    #endregion
+
     #region AppEntryRenderer
     public class AppEntryRenderer : EntryRenderer
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
-            base.OnElementChanged(e);
-
-            if (this.Control != null)
+            if (this.Control == null)
             {
-                this.Control.BorderStyle = UITextBorderStyle.None;
-
-                this.Control.Layer.BorderWidth = 1;
-                this.Control.Layer.BorderColor = UIColor.White.CGColor;
-                this.Control.Layer.CornerRadius = 25.0f;
-                this.Control.BackgroundColor = UIColor.White;
-                this.Control.LeftView = new UIView(new CGRect(0, 0, 25, 50));
-                this.Control.LeftViewMode = UITextFieldViewMode.Always;
-                this.Control.RightView = new UIView(new CGRect(0, 0, 25, 50));
-                this.Control.RightViewMode = UITextFieldViewMode.Always;
-                this.Control.VerticalAlignment = UIControlContentVerticalAlignment.Center;
-
-                this.Control.AutocapitalizationType = UITextAutocapitalizationType.None;
-                this.Control.ClipsToBounds = true;
+                SetNativeControl(new PaddingUITextField());
             }
+
+            base.OnElementChanged(e);
         }
     }
     #endregion

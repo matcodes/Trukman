@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>Trukman</string>
 	<key>CFBundleIdentifier</key>
-	<string>kas.apps.kas-trukman-ios</string>
+	<string>dkg.apps.kas-trukman-ios</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

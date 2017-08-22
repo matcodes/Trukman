@@ -14,11 +14,6 @@ namespace KAS.Trukman.Controls
 
         public AppButton() : base()
         {
-            this.BorderRadius = 25;
-            this.BorderWidth = 2;
-            this.TextColor = Color.White;
-            this.BorderColor = Color.Black;
-            this.BackgroundColor = Color.Black;
         }
 
         public AppButtonStyle AppStyle
