@@ -3,14 +3,16 @@ using Xamarin.Forms.Platform.iOS;
 using Xamarin.Forms;
 using KAS.Trukman.Controls;
 using KAS.Trukman.iOS;
+using UIKit;
+using CoreGraphics;
 
 [assembly: ExportRenderer(typeof(AppLabel), typeof(AppLabelRenderer))]
 namespace KAS.Trukman.iOS
 {
-	#region AppLabelRenderer
-	public class AppLabelRenderer : LabelRenderer
+    #region AppLabelRenderer
+    public class AppLabelRenderer : LabelRenderer
 	{
-	}
+    }
 	#endregion
 }
 

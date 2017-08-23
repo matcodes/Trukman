@@ -13,8 +13,7 @@ namespace KAS.Trukman.Views.Pages
     #region DelayEmergencyPage
     public class DelayEmergencyPage : TrukmanPage
     {
-        public DelayEmergencyPage() 
-            : base()
+        public DelayEmergencyPage() : base()
         {
             this.BindingContext = new DelayEmergencyViewModel();
         }
@@ -125,12 +124,13 @@ namespace KAS.Trukman.Views.Pages
                 Content = commentsEntry
             };
 
-            var submitButton = new AppButton {
+            var submitButton = new AppRoundButton
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            submitButton.SetBinding(AppButton.TextProperty, new Binding("DelaySubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            submitButton.SetBinding(AppButton.CommandProperty, "SubmitCommand");
+            submitButton.SetBinding(AppRoundButton.TextProperty, new Binding("DelaySubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            submitButton.SetBinding(AppRoundButton.CommandProperty, "SubmitCommand");
 
             var submitContent = new ContentView {
                 HorizontalOptions = LayoutOptions.Fill,

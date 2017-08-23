@@ -112,15 +112,15 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = message
             };
 
-            var cancelButton = new AppButton
+            var cancelButton = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            cancelButton.SetBinding(AppButton.TextProperty, new Binding("SignUpCancelAuthorizationButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            cancelButton.SetBinding(AppButton.CommandProperty, "CancelCommand");
+            cancelButton.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpCancelAuthorizationButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            cancelButton.SetBinding(AppRoundButton.CommandProperty, "CancelCommand");
 
-            var continueContent = new ContentView
+            var cancelContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
@@ -148,7 +148,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             content.Children.Add(signUpDriverContent, 0, 2);
             content.Children.Add(lockContent, 0, 3);
             content.Children.Add(welcomeContent, 0, 4);
-            content.Children.Add(continueContent, 0, 5);
+            content.Children.Add(cancelContent, 0, 5);
 
             var busyIndicator = new ActivityIndicator
             {

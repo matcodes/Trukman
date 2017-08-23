@@ -17,8 +17,9 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
     #region SignUpOwnerCompanyViewModel
     public class SignUpOwnerCompanyViewModel : PageViewModel
     {
-        public SignUpOwnerCompanyViewModel()
-            : base()
+        private System.Timers.Timer _showTimer;
+
+        public SignUpOwnerCompanyViewModel() : base()
         {
             this.EnglishLanguageCommand = new VisualCommand(this.EnglishLanguage);
             this.EspanolLanguageCommand = new VisualCommand(this.EspanolLanguage);
@@ -41,6 +42,25 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             this.Phone = (info != null ? info.Phone : "");
             this.EMail = "";
             this.FleetSize = "";
+        }
+
+        protected override void DoPropertyChanged(string propertyName)
+        {
+            base.DoPropertyChanged(propertyName);
+
+            if (propertyName == "EnterConfirmationCodePopupVisible")
+            {
+                if (!this.EnterConfirmationCodePopupVisible)
+                {
+                    this.StopShowTimer();
+                    this.ConfirmationState = 0;
+                }
+            }
+            else if (propertyName == "ConfirmationCodeAcceptedPopupVisible")
+            {
+                if (this.ConfirmationCodeAcceptedPopupVisible)
+                    this.EnterConfirmationCodePopupVisible = false;
+            }
         }
 
         public override void Appering()
@@ -123,6 +143,22 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             });
         }
 
+        private void StartShowTimer()
+        {
+            _showTimer = new System.Timers.Timer { Interval = 10000 };
+            _showTimer.Elapsed += (sender, args) =>
+            {
+                this.StopShowTimer();
+                this.ConfirmationState = 0;
+            };
+            _showTimer.Start();
+        }
+
+        private void StopShowTimer()
+        {
+            if (_showTimer != null)
+                _showTimer.Stop();
+        }
 
         public void SubmitCode(object parameter)
         {
@@ -139,13 +175,9 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     }
                     else
                     {
-                        this.ConfirmationCodeInvalidVisible = true;
-                        Timer _timer = new Timer(10000);
-                        _timer.Elapsed += ((sender, args) =>
-                        {
-                            this.ConfirmationCodeInvalidVisible = false;
-                        });
-                        _timer.Start();
+                        this.StopShowTimer();
+                        this.ConfirmationState = 2;
+                        this.StartShowTimer();
                     }
                     this.ConfirmationCode = "";
                 }
@@ -164,14 +196,11 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public void CancelConfirmationCode(object parameter)
         {
             this.EnterConfirmationCodePopupVisible = false;
-            this.ConfirmationCodeSentVisible = false;
-            this.ConfirmationCodeInvalidVisible = false;
-            this.ConfirmationCodeAcceptedPopupVisible = false;
         }
 
         public void ResendConfirmationCode(object parameter)
         {
-            if (!this.ConfirmationCodeSentVisible)
+            if (this.ConfirmationState != 1)
             {
                 Task.Run(async () =>
                 {
@@ -179,14 +208,10 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     try
                     {
                         await TrukmanContext.ResendVerificationCode();
-                        this.ConfirmationCodeInvalidVisible = false;
-                        this.ConfirmationCodeSentVisible = true;
-                        Timer _timer = new Timer(10000);
-                        _timer.Elapsed += ((sender, args) =>
-                        {
-                            this.ConfirmationCodeSentVisible = false;
-                        });
-                        _timer.Start();
+
+                        this.StopShowTimer();
+                        this.ConfirmationState = 1;
+                        this.StartShowTimer();
                     }
                     catch (Exception exception)
                     {
@@ -276,16 +301,10 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             set { this.SetValue("EnterConfirmationCodePopupVisible", value); }
         }
 
-        public bool ConfirmationCodeSentVisible
+        public int ConfirmationState
         {
-            get { return (bool)this.GetValue("ConfirmationCodeSentVisible", false); }
-            set { this.SetValue("ConfirmationCodeSentVisible", value); }
-        }
-
-        public bool ConfirmationCodeInvalidVisible
-        {
-            get { return (bool)this.GetValue("ConfirmationCodeInvalidVisible", false); }
-            set { this.SetValue("ConfirmationCodeInvalidVisible", value); }
+            get { return (int)this.GetValue("ConfirmationState", 0); }
+            set { this.SetValue("ConfirmationState", value); }
         }
 
         public bool ConfirmationCodeAcceptedPopupVisible

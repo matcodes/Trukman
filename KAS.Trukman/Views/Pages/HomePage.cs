@@ -25,6 +25,8 @@ namespace KAS.Trukman.Views.Pages
         private HomeStateToBoolConverter _homeStateToBoolConverter = new HomeStateToBoolConverter();
         private HomeStateToImageConverter _homeStateToImageConverter = new HomeStateToImageConverter();
 
+        private Color lineColor = Color.FromHex("#808080");
+
         public HomePage() 
             : base()
         {
@@ -252,7 +254,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
+                BackgroundColor = Color.Transparent
             };
             declineButton.SetBinding(AppButton.TextProperty, new Binding("HomeDeclineButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             declineButton.SetBinding(AppButton.CommandProperty, "DeclineCommand");
@@ -261,7 +263,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
+                BackgroundColor = Color.Transparent
             };
             acceptButton.SetBinding(AppButton.TextProperty, new Binding("HomeAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             acceptButton.SetBinding(AppButton.CommandProperty, "AcceptCommand");
@@ -271,21 +273,38 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
-                ColumnSpacing = 1,
+                ColumnSpacing = 0,
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
             buttons.Children.Add(declineButton, 0, 0);
-            buttons.Children.Add(acceptButton, 1, 0);
+            buttons.Children.Add(this.CreateVerticalLine(), 1, 0);
+            buttons.Children.Add(acceptButton, 2, 0);
+
+            var frameBackground = Color.Black;
+
+            var frame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 25,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = buttons
+            };
 
             var buttonsContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 10, 20, 10),
-                Content = buttons
+                Content = frame
             };
 
             var originLabel = new Label
@@ -503,11 +522,24 @@ namespace KAS.Trukman.Views.Pages
             };
             declined.SetBinding(Label.TextProperty, new Binding("HomeDeclinedLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
+            var declinedFrame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.Transparent,
+                CornerRadius = 25,
+                OutlineColor = Color.White,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = declined,
+                Padding = new Thickness(0, 10)
+            };
+
             var declinedContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 0, 20, 10),
-                Content = declined
+                Content = declinedFrame
             };
 
             var declinedReasonItemsToColorConverter = new DeclinedReasonItemsToColorConverter();
@@ -576,13 +608,13 @@ namespace KAS.Trukman.Views.Pages
                 Content = memoEntry
             };
 
-            var submitButton = new AppButton
+            var submitButton = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            submitButton.SetBinding(AppButton.TextProperty, new Binding("HomeSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            submitButton.SetBinding(AppButton.CommandProperty, "DeclinedSubmitCommand");
+            submitButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            submitButton.SetBinding(AppRoundButton.CommandProperty, "DeclinedSubmitCommand");
 
             var submitContent = new ContentView
             {
@@ -664,13 +696,13 @@ namespace KAS.Trukman.Views.Pages
                 Content = cancelledTripLabel
             };
 
-            var continueButton = new AppButton
+            var continueButton = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            continueButton.SetBinding(AppButton.TextProperty, new Binding("HomeContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            continueButton.SetBinding(AppButton.CommandProperty, "ContinueCommand");
+            continueButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            continueButton.SetBinding(AppRoundButton.CommandProperty, "ContinueCommand");
 
             var continueContent = new ContentView
             {
@@ -1632,13 +1664,13 @@ namespace KAS.Trukman.Views.Pages
 				Content = totalDriverPointsLabel
 			};
 
-			var rewardsButton = new AppButton
-			{
+			var rewardsButton = new AppRoundButton
+            {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Center
 			};
-			rewardsButton.SetBinding(AppButton.TextProperty, new Binding("HomeRewardsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			rewardsButton.SetBinding(AppButton.CommandProperty, "RewardsCommand");
+			rewardsButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeRewardsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			rewardsButton.SetBinding(AppRoundButton.CommandProperty, "RewardsCommand");
 
 			var rewardsContent = new ContentView
 			{
@@ -1648,12 +1680,13 @@ namespace KAS.Trukman.Views.Pages
 				Content = rewardsButton
 			};
 
-			var newTripButton = new AppButton {
+			var newTripButton = new AppRoundButton
+            {
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Center
 			};
-			newTripButton.SetBinding(AppButton.TextProperty, new Binding("HomeNewTripButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			newTripButton.SetBinding(AppButton.CommandProperty, "NewTripCommand");
+			newTripButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeNewTripButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+			newTripButton.SetBinding(AppRoundButton.CommandProperty, "NewTripCommand");
 
 			var newTripContent = new ContentView
 			{
@@ -1697,14 +1730,34 @@ namespace KAS.Trukman.Views.Pages
 			return content;
 		}
 
-        private View CreateGPSPopup()
+        private View CreateHorizontalLine()
         {
-            var appBoxView = new AppBoxView {
+            var line = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-				Color = Color.White
+                VerticalOptions = LayoutOptions.Start,
+                HeightRequest = 1,
+                BackgroundColor = lineColor
             };
 
+            return line;
+        }
+
+        private View CreateVerticalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
+                WidthRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
+        }
+
+        private View CreateGPSPopup()
+        {    
             var mainLabel = new Label {
                 HorizontalOptions = LayoutOptions.Fill,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
@@ -1738,17 +1791,15 @@ namespace KAS.Trukman.Views.Pages
             var cancelButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
+                HorizontalOptions = LayoutOptions.Fill
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            cancelButton.SetBinding(AppButton.CommandProperty, "GPSPopupCancelCommand");
+            cancelButton.SetBinding(AppPopupButton.CommandProperty, "GPSPopupCancelCommand");
 
             var settingsButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
+                HorizontalOptions = LayoutOptions.Fill
             };
             settingsButton.SetBinding(AppPopupButton.TextProperty, new Binding("HomeGPSPopupSettingsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             settingsButton.SetBinding(AppPopupButton.CommandProperty, "GPSPopupSettingsCommand");
@@ -1762,11 +1813,13 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0, 1, 0, 0),
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
             buttons.Children.Add(cancelButton, 0, 0);
-            buttons.Children.Add(settingsButton, 1, 0);
+            buttons.Children.Add(this.CreateVerticalLine(), 1, 0);
+            buttons.Children.Add(settingsButton, 2, 0);
 
             var popupContent = new StackLayout {
                 Spacing = 0,
@@ -1774,19 +1827,35 @@ namespace KAS.Trukman.Views.Pages
             };
             popupContent.Children.Add(mainContent);
             popupContent.Children.Add(smallerContent);
+            popupContent.Children.Add(this.CreateHorizontalLine());
             popupContent.Children.Add(buttons);
 
-            var content = new Grid {
+            var frameBackground = Color.FromHex("#F2F2F2");
+
+            var frame = new Frame
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 0, 40, 0)
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = popupContent
             };
-            content.SetBinding(Grid.IsVisibleProperty, "GPSPopupVisible", BindingMode.TwoWay);
 
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 40),
+                Content = frame
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, "GPSPopupVisible", BindingMode.TwoWay);
 
             return content;
         }

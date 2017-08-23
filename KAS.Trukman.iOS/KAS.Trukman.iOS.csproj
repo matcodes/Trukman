@@ -397,7 +397,6 @@
   </ItemGroup>
   <Import Project="..\KAS.Trukman\KAS.Truckman.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="GeolocatorPlugin">
       <Version>1.0.3</Version>

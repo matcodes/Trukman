@@ -95,13 +95,13 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = welcome
             };
 
-            var continueButton = new AppButton
+            var continueButton = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            continueButton.SetBinding(AppButton.TextProperty, new Binding("SignUpContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            continueButton.SetBinding(AppButton.CommandProperty, "ContinueCommand");
+            continueButton.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            continueButton.SetBinding(AppRoundButton.CommandProperty, "ContinueCommand");
 
             var continueContent = new ContentView
             {

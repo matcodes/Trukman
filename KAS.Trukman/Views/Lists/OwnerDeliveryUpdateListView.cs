@@ -13,7 +13,7 @@ namespace KAS.Trukman.Views.Lists
 			this.IsGroupingEnabled = true;
 			this.GroupDisplayBinding = new Binding ("Key");
 			//this.GroupShortNameBinding = new Binding ("Key");
-			if(Device.OS != TargetPlatform.WinPhone)
+			if(Device.RuntimePlatform != Device.WinPhone)
 				this.GroupHeaderTemplate = new DataTemplate(typeof(HeaderCell));
 
 			var cell = new DataTemplate(typeof(DeliveryUpdateCell));

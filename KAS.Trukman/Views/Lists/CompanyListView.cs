@@ -8,12 +8,13 @@ namespace KAS.Trukman.Views.Lists
     #region CompanyListView
     public class CompanyListView : BaseListView
     {
-        public CompanyListView()
-            : base()
+        public CompanyListView() : base()
         {
             this.BackgroundColor = Color.Transparent;
 
             this.IsPullToRefreshEnabled = false;
+            this.SeparatorColor = Color.Transparent;
+            this.SeparatorVisibility = SeparatorVisibility.None;
 
             this.ItemTemplate = new DataTemplate(typeof(CompanyCell));
         }

@@ -5,12 +5,13 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.Controls
 {
-    #region AppButton
-    public class AppButton : Button
+    #region AppRoundButton
+    public class AppRoundButton : AppButton
     {
-        public AppButton() : base()
+        public AppRoundButton() : base()
         {
-            //this.BackgroundColor = Color.Transparent;
+            this.BorderRadius = 25;
+            this.BackgroundColor = Color.Black;
             this.TextColor = Color.White;
         }
     }

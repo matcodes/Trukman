@@ -95,13 +95,13 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = mcCode
             };
 
-            var submit = new AppButton
+            var submit = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center
             };
-            submit.SetBinding(AppButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            submit.SetBinding(AppButton.CommandProperty, "SubmitCommand");
+            submit.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            submit.SetBinding(AppRoundButton.CommandProperty, "SubmitCommand");
 
             var submitContent = new ContentView
             {
@@ -197,7 +197,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             popupContent.Children.Add(this.CreateLine(), 0, 1);
             popupContent.Children.Add(continueButton, 0, 2);
 
-            var frameBackground = Color.FromHex("#F0F0F0");
+            var frameBackground = Color.FromHex("#F2F2F2");
 
             var frame = new Frame
             {
@@ -205,7 +205,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 VerticalOptions = LayoutOptions.Center,
                 Padding = new Thickness(0),
                 BackgroundColor = frameBackground,
-                CornerRadius = 25,
+                CornerRadius = 8,
                 OutlineColor = frameBackground,
                 HasShadow = false,
                 Content = popupContent

@@ -16,7 +16,7 @@ namespace KAS.Trukman.Views.Lists
             this.IsPullToRefreshEnabled = true;
             this.IsGroupingEnabled = true;
             this.GroupDisplayBinding = new Binding("Job");
-            if (Device.OS != TargetPlatform.WinPhone)
+            if (Device.RuntimePlatform != Device.WinPhone)
                 this.GroupHeaderTemplate = new DataTemplate(typeof(DriverJobPointGroupCell));
             this.ItemTemplate = new DataTemplate(typeof(DriverJobPointItemCell));
         }

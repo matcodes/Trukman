@@ -17,12 +17,12 @@ namespace KAS.Trukman.Views.Pages
         private Map _map = null;
 
         private TripViewModel _viewModel = null;
+        private Color lineColor = Color.FromHex("#808080");
 
-        public TripPage()
-            : base()
+        public TripPage() : base()
         {
             _viewModel = new TripViewModel();
-            _viewModel.PropertyChanged += (sender, args) => 
+            _viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ContractorPosition")
                     this.MapLocateAddress(_map, this.ViewModel.ContractorPosition);
@@ -48,7 +48,8 @@ namespace KAS.Trukman.Views.Pages
 
             var tripContractorItemsToColorConverter = new TripContractorItemsToColorConverter();
 
-            var shipperTitleLabel = new TappedLabel {
+            var shipperTitleLabel = new TappedLabel
+            {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -59,7 +60,8 @@ namespace KAS.Trukman.Views.Pages
             shipperTitleLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
             shipperTitleLabel.SetBinding(TappedLabel.TapCommandProperty, "SelectItemCommand");
 
-            var showShipperPosition = new ToolButton {
+            var showShipperPosition = new ToolButton
+            {
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.Center,
                 ImageSourceName = PlatformHelper.LocationImageSource,
@@ -68,7 +70,8 @@ namespace KAS.Trukman.Views.Pages
             };
             showShipperPosition.SetBinding(ToolButton.CommandProperty, "ShowShipperLocationCommand");
 
-            var shipperTitleContent = new Grid {
+            var shipperTitleContent = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(0, 0, 0, 0),
                 ColumnSpacing = 0,
@@ -158,7 +161,8 @@ namespace KAS.Trukman.Views.Pages
             shipperFax.Children.Add(shipperFaxLabel);
             shipperFax.Children.Add(shipperFaxValue);
 
-            var shipperPhoneFaxLineContent = new Grid {
+            var shipperPhoneFaxLineContent = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 ColumnSpacing = 0,
                 RowSpacing = 0,
@@ -207,7 +211,8 @@ namespace KAS.Trukman.Views.Pages
             shipperSpecialInstruction.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 0));
             shipperSpecialInstruction.SetBinding(TappedLabel.TapCommandProperty, "ShipperSpecialInstructionCommand");
 
-            var shipperSpecialInstructionContent = new ContentView {
+            var shipperSpecialInstructionContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(0, 5, 0, 5),
                 Content = shipperSpecialInstruction
@@ -275,7 +280,7 @@ namespace KAS.Trukman.Views.Pages
             var receiverPhoneLabel = new TappedLabel
             {
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TapCommandParameter= 1
+                TapCommandParameter = 1
             };
             receiverPhoneLabel.SetBinding(TappedLabel.TextProperty, new Binding("ContractorPagePhoneLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             receiverPhoneLabel.SetBinding(TappedLabel.TextColorProperty, new Binding("SelectedItem", BindingMode.OneWay, tripContractorItemsToColorConverter, 1));
@@ -326,7 +331,8 @@ namespace KAS.Trukman.Views.Pages
             receiverFax.Children.Add(receiverFaxLabel);
             receiverFax.Children.Add(receiverFaxValue);
 
-            var receiverPhoneFaxLineContent = new Grid {
+            var receiverPhoneFaxLineContent = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
                 ColumnSpacing = 0,
@@ -382,14 +388,15 @@ namespace KAS.Trukman.Views.Pages
                 Content = receiverSpecialInstruction
             };
 
-            var showRoutePage = new AppButton {
-                HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Normal
+            var showRoutePage = new AppRoundButton
+            {
+                HorizontalOptions = LayoutOptions.Fill
             };
-            showRoutePage.SetBinding(AppButton.TextProperty, new Binding("TripShowRouteButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            showRoutePage.SetBinding(AppButton.CommandProperty, "ShowRouteCommand");
+            showRoutePage.SetBinding(AppRoundButton.TextProperty, new Binding("TripShowRouteButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            showRoutePage.SetBinding(AppRoundButton.CommandProperty, "ShowRouteCommand");
 
-            var showRoutePageContent = new ContentView {
+            var showRoutePageContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 5, 20, 5),
                 Content = showRoutePage
@@ -414,7 +421,8 @@ namespace KAS.Trukman.Views.Pages
             info.Children.Add(receiverSpecialInstructionContent);
             info.Children.Add(showRoutePageContent);
 
-            _map = new Map {
+            _map = new Map
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill
             };
@@ -467,15 +475,21 @@ namespace KAS.Trukman.Views.Pages
             return pageContent;
         }
 
-        private View CreateSpecialInstructionPopup()
+        private View CreateHorizontalLine()
         {
-            var appBoxView = new AppBoxView
+            var line = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                Color = Color.White
+                VerticalOptions = LayoutOptions.Start,
+                HeightRequest = 1,
+                BackgroundColor = lineColor
             };
 
+            return line;
+        }
+
+        private View CreateSpecialInstructionPopup()
+        {
             var mainLabel = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -494,8 +508,7 @@ namespace KAS.Trukman.Views.Pages
             var continueButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Normal
+                HorizontalOptions = LayoutOptions.Fill
             };
             continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("TripPopupContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             continueButton.SetBinding(AppPopupButton.CommandProperty, "PopupContinueCommand");
@@ -516,27 +529,43 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill
             };
             popupContent.Children.Add(mainContent);
+            popupContent.Children.Add(this.CreateHorizontalLine());
             popupContent.Children.Add(buttons);
 
-            var content = new Grid
-            {
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 0, 40, 0)
-            };
-            content.SetBinding(Grid.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);
+            var frameBackground = Color.FromHex("#F2F2F2");
 
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
+            var frame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = popupContent
+            };
+
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 0),
+                Content = frame
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);
 
             return content;
         }
 
         private void MapLocateAddress(Map map, Position position)
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 if ((map != null) && (this.ViewModel != null))
                 {
                     map.MoveToRegion(new MapSpan(position, 0.5, 0.5));

@@ -16,9 +16,10 @@ namespace KAS.Trukman.Views.Pages.SignUp
     public class SignUpDriverPage : TrukmanPage
     {
         private AppEntry _filter = null;
+        private Color lineColor = Color.FromHex("#808080");
+        private IndexToBoolConverter _indexToBoolConverter = new IndexToBoolConverter();
 
-        public SignUpDriverPage()
-            : base()
+        public SignUpDriverPage() : base()
         {
             this.BindingContext = new SignUpDriverViewModel();
         }
@@ -166,13 +167,13 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = company
             };
 
-            var submit = new AppButton
+            var submit = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.End
             };
-            submit.SetBinding(AppButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            submit.SetBinding(AppButton.CommandProperty, "SubmitCommand");
+            submit.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            submit.SetBinding(AppRoundButton.CommandProperty, "SubmitCommand");
 
             var submitContent = new ContentView
             {
@@ -236,30 +237,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
             };
             busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
 
-            var selectCompanyPopupBackground = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-            };
-            selectCompanyPopupBackground.SetBinding(ContentView.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.OneWay);
-
-            var enterConfirmationCodePopupBackground = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-            };
-            enterConfirmationCodePopupBackground.SetBinding(ContentView.IsVisibleProperty, "EnterConfirmationCodePopupVisible", BindingMode.OneWay);
-
-            var confirmationCodeAcceptedPopupBackground = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-            };
-            confirmationCodeAcceptedPopupBackground.SetBinding(ContentView.IsVisibleProperty, "ConfirmationCodeAcceptedPopupVisible", BindingMode.OneWay);
-
             var pageContent = new Grid
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -268,11 +245,8 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 ColumnSpacing = 0
             };
             pageContent.Children.Add(scrollableContent);
-            pageContent.Children.Add(selectCompanyPopupBackground);
             pageContent.Children.Add(this.CreateSelectCompanyPopup());
-            pageContent.Children.Add(enterConfirmationCodePopupBackground);
             pageContent.Children.Add(this.CreateEnterConfirmationCodePopup());
-            pageContent.Children.Add(confirmationCodeAcceptedPopupBackground);
             pageContent.Children.Add(this.CreateConfirmationCodeAcceptedPopup());
             pageContent.Children.Add(busyIndicator);
 
@@ -301,13 +275,6 @@ namespace KAS.Trukman.Views.Pages.SignUp
 
         private View CreateSelectCompanyPopup()
         {
-            var appBoxView = new AppBoxView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                Color = Color.White
-            };
-
             _filter = new AppEntry
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -315,8 +282,8 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 TextColor = Color.Black,
                 PlaceholderColor = Color.Gray
             };
-            _filter.SetBinding(Entry.TextProperty, "CompanyFilter", BindingMode.TwoWay);
-            _filter.SetBinding(Entry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            _filter.SetBinding(AppEntry.TextProperty, "CompanyFilter", BindingMode.TwoWay);
+            _filter.SetBinding(AppEntry.PlaceholderProperty, new Binding("SignUpSelectCompanySearchPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
             var filterContent = new ContentView
             {
@@ -337,16 +304,14 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            cancelButton.SetBinding(AppButton.CommandProperty, "SelectCompanyCancelCommand");
+            cancelButton.SetBinding(AppPopupButton.CommandProperty, "SelectCompanyCancelCommand");
 
             var acceptButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
             };
             acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             acceptButton.SetBinding(AppPopupButton.CommandProperty, "SelectCompanyAcceptCommand");
@@ -358,13 +323,21 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 RowSpacing = 0,
                 ColumnSpacing = 0,
                 Padding = new Thickness(0, 1, 0, 0),
+                RowDefinitions =
+                {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                },
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
-            buttons.Children.Add(cancelButton, 0, 0);
-            buttons.Children.Add(acceptButton, 1, 0);
+            buttons.Children.Add(this.CreateHorizontalLine(), 0, 3, 0, 1);
+            buttons.Children.Add(cancelButton, 0, 1);
+            buttons.Children.Add(this.CreateVerticalLine(), 1, 1);
+            buttons.Children.Add(acceptButton, 2, 1);
 
             var popupContent = new Grid
             {
@@ -382,36 +355,68 @@ namespace KAS.Trukman.Views.Pages.SignUp
             popupContent.Children.Add(companyListView, 0, 1);
             popupContent.Children.Add(buttons, 0, 2);
 
-            var content = new Grid
+            var frameBackground = Color.FromHex("#F2F2F2");
+
+            var frame = new Frame
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 40, 40, 0)
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                Content = popupContent
             };
-            content.SetBinding(Grid.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.TwoWay);
+
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 40),
+                Content = frame
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, "SelectCompanyPopupVisible", BindingMode.TwoWay);
             content.PropertyChanged += (sender, e) =>
             {
                 if (this.ViewModel.SelectCompanyPopupVisible)
                     _filter.Focus();
             };
 
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
-
             return content;
+        }
+
+        private View CreateHorizontalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HeightRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
+        }
+
+        private View CreateVerticalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
+                WidthRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
         }
 
         private View CreateEnterConfirmationCodePopup()
         {
-            var appBoxView = new AppBoxView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                Color = Color.White
-            };
-
             var infoLabel = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -447,49 +452,75 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = confirmationCode
             };
 
-            var submit = new AppButton
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.End
-            };
-            submit.SetBinding(AppButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            submit.SetBinding(AppButton.CommandProperty, "SubmitCodeCommand");
-
-            var sentLabel = new AppLabel
+            var sentLabel = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
-                TextColor =  PlatformHelper.HomeLabelTextColor,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                AppLabelStyle = AppLabelStyles.InfoGray
+                TextColor = PlatformHelper.HomeLabelTextColor,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
             sentLabel.SetBinding(Label.TextProperty, new Binding("SignUpConfirmationCodeSentLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var sentFrame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.Transparent,
+                CornerRadius = 25,
+                OutlineColor = Color.Gray,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = sentLabel,
+                Padding = new Thickness(0, 10)
+            };
 
             var sentLabelContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
                 Padding = new Thickness(20, 0, 20, 10),
-                Content = sentLabel
+                Content = sentFrame
             };
-            sentLabelContent.SetBinding(ContentView.IsVisibleProperty, "ConfirmationCodeSentVisible");
+            sentLabelContent.SetBinding(ContentView.IsVisibleProperty, new Binding("ConfirmationState", BindingMode.OneWay, _indexToBoolConverter, 1, null));
 
             var invalidCodeLabel = new AppLabel
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = PlatformHelper.HomeLabelTextColor,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                AppLabelStyle = AppLabelStyles.Error
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
             invalidCodeLabel.SetBinding(Label.TextProperty, new Binding("SignUpConfirmationCodeInvalidCodeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var invalidCodeFrame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.Transparent,
+                CornerRadius = 25,
+                OutlineColor = Color.IndianRed,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = invalidCodeLabel,
+                Padding = new Thickness(0, 10)
+            };
 
             var invalidCodeContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
                 Padding = new Thickness(20, 0, 20, 10),
-                Content = invalidCodeLabel
+                Content = invalidCodeFrame
             };
-            invalidCodeContent.SetBinding(ContentView.IsVisibleProperty, "ConfirmationCodeInvalidVisible");
+            invalidCodeContent.SetBinding(ContentView.IsVisibleProperty, new Binding("ConfirmationState", BindingMode.OneWay, _indexToBoolConverter, 2, null));
+
+            var submit = new AppRoundButton
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.End
+            };
+            submit.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            submit.SetBinding(AppRoundButton.CommandProperty, "SubmitCodeCommand");
 
             var submitContent = new ContentView
             {
@@ -503,16 +534,14 @@ namespace KAS.Trukman.Views.Pages.SignUp
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
             };
             cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpSelectCompanyCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            cancelButton.SetBinding(AppButton.CommandProperty, "CancelConfirmationCodeCommand");
+            cancelButton.SetBinding(AppPopupButton.CommandProperty, "CancelConfirmationCodeCommand");
 
             var resendButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
             };
             resendButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpConfirmationCodeResentButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppPopupButton.CommandProperty, "ResendConfirmationCodeCommand");
@@ -524,18 +553,26 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 RowSpacing = 0,
                 ColumnSpacing = 0,
                 Padding = new Thickness(0, 1, 0, 0),
+                RowDefinitions =
+                {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                },
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
-            buttons.Children.Add(cancelButton, 0, 0);
-            buttons.Children.Add(resendButton, 1, 0);
+            buttons.Children.Add(this.CreateHorizontalLine(), 0, 3, 0, 1);
+            buttons.Children.Add(cancelButton, 0, 1);
+            buttons.Children.Add(this.CreateVerticalLine(), 1, 1);
+            buttons.Children.Add(resendButton, 2, 1);
 
             var popupContent = new Grid
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                HeightRequest = this.Height / 2,
+                VerticalOptions = LayoutOptions.Center,
                 RowSpacing = 0,
                 ColumnSpacing = 0,
                 RowDefinitions = {
@@ -553,58 +590,76 @@ namespace KAS.Trukman.Views.Pages.SignUp
             popupContent.Children.Add(invalidCodeContent, 0, 3);
             popupContent.Children.Add(buttons, 0, 4);
 
-            var content = new Grid
+            var frameBackground = Color.FromHex("#F2F2F2");
+
+            var frame = new Frame
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Start,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 40, 40, 0)
+                VerticalOptions = LayoutOptions.Center,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                Content = popupContent
+            };
+
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 40),
+                Content = frame
             };
             content.SetBinding(Grid.IsVisibleProperty, "EnterConfirmationCodePopupVisible", BindingMode.TwoWay);
             content.PropertyChanged += (sender, e) =>
             {
                 //if (this.ViewModel.EnterConfirmationCodePopupVisible)
-                //    confirmationCode.Focus();
+                //    confirmationCode.SetFocus();
             };
-
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
 
             return content;
         }
 
         private View CreateConfirmationCodeAcceptedPopup()
         {
-            var appBoxView = new AppBoxView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                Color = Color.White
-            };
-
             var infoLabel = new AppLabel
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = PlatformHelper.HomeLabelTextColor,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                AppLabelStyle = AppLabelStyles.Success
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
             };
             infoLabel.SetBinding(AppLabel.TextProperty, new Binding("SignUpConfirmationCodeSuccessLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var infoFrame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.Transparent,
+                CornerRadius = 25,
+                OutlineColor = Color.ForestGreen,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = infoLabel,
+                Padding = new Thickness(0, 10)
+            };
 
             var infoContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
                 Padding = new Thickness(10, 20, 10, 20),
-                Content = infoLabel
+                Content = infoFrame
             };
 
             var continueButton = new AppPopupButton
             {
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Normal
+                HorizontalOptions = LayoutOptions.Fill
             };
             continueButton.SetBinding(AppPopupButton.TextProperty, new Binding("SignUpContinueButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             continueButton.SetBinding(AppPopupButton.CommandProperty, "ContinueCommand");
@@ -617,24 +672,39 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
                 },
             };
             popupContent.Children.Add(infoContent, 0, 0);
-            popupContent.Children.Add(continueButton, 0, 1);
+            popupContent.Children.Add(this.CreateHorizontalLine(), 0, 1);
+            popupContent.Children.Add(continueButton, 0, 2);
 
-            var content = new Grid
+            var frameBackground = Color.FromHex("#F2F2F2");
+
+            var frame = new Frame
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
-                RowSpacing = 0,
-                ColumnSpacing = 0,
-                Padding = new Thickness(40, 0, 40, 0)
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                Content = popupContent
+            };
+
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 40),
+                Content = frame
             };
             content.SetBinding(Grid.IsVisibleProperty, "ConfirmationCodeAcceptedPopupVisible", BindingMode.TwoWay);
-
-            content.Children.Add(appBoxView);
-            content.Children.Add(popupContent);
 
             return content;
         }

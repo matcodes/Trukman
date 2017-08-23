@@ -10,15 +10,27 @@ namespace KAS.Trukman.Controls
     public class AppEntry : Entry
     {
         #region Static members
-        public static readonly BindableProperty TapCommandProperty = BindableProperty.Create("TapCommand", typeof(ICommand), typeof(TappedLabel), null);
-        public static readonly BindableProperty TapCommandParameterProperty = BindableProperty.Create("TapCommandParameter", typeof(object), typeof(TappedLabel), null);
+        public static readonly BindableProperty TapCommandProperty = BindableProperty.Create("TapCommand", typeof(ICommand), typeof(AppEntry), null);
+        public static readonly BindableProperty TapCommandParameterProperty = BindableProperty.Create("TapCommandParameter", typeof(object), typeof(AppEntry), null);
         #endregion
+
+        private bool _isLoad = true;
 
         public AppEntry() : base()
         {
-            this.Focused += (sender, args) => {
+            this.Focused += (sender, args) =>
+            {
                 if ((this.TapCommand != null) && (this.TapCommand.CanExecute(this.TapCommandParameter)))
                     this.TapCommand.Execute(this.TapCommandParameter);
+            };
+
+            this.SizeChanged += (sender, args) =>
+            {
+                if (Device.RuntimePlatform == Device.iOS && _isLoad)
+                {
+                    this.HeightRequest = this.Height + 10;
+                    _isLoad = false;
+                }
             };
         }
 

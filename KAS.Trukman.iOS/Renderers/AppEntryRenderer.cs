@@ -11,7 +11,7 @@ using CoreGraphics;
 namespace KAS.Trukman.iOS
 {
     #region PaddingUITextField
-    public class PaddingUITextField: UITextField
+    public class PaddingUITextField : UITextField
     {
         private UIEdgeInsets EdgeInsets { get; set; }
 
@@ -27,6 +27,7 @@ namespace KAS.Trukman.iOS
             this.ClipsToBounds = true;
 
             EdgeInsets = new UIEdgeInsets(10, 25, 10, 25);
+
         }
 
         public override CGRect TextRect(CGRect forBounds)
@@ -44,15 +45,43 @@ namespace KAS.Trukman.iOS
     #region AppEntryRenderer
     public class AppEntryRenderer : EntryRenderer
     {
+        //UITapGestureRecognizer tapGestureRecognizer;
+
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
-            if (this.Control == null)
+            base.OnElementChanged(e);
+            if (this.Control != null)
             {
-                SetNativeControl(new PaddingUITextField());
+                this.Control.Layer.CornerRadius = 25.0f;
+                this.Control.BackgroundColor = UIColor.White;
+                this.Control.AutocapitalizationType = UITextAutocapitalizationType.None;
+                this.Control.LeftView = new UIView(new CGRect(0.0f, 0.0f, 15.0f, 0.0f));
+                this.Control.LeftViewMode = UITextFieldViewMode.Always;
+                this.Control.RightView = new UIView(new CGRect(0.0f, 0.0f, 15.0f, 0.0f));
+                this.Control.RightViewMode = UITextFieldViewMode.Always;
+
+                this.Control.ClipsToBounds = true;
+                this.SetNeedsDisplay();
             }
 
-            base.OnElementChanged(e);
+            //if (this.Control == null)
+            //{
+            //    var paddingUITextField = new PaddingUITextField();
+            //    tapGestureRecognizer = new UITapGestureRecognizer(() => { OnViewTapped(); });
+            //    paddingUITextField.AddGestureRecognizer(tapGestureRecognizer);
+            //    SetNativeControl(paddingUITextField);
+            //}
+            //base.OnElementChanged(e);
         }
+
+        //private void OnViewTapped()
+        //{
+        //    var element = (this.Element as AppEntry);
+        //    if (element != null)
+        //    {
+        //        element.DoTapClick(System.EventArgs.Empty);
+        //    }
+        //}
     }
     #endregion
 }

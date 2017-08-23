@@ -21,10 +21,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\VisualCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppBoxView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AppPopupButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AppRoundButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PDFView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SignUpTitleBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TappedLabel.cs" />
@@ -38,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\HomeStateToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\HomeStateToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\HomeTripTimeToColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IndexToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\LumperStateToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\MainMenuEnabledToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\RouteStepTurnToImageConverter.cs" />

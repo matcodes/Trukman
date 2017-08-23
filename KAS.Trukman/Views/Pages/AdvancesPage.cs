@@ -13,8 +13,9 @@ namespace KAS.Trukman.Views.Pages
     #region AdvancesPage
     public class AdvancesPage : TrukmanPage
     {
-        public AdvancesPage()
-            : base()
+        private Color lineColor = Color.FromHex("#808080");
+
+        public AdvancesPage() : base()
         {
             this.BindingContext = new AdvancesViewModel();
         }
@@ -73,6 +74,19 @@ namespace KAS.Trukman.Views.Pages
             return content;
         }
 
+        private View CreateVerticalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
+                WidthRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
+        }
+
         private View CreateFuelView()
         {
             var fuelAdvanceStateToImageConverter = new FuelAdvanceStateToImageConverter();
@@ -126,13 +140,13 @@ namespace KAS.Trukman.Views.Pages
             grid.Children.Add(fuelContent, 0, 0);
             grid.Children.Add(stateContent, 1, 0);
 
-            var requestButton = new AppButton
+            var requestButton = new AppRoundButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill
             };
-            requestButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceNoneRequestButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            requestButton.SetBinding(AppButton.CommandProperty, "FuelRequestCommand");
+            requestButton.SetBinding(AppRoundButton.TextProperty, new Binding("FuelAdvanceNoneRequestButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            requestButton.SetBinding(AppRoundButton.CommandProperty, "FuelRequestCommand");
 
             var requestContent = new ContentView
             {
@@ -147,7 +161,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
+                BackgroundColor = Color.Transparent
             };
             resendButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedResendButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppButton.CommandProperty, "FuelResendCommand");
@@ -156,7 +170,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
+                BackgroundColor = Color.Transparent
             };
             cancelButton.SetBinding(AppButton.TextProperty, new Binding("FuelAdvanceReceivedCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "FuelCancelCommand");
@@ -166,21 +180,38 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
-                ColumnSpacing = 1,
+                ColumnSpacing = 0,
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
             requestedButtons.Children.Add(resendButton, 0, 0);
-            requestedButtons.Children.Add(cancelButton, 1, 0);
+            requestedButtons.Children.Add(this.CreateVerticalLine(), 1, 0);
+            requestedButtons.Children.Add(cancelButton, 2, 0);
+
+            var frameBackground = Color.Black;
+
+            var frame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 25,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = requestedButtons
+            };
 
             var requestedContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 0, 20, 0),
-                Content = requestedButtons
+                Content = frame
             };
             requestedContent.SetBinding(ContentView.IsVisibleProperty, "FuelRequestedButtonsVisible", BindingMode.OneWay);
 
@@ -275,13 +306,13 @@ namespace KAS.Trukman.Views.Pages
             grid.Children.Add(lumperContent, 0, 0);
             grid.Children.Add(stateContent, 1, 0);
 
-            var requestButton = new AppButton
+            var requestButton = new AppRoundButton
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill
             };
-            requestButton.SetBinding(AppButton.TextProperty, new Binding("LumperNoneRequestButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-            requestButton.SetBinding(AppButton.CommandProperty, "LumperRequestCommand");
+            requestButton.SetBinding(AppRoundButton.TextProperty, new Binding("LumperNoneRequestButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            requestButton.SetBinding(AppRoundButton.CommandProperty, "LumperRequestCommand");
 
             var requestContent = new ContentView
             {
@@ -296,7 +327,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Left
+                BackgroundColor = Color.Transparent
             };
             resendButton.SetBinding(AppButton.TextProperty, new Binding("LumperReceivedResendButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             resendButton.SetBinding(AppButton.CommandProperty, "LumperResendCommand");
@@ -305,7 +336,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
-                //AppStyle = AppButtonStyle.Right
+                BackgroundColor = Color.Transparent
             };
             cancelButton.SetBinding(AppButton.TextProperty, new Binding("LumperReceivedCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             cancelButton.SetBinding(AppButton.CommandProperty, "LumperCancelCommand");
@@ -315,21 +346,38 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
-                ColumnSpacing = 1,
+                ColumnSpacing = 0,
                 ColumnDefinitions = {
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
             requestedButtons.Children.Add(resendButton, 0, 0);
-            requestedButtons.Children.Add(cancelButton, 1, 0);
+            requestedButtons.Children.Add(this.CreateVerticalLine(), 1, 0);
+            requestedButtons.Children.Add(cancelButton, 2, 0);
+
+            var frameBackground = Color.Black;
+
+            var frame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 25,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                IsClippedToBounds = true,
+                Content = requestedButtons
+            };
 
             var requestedContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 0, 20, 0),
-                Content = requestedButtons
+                Content = frame
             };
             requestedContent.SetBinding(ContentView.IsVisibleProperty, "LumperRequestedButtonsVisible", BindingMode.OneWay);
 

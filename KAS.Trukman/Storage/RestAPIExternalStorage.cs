@@ -1193,6 +1193,7 @@ namespace KAS.Trukman.Storage
                     var jobPoint = new JobPoint
                     {
                         ID = point.Id.ToString(),
+                        // TODO: kind to text
                         //Text = point.Kind,
                         Value = point.Points,
                         Job = job,

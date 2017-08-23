@@ -10,8 +10,7 @@ namespace KAS.Trukman.Views.Pages
     #region NavBarPage
     public class NavBarPage : TrukmanPage
     {
-        public NavBarPage() 
-            : base()
+        public NavBarPage() : base()
         {
             this.BindingContext = new NavBarViewModel();
         }
