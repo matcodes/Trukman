@@ -251,7 +251,7 @@ namespace KAS.Trukman.Languages
                 this.SignUpConfirmationCodeSuccessLabel = appLanguage.SignUpConfirmationCodeSuccessLabel;
                 #endregion
 
-                #region Driver authorization page
+                #region User authorization page
                 this.DriverAuthorizationCommonLabel = appLanguage.DriverAuthorizationCommonLabel;
                 this.DriverAuthorizationAssignIDNumberPlaceholder = appLanguage.DriverAuthorizationAssignIDNumberPlaceholder;
                 this.DriverAuthorizationAuthorizeButtonText = appLanguage.DriverAuthorizationAuthorizeButtonText;
@@ -1391,7 +1391,7 @@ namespace KAS.Trukman.Languages
         }
         #endregion
 
-        #region Driver authorization page
+        #region User authorization page
         public string DriverAuthorizationCommonLabel
         {
             get { return (string)this.GetValue("DriverAuthorizationCommonLabel"); }

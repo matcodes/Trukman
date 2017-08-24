@@ -22,6 +22,12 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("AnswerTime")]
         public DateTime AnswerTime { get; set; }
+
+        [JsonProperty("IsCancelled")]
+        public bool IsCancelled { get; set; }
+
+        [JsonProperty("Task")]
+        public TrukmanTask Task { get; set; }
     }
     #endregion
 }

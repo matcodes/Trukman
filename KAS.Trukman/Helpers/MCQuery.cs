@@ -9,7 +9,7 @@ namespace Trukman.Helpers
     #region MCQuery
     public static class MCQuery
 	{
-		private static string ENDPOINT_ADDRESS = "http://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+		private static string ENDPOINT_ADDRESS = "http://www.safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
 
 		public static async Task<MCInfo> VerifyMC(string mc) 
 		{
@@ -22,7 +22,7 @@ namespace Trukman.Helpers
 			response.EnsureSuccessStatusCode();
 			string result = await response.Content.ReadAsStringAsync();
 			MCInfo mcr = new MCInfo(mc);
-            Regex dataRegex = new Regex("Legal Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Name>[a-zA-Z0-9\\s]{3,})&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#DBAName\\\">DBA Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<DBA>[a-zA-Z0-9\\s]{3,})&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#PhysicalAddress\\\">Physical Address:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>\\r\\n     (?<Address>[a-zA-Z0-9\\s(<br>)(\\\\r),&;]{3,})/TD>\\r\\n"); //   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#Phone\\\">Phone:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Phone>[0-9(-)-\\s]{6,})");
+            Regex dataRegex = new Regex("Legal Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Name>[a-zA-Z0-9\\s]{3,})&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#DBAName\\\">DBA Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<DBA>[a-zA-Z0-9\\s]*)&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#PhysicalAddress\\\">Physical Address:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>\\r\\n     (?<Address>[a-zA-Z0-9\\s(<br>)(\\\\r),&;]*)/TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#Phone\\\">Phone:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Phone>[0-9(-)-\\s]*)");
 			Match data = dataRegex.Match(result);
 			mcr.Success = data.Success;
 			if (data.Success)
@@ -37,10 +37,9 @@ namespace Trukman.Helpers
 					.Replace("&nbsp;", "")
 					.ToString();
 
-                Regex regEx = new Regex(@"\s +");
+                Regex regEx = new Regex(@"\s+");
                 mcr.Address = regEx.Replace(mcr.Address, " ");
-
-                //mcr.Phone = data.Groups[4].Value;
+                mcr.Phone = regEx.Replace(data.Groups[4].Value, "");
 			}
 			return mcr;
 		}

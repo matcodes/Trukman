@@ -371,14 +371,14 @@ namespace KAS.Trukman.AppContext
             Company = null;
         }
 
-        public static async Task AcceptDriverToCompany(string companyID, string driverID)
+        public static async Task AcceptUserToCompany(string companyID, User user)
         {
-            await _localStorage.AcceptDriverToCompany(companyID, driverID);
+            await _localStorage.AcceptUserToCompany(companyID, user);
         }
 
-        public static async Task DeclineDriverToCompany(string companyID, string driverID)
+        public static async Task DeclineUserToCompany(string companyID, User user)
         {
-            await _localStorage.DeclineDriverToCompany(companyID, driverID);
+            await _localStorage.DeclineUserToCompany(companyID, user);
         }
 
         public static async Task<Trip> CreateTripAsync(Trip trip)

@@ -99,6 +99,12 @@ namespace KAS.Trukman.Storage
             this.SetSettings(TRIP_STATE_SETTINGS_KEY, tripState.ToString());
         }
 
+        private Exception ThrowException(Exception exception)
+        {
+            //return new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+            return exception;
+        }
+
         public async Task<bool> TripIsCancelled(string tripID)
         {
             bool isCancelled = false;
@@ -112,7 +118,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return isCancelled;
         }
@@ -128,7 +134,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trip;
         }
@@ -144,7 +150,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -159,7 +165,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -175,7 +181,7 @@ namespace KAS.Trukman.Storage
             {
                 trip = null;
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trip;
         }
@@ -192,7 +198,7 @@ namespace KAS.Trukman.Storage
             {
                 trip = null;
                 Console.WriteLine(exception.Message);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trip;
         }
@@ -218,7 +224,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -253,7 +259,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -267,7 +273,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -283,7 +289,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -297,7 +303,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return companies;
         }
@@ -312,7 +318,7 @@ namespace KAS.Trukman.Storage
         //    catch (Exception exception)
         //    {
         //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //        throw ThrowException(exception);
         //    }
         //    return company;
         //}
@@ -327,7 +333,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return company;
         }
@@ -352,7 +358,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trips;
         }
@@ -367,7 +373,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trips;
         }
@@ -381,7 +387,7 @@ namespace KAS.Trukman.Storage
         //    catch (Exception exception)
         //    {
         //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //        throw ThrowException(exception);
         //    }
         //}
 
@@ -398,7 +404,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return Task.FromResult<int>(points);
         }
@@ -413,7 +419,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return points;
         }
@@ -428,7 +434,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return jobPoints;
         }
@@ -444,7 +450,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return position;
         }
@@ -459,7 +465,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return trip;
         }
@@ -474,7 +480,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return position;
         }
@@ -489,7 +495,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return address;
         }
@@ -504,7 +510,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return routeResult;
         }
@@ -578,7 +584,7 @@ namespace KAS.Trukman.Storage
             {
                 Console.WriteLine(exception);
                 //this.SetSettings(USER_SESSION_ID_KEY, "");
-                //                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                //                throw ThrowException(exception);
             }
             return user;
         }
@@ -593,7 +599,7 @@ namespace KAS.Trukman.Storage
         //    catch (Exception exception)
         //    {
         //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //        throw ThrowException(exception);
         //    }
         //    return currentUser;
         //}
@@ -608,7 +614,7 @@ namespace KAS.Trukman.Storage
         //    catch (Exception exception)
         //    {
         //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //        throw ThrowException(exception);
         //    }
         //    return exist;
         //}
@@ -625,7 +631,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return company;
         }
@@ -640,7 +646,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return user;
         }
@@ -657,7 +663,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return company;
         }
@@ -698,7 +704,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return user;
         }
@@ -713,7 +719,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return user;
         }
@@ -728,7 +734,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
             return state;
         }
@@ -746,29 +752,29 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task AcceptDriverToCompany(string companyID, string driverID)
+        public async Task AcceptUserToCompany(string companyID, User user)
         {
             try
             {
-                await _externalStorage.AcceptDriverToCompany(companyID, driverID);
+                await _externalStorage.AcceptUserToCompany(companyID, user);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
-        public async Task DeclineDriverToCompany(string companyID, string driverID)
+        public async Task DeclineUserToCompany(string companyID, User user)
         {
             try
             {
-                await _externalStorage.DeclineDriverToCompany(companyID, driverID);
+                await _externalStorage.DeclineUserToCompany(companyID, user);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -788,7 +794,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -801,7 +807,7 @@ namespace KAS.Trukman.Storage
         //    catch (Exception exception)
         //    {
         //        Console.WriteLine(exception);
-        //        throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+        //        throw ThrowException(exception);
         //    }
         //}
 
@@ -814,7 +820,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -827,7 +833,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -840,7 +846,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -853,7 +859,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -866,7 +872,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -880,7 +886,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -893,7 +899,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -907,7 +913,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -920,7 +926,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -934,7 +940,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -948,7 +954,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -962,7 +968,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 
@@ -976,7 +982,7 @@ namespace KAS.Trukman.Storage
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                throw new Exception(AppLanguages.CurrentLanguage.CheckInternetConnectionErrorMessage);
+                throw ThrowException(exception);
             }
         }
 

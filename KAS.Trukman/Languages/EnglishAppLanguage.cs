@@ -241,8 +241,8 @@ namespace KAS.Trukman.Languages
             this.SignUpConfirmationCodeSuccessLabel = "Success!";
             #endregion
 
-            #region Driver authorization page
-            this.DriverAuthorizationCommonLabel = "{0} {1} has requested your authorization to use Trukman as a driver.";
+            #region User authorization page
+            this.DriverAuthorizationCommonLabel = "{0} {1} has requested your authorization to use Trukman as a {2}.";
             this.DriverAuthorizationAssignIDNumberPlaceholder = "Assign an ID#";
             this.DriverAuthorizationAuthorizeButtonText = "Authorize";
             this.DriverAuthorizationDeclineButtonText = "Decline";

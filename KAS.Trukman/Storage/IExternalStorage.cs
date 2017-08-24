@@ -80,13 +80,9 @@ namespace KAS.Trukman.Storage
 
         Task CancelDriverRequest(string companyID, string driverID);
 
-        //Task AcceptDriverToCompany(User user);
+        Task AcceptUserToCompany(string companyID, User user);
 
-        Task AcceptDriverToCompany(string companyID, string driverID);
-
-        //Task DeclineDriverToCompany(User user);
-
-        Task DeclineDriverToCompany(string companyID, string driverID);
+        Task DeclineUserToCompany(string companyID, User user);
 
         Task<JobNotification> GetNotification(DateTime fromUtcTime);
 

@@ -51,7 +51,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             HideMainMenuMessage.Subscribe(this, this.HideMainMenu);
             ShowOwnerFleetPageMessage.Subscribe(this, this.ShowOwnerFleetPage);
 			ShowOwnerDeliveryUpdatePageMessage.Subscribe (this, this.ShowOwnerDeliveryUpdatePage);
-            ShowOwnerDriverAuthorizationPageMessage.Subscribe(this, this.ShowOwnerDriverAuthorizationPage);
+            ShowOwnerUserAuthorizationPageMessage.Subscribe(this, this.ShowOwnerUserAuthorizationPage);
             ShowOwnerFuelAdvancePageMessage.Subscribe(this, this.ShowOwnerFuelAdvancePage);
             ShowOwnerLumperPageMessage.Subscribe(this, this.ShowOwnerLumperPage);
             ShowOwnerBrockerListMessage.Subscribe(this, this.ShowOwnerBrockerListPage);
@@ -69,7 +69,7 @@ namespace KAS.Trukman.Views.Pages.Owner
             HideMainMenuMessage.Unsubscribe(this);
             ShowOwnerFleetPageMessage.Unsubscribe(this);
 			ShowOwnerDeliveryUpdatePageMessage.Unsubscribe (this);
-            ShowOwnerDriverAuthorizationPageMessage.Unsubscribe(this);
+            ShowOwnerUserAuthorizationPageMessage.Unsubscribe(this);
             ShowOwnerFuelAdvancePageMessage.Unsubscribe(this);
             ShowOwnerLumperPageMessage.Unsubscribe(this);
             ShowOwnerBrockerListMessage.Unsubscribe(this);
@@ -129,9 +129,9 @@ namespace KAS.Trukman.Views.Pages.Owner
             this.PushPage(page);
         }
 
-        private void ShowOwnerDriverAuthorizationPage(ShowOwnerDriverAuthorizationPageMessage message)
+        private void ShowOwnerUserAuthorizationPage(ShowOwnerUserAuthorizationPageMessage message)
         {
-            var page = new DriverAuthorizationPage();
+            var page = new OwnerUserAuthorizationPage();
             page.ViewModel.Initialize(message.CompanyName, message.Driver, message.CompanyID);
             this.PushPage(page);
         }

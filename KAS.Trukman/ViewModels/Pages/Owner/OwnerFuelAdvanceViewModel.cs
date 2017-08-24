@@ -95,7 +95,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             PopToRootPageMessage.Send();
         }
 
-		private async void SelectAdvance(object parameter)
+		private void SelectAdvance(object parameter)
         {
 			this.IsBusy = true;
 			this.Comcheck = "";
@@ -105,7 +105,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 			{
 				this.EditingAdvance.State = 2;
 				this.EditingAdvance.Comcheck = "";
-				await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
+				//await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
 				this.EditComcheckPopupVisible = true;
 			}
 			catch (Exception exception)

@@ -13,8 +13,9 @@ namespace KAS.Trukman.Views.Pages.Owner
     #region OwnerFuelAdvancePage
     public class OwnerFuelAdvancePage : TrukmanPage
     {
-        public OwnerFuelAdvancePage() 
-            : base()
+        private Color lineColor = Color.FromHex("#808080");
+
+        public OwnerFuelAdvancePage() : base()
         {
             this.BindingContext = new OwnerFuelAdvanceViewModel();
         }
@@ -59,14 +60,6 @@ namespace KAS.Trukman.Views.Pages.Owner
             };
             busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
 
-			var popupBackground = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-			};
-			popupBackground.SetBinding(ContentView.IsVisibleProperty, "EditComcheckPopupVisible", BindingMode.OneWay);
-
             var pageContent = new Grid
             {
                 VerticalOptions = LayoutOptions.Fill,
@@ -75,21 +68,46 @@ namespace KAS.Trukman.Views.Pages.Owner
                 ColumnSpacing = 0
             };
 			pageContent.Children.Add (content);
-			pageContent.Children.Add (popupBackground);
 			pageContent.Children.Add (this.CreateEditComcheckPopup ());
 			pageContent.Children.Add (busyIndicator);
 
             return pageContent;
         }
 
-		private View CreateEditComcheckPopup()
+        private View CreateHorizontalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HeightRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
+        }
+
+        private View CreateVerticalLine()
+        {
+            var line = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
+                WidthRequest = 1,
+                BackgroundColor = lineColor
+            };
+
+            return line;
+        }
+
+        private View CreateEditComcheckPopup()
 		{
-			var appBoxView = new AppBoxView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Color = Color.White
-			};
+			//var appBoxView = new AppBoxView
+			//{
+			//	HorizontalOptions = LayoutOptions.Fill,
+			//	VerticalOptions = LayoutOptions.Fill,
+			//	Color = Color.White
+			//};
 
 			var jobLabel = new Label
 			{
@@ -170,37 +188,35 @@ namespace KAS.Trukman.Views.Pages.Owner
 			var cancelButton = new AppPopupButton
 			{
 				VerticalOptions = LayoutOptions.Center,
-				HorizontalOptions = LayoutOptions.Fill,
-				//AppStyle = AppButtonStyle.Left,
-				Text = "Cancel"
+				HorizontalOptions = LayoutOptions.Fill
 			};
 			cancelButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupCancelButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			cancelButton.SetBinding(AppButton.CommandProperty, "EditComcheckCancelCommand");
+			cancelButton.SetBinding(AppPopupButton.CommandProperty, "EditComcheckCancelCommand");
 
 			var acceptButton = new AppPopupButton
 			{
 				VerticalOptions = LayoutOptions.Center,
-				HorizontalOptions = LayoutOptions.Fill,
-				//AppStyle = AppButtonStyle.Right,
-				Text = "Accept"
+				HorizontalOptions = LayoutOptions.Fill
 			};
 			acceptButton.SetBinding(AppPopupButton.TextProperty, new Binding("ComcheckPopupAcceptButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 			acceptButton.SetBinding(AppPopupButton.CommandProperty, "EditComcheckAcceptCommand");
 
-			var buttons = new Grid
-			{
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				RowSpacing = 0,
-				ColumnSpacing = 0,
-				Padding = new Thickness(0, 1, 0, 0),
+            var buttons = new Grid
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(0), //, 1, 0, 0),
 				ColumnDefinitions = {
 					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
 				}
 			};
 			buttons.Children.Add(cancelButton, 0, 0);
-			buttons.Children.Add(acceptButton, 1, 0);
+            buttons.Children.Add(this.CreateVerticalLine(), 1, 0);
+            buttons.Children.Add(acceptButton, 2, 0);
 
 			var popupContent = new Grid
 			{
@@ -211,30 +227,45 @@ namespace KAS.Trukman.Views.Pages.Owner
 				RowDefinitions = {
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
-				}
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
+                }
 			};
 			popupContent.Children.Add(grid, 0, 0);
 			popupContent.Children.Add(comcheckContent, 0, 1);
-			popupContent.Children.Add(buttons, 0, 2);
+            popupContent.Children.Add(this.CreateHorizontalLine(), 0, 2);
+            popupContent.Children.Add(buttons, 0, 3);
 
-			var content = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				RowSpacing = 0,
-				ColumnSpacing = 0,
-				Padding = new Thickness(40, 40, 40, 0)
-			};
-			content.SetBinding(Grid.IsVisibleProperty, "EditComcheckPopupVisible", BindingMode.TwoWay);
+            var frameBackground = Color.FromHex("#F2F2F2");
+
+            var frame = new Frame
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Padding = new Thickness(0),
+                BackgroundColor = frameBackground,
+                CornerRadius = 8,
+                OutlineColor = frameBackground,
+                HasShadow = false,
+                Content = popupContent
+            };
+
+            var background = Color.FromRgba(0, 0, 0, 120);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                BackgroundColor = background,
+                Padding = new Thickness(40, 40, 40, 0),
+                Content = frame
+            };
+			content.SetBinding(ContentView.IsVisibleProperty, "EditComcheckPopupVisible", BindingMode.TwoWay);
 			content.PropertyChanged += (sender, e) => 
 			{
 				if (this.ViewModel.EditComcheckPopupVisible)
 					comcheck.Focus();
 			};
-
-			content.Children.Add(appBoxView);
-			content.Children.Add(popupContent);
 
 			return content;
 		}

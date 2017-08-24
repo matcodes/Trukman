@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TripContractorItemsToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\BaseEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Broker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Dispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Driver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\DriverLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\FuelRequest.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddLumperRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddLocationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AddTaskAlertRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerDispatcherRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerDriverRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerFuelRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\AnswerLumperRequestRequest.cs" />
@@ -70,12 +72,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckFuelRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckLumperRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckTaskRequestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DispatcherRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DriverLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DriverRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\FindFuelRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\FindLumperRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\FindTaskRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetCompanyRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDispatcherRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverCompanyRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetDriverRequestsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetLastDriverRequestRequest.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddLumperRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddLocationResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AddTaskAlertResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerDispatcherRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerDriverRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerFuelRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\AnswerLumperRequestResponse.cs" />
@@ -118,6 +123,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\FindLumperRequestsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\FindTaskRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetCompanyResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDispatcherRequestsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverCompanyResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetDriverRequestsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetLastDriverRequestResponse.cs" />
@@ -216,7 +222,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowNotificationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerBrockerListMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDelayAlertsPageMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerDriverAuthorizationPageMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerUserAuthorizationPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowFuelAdvancePageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowGPSSettingsMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowHelpPageMessage.cs" />
@@ -273,7 +279,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDelayAlertsViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDriverAuthorizationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerUserAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFuelAdvanceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerHomeViewModel.cs" />
@@ -320,7 +326,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\NavBarPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerDriverAuthorizationPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerUserAuthorizationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFleetPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerHomePage.cs" />

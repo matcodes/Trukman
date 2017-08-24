@@ -450,14 +450,6 @@ namespace KAS.Trukman.Views.Pages
             };
             busyIndicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy", BindingMode.TwoWay);
 
-            var popupBackground = new ContentView
-            {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                BackgroundColor = Color.FromRgba(0, 0, 0, 120)
-            };
-            popupBackground.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.OneWay);
-
             var pageContent = new Grid
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -467,7 +459,6 @@ namespace KAS.Trukman.Views.Pages
             };
             pageContent.Children.Add(content);
             pageContent.Children.Add(busyIndicator);
-            pageContent.Children.Add(popupBackground);
             pageContent.Children.Add(this.CreateSpecialInstructionPopup());
 
             this.MapLocateAddress(_map, this.ViewModel.ContractorPosition);

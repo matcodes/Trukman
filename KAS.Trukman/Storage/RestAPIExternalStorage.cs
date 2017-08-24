@@ -30,7 +30,9 @@ namespace KAS.Trukman.Storage
 
         private static readonly string GET_OWNER_COMPANY_ENDPOINT = "owners/getcompany";
         private static readonly string GET_DRIVER_REQUESTS_ENDPOINT = "owners/getdriverrequests";
+        private static readonly string GET_DISPATCHER_REQUESTS_ENDPOINT = "owners/getdispatcherrequests";
         private static readonly string ANSWER_DRIVER_REQUEST_ENDPOINT = "owners/answerdriverrequest";
+        private static readonly string ANSWER_DISPATCHER_REQUEST_ENDPOINT = "owners/answerdispatcherrequest";
         private static readonly string SELECT_DRIVERS_ENDPOINT = "owners/selectdrivers";
         private static readonly string SELECT_BROKERS_ENDPOINT = "owners/selectbrokers";
         private static readonly string FIND_FUEL_REQUESTS_ENDPOINT = "owners/findfuelrequests";
@@ -182,9 +184,20 @@ namespace KAS.Trukman.Storage
         }
 
         #region IExternalStorage
-        public async Task AcceptDriverToCompany(string companyID, string driverID)
+        public async Task AcceptUserToCompany(string companyID, User user)
         {
-            await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID), true);
+            if (user.Role == UserRole.Driver)
+                await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(user.ID), true);
+            else
+                await AnswerDispatcherRequest(Guid.Parse(companyID), Guid.Parse(user.ID), true);
+        }
+
+        public async Task DeclineUserToCompany(string companyID, User user)
+        {
+            if (user.Role == UserRole.Driver)
+                await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(user.ID), false);
+            else
+                await AnswerDispatcherRequest(Guid.Parse(companyID), Guid.Parse(user.ID), false);
         }
 
         private async Task<TrukmanTask> AnswerTaskRequest(Guid taskRequestId, int answer,
@@ -294,6 +307,10 @@ namespace KAS.Trukman.Storage
             if (task.Broker != null)
                 broker = this.BrokerToUser(task.Broker);
 
+            Company company = null;
+            if (task.Owner != null)
+                company = this.OwnerToCompany(task.Owner);
+
             return new Trip
             {
                 ID = task.Id.ToString(),
@@ -309,7 +326,7 @@ namespace KAS.Trukman.Storage
                 Points = task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
-                JobRef = task.Number, 
+                JobRef = task.Number,
                 FromAddress = task.LoadingAddress,
                 ToAddress = task.UnloadingAddress,
                 Weight = task.Weight,
@@ -317,7 +334,7 @@ namespace KAS.Trukman.Storage
                 UpdateTime = DateTime.Now,
                 Driver = driver,
                 Broker = broker,
-                Company = this.OwnerToCompany(task.Owner),
+                Company = company,
                 InvoiceUri = task.InvoiceUri,
                 ReportUri = task.ReportUri,
                 DriverDisplayName = (driver != null ? driver.UserName : "")
@@ -330,9 +347,10 @@ namespace KAS.Trukman.Storage
             {
                 ID = broker.Id.ToString(),
                 UserName = broker.Name,
-                FirstName = broker.ContactName,
+                FirstName = broker.Name,
                 LastName = broker.ContactName,
-                Phone = broker.Phone
+                Phone = broker.Phone,
+                Role = UserRole.Broker
             };
         }
 
@@ -393,7 +411,7 @@ namespace KAS.Trukman.Storage
             return Task.FromResult<Trip>(new Trip());
         }
 
-        public async Task<bool> AnswerDriverRequest(Guid ownerId, Guid driverId, bool isAllowed)
+        private async Task<bool> AnswerDriverRequest(Guid ownerId, Guid driverId, bool isAllowed)
         {
             var answerDriverRequestRequest = new AnswerDriverRequestRequest
             {
@@ -410,9 +428,21 @@ namespace KAS.Trukman.Storage
             return true;
         }
 
-        public async Task DeclineDriverToCompany(string companyID, string driverID)
+        private async Task<bool> AnswerDispatcherRequest(Guid ownerId, Guid dispatcherId, bool isAllowed)
         {
-            await AnswerDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID), false);
+            var answerDispatcherRequestRequest = new AnswerDispatcherRequestRequest
+            {
+                OwnerId = ownerId,
+                DispatcherId = dispatcherId,
+                IsAllowed = isAllowed
+            };
+            var requestContent = SerializeObject(answerDispatcherRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ANSWER_DISPATCHER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AnswerDispatcherRequestResponse>(request);
+            return true;
         }
 
         public async Task<Trip> DeclineTrip(string id, int declineReason, string reasonText)
@@ -913,7 +943,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip[]> SelectActiveTrips()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
             tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() == DateTime.MinValue).Take(3).ToList<TrukmanTask>();
             var trips = new List<Trip>();
             foreach (var task in tasks)
@@ -972,7 +1002,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Trip[]> SelectCompletedTrips()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 0);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
             tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() != DateTime.MinValue).Take(3).ToList();
             var trips = new List<Trip>();
             foreach (var task in tasks)
@@ -998,7 +1028,21 @@ namespace KAS.Trukman.Storage
                 UserName = string.Format("{0} {1}", driver.FirstName, driver.LastName),
                 FirstName = driver.FirstName,
                 LastName = driver.LastName,
-                Phone = driver.Phone
+                Phone = driver.Phone,
+                Role = UserRole.Driver
+            };
+        }
+
+        private User DispatcherToUser(Dispatcher dispatcher)
+        {
+            return new User
+            {
+                ID = dispatcher.Id.ToString(),
+                UserName = string.Format("{0} {1}", dispatcher.FirstName, dispatcher.LastName),
+                FirstName = dispatcher.FirstName,
+                LastName = dispatcher.LastName,
+                Phone = dispatcher.Phone,
+                Role = UserRole.Dispatch
             };
         }
 
@@ -1010,7 +1054,8 @@ namespace KAS.Trukman.Storage
                 UserName = owner.Name,
                 FirstName = owner.Name,
                 LastName = owner.Name,
-                Phone = owner.Phone
+                Phone = owner.Phone,
+                Role = UserRole.Owner
             };
         }
 
@@ -1057,7 +1102,7 @@ namespace KAS.Trukman.Storage
             {
                 foreach (var fuelRequest in result.FuelRequests)
                 {
-                    var trip = await this.SelectTripByID(fuelRequest.TaskId.ToString());
+                    var trip = this.TaskToTrip(fuelRequest.Task);
                     var driver = trip.Driver;
 
                     var advance = new Advance
@@ -1070,6 +1115,8 @@ namespace KAS.Trukman.Storage
                         RequestType = (int)ComcheckRequestType.FuelAdvance,
                         State = fuelRequest.Answer
                     };
+
+                    advances.Add(advance);
                 }
             }
 
@@ -1091,21 +1138,23 @@ namespace KAS.Trukman.Storage
             List<Advance> advances = new List<Advance>();
             if (result.LumperRequests != null)
             {
-                foreach (var fuelRequest in result.LumperRequests)
+                foreach (var lumperRequest in result.LumperRequests)
                 {
-                    var trip = await this.SelectTripByID(fuelRequest.TaskId.ToString());
+                    var trip = this.TaskToTrip(lumperRequest.Task);
                     var driver = trip.Driver;
 
                     var advance = new Advance
                     {
-                        ID = fuelRequest.Id.ToString(),
-                        Comcheck = fuelRequest.Comcheck,
+                        ID = lumperRequest.Id.ToString(),
+                        Comcheck = lumperRequest.Comcheck,
                         Driver = driver,
                         Trip = trip,
-                        RequestDateTime = fuelRequest.RequestTime,
+                        RequestDateTime = lumperRequest.RequestTime,
                         RequestType = (int)ComcheckRequestType.Lumper,
-                        State = fuelRequest.Answer
+                        State = lumperRequest.Answer
                     };
+
+                    advances.Add(advance);
                 }
             }
 
@@ -1150,7 +1199,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<JobAlert[]> SelectJobAlertsAsync()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 3);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
 
             var jobAlerts = tasks.SelectMany(task => this.TaskAlertsToJobAlerts(task)).ToArray<JobAlert>();
             return jobAlerts;
@@ -1171,6 +1220,36 @@ namespace KAS.Trukman.Storage
             request.RequestUri = CreateRequestUri(SELECT_TASKS_BY_DRIVER_ID_ENDPOINT);
             var result = await ExecuteRequestAsync<SelectTasksByDriverIdResponse>(request);
             return result.Tasks;
+        }
+
+        private string GetPointKindText(int kind)
+        {
+            if (kind == 0)
+                return "Arrival Loading";
+            else if (kind == 1)
+                return "End Loading";
+            else if (kind == 2)
+                return "Arrival Unloading";
+            else if (kind == 3)
+                return "End Unloading";
+            else if (kind == 4)
+                return "Done Task";
+            else if (kind == 5)
+                return "Arrival Loading In Time";
+            else if (kind == 6)
+                return "Arrival Loading 15 Min Early";
+            else if (kind == 7)
+                return "Arrival Loading Late";
+            else if (kind == 8)
+                return "Arrival Unloading In Time";
+            else if (kind == 9)
+                return "Arrival Unloading 15 Min Early";
+            else if (kind == 10)
+                return "Arrival Unloading Late";
+            else if (kind == 11)
+                return "Send Photo";
+            else
+                return "";
         }
 
         private JobPoint[] TaskPointsToJobPoints(TrukmanTask task)
@@ -1194,7 +1273,7 @@ namespace KAS.Trukman.Storage
                     {
                         ID = point.Id.ToString(),
                         // TODO: kind to text
-                        //Text = point.Kind,
+                        Text = this.GetPointKindText(point.Kind),
                         Value = point.Points,
                         Job = job,
                         Driver = driver,
@@ -1257,7 +1336,7 @@ namespace KAS.Trukman.Storage
 
         public async Task<Photo[]> SelectPhotosAsync()
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 3);
+            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
 
             var jobPhotos = tasks.SelectMany(task => this.TaskPhotosToPhotos(task)).ToArray<Photo>();
             return jobPhotos;
@@ -1278,11 +1357,32 @@ namespace KAS.Trukman.Storage
             return result.DriverRequests;
         }
 
+        private async Task<DispatcherRequest[]> GetDispatcherRequests(Guid ownerId)
+        {
+            var getDispatcherRequestsRequest = new GetDispatcherRequestsRequest
+            {
+                OwnerId = ownerId
+            };
+            var requestContent = SerializeObject(getDispatcherRequestsRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GET_DISPATCHER_REQUESTS_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<GetDispatcherRequestsResponse>(request);
+            return result.DispatcherRequests;
+        }
+
         public async Task<User> SelectRequestedUser(string companyID)
         {
-            var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
-            if (driverRequests.Length > 0)
-                return DriverToUser(driverRequests[0].Driver);
+            var dispatcherRequests = await GetDispatcherRequests(Guid.Parse(companyID));
+            if (dispatcherRequests.Length > 0)
+                return DispatcherToUser(dispatcherRequests[0].Dispatcher);
+            else
+            {
+                var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
+                if (driverRequests.Length > 0)
+                    return DriverToUser(driverRequests[0].Driver);
+            }
 
             return null;
         }
@@ -1533,7 +1633,7 @@ namespace KAS.Trukman.Storage
         {
             if (advance.RequestType == (int)ComcheckRequestType.FuelAdvance)
                 await this.SetFuelAdvanceState(advance);
-            else if (advance.RequestType == (int)ComcheckRequestType.FuelAdvance)
+            else if (advance.RequestType == (int)ComcheckRequestType.Lumper)
                 await this.SetLumperAdvanceState(advance);
         }
 

@@ -66,12 +66,12 @@ namespace KAS.Trukman
             }
         }
 
-        private void ShowDriverAuthorizationPage(ShowOwnerDriverAuthorizationPageMessage message)
+        private void ShowOwnerUserAuthorizationPage(ShowOwnerUserAuthorizationPageMessage message)
         {
             if (this.MainPage is NavigationPage)
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    var page = new DriverAuthorizationPage();
+                    var page = new OwnerUserAuthorizationPage();
                     page.ViewModel.Initialize(message.CompanyName, message.Driver);
                     await (this.MainPage as NavigationPage).PushAsync(page);
                 });

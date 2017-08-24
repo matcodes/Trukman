@@ -867,7 +867,7 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
-        public Task AcceptDriverToCompany(string companyID, string driverID)
+        public Task AcceptUserToCompany(string companyID, User user)
         {
             throw new NotImplementedException();
         }
@@ -895,7 +895,7 @@ namespace KAS.Trukman.Storage
             await company.SaveAsync();
         }
 
-        public Task DeclineDriverToCompany(string companyID, string driverID)
+        public Task DeclineUserToCompany(string companyID, User user)
         {
             throw new NotImplementedException();
         }

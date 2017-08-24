@@ -14,7 +14,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     #region OwnerHomeViewModel
     public class OwnerHomeViewModel : PageViewModel
     {
-        private System.Timers.Timer _checkDriversTimer = null;
+        private System.Timers.Timer _checkUsersTimer = null;
 
         public OwnerHomeViewModel()
             : base()
@@ -23,14 +23,18 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
 
             this.RateConfirmationCommandItem = new CommandItem(new VisualCommand(this.RateConfirmation));
+            this.RateConfirmationCommandItem.IsEnabled = false;
             this.DispatchDriverCommandItem = new CommandItem(new VisualCommand(this.DispatchDriver));
+            this.DispatchDriverCommandItem.IsEnabled = false;
             this.LoadConfirmationCommandItem = new CommandItem(new VisualCommand(this.LoadConfirmation));
+            this.LoadConfirmationCommandItem.IsEnabled = false;
             this.BrockerListCommandItem = new CommandItem(new VisualCommand(this.BrockerList));
             this.FuelAdvanceCommandItem = new CommandItem(new VisualCommand(this.FuelAdvance));
             this.TrackFleetCommandItem = new CommandItem(new VisualCommand(this.TrackFleet));
             this.LumperCommandItem = new CommandItem(new VisualCommand(this.Lumper));
             this.InvoiceCommandItem = new CommandItem(new VisualCommand(this.Invoice));
             this.ReportsCommandItem = new CommandItem(new VisualCommand(this.Reports));
+            this.ReportsCommandItem.IsEnabled = false;
             this.DelayAlertsCommandItem = new CommandItem(new VisualCommand(this.DelayAlerts));
             this.DeliveryUpdateCommandItem = new CommandItem(new VisualCommand(this.DeliveryUpdate));
 
@@ -54,12 +58,12 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
             this.Localize();
 
-            this.CheckDrivers();
+            this.CheckUsers();
         }
 
         public override void Disappering()
         {
-            this.StopCheckDriversTimer();
+            this.StopCheckUsersTimer();
 
             base.Disappering();
         }
@@ -86,28 +90,28 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             }
         }
 
-        private void StartCheckDriversTimer()
+        private void StartCheckUsersTimer()
         {
-            if (_checkDriversTimer == null)
+            if (_checkUsersTimer == null)
             {
-                _checkDriversTimer = new System.Timers.Timer { Interval = 10000 };
-                _checkDriversTimer.Elapsed += (sender, args) => {
-                    this.CheckDrivers();
+                _checkUsersTimer = new System.Timers.Timer { Interval = 10000 };
+                _checkUsersTimer.Elapsed += (sender, args) => {
+                    this.CheckUsers();
                 };
             }
-            _checkDriversTimer.Start();
+            _checkUsersTimer.Start();
         }
 
-        private void StopCheckDriversTimer()
+        private void StopCheckUsersTimer()
         {
-            if (_checkDriversTimer != null)
-                _checkDriversTimer.Stop();
+            if (_checkUsersTimer != null)
+                _checkUsersTimer.Stop();
         }
 
-        private void CheckDrivers()
+        private void CheckUsers()
         {
             Task.Run(async () => {
-                this.StopCheckDriversTimer();
+                this.StopCheckUsersTimer();
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
@@ -118,7 +122,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     {
                         var user = await TrukmanContext.SelectRequestedUser(this.Company.ID); // App.ServerManager.GetRequestForCompany(this.Company.Name);
                         if (user != null)
-                            ShowOwnerDriverAuthorizationPageMessage.Send(this.Company.Name, user, this.Company.ID);
+                            ShowOwnerUserAuthorizationPageMessage.Send(this.Company.Name, user, this.Company.ID);
                     }
                 }
                 catch (Exception exception)
@@ -131,7 +135,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 {
                     this.EnabledCommands();
                     this.IsBusy = false;
-                    this.StartCheckDriversTimer();
+                    this.StartCheckUsersTimer();
                 }
             });
         }
