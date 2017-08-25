@@ -64,7 +64,11 @@ namespace KAS.Trukman.Storage
 
         Task<User> DriverLogin(DriverInfo driverInfo);
 
+        Task<User> DispatcherLogin(DispatcherInfo dispatcherInfo);
+
         Task<Company> RegisterDriver(DriverInfo driverInfo);
+
+        Task<Company> RegisterDispatcher(DispatcherInfo dispatcherInfo);
 
         Task<bool> Verification(Guid accountId, string code);
 
@@ -76,9 +80,13 @@ namespace KAS.Trukman.Storage
 
         Task<User> SelectRequestedUser(string companyID);
 
-        Task<DriverState> GetDriverState(string companyID, string driverID);
+        Task<UserState> GetDriverState(string companyID, string driverID);
+
+        Task<UserState> GetDispatcherState(string companyID, string dispatcherID);
 
         Task CancelDriverRequest(string companyID, string driverID);
+
+        Task CancelDispatcherRequest(string companyID, string dispatcherID);
 
         Task AcceptUserToCompany(string companyID, User user);
 

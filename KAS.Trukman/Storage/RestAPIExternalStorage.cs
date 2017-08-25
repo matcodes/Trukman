@@ -23,6 +23,7 @@ namespace KAS.Trukman.Storage
         private static readonly string API_BASE_URI = "http://194.58.71.17/trukman.server/";
 
         private static readonly string OWNER_LOGIN_ENDPOINT = "accounts/owner";
+        private static readonly string DISPATCHER_LOGIN_ENDPOINT = "accounts/dispatcher";
         private static readonly string DRIVER_LOGIN_ENDPOINT = "accounts/driver";
         private static readonly string VERIFICATION_ENDPOINT = "accounts/verification";
         private static readonly string RESEND_VERIFICATION_CODE_ENDPOINT = "accounts/resendverificationcode";
@@ -66,6 +67,11 @@ namespace KAS.Trukman.Storage
         private static readonly string ADD_LOCATION_ENDPOINT = "drivers/addlocation";
         private static readonly string ADD_TASK_ALERT_ENDPOINT = "drivers/addtaskalert";
         private static readonly string SELECT_TASKS_BY_DRIVER_ID_ENDPOINT = "drivers/selecttasksbydriverid";
+
+        private static readonly string GET_DISPATCHER_COMPANY_ENDPOINT = "dispatchers/getdispatchercompany";
+        private static readonly string GET_LAST_DISPATCHER_REQUEST_ENDPOINT = "dispatchers/getlastdispatcherrequest";
+        private static readonly string ADD_DISPATCHER_REQUEST_ENDPOINT = "dispatchers/adddispatcherrequest";
+        private static readonly string CANCEL_DISPATCHER_REQUEST_ENDPOINT = "dispatchers/canceldispatcherrequest";
 
         private static readonly string GOOGLE_GEOCODE_ENDPOINT = "google/geocode";
         private static readonly string GOOGLE_REVERSE_GEOCODE_ENDPOINT = "google/reversegeocode";
@@ -169,6 +175,21 @@ namespace KAS.Trukman.Storage
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(GET_DRIVER_COMPANY_ENDPOINT, null);
             var result = await ExecuteRequestAsync<GetDriverCompanyResponse>(request);
+            return result.Company;
+        }
+
+        private async Task<Owner> GetDispatcherCompany(Guid dispatcherId)
+        {
+            var getDispatcherCompanyRequest = new GetDispatcherCompanyRequest
+            {
+                DispatcherId = dispatcherId
+            };
+            var requestContent = SerializeObject(getDispatcherCompanyRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GET_DISPATCHER_COMPANY_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<GetDispatcherCompanyResponse>(request);
             return result.Company;
         }
 
@@ -566,16 +587,47 @@ namespace KAS.Trukman.Storage
             return result.DriverRequest;
         }
 
-        public async Task<DriverState> GetDriverState(string companyID, string driverID)
+        private async Task<DispatcherRequest> GetLastDispatcherRequest(Guid ownerId, Guid dispatcherId)
+        {
+            var getLastDispatcherRequestRequest = new GetLastDispatcherRequestRequest
+            {
+                OwnerId = ownerId,
+                DispatcherId = dispatcherId
+            };
+            var requestContent = SerializeObject(getLastDispatcherRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(GET_LAST_DISPATCHER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<GetLastDispatcherRequestResponse>(request);
+            return result.DispatcherRequest;
+        }
+
+        public async Task<UserState> GetDriverState(string companyID, string driverID)
         {
             var lastDriverRequest = await GetLastDriverRequest(Guid.Parse(companyID), Guid.Parse(driverID));
             var answer = lastDriverRequest.Answer;
 
-            var state = DriverState.Waiting;
+            var state = UserState.Waiting;
             if (answer == (int)DriverRequestAnswers.Accept)
-                state = DriverState.Joined;
+                state = UserState.Joined;
             else if (answer == (int)DriverRequestAnswers.Decline)
-                state = DriverState.Declined;
+                state = UserState.Declined;
+
+            _currentUser.Status = (int)state;
+            return state;
+        }
+
+        public async Task<UserState> GetDispatcherState(string companyID, string dispatcherID)
+        {
+            var lastDispatcherRequest = await GetLastDispatcherRequest(Guid.Parse(companyID), Guid.Parse(dispatcherID));
+            var answer = lastDispatcherRequest.Answer;
+
+            var state = UserState.Waiting;
+            if (answer == (int)DispatcherRequestAnswers.Accept)
+                state = UserState.Joined;
+            else if (answer == (int)DispatcherRequestAnswers.Decline)
+                state = UserState.Declined;
 
             _currentUser.Status = (int)state;
             return state;
@@ -594,6 +646,21 @@ namespace KAS.Trukman.Storage
             request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             request.RequestUri = CreateRequestUri(CANCEL_DRIVER_REQUEST_ENDPOINT, null);
             var result = await ExecuteRequestAsync<CancelDriverRequestResponse>(request);
+        }
+
+        public async Task CancelDispatcherRequest(string companyID, string dispatcherID)
+        {
+            var cancelDispatcherRequest = new CancelDispatcherRequestRequest
+            {
+                OwnerId = Guid.Parse(companyID),
+                DispatcherId = Guid.Parse(dispatcherID)
+            };
+            var requestContent = SerializeObject(cancelDispatcherRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CANCEL_DISPATCHER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CancelDispatcherRequestResponse>(request);
         }
 
         private JobNotification NotificationToJobNotification(Notification notification)
@@ -822,13 +889,29 @@ namespace KAS.Trukman.Storage
             return true;
         }
 
+        private async Task<bool> AddDispatcherRequest(Guid ownerId, Guid dispatcherId)
+        {
+            var addDispatcherRequest = new AddDispatcherRequestRequest
+            {
+                OwnerId = ownerId,
+                DispatcherId = dispatcherId
+            };
+            var requestContent = SerializeObject(addDispatcherRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(ADD_DISPATCHER_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<AddDispatcherRequestResponse>(request);
+            return true;
+        }
+
         public async Task<User> DriverLogin(DriverInfo driverInfo)
         {
             var _driver = new Driver
             {
                 FirstName = driverInfo.FirstName,
                 LastName = driverInfo.LastName,
-                Phone = driverInfo.Phone,
+                Phone = driverInfo.Phone
             };
             _driver = await DriverLoginAsync(_driver);
             Console.WriteLine("Водитель: {0}", _driver);
@@ -843,6 +926,51 @@ namespace KAS.Trukman.Storage
                 FirstName = driverInfo.FirstName,
                 LastName = driverInfo.LastName,
                 Email = driverInfo.EMail,
+                Token = _token,
+                //Status = (int)DriverState.Waiting
+            };
+
+            return _currentUser;
+        }
+
+        private async Task<Dispatcher> DispatcherLoginAsync(Dispatcher dispatcher)
+        {
+            var dispatcherLoginRequest = new DispatcherLoginRequest
+            {
+                Dispatcher = dispatcher
+            };
+            var requestContent = SerializeObject(dispatcherLoginRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(DISPATCHER_LOGIN_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<DispatcherLoginResponse>(request);
+            _token = result.Token;
+            return result.Dispatcher;
+        }
+
+        public async Task<User> DispatcherLogin(DispatcherInfo dispatcherInfo)
+        {
+            var _dispatcher = new Dispatcher
+            {
+                FirstName = dispatcherInfo.FirstName,
+                LastName = dispatcherInfo.LastName,
+                Phone = dispatcherInfo.Phone,
+                Email = dispatcherInfo.EMail
+            };
+            _dispatcher = await DispatcherLoginAsync(_dispatcher);
+            Console.WriteLine("Диспетчер: {0}", _dispatcher);
+            Console.WriteLine();
+
+            _currentUser = new User
+            {
+                ID = _dispatcher.Id.ToString(),
+                UserName = string.Format("{0} {1}", _dispatcher.FirstName.Trim(), _dispatcher.LastName.Trim()).ToLower(),
+                Phone = _dispatcher.Phone,
+                Role = UserRole.Dispatch,
+                FirstName = _dispatcher.FirstName,
+                LastName = _dispatcher.LastName,
+                Email = _dispatcher.Email,
                 Token = _token,
                 //Status = (int)DriverState.Waiting
             };
@@ -886,7 +1014,7 @@ namespace KAS.Trukman.Storage
             //};
 
             var userId = Guid.Parse(_currentUser.ID);
-            _currentUser.Status = (int)DriverState.Waiting;
+            _currentUser.Status = (int)UserState.Waiting;
             var _company = await GetDriverCompany(userId);
             if ((_company != null) && (_company.Id != Guid.Parse(driverInfo.Company.ID)))
                 throw new Exception(String.Format("Your are approved to company {0}.", _company.Name));
@@ -906,6 +1034,34 @@ namespace KAS.Trukman.Storage
             else
             {
                 await this.GetDriverState(_company.Id.ToString(), _currentUser.ID);
+
+                return OwnerToCompany(_company);
+            }
+        }
+
+        public async Task<Company> RegisterDispatcher(DispatcherInfo dispatcherInfo)
+        {
+            var userId = Guid.Parse(_currentUser.ID);
+            _currentUser.Status = (int)UserState.Waiting;
+            var _company = await GetDispatcherCompany(userId);
+            if ((_company != null) && (_company.Id != Guid.Parse(dispatcherInfo.Company.ID)))
+                throw new Exception(String.Format("Your are approved to company {0}.", _company.Name));
+
+            if (_company == null)
+            {
+                var dispatcherRequest = await GetLastDispatcherRequest(Guid.Parse(dispatcherInfo.Company.ID), userId);
+                if ((dispatcherRequest == null) || (dispatcherRequest.Answer != (int)DispatcherRequestAnswers.None))
+                {
+                    await AddDispatcherRequest(Guid.Parse(dispatcherInfo.Company.ID), userId);
+                    Console.WriteLine("Добавлен запрос на прием на работу в компанию {0}...", dispatcherInfo.Company.Name);
+                    Console.WriteLine();
+                }
+
+                return dispatcherInfo.Company;
+            }
+            else
+            {
+                await this.GetDispatcherState(_company.Id.ToString(), _currentUser.ID);
 
                 return OwnerToCompany(_company);
             }

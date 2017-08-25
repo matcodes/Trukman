@@ -13,19 +13,17 @@ namespace KAS.Trukman.Views.Pages.SignUp
     #region SignUpNavigationPage
     public class SignUpNavigationPage : NavigationPage
     {
-        public SignUpNavigationPage()
-            : base(new SignUpMainPage())
+        public SignUpNavigationPage() : base(new SignUpMainPage())
         {
             this.BindingContext = new SignUpNavigationViewModel();
         }
 
-        public SignUpNavigationPage(DriverState state, Company company)
-            : this()
+        public SignUpNavigationPage(UserState state, Company company) : this()
         {
-            if (state == DriverState.Waiting)
-                this.ShowSignUpDriverPendingPage(new ShowSignUpDriverPendingPageMessage(company));
-            else if (state == DriverState.Declined)
-                ShowSignUpDriverDeclinedPage(new ShowSignUpDriverDeclinedPageMessage(company));
+            if (state == UserState.Waiting)
+                this.ShowSignUpUserPendingPage(new ShowSignUpUserPendingPageMessage(company));
+            else if (state == UserState.Declined)
+                ShowSignUpUserDeclinedPage(new ShowSignUpUserDeclinedPageMessage(company));
         }
 
         protected override void OnAppearing()
@@ -75,9 +73,10 @@ namespace KAS.Trukman.Views.Pages.SignUp
             ShowSignUpOwnerCompanyPageMessage.Subscribe(this, this.ShowSignUpOwnerCompanyPage);
             ShowSignUpOwnerWelcomePageMessage.Subscribe(this, this.ShowSignUpOwnerWelcomePage);
             ShowSignUpDriverPageMessage.Subscribe(this, this.ShowSignUpDriverPage);
-            ShowSignUpDriverPendingPageMessage.Subscribe(this, this.ShowSignUpDriverPendingPage);
-            ShowSignUpDriverDeclinedPageMessage.Subscribe(this, this.ShowSignUpDriverDeclinedPage);
-            ShowSignUpDriverAuthorizedPageMessage.Subscribe(this, this.ShowSignUpDriverAuthorizedPage);
+            ShowSignUpUserPendingPageMessage.Subscribe(this, this.ShowSignUpUserPendingPage);
+            ShowSignUpUserDeclinedPageMessage.Subscribe(this, this.ShowSignUpUserDeclinedPage);
+            ShowSignUpUserAuthorizedPageMessage.Subscribe(this, this.ShowSignUpUserAuthorizedPage);
+            ShowSignUpDispatcherPageMessage.Subscribe(this, this.ShowSignUpDispatcherPage);
         }
 
         private void Unsubscribe()
@@ -88,9 +87,10 @@ namespace KAS.Trukman.Views.Pages.SignUp
             ShowSignUpOwnerMCPageMessage.Unsubscribe(this);
             PopToRootPageMessage.Unsubscribe(this);
             PopPageMessage.Unsubscribe(this);
-            ShowSignUpDriverPendingPageMessage.Unsubscribe(this);
-            ShowSignUpDriverDeclinedPageMessage.Unsubscribe(this);
-            ShowSignUpDriverAuthorizedPageMessage.Unsubscribe(this);
+            ShowSignUpUserPendingPageMessage.Unsubscribe(this);
+            ShowSignUpUserDeclinedPageMessage.Unsubscribe(this);
+            ShowSignUpUserAuthorizedPageMessage.Unsubscribe(this);
+            ShowSignUpDispatcherPageMessage.Unsubscribe(this);
         }
 
         private void ShowSignUpOwnerMCPage(ShowSignUpOwnerMCPageMessage message)
@@ -120,24 +120,30 @@ namespace KAS.Trukman.Views.Pages.SignUp
             this.PushPage(page);
         }
 
-        private void ShowSignUpDriverPendingPage(ShowSignUpDriverPendingPageMessage message)
+        private void ShowSignUpUserPendingPage(ShowSignUpUserPendingPageMessage message)
         {
-            var page = new SignUpDriverPendingPage();
+            var page = new SignUpUserPendingPage();
             page.ViewModel.Initialize(message.Company);
             this.PushPage(page);
         }
 
-        private void ShowSignUpDriverDeclinedPage(ShowSignUpDriverDeclinedPageMessage message)
+        private void ShowSignUpUserDeclinedPage(ShowSignUpUserDeclinedPageMessage message)
         {
-            var page = new SignUpDriverDeclinedPage();
+            var page = new SignUpUserDeclinedPage();
             page.ViewModel.Initialize(message.Company);
             this.PushPage(page);
         }
 
-        private void ShowSignUpDriverAuthorizedPage(ShowSignUpDriverAuthorizedPageMessage message)
+        private void ShowSignUpUserAuthorizedPage(ShowSignUpUserAuthorizedPageMessage message)
         {
-            var page = new SignUpDriverAuthorizedPage();
+            var page = new SignUpUserAuthorizedPage();
             page.ViewModel.Initialize(message.Company);
+            this.PushPage(page);
+        }
+
+        private void ShowSignUpDispatcherPage(ShowSignUpDispatcherPageMessage message)
+        {
+            var page = new SignUpDispatcherPage();
             this.PushPage(page);
         }
 

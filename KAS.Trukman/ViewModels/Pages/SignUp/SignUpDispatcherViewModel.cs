@@ -1,8 +1,8 @@
-﻿using KAS.Trukman.Classes;
+﻿using KAS.Trukman.AppContext;
+using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Data.Infos;
-using KAS.Trukman.AppContext;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -10,18 +10,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using System.Timers;
+using Xamarin.Forms;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
-    #region SignUpDriverViewModel
-    public class SignUpDriverViewModel : PageViewModel
+    #region SignUpDispatcherViewModel
+    public class SignUpDispatcherViewModel : PageViewModel
     {
         private Timer _selectCompaniesTimer;
         private Timer _showTimer;
 
-        public SignUpDriverViewModel() : base()
+        public SignUpDispatcherViewModel() : base()
         {
             this.Companies = new ObservableCollection<Company>();
 
@@ -175,7 +175,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 this.IsBusy = true;
                 try
                 {
-                    var driverInfo = new DriverInfo
+                    var dispatcherInfo = new DispatcherInfo
                     {
                         FirstName = this.FirstName,
                         LastName = this.LastName,
@@ -184,9 +184,9 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                         EMail = this.EMail
                     };
 
-                    await TrukmanContext.DriverLogin(driverInfo);
+                    await TrukmanContext.DispatcherLogin(dispatcherInfo);
                     if (TrukmanContext.User.Verified)
-                        await RegisterDriver(driverInfo);
+                        await RegisterDispatcher(dispatcherInfo);
                     else
                         this.EnterConfirmationCodePopupVisible = true;
                 }
@@ -202,13 +202,13 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             });
         }
 
-        private async Task RegisterDriver(DriverInfo driverInfo)
+        private async Task RegisterDispatcher(DispatcherInfo dispatcherInfo)
         {
-            var company = await TrukmanContext.RegisterDriverAsync(driverInfo);
+            var company = await TrukmanContext.RegisterDispatcherAsync(dispatcherInfo);
 
             var state = (UserState)TrukmanContext.User.Status;
             if (state == UserState.Joined)
-                await TrukmanContext.InitializeDriverContext();
+                await TrukmanContext.InitializeDispatcherContext();
             else if (state == UserState.Waiting)
             {
                 ShowSignUpUserPendingPageMessage.Send(company);
@@ -306,7 +306,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 this.IsBusy = true;
                 try
                 {
-                    var driverInfo = new DriverInfo
+                    var dispatcherInfo = new DispatcherInfo
                     {
                         FirstName = this.FirstName,
                         LastName = this.LastName,
@@ -316,7 +316,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     };
 
                     this.ConfirmationCodeAcceptedPopupVisible = false;
-                    await RegisterDriver(driverInfo);
+                    await RegisterDispatcher(dispatcherInfo);
                 }
                 catch (Exception exception)
                 {

@@ -201,9 +201,9 @@ namespace KAS.Trukman.Languages
             this.SignUpDriverLabel = "DRIVER";
             this.SignUpDispatcherLabel = "DISPATCH";
             this.SignUpOwnerLabel = "OWNER/OPERATOR";
-            this.SignUpDriverPendingLabel = "Waiting for {0} to authorize you";
-            this.SignUpDriverDeclinedLabel = "{0} has declined your authorization request";
-            this.SignUpDriverAuthorizedLabel = "You have been authorized by {0}";
+            this.SignUpUserPendingLabel = "Waiting for {0} to authorize you";
+            this.SignUpUserDeclinedLabel = "{0} has declined your authorization request";
+            this.SignUpUserAuthorizedLabel = "You have been authorized by {0}";
 
             this.SignUpLabel = "SIGN UP";
             this.SignUpSelectCompanyAcceptButtonText = "Accept";
@@ -225,6 +225,12 @@ namespace KAS.Trukman.Languages
             this.SignUpDriverPhonePlaceholder = "Phone";
             this.SignUpDriverEMailPlaceholder = "EMail";
             this.SignUpDriverCompanyNamePlaceholder = "Company Name";
+
+            this.SignUpDispatcherFirstNamePlaceholder = "First Name";
+            this.SignUpDispatcherLastNamePlaceholder = "Last Name";
+            this.SignUpDispatcherPhonePlaceholder = "Phone";
+            this.SignUpDispatcherEMailPlaceholder = "EMail";
+            this.SignUpDispatcherCompanyNamePlaceholder = "Company Name";
 
             this.SignUpMCExceededMessageText = "Sorry you are having trouble signing up. Please email help@trukman.com for assistance.";
 

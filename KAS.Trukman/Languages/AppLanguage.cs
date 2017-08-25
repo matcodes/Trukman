@@ -211,9 +211,9 @@ namespace KAS.Trukman.Languages
                 this.SignUpDriverLabel = appLanguage.SignUpDriverLabel;
                 this.SignUpDispatcherLabel = appLanguage.SignUpDispatcherLabel;
                 this.SignUpOwnerLabel = appLanguage.SignUpOwnerLabel;
-                this.SignUpDriverPendingLabel = appLanguage.SignUpDriverPendingLabel;
-                this.SignUpDriverDeclinedLabel = appLanguage.SignUpDriverDeclinedLabel;
-                this.SignUpDriverAuthorizedLabel = appLanguage.SignUpDriverAuthorizedLabel;
+                this.SignUpUserPendingLabel = appLanguage.SignUpUserPendingLabel;
+                this.SignUpUserDeclinedLabel = appLanguage.SignUpUserDeclinedLabel;
+                this.SignUpUserAuthorizedLabel = appLanguage.SignUpUserAuthorizedLabel;
 
                 this.SignUpLabel = appLanguage.SignUpLabel;
                 this.SignUpSelectCompanyAcceptButtonText = appLanguage.SignUpSelectCompanyAcceptButtonText;
@@ -235,6 +235,12 @@ namespace KAS.Trukman.Languages
                 this.SignUpDriverPhonePlaceholder = appLanguage.SignUpDriverPhonePlaceholder;
                 this.SignUpDriverEMailPlaceholder = appLanguage.SignUpDriverEMailPlaceholder;
                 this.SignUpDriverCompanyNamePlaceholder = appLanguage.SignUpDriverCompanyNamePlaceholder;
+
+                this.SignUpDispatcherFirstNamePlaceholder = appLanguage.SignUpDispatcherFirstNamePlaceholder;
+                this.SignUpDispatcherLastNamePlaceholder = appLanguage.SignUpDispatcherLastNamePlaceholder;
+                this.SignUpDispatcherPhonePlaceholder = appLanguage.SignUpDispatcherPhonePlaceholder;
+                this.SignUpDispatcherEMailPlaceholder = appLanguage.SignUpDispatcherEMailPlaceholder;
+                this.SignUpDispatcherCompanyNamePlaceholder = appLanguage.SignUpDispatcherCompanyNamePlaceholder;
 
                 this.SignUpMCExceededMessageText = appLanguage.SignUpMCExceededMessageText;
 
@@ -1192,22 +1198,22 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("SignUpOwnerLabel", value); }
         }
 
-        public string SignUpDriverPendingLabel
+        public string SignUpUserPendingLabel
         {
-            get { return (string)this.GetValue("SignUpDriverPendingLabel"); }
-            set { this.SetValue("SignUpDriverPendingLabel", value); }
+            get { return (string)this.GetValue("SignUpUserPendingLabel"); }
+            set { this.SetValue("SignUpUserPendingLabel", value); }
         }
 
-        public string SignUpDriverDeclinedLabel
+        public string SignUpUserDeclinedLabel
         {
-            get { return (string)this.GetValue("SignUpDriverDeclinedLabel"); }
-            set { this.SetValue("SignUpDriverDeclinedLabel", value); }
+            get { return (string)this.GetValue("SignUpUserDeclinedLabel"); }
+            set { this.SetValue("SignUpUserDeclinedLabel", value); }
         }
 
-        public string SignUpDriverAuthorizedLabel
+        public string SignUpUserAuthorizedLabel
         {
-            get { return (string)this.GetValue("SignUpDriverAuthorizedLabel"); }
-            set { this.SetValue("SignUpDriverAuthorizedLabel", value); }
+            get { return (string)this.GetValue("SignUpUserAuthorizedLabel"); }
+            set { this.SetValue("SignUpUserAuthorizedLabel", value); }
         }
 
         public string SignUpLabel
@@ -1322,6 +1328,36 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("SignUpDriverCompanyNamePlaceholder"); }
             set { this.SetValue("SignUpDriverCompanyNamePlaceholder", value); }
+        }
+
+        public string SignUpDispatcherFirstNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDispatcherFirstNamePlaceholder"); }
+            set { this.SetValue("SignUpDispatcherFirstNamePlaceholder", value); }
+        }
+
+        public string SignUpDispatcherLastNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDispatcherLastNamePlaceholder"); }
+            set { this.SetValue("SignUpDispatcherLastNamePlaceholder", value); }
+        }
+
+        public string SignUpDispatcherPhonePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDispatcherPhonePlaceholder"); }
+            set { this.SetValue("SignUpDispatcherPhonePlaceholder", value); }
+        }
+
+        public string SignUpDispatcherEMailPlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDispatcherEMailPlaceholder"); }
+            set { this.SetValue("SignUpDispatcherEMailPlaceholder", value); }
+        }
+
+        public string SignUpDispatcherCompanyNamePlaceholder
+        {
+            get { return (string)this.GetValue("SignUpDispatcherCompanyNamePlaceholder"); }
+            set { this.SetValue("SignUpDispatcherCompanyNamePlaceholder", value); }
         }
 
         public string SignUpMCExceededMessageText

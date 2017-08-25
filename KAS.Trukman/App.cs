@@ -79,14 +79,14 @@ namespace KAS.Trukman
 
         protected override void OnSleep()
         {
-//            this.Disappering();
+            //            this.Disappering();
         }
 
         protected override void OnResume()
         {
-//            this.Appering();
+            //            this.Appering();
 
- //           this.ShowTopPage();
+            //           this.ShowTopPage();
         }
 
         private void Appering()
@@ -108,7 +108,8 @@ namespace KAS.Trukman
         private void ShowTopPage()
         {
             var timer = new System.Timers.Timer { Interval = 200 };
-            timer.Elapsed += (sender, args) => {
+            timer.Elapsed += (sender, args) =>
+            {
                 timer.Stop();
                 if (TrukmanContext.Initialized)
                     this.ShowTopPage(new ShowTopPageMessage());
@@ -120,7 +121,8 @@ namespace KAS.Trukman
 
         private void ShowTopPage(ShowTopPageMessage message)
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 try
                 {
                     bool isEmpty = (this.MainPage is EmptyPage);
@@ -129,7 +131,7 @@ namespace KAS.Trukman
                         this.MainPage = new SignUpNavigationPage();
                     else if (TrukmanContext.User.Role == UserRole.Owner)
                         this.MainPage = new OwnerMainPage();
-                    else if (TrukmanContext.User.Role == UserRole.Driver)
+                    else if (TrukmanContext.User.Role == UserRole.Driver || TrukmanContext.User.Role == UserRole.Dispatch)
                     {
                         if (TrukmanContext.Company == null)
                         {
@@ -137,11 +139,16 @@ namespace KAS.Trukman
                         }
                         else
                         {
-                            var driverState = (DriverState)TrukmanContext.User.Status;
-                            if (driverState == DriverState.Joined)
-                                this.MainPage = new MainPage();
+                            var userState = (UserState)TrukmanContext.User.Status;
+                            if (userState == UserState.Joined)
+                            {
+                                if (TrukmanContext.User.Role == UserRole.Driver)
+                                    this.MainPage = new MainPage();
+                                else if (TrukmanContext.User.Role == UserRole.Dispatch)
+                                    this.MainPage = new OwnerMainPage();
+                            }
                             else
-                                this.MainPage = new SignUpNavigationPage(driverState, TrukmanContext.Company as Company);
+                                this.MainPage = new SignUpNavigationPage(userState, TrukmanContext.Company as Company);
                         }
                     }
 
@@ -158,7 +165,8 @@ namespace KAS.Trukman
 
         private void StartOwnerMainPage(StartOwnerMainPageMessage message)
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 this.MainPage = new OwnerMainPage();
             });
         }

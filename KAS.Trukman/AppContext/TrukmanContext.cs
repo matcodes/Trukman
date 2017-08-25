@@ -58,8 +58,8 @@ namespace KAS.Trukman.AppContext
                         if (user != null)
                         {
                             User = user;
-                            var state = (User != null ? (DriverState)User.Status : DriverState.Waiting);
-                            if (state == DriverState.Waiting)
+                            var state = (User != null ? (UserState)User.Status : UserState.Waiting);
+                            if (state == UserState.Waiting)
                             {
                                 var companyId = _localStorage.GetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY);
                                 Company = _localStorage.GetCompanyByID(companyId);
@@ -125,6 +125,16 @@ namespace KAS.Trukman.AppContext
         }
 
         public static async Task InitializeOwnerContext()
+        {
+            User = await _localStorage.GetCurrentUser();
+            Company = await _localStorage.SelectUserCompany();
+            _localStorage.SaveUser(User as User);
+            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
+            InitializeContext();
+            ShowTopPageMessage.Send();
+        }
+
+        public static async Task InitializeDispatcherContext()
         {
             User = await _localStorage.GetCurrentUser();
             Company = await _localStorage.SelectUserCompany();
@@ -298,9 +308,32 @@ namespace KAS.Trukman.AppContext
             return true;
         }
 
+        public static async Task<bool> DispatcherLogin(DispatcherInfo dispatcherInfo)
+        {
+            User = await _localStorage.DispatcherLogin(dispatcherInfo);
+            _localStorage.SaveUser(User as User);
+            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
+            return true;
+        }
+
         public static async Task<Company> RegisterDriverAsync(DriverInfo driverInfo)
         {
             var company = await _localStorage.RegisterDriverAsync(driverInfo);
+            User = await _localStorage.GetCurrentUser();
+            Company = company;
+
+            _localStorage.SaveUser(User as User);
+            _localStorage.SaveCompany(Company as Company);
+
+            _localStorage.SetSettings(LocalStorage.USER_ID_SETTINGS_KEY, User.ID);
+            _localStorage.SetSettings(LocalStorage.COMPANY_ID_SETTINGS_KEY, Company.ID);
+
+            return company;
+        }
+
+        public static async Task<Company> RegisterDispatcherAsync(DispatcherInfo dispatcherInfo)
+        {
+            var company = await _localStorage.RegisterDispatcherAsync(dispatcherInfo);
             User = await _localStorage.GetCurrentUser();
             Company = company;
 
@@ -339,17 +372,21 @@ namespace KAS.Trukman.AppContext
             return await _localStorage.ResendVerificationCode(guid);
         }
 
-        public static async Task<DriverState> GetDriverState()
+        public static async Task<UserState> GetUserState()
         {
-            var state = (User != null ? (DriverState)User.Status : DriverState.Waiting);
+            var state = (User != null ? (UserState)User.Status : UserState.Waiting);
             try
             {
                 //var user = await _localStorage.GetCurrentUser();
-                var _driverState = await _localStorage.GetDriverState(Company.ID, User.ID);
-                if (state != _driverState)
+                UserState _userState = UserState.Waiting;
+                if (User.Role == UserRole.Driver)
+                    _userState = await _localStorage.GetDriverState(Company.ID, User.ID);
+                else if (User.Role == UserRole.Dispatch)
+                    _userState = await _localStorage.GetDispatcherState(Company.ID, User.ID);
+                if (state != _userState)
                 {
                     User = await _localStorage.GetCurrentUser();
-                    state = _driverState;
+                    state = _userState;
                 }
             }
             catch (Exception exception)
@@ -359,9 +396,12 @@ namespace KAS.Trukman.AppContext
             return state;
         }
 
-        public static async Task CancelDriverRequest()
+        public static async Task CancelUserRequest()
         {
+            if (User.Role == UserRole.Driver)
             await _localStorage.CancelDriverRequest(Company.ID, User.ID);
+            else if (User.Role == UserRole.Dispatch)
+                await _localStorage.CancelDispatcherRequest(Company.ID, User.ID);
 
             _localStorage.RemoveUser(User);
             _localStorage.RemoveCompany(Company);

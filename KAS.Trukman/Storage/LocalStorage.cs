@@ -651,6 +651,21 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
+        public async Task<User> DispatcherLogin(DispatcherInfo dispatcherInfo)
+        {
+            User user = null;
+            try
+            {
+                user = await _externalStorage.DispatcherLogin(dispatcherInfo);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw ThrowException(exception);
+            }
+            return user;
+        }
+
         public async Task<Company> RegisterDriverAsync(DriverInfo driverInfo)
         {
             Company company = null;
@@ -659,6 +674,21 @@ namespace KAS.Trukman.Storage
                 company = await _externalStorage.RegisterDriver(driverInfo);
                 //var token = await _externalStorage.GetSessionToken();
                 //this.SetSettings(USER_TOKEN_KEY, token);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw ThrowException(exception);
+            }
+            return company;
+        }
+
+        public async Task<Company> RegisterDispatcherAsync(DispatcherInfo dispatcherInfo)
+        {
+            Company company = null;
+            try
+            {
+                company = await _externalStorage.RegisterDispatcher(dispatcherInfo);
             }
             catch (Exception exception)
             {
@@ -724,12 +754,27 @@ namespace KAS.Trukman.Storage
             return user;
         }
 
-        public async Task<DriverState> GetDriverState(string companyID, string driverID)
+        public async Task<UserState> GetDriverState(string companyID, string driverID)
         {
-            DriverState state = DriverState.Declined;
+            UserState state = UserState.Declined;
             try
             {
                 state = await _externalStorage.GetDriverState(companyID, driverID);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw ThrowException(exception);
+            }
+            return state;
+        }
+
+        public async Task<UserState> GetDispatcherState(string companyID, string dispatcherID)
+        {
+            UserState state = UserState.Declined;
+            try
+            {
+                state = await _externalStorage.GetDispatcherState(companyID, dispatcherID);
             }
             catch (Exception exception)
             {
@@ -752,6 +797,19 @@ namespace KAS.Trukman.Storage
             }
         }
 
+        public async Task CancelDispatcherRequest(string companyID, string dispatcherID)
+        {
+            try
+            {
+                await _externalStorage.CancelDispatcherRequest(companyID, dispatcherID);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw new Exception(exception.Message);
+            }
+        }
+        
         public async Task AcceptUserToCompany(string companyID, User user)
         {
             try

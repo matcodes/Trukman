@@ -57,6 +57,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         private void DispatcherSignUp(object parameter)
         {
             this.SelectedContext = SignUpContext.Dispatcher;
+            ShowSignUpDispatcherPageMessage.Send();
         }
 
         private void OwnerSignUp(object parameter)

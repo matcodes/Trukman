@@ -37,7 +37,7 @@ namespace KAS.Trukman.Storage
             ParseObject.RegisterSubclass<ParseCompany>();
             ParseObject.RegisterSubclass<ParseComcheck>();
             ParseObject.RegisterSubclass<ParseNotification>();
-			ParseObject.RegisterSubclass<ParseJobAlert> ();
+            ParseObject.RegisterSubclass<ParseJobAlert>();
             ParseObject.RegisterSubclass<ParseInvoice>();
             ParseObject.RegisterSubclass<ParseJobPoint>();
 
@@ -99,8 +99,8 @@ namespace KAS.Trukman.Storage
                 var jquery = new ParseQuery<ParseJob>()
                     .Include("Shipper")
                     .Include("Receiver")
-					.Include("Company")
-					.Include("Invoice")
+                    .Include("Company")
+                    .Include("Invoice")
                     .WhereEqualTo("objectId", id);
                 job = await jquery.FirstOrDefaultAsync();
             }
@@ -172,16 +172,16 @@ namespace KAS.Trukman.Storage
                 Address = (parseJob.Receiver != null ? parseJob.Receiver.Address : parseJob.ToAddress),
                 SpecialInstruction = (parseJob.Receiver != null ? parseJob.Receiver.SpecialInstruction : "")
             };
-			User driver = null;
-			if (parseJob.Driver != null)
-				driver = this.ParseUserToUser (parseJob.Driver);
-			User broker = null;
-			if (parseJob.Broker != null)
-				broker = this.ParseUserToUser (parseJob.Broker);
-			Company company = null;
-			if (parseJob.Company != null)
-				company = this.ParseCompanyToCompany (parseJob.Company);
-            
+            User driver = null;
+            if (parseJob.Driver != null)
+                driver = this.ParseUserToUser(parseJob.Driver);
+            User broker = null;
+            if (parseJob.Broker != null)
+                broker = this.ParseUserToUser(parseJob.Broker);
+            Company company = null;
+            if (parseJob.Company != null)
+                company = this.ParseCompanyToCompany(parseJob.Company);
+
             var trip = new Trip
             {
                 ID = parseJob.ObjectId,
@@ -197,17 +197,17 @@ namespace KAS.Trukman.Storage
                 Points = parseJob.Price,
                 Shipper = shipper,
                 Receiver = receiver,
-				JobRef = parseJob.JobRef,
-				FromAddress = parseJob.FromAddress,
-				ToAddress = parseJob.ToAddress,
-				Weight = parseJob.Weight,
+                JobRef = parseJob.JobRef,
+                FromAddress = parseJob.FromAddress,
+                ToAddress = parseJob.ToAddress,
+                Weight = parseJob.Weight,
                 Location = new Position(parseJob.Location.Latitude, parseJob.Location.Longitude),
                 UpdateTime = (parseJob.UpdatedAt != null ? (DateTime)parseJob.UpdatedAt : DateTime.Now),
-				Driver = driver,
-				Broker = broker,
-				Company = company,
+                Driver = driver,
+                Broker = broker,
+                Company = company,
                 InvoiceUri = (parseJob.Invoice != null && parseJob.Invoice.File != null ? parseJob.Invoice.File.Url.ToString() : null),
-				DriverDisplayName = (driver != null ? driver.UserName : "")
+                DriverDisplayName = (driver != null ? driver.UserName : "")
             };
 
             return trip;
@@ -231,7 +231,8 @@ namespace KAS.Trukman.Storage
             var driver = this.ParseUserToUser(parseComcheck.Driver);
             var trip = this.ParseJobToTrip(parseComcheck.Job);
 
-            var advance = new Advance {
+            var advance = new Advance
+            {
                 ID = parseComcheck.ObjectId,
                 Comcheck = parseComcheck.Comcheck,
                 Driver = driver,
@@ -241,14 +242,14 @@ namespace KAS.Trukman.Storage
                 State = parseComcheck.State
             };
 
-			return advance;
+            return advance;
         }
 
         public async Task<User> GetCurrentUserAsync()
         {
             if ((_currentUser == null) && (ParseUser.CurrentUser != null))
             {
-				var parseUser = ParseUser.CurrentUser;
+                var parseUser = ParseUser.CurrentUser;
                 await parseUser.FetchAsync();
 
                 _currentUser = this.ParseUserToUser(parseUser);
@@ -260,7 +261,7 @@ namespace KAS.Trukman.Storage
         private User ParseUserToUser(ParseUser parseUser)
         {
             var role = 0;
-            var status = (int)DriverState.Waiting;
+            var status = (int)UserState.Waiting;
             var firstName = "";
             var lastName = "";
 
@@ -383,7 +384,7 @@ namespace KAS.Trukman.Storage
                     Kind = (int)kind,
                     Data = new ParseFile(kind + ".jpg", data),
                     Job = job,
-					Company = job.Company
+                    Company = job.Company
                 };
                 await this.SaveParsePhoto(photo);
                 job.Photos.Add(photo);
@@ -468,14 +469,14 @@ namespace KAS.Trukman.Storage
         public async Task<Company> SelectCompanyByName(string name)
         {
             Company company = null;
-			var query = new ParseQuery<ParseCompany>()
-				.WhereEqualTo("name", name.ToLower());
-			var parseCompany = await query.FirstOrDefaultAsync();
+            var query = new ParseQuery<ParseCompany>()
+                .WhereEqualTo("name", name.ToLower());
+            var parseCompany = await query.FirstOrDefaultAsync();
             if (parseCompany != null)
                 company = this.ParseCompanyToCompany(parseCompany);
             return company;
         }
-			
+
         private async Task<ParseCompany> SelectUserParseCompanyAsync()
         {
             var query = new ParseQuery<ParseCompany>()
@@ -705,7 +706,7 @@ namespace KAS.Trukman.Storage
                     Phone = companyInfo.MCCode.Trim(),
                     Email = companyInfo.EMail,
                     Role = UserRole.Owner,
-                    Status = (int)DriverState.Waiting
+                    Status = (int)UserState.Waiting
                 };
                 user = await this.SignUpAsync(user);
             }
@@ -730,6 +731,11 @@ namespace KAS.Trukman.Storage
             throw new NotImplementedException();
         }
 
+        public Task<User> DispatcherLogin(DispatcherInfo dispatcherInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Company> RegisterDriver(DriverInfo driverInfo)
         {
             var userName = String.Format("{0} {1}", driverInfo.FirstName.Trim(), driverInfo.LastName.Trim()).ToLower();
@@ -748,8 +754,8 @@ namespace KAS.Trukman.Storage
                     Phone = driverInfo.Phone,
                     Role = UserRole.Driver,
                     FirstName = driverInfo.FirstName,
-                    LastName = driverInfo.LastName, 
-                    Status = (int)DriverState.Waiting
+                    LastName = driverInfo.LastName,
+                    Status = (int)UserState.Waiting
                 };
                 user = await this.SignUpAsync(user);
 
@@ -771,6 +777,11 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
+        public Task<Company> RegisterDispatcher(DispatcherInfo dispatcherInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> Verification(Guid accountId, string code)
         {
             return Task.FromResult(true);
@@ -781,15 +792,25 @@ namespace KAS.Trukman.Storage
             return Task.FromResult(true);
         }
 
-        public async Task<DriverState> GetDriverState(string companyID, string driverID)
+        public async Task<UserState> GetDriverState(string companyID, string driverID)
         {
             var user = await this.GetCurrentUserAsync();
-            return (DriverState)user.Status;
+            return (UserState)user.Status;
+        }
+
+        public Task<UserState> GetDispatcherState(string companyID, string dispatcherID)
+        {
+            throw new NotImplementedException();
         }
 
         public Task CancelDriverRequest(string companyID, string driverID)
         {
             return Task.Delay(0);
+        }
+
+        public Task CancelDispatcherRequest(string companyID, string dispatcherID)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task<bool> DriverIsJoinedToCompany(ParseCompany company)
@@ -877,7 +898,7 @@ namespace KAS.Trukman.Storage
             var company = await this.SelectUserParseCompanyAsync();
             ParseUser parseUser = await this.SelectParseUserByUserNameAsync(user.UserName);
 
-            await this.SetDriverState(user.ID, (int)DriverState.Joined);
+            await this.SetDriverState(user.ID, (int)UserState.Joined);
 
             company.Drivers.Add(parseUser);
             company.Requestings.Remove(parseUser);
@@ -889,7 +910,7 @@ namespace KAS.Trukman.Storage
             var company = await this.SelectUserParseCompanyAsync();
             ParseUser parseUser = await this.SelectParseUserByUserNameAsync(user.UserName);
 
-            await this.SetDriverState(user.ID, (int)DriverState.Joined);
+            await this.SetDriverState(user.ID, (int)UserState.Joined);
 
             company.Requestings.Remove(parseUser);
             await company.SaveAsync();
@@ -929,29 +950,31 @@ namespace KAS.Trukman.Storage
 
             var job = await jobQuery.FirstOrDefaultAsync();
             if (job != null)
-			{
-            ParseUser receiver = null;
-            if (job.Company != null)
-                receiver = job.Company.Owner;
+            {
+                ParseUser receiver = null;
+                if (job.Company != null)
+                    receiver = job.Company.Owner;
 
-				if (receiver != null) {
-					var parseNotification = new ParseNotification {
-						Text = message,
-						IsSending = false,
-						IsReading = false,
-						Trip = job,
-						Sender = ParseUser.CurrentUser,
-						Receiver = receiver
-					};
+                if (receiver != null)
+                {
+                    var parseNotification = new ParseNotification
+                    {
+                        Text = message,
+                        IsSending = false,
+                        IsReading = false,
+                        Trip = job,
+                        Sender = ParseUser.CurrentUser,
+                        Receiver = receiver
+                    };
 
-					await parseNotification.SaveAsync ();
+                    await parseNotification.SaveAsync();
 
-					job.Notifications.Add (parseNotification);
-					await job.SaveAsync ();
-				}
-			}
+                    job.Notifications.Add(parseNotification);
+                    await job.SaveAsync();
+                }
+            }
         }
-	
+
         private JobNotification ParseNotificationToNotification(ParseNotification parseNotification)
         {
             Trip trip = null;
@@ -984,103 +1007,105 @@ namespace KAS.Trukman.Storage
             par.Add("status", state);
             par.Add("userId", userID);
 
-            await ParseCloud.CallFunctionAsync<object>("setDriverStatus", par).ContinueWith(t => {
+            await ParseCloud.CallFunctionAsync<object>("setDriverStatus", par).ContinueWith(t =>
+            {
             });
         }
 
-		public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
-		{
-			var result = ComcheckRequestState.None;
+        public async Task<ComcheckRequestState> GetComcheckStateAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var result = ComcheckRequestState.None;
 
-			var parseJob = await this.GetParseJobByID(tripID);
+            var parseJob = await this.GetParseJobByID(tripID);
 
-			var query = parseJob.Advances.Query
-				.OrderByDescending("createdAt")
-				.WhereEqualTo("RequestType", (int)requestType);
+            var query = parseJob.Advances.Query
+                .OrderByDescending("createdAt")
+                .WhereEqualTo("RequestType", (int)requestType);
 
-			var parseComcheck = await query.FirstOrDefaultAsync();
-			if (parseComcheck != null)
-				result = (ComcheckRequestState)parseComcheck.State;
+            var parseComcheck = await query.FirstOrDefaultAsync();
+            if (parseComcheck != null)
+                result = (ComcheckRequestState)parseComcheck.State;
 
-			return result;
-		}
+            return result;
+        }
 
-		public async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
-		{
-			var result = "";
+        public async Task<string> GetComcheckAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var result = "";
 
-			var parseJob = await this.GetParseJobByID(tripID);
+            var parseJob = await this.GetParseJobByID(tripID);
 
-			var relationQuery = parseJob.Advances.Query
-				.OrderByDescending("createdAt")
-				.WhereEqualTo("RequestType", (int)requestType);
+            var relationQuery = parseJob.Advances.Query
+                .OrderByDescending("createdAt")
+                .WhereEqualTo("RequestType", (int)requestType);
 
-			var parseComcheck = await relationQuery.FirstOrDefaultAsync();
-			if (parseComcheck != null)
-				result = parseComcheck.Comcheck;
+            var parseComcheck = await relationQuery.FirstOrDefaultAsync();
+            if (parseComcheck != null)
+                result = parseComcheck.Comcheck;
 
-			return result;
-		}
+            return result;
+        }
 
-		public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
-		{
-			var parseJob = await this.GetParseJobByID (tripID);
-			if (parseJob != null)
-			{
-				var comcheck = new ParseComcheck
-				{
-					Driver = ParseUser.CurrentUser,
-					State = (int)ComcheckRequestState.Requested,
-					RequestDatetime = DateTime.Now,
-					RequestType = (int)requestType,
-					Job = parseJob,
-					Comcheck = (requestType == ComcheckRequestType.FuelAdvance ? "fuel advance" : "lumper advance"),
-					Dispatch = parseJob.Dispatcher,
-					Company = parseJob.Company
-				};
-				await comcheck.SaveAsync();
-				parseJob.Advances.Add(comcheck);
-				await parseJob.SaveAsync();
-			}
-			else 
-				throw new Exception("Trip not found.");
-		}
+        public async Task SendComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var parseJob = await this.GetParseJobByID(tripID);
+            if (parseJob != null)
+            {
+                var comcheck = new ParseComcheck
+                {
+                    Driver = ParseUser.CurrentUser,
+                    State = (int)ComcheckRequestState.Requested,
+                    RequestDatetime = DateTime.Now,
+                    RequestType = (int)requestType,
+                    Job = parseJob,
+                    Comcheck = (requestType == ComcheckRequestType.FuelAdvance ? "fuel advance" : "lumper advance"),
+                    Dispatch = parseJob.Dispatcher,
+                    Company = parseJob.Company
+                };
+                await comcheck.SaveAsync();
+                parseJob.Advances.Add(comcheck);
+                await parseJob.SaveAsync();
+            }
+            else
+                throw new Exception("Trip not found.");
+        }
 
-		public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
-		{
-			var parseJob = await this.GetParseJobByID(tripID);
-			if (parseJob != null)
-			{
-				var relationQuery = parseJob.Advances.Query
-					.OrderByDescending("createdAt")
-					.WhereEqualTo("RequestType", (int)requestType);
-				var comcheckData = await relationQuery.FirstOrDefaultAsync();
-				if (comcheckData != null)
-				{
-					parseJob.Advances.Remove(comcheckData);
-					await parseJob.SaveAsync();
-					await comcheckData.DeleteAsync();
-				}
-			}
-		}
+        public async Task CancelComcheckRequestAsync(string tripID, ComcheckRequestType requestType)
+        {
+            var parseJob = await this.GetParseJobByID(tripID);
+            if (parseJob != null)
+            {
+                var relationQuery = parseJob.Advances.Query
+                    .OrderByDescending("createdAt")
+                    .WhereEqualTo("RequestType", (int)requestType);
+                var comcheckData = await relationQuery.FirstOrDefaultAsync();
+                if (comcheckData != null)
+                {
+                    parseJob.Advances.Remove(comcheckData);
+                    await parseJob.SaveAsync();
+                    await comcheckData.DeleteAsync();
+                }
+            }
+        }
 
-		public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
-		{
-			var parseJob = await this.GetParseJobByID (tripID);
+        public async Task SendJobAlertAsync(string tripID, int alertType, string alertText)
+        {
+            var parseJob = await this.GetParseJobByID(tripID);
 
-			var parseJobAlert = new ParseJobAlert {
-				AlertType = alertType,
-				AlertText = alertText,
+            var parseJobAlert = new ParseJobAlert
+            {
+                AlertType = alertType,
+                AlertText = alertText,
                 Job = parseJob,
                 Company = parseJob.Company,
                 IsViewed = false
-			};
+            };
 
-			await parseJobAlert.SaveAsync ();
+            await parseJobAlert.SaveAsync();
 
-			parseJob.Alerts.Add (parseJobAlert);
-			await parseJob.SaveAsync ();
-		}
+            parseJob.Alerts.Add(parseJobAlert);
+            await parseJob.SaveAsync();
+        }
 
         public async Task<JobAlert[]> SelectJobAlertsAsync()
         {
@@ -1091,10 +1116,10 @@ namespace KAS.Trukman.Storage
             var query = new ParseQuery<ParseJobAlert>()
                 .Include("Company")
                 .Include("Job")
-				.Include("Job.Driver")
+                .Include("Job.Driver")
                 .WhereEqualTo("Company", parseCompany)
                 .WhereEqualTo("IsViewed", false)
-				.OrderByDescending("createAt");
+                .OrderByDescending("createAt");
             var parseJobAlerts = await query.FindAsync();
 
             foreach (var parseJobAlert in parseJobAlerts)
@@ -1124,7 +1149,8 @@ namespace KAS.Trukman.Storage
             if (parseJobAlert.Job != null)
                 job = this.ParseJobToTrip(parseJobAlert.Job);
 
-            var jobAlert = new JobAlert {
+            var jobAlert = new JobAlert
+            {
                 ID = parseJobAlert.ObjectId,
                 AlertType = parseJobAlert.AlertType,
                 AlertText = parseJobAlert.AlertText,
@@ -1135,7 +1161,7 @@ namespace KAS.Trukman.Storage
             return jobAlert;
         }
 
-		public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
+        public async Task<Advance[]> SelectFuelAdvancesAsync(int requestType)
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();
 
@@ -1143,7 +1169,7 @@ namespace KAS.Trukman.Storage
                 .Include("Job")
                 .Include("Driver")
                 .WhereEqualTo("Company", parseCompany)
-				.WhereEqualTo("RequestType", requestType)
+                .WhereEqualTo("RequestType", requestType)
                 .WhereNotEqualTo("State", 3)
                 .OrderBy("RequestDatetime");
 
@@ -1160,25 +1186,25 @@ namespace KAS.Trukman.Storage
             return advances.ToArray();
         }
 
-		public async Task SetAdvanceStateAsync(Advance advance)
-		{
-			var query = new ParseQuery<ParseComcheck> ()
-				.WhereEqualTo ("objectId", advance.ID);
+        public async Task SetAdvanceStateAsync(Advance advance)
+        {
+            var query = new ParseQuery<ParseComcheck>()
+                .WhereEqualTo("objectId", advance.ID);
 
-			var parseComcheck = await query.FirstOrDefaultAsync ();
+            var parseComcheck = await query.FirstOrDefaultAsync();
 
-			parseComcheck.State = advance.State;
-			parseComcheck.Comcheck = advance.Comcheck;
+            parseComcheck.State = advance.State;
+            parseComcheck.Comcheck = advance.Comcheck;
 
-			await parseComcheck.SaveAsync ();
-		}
+            await parseComcheck.SaveAsync();
+        }
 
         public async Task<User[]> SelectBrockersAsync()
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();
             var query = parseCompany.Brokers.Query;
             var parseUsers = await query.FindAsync();
-			var brokers = new List<User>();
+            var brokers = new List<User>();
             foreach (var parseUser in parseUsers)
             {
                 var user = this.ParseUserToUser(parseUser);
@@ -1187,19 +1213,19 @@ namespace KAS.Trukman.Storage
             return brokers.ToArray();
         }
 
-		public async Task<User[]> SelectDriversAsync()
-		{
-			var parseCompany = await this.SelectUserParseCompanyAsync();
-			var query = parseCompany.Drivers.Query;
-			var parseUsers = await query.FindAsync();
-			var drivers = new List<User>();
-			foreach (var parseUser in parseUsers)
-			{
-				var user = this.ParseUserToUser(parseUser);
-				drivers.Add(user);
-			}
-			return drivers.ToArray();
-		}
+        public async Task<User[]> SelectDriversAsync()
+        {
+            var parseCompany = await this.SelectUserParseCompanyAsync();
+            var query = parseCompany.Drivers.Query;
+            var parseUsers = await query.FindAsync();
+            var drivers = new List<User>();
+            foreach (var parseUser in parseUsers)
+            {
+                var user = this.ParseUserToUser(parseUser);
+                drivers.Add(user);
+            }
+            return drivers.ToArray();
+        }
 
         public async Task<Trip> CreateTripAsync(Trip trip)
         {
@@ -1230,38 +1256,40 @@ namespace KAS.Trukman.Storage
         }
 
         public async Task<Photo[]> SelectPhotosAsync()
-		{
-			var parseCompany = await this.SelectUserParseCompanyAsync ();
+        {
+            var parseCompany = await this.SelectUserParseCompanyAsync();
 
-			ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
-				.WhereEqualTo ("company", parseCompany)
-				.Include("company")
-				.Include("job")
-				.Include ("job.Driver");
+            ParseQuery<ParsePhoto> query = new ParseQuery<ParsePhoto>()
+                .WhereEqualTo("company", parseCompany)
+                .Include("company")
+                .Include("job")
+                .Include("job.Driver");
 
-			var parsePhotos = await query.FindAsync ();
-			var photos = new List<Photo> ();
-			foreach (var parsePhoto in parsePhotos) {
-				var photo = this.ParsePhotoToPhoto (parsePhoto);
-				photos.Add (photo);
-			}
-			return photos.ToArray();			
-		}
+            var parsePhotos = await query.FindAsync();
+            var photos = new List<Photo>();
+            foreach (var parsePhoto in parsePhotos)
+            {
+                var photo = this.ParsePhotoToPhoto(parsePhoto);
+                photos.Add(photo);
+            }
+            return photos.ToArray();
+        }
 
-		private Photo ParsePhotoToPhoto(ParsePhoto parsePhoto)
-		{
-			var job = this.ParseJobToTrip (parsePhoto.Job);
-			var company = this.ParseCompanyToCompany (parsePhoto.Company);
-			var photo = new Photo {
-				ID = parsePhoto.ObjectId,
-				Job = job,
-				Company = company,
-				Type = parsePhoto.Kind,
-				Uri = parsePhoto.Data.Url,
-				IsViewed = parsePhoto.IsViewed
-			};
-			return photo;
-		}
+        private Photo ParsePhotoToPhoto(ParsePhoto parsePhoto)
+        {
+            var job = this.ParseJobToTrip(parsePhoto.Job);
+            var company = this.ParseCompanyToCompany(parsePhoto.Company);
+            var photo = new Photo
+            {
+                ID = parsePhoto.ObjectId,
+                Job = job,
+                Company = company,
+                Type = parsePhoto.Kind,
+                Uri = parsePhoto.Data.Url,
+                IsViewed = parsePhoto.IsViewed
+            };
+            return photo;
+        }
 
         public async Task<string> CreateInvoiceForJobAsync(string tripID)
         {
@@ -1271,11 +1299,11 @@ namespace KAS.Trukman.Storage
             {
                 var par = new Dictionary<string, object>();
                 par.Add("jobId", tripID);
-				par.Add("installationId", ParseInstallation.CurrentInstallation.ObjectId);
+                par.Add("installationId", ParseInstallation.CurrentInstallation.ObjectId);
 
-				var response = await ParseCloud.CallFunctionAsync<object>("generateInvoiceForJob", par); 
+                var response = await ParseCloud.CallFunctionAsync<object>("generateInvoiceForJob", par);
 
-				result = response.ToString ();
+                result = response.ToString();
             }
             return result;
         }
@@ -1317,24 +1345,24 @@ namespace KAS.Trukman.Storage
         //    return points;
         //}
 
-		public async Task<int> GetPointsByDriverIDAsync(string driverID)
-		{
-			var driver = ParseUser.CreateWithoutData<ParseUser>(driverID);
+        public async Task<int> GetPointsByDriverIDAsync(string driverID)
+        {
+            var driver = ParseUser.CreateWithoutData<ParseUser>(driverID);
 
-			var query = new ParseQuery<ParseJobPoint>()
-				.Include("Job")
-				.Include("Driver")
-				.Include("Company")
-				.WhereEqualTo("Driver", driver);
+            var query = new ParseQuery<ParseJobPoint>()
+                .Include("Job")
+                .Include("Driver")
+                .Include("Company")
+                .WhereEqualTo("Driver", driver);
 
-			var parseJobPoints = await query.FindAsync();
+            var parseJobPoints = await query.FindAsync();
 
-			var points = 0;
-			foreach (var parseJobPoint in parseJobPoints)
-				points += parseJobPoint.Value;
+            var points = 0;
+            foreach (var parseJobPoint in parseJobPoints)
+                points += parseJobPoint.Value;
 
-			return points;
-		}
+            return points;
+        }
 
         public async Task<JobPoint[]> SelectJobPointsAsync()
         {
@@ -1369,7 +1397,8 @@ namespace KAS.Trukman.Storage
             if (parseJobPoint.Company != null)
                 company = this.ParseCompanyToCompany(parseJobPoint.Company);
 
-            var jobPoint = new JobPoint {
+            var jobPoint = new JobPoint
+            {
                 ID = parseJobPoint.ObjectId,
                 Text = parseJobPoint.Text,
                 Value = parseJobPoint.Value,
