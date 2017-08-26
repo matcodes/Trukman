@@ -10,14 +10,14 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
     #region OwnerDelayAlertsViewModel
     public class OwnerDelayAlertsViewModel : PageViewModel
     {
-        public OwnerDelayAlertsViewModel()
-            : base()
+        public OwnerDelayAlertsViewModel() : base()
         {
             this.JobAlertGroups = new ObservableCollection<JobAlertGroup>();
 
@@ -41,23 +41,24 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Initialize(parameters);
 
-			this.SelectJobAlerts();
+            this.SelectJobAlerts();
         }
 
         protected override void Localize()
         {
             base.Localize();
 
-			this.Title = AppLanguages.CurrentLanguage.OwnerDelayAlertsPageName;
+            this.Title = AppLanguages.CurrentLanguage.OwnerDelayAlertsPageName;
         }
 
         private void SelectJobAlerts()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
-					var jobAlerts = await TrukmanContext.SelectJobAlertsAsync();
+                    var jobAlerts = await TrukmanContext.SelectJobAlertsAsync();
                     this.ShowJobAlerts(jobAlerts);
                 }
                 catch (Exception exception)
@@ -69,37 +70,42 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsRefreshing = false;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerDelayAlertsViewModel SelectJobAlerts");
         }
 
         private void ShowJobAlerts(JobAlert[] jobAlerts)
-		{
-			Device.BeginInvokeOnMainThread (() => {
-				this.JobAlertGroups.Clear ();
-				this.SelectedJobAlert = null;
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                this.JobAlertGroups.Clear();
+                this.SelectedJobAlert = null;
 
-				foreach (var jobAlert in jobAlerts) {
-					var group = this.JobAlertGroups.FirstOrDefault (jag => jag.Job.ID == jobAlert.Job.ID);
-					if (group == null) {
-						group = new JobAlertGroup (jobAlert.Job);
-						this.JobAlertGroups.Add (group);
-					}
-					group.Add (jobAlert);
-				}
-			});
-		}
+                foreach (var jobAlert in jobAlerts)
+                {
+                    var group = this.JobAlertGroups.FirstOrDefault(jag => jag.Job.ID == jobAlert.Job.ID);
+                    if (group == null)
+                    {
+                        group = new JobAlertGroup(jobAlert.Job);
+                        this.JobAlertGroups.Add(group);
+                    }
+                    group.Add(jobAlert);
+                }
+            });
+        }
 
-		private void RemoveJobAlert(JobAlert jobAlert)
-		{
-			Device.BeginInvokeOnMainThread (() => {
-				var group = this.JobAlertGroups.FirstOrDefault(jag=>jag.Job.ID == jobAlert.Job.ID);
-				if (group != null) {
-					group.Remove(jobAlert);
-					if (group.Count == 0)
-						this.JobAlertGroups.Remove(group);
-				}
-			});
-		}
+        private void RemoveJobAlert(JobAlert jobAlert)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                var group = this.JobAlertGroups.FirstOrDefault(jag => jag.Job.ID == jobAlert.Job.ID);
+                if (group != null)
+                {
+                    group.Remove(jobAlert);
+                    if (group.Count == 0)
+                        this.JobAlertGroups.Remove(group);
+                }
+            });
+        }
 
         private void ShowMainMenu(object parameter)
         {
@@ -113,26 +119,28 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectJobAlert(object parameter)
         {
-			Task.Run (async() => {
-				this.IsBusy = true;
-				try
-				{
-					var jobAlert = (parameter as JobAlert);
-					if (jobAlert != null) {
-						await TrukmanContext.SetJobAlertIsViewedAsync(jobAlert.ID, true);
-						this.RemoveJobAlert(jobAlert);
-					}
-				}
-				catch (Exception exception)
-				{
-					ShowToastMessage.Send(exception.Message);
-				}
-				finally
-				{
-					this.SelectedJobAlert = null;
-					this.IsBusy = false;
-				}
-			});
+            Task.Run(async () =>
+            {
+                this.IsBusy = true;
+                try
+                {
+                    var jobAlert = (parameter as JobAlert);
+                    if (jobAlert != null)
+                    {
+                        await TrukmanContext.SetJobAlertIsViewedAsync(jobAlert.ID, true);
+                        this.RemoveJobAlert(jobAlert);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ShowToastMessage.Send(exception.Message);
+                }
+                finally
+                {
+                    this.SelectedJobAlert = null;
+                    this.IsBusy = false;
+                }
+            }).LogExceptions("OwnerDelayAlertsViewModel SelectJobAlert");
         }
 
         private void Refresh(object parameter)
@@ -164,16 +172,16 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     }
     #endregion
 
-	#region JobAlertGroup
-	public class JobAlertGroup : ObservableCollection<JobAlert>
-	{
-		public JobAlertGroup(Trip job)
-			: base()
-		{
-			this.Job = job;
-		}
+    #region JobAlertGroup
+    public class JobAlertGroup : ObservableCollection<JobAlert>
+    {
+        public JobAlertGroup(Trip job)
+            : base()
+        {
+            this.Job = job;
+        }
 
-		public Trip Job { get; private set; }
-	}
-	#endregion
+        public Trip Job { get; private set; }
+    }
+    #endregion
 }

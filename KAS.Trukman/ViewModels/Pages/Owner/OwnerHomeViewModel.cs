@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
@@ -23,31 +24,27 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
 
             this.RateConfirmationCommandItem = new CommandItem(new VisualCommand(this.RateConfirmation));
-            this.RateConfirmationCommandItem.IsEnabled = false;
             this.DispatchDriverCommandItem = new CommandItem(new VisualCommand(this.DispatchDriver));
-            this.DispatchDriverCommandItem.IsEnabled = false;
             this.LoadConfirmationCommandItem = new CommandItem(new VisualCommand(this.LoadConfirmation));
-            this.LoadConfirmationCommandItem.IsEnabled = false;
             this.BrockerListCommandItem = new CommandItem(new VisualCommand(this.BrockerList));
             this.FuelAdvanceCommandItem = new CommandItem(new VisualCommand(this.FuelAdvance));
             this.TrackFleetCommandItem = new CommandItem(new VisualCommand(this.TrackFleet));
             this.LumperCommandItem = new CommandItem(new VisualCommand(this.Lumper));
             this.InvoiceCommandItem = new CommandItem(new VisualCommand(this.Invoice));
             this.ReportsCommandItem = new CommandItem(new VisualCommand(this.Reports));
-            this.ReportsCommandItem.IsEnabled = false;
             this.DelayAlertsCommandItem = new CommandItem(new VisualCommand(this.DelayAlerts));
             this.DeliveryUpdateCommandItem = new CommandItem(new VisualCommand(this.DeliveryUpdate));
 
             this.Items = new ObservableCollection<CommandItem>();
-            this.Items.Add(this.RateConfirmationCommandItem);
-            this.Items.Add(this.DispatchDriverCommandItem);
-            this.Items.Add(this.LoadConfirmationCommandItem);
+            //this.Items.Add(this.RateConfirmationCommandItem);
+            //this.Items.Add(this.DispatchDriverCommandItem);
+            //this.Items.Add(this.LoadConfirmationCommandItem);
             this.Items.Add(this.BrockerListCommandItem);
             this.Items.Add(this.FuelAdvanceCommandItem);
             this.Items.Add(this.TrackFleetCommandItem);
             this.Items.Add(this.LumperCommandItem);
             this.Items.Add(this.InvoiceCommandItem);
-            this.Items.Add(this.ReportsCommandItem);
+            //this.Items.Add(this.ReportsCommandItem);
             this.Items.Add(this.DelayAlertsCommandItem);
             this.Items.Add(this.DeliveryUpdateCommandItem);
         }
@@ -137,7 +134,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsBusy = false;
                     this.StartCheckUsersTimer();
                 }
-            });
+            }).LogExceptions("OwnerHomeViewModel CheckUsers");
         }
         private void SelectItem(object parameter)
         {

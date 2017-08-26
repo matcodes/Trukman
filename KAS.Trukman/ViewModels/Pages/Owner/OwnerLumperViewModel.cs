@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -15,8 +16,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     #region OwnerLumperViewModel
     public class OwnerLumperViewModel : PageViewModel
     {
-        public OwnerLumperViewModel()
-            : base()
+        public OwnerLumperViewModel() : base()
         {
             this.Advances = new ObservableCollection<Advance>();
 
@@ -54,7 +54,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectAdvances()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -70,7 +71,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsRefreshing = false;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerLumperViewModel SelectAdvances");
         }
 
         private void ShowAdvances(Advance[] advances)

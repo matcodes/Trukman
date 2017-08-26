@@ -1,4 +1,5 @@
 ﻿using KAS.Trukman.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using KAS.Trukman.ViewModels.Pages;
@@ -18,8 +19,7 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _requestedTimer = null;
         private System.Timers.Timer _receivedTimer = null;
 
-        public FuelAdvanceViewModel()
-            : base()
+        public FuelAdvanceViewModel() : base()
         {
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
@@ -51,7 +51,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         protected override void DoPropertyChanged(string propertyName)
         {
-            Device.BeginInvokeOnMainThread(() => 
+            Device.BeginInvokeOnMainThread(() =>
             {
                 if (propertyName == "State")
                 {
@@ -77,7 +77,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.DisableCommands();
 
-            Device.BeginInvokeOnMainThread(() => 
+            Device.BeginInvokeOnMainThread(() =>
             {
                 this.ShowHomePageCommand.IsEnabled = false;
                 this.ShowPrevPageCommand.IsEnabled = false;
@@ -91,7 +91,7 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.EnabledCommands();
 
-            Device.BeginInvokeOnMainThread(() => 
+            Device.BeginInvokeOnMainThread(() =>
             {
                 this.ShowHomePageCommand.IsEnabled = true;
                 this.ShowPrevPageCommand.IsEnabled = true;
@@ -141,7 +141,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Request(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
@@ -153,19 +154,19 @@ namespace KAS.Trukman.ViewModels.Pages
                 catch (Exception exception)
                 {
                     // To do: show exception message
-                    Console.WriteLine(exception); 
+                    Console.WriteLine(exception);
                 }
                 finally
                 {
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("FuelAdvanceViewModel Request");
         }
 
         private void Resend(object parameter)
         {
-            Task.Run(() => 
+            Task.Run(() =>
             {
                 this.StopRequestedTimer();
 
@@ -189,12 +190,12 @@ namespace KAS.Trukman.ViewModels.Pages
 
                 this.State = FuelAdvanceStates.Requested;
                 this.StartRequestedTimer();
-            });
+            }).LogExceptions("FuelAdvanceViewModel Resend");
         }
 
         private void Cancel(object parameter)
         {
-            Task.Run(() => 
+            Task.Run(() =>
             {
                 this.StopRequestedTimer();
 
@@ -217,13 +218,13 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
 
                 this.State = FuelAdvanceStates.None;
-            });
+            }).LogExceptions("FuelAdvanceViewModel Cancel");
         }
 
         private void StartRequestedTimer()
         {
             _requestedTimer = new System.Timers.Timer { Interval = 5000 };
-            _requestedTimer.Elapsed += (sender, args) => 
+            _requestedTimer.Elapsed += (sender, args) =>
             {
                 this.StopRequestedTimer();
 
@@ -261,7 +262,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private void StartReceivedTimer()
         {
             _receivedTimer = new System.Timers.Timer { Interval = 5000 };
-            _receivedTimer.Elapsed += (sender, args) => {
+            _receivedTimer.Elapsed += (sender, args) =>
+            {
                 this.StopReceivedTimer();
 
                 // To do: Check completed
@@ -351,7 +353,7 @@ namespace KAS.Trukman.ViewModels.Pages
     #region FuelAdvanceStates
     public enum FuelAdvanceStates
     {
-        None = 0, 
+        None = 0,
         Requested = 1,
         Received = 2,
         Completed = 3

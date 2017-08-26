@@ -33,7 +33,7 @@ namespace KAS.Trukman.Languages
             this.PointsAndRewardsPageName = "POINTS & REWARDS";
             this.SettingsPageName = "SETTINGS";
             this.HelpPageName = "HELP";
-            this.DriverAuthorizePageName = "DRIVER AUTHORIZATION";
+            this.UserAuthorizePageName = "USER AUTHORIZATION";
             #endregion
 
             #region Lists
@@ -248,10 +248,10 @@ namespace KAS.Trukman.Languages
             #endregion
 
             #region User authorization page
-            this.DriverAuthorizationCommonLabel = "{0} {1} has requested your authorization to use Trukman as a {2}.";
-            this.DriverAuthorizationAssignIDNumberPlaceholder = "Assign an ID#";
-            this.DriverAuthorizationAuthorizeButtonText = "Authorize";
-            this.DriverAuthorizationDeclineButtonText = "Decline";
+            this.UserAuthorizationCommonLabel = "{0} {1} has requested your authorization to use Trukman as a {2}.";
+            this.UserAuthorizationAssignIDNumberPlaceholder = "Assign an ID#";
+            this.UserAuthorizationAuthorizeButtonText = "Authorize";
+            this.UserAuthorizationDeclineButtonText = "Decline";
             #endregion
 
             #region SignUpOwnerWelcome page

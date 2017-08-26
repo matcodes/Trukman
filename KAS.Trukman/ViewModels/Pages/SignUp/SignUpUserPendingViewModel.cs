@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -102,7 +103,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     this.IsBusy = false;
                     this.StartCheckUserStatusTimer();
                 }
-            });
+            }).LogExceptions("SignUpUserPendingViewModel CheckUserStatus");
         }
 
         private void StopCheckUserStatusTimer()
@@ -144,7 +145,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpUserPendingViewModel Cancel");
         }
 
         public SignUpLanguage SelectedLanguage

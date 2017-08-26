@@ -207,6 +207,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\RouteValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\ViewPort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Route\WayPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TaskExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TaskPointKindsExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MCQuery.cs" />

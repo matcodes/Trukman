@@ -7,6 +7,7 @@ using KAS.Trukman.Storage;
 using Parse;
 using System.Threading.Tasks;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.AppContext
 {
@@ -32,7 +33,8 @@ namespace KAS.Trukman.AppContext
 
         private void CheckNotification()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 if (!_isNotification)
                 {
                     _isNotification = true;
@@ -52,7 +54,7 @@ namespace KAS.Trukman.AppContext
                         _isNotification = false;
                     }
                 }
-            });
+            }).LogExceptions("OwnerContext CheckNotification");
         }
     }
     #endregion

@@ -8,16 +8,16 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region MainMenuViewModel
-    public class MainMenuViewModel : PageViewModel 
+    public class MainMenuViewModel : PageViewModel
     {
         private Trip _trip = null;
 
-        public MainMenuViewModel() 
-            : base()
+        public MainMenuViewModel() : base()
         {
             this.SelectItemCommand = new VisualCommand(this.SelectItem);
 
@@ -78,7 +78,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void DriverTripContextChanged(DriverTripContextChangedMessage message)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => 
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
                 var enabled = false;
                 if (TrukmanContext.Driver != null)
@@ -96,7 +96,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void UpdateUserData()
         {
-            Task.Run(()=>{
+            Task.Run(() =>
+            {
                 try
                 {
                     var user = TrukmanContext.User;
@@ -113,7 +114,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     Console.WriteLine(exception);
                     ShowToastMessage.Send(exception.Message);
                 }
-            });
+            }).LogExceptions("MainMenuViewModel UpdateUserData");
         }
 
         private void SelectItem(object parameter)
@@ -148,7 +149,7 @@ namespace KAS.Trukman.ViewModels.Pages
         private void ShowDelayEmergencyPage(object parameter)
         {
             if (_trip != null)
-				ShowDelayEmergencyPageMessage.Send(_trip);
+                ShowDelayEmergencyPageMessage.Send(_trip);
         }
 
         private void ShowRoutePage(object parameter)

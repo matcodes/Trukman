@@ -524,7 +524,7 @@ namespace KAS.Trukman.Storage
             return company;
         }
 
-        public async Task<Trip[]> SelectActiveTrips()
+        public async Task<Trip[]> SelectActiveTrips(Guid ownerId)
         {
             var trips = new List<Trip>();
             try
@@ -556,7 +556,7 @@ namespace KAS.Trukman.Storage
             return trips.ToArray();
         }
 
-        public async Task<Trip[]> SelectCompletedTrips()
+        public async Task<Trip[]> SelectCompletedTrips(Guid ownerId)
         {
             var trips = new List<Trip>();
             try
@@ -1107,7 +1107,7 @@ namespace KAS.Trukman.Storage
             await parseJob.SaveAsync();
         }
 
-        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        public async Task<JobAlert[]> SelectJobAlertsAsync(Guid ownerId)
         {
             var jobAlerts = new List<JobAlert>();
 
@@ -1255,7 +1255,7 @@ namespace KAS.Trukman.Storage
             return trip;
         }
 
-        public async Task<Photo[]> SelectPhotosAsync()
+        public async Task<Photo[]> SelectPhotosAsync(Guid ownerId)
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();
 

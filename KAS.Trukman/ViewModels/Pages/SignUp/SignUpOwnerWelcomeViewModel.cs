@@ -8,14 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
     #region SignUpOwnerWelcomeViewModel
     public class SignUpOwnerWelcomeViewModel : PageViewModel
     {
-        public SignUpOwnerWelcomeViewModel()
-            : base()
+        public SignUpOwnerWelcomeViewModel() : base()
         {
             this.EnglishLanguageCommand = new VisualCommand(this.EnglishLanguage);
             this.EspanolLanguageCommand = new VisualCommand(this.EspanolLanguage);
@@ -74,7 +74,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
 
         private void Continue(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -88,7 +89,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpOwnerWelcomeViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

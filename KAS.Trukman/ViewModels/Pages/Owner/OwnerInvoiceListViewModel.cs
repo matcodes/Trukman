@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -15,8 +16,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     #region OwnerInvoiceListViewModel
     public class OwnerInvoiceListViewModel : PageViewModel
     {
-        public OwnerInvoiceListViewModel()
-            : base()
+        public OwnerInvoiceListViewModel() : base()
         {
             this.Jobs = new ObservableCollection<Trip>();
 
@@ -52,7 +52,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectJobs()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -68,7 +69,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsRefreshing = false;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerInvoiceListViewModel SelectJobs");
         }
 
         private void ShowBrokers(Trip[] jobs)
@@ -95,16 +96,18 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectJob(object parameter)
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
                     string uri = "";
-					if (String.IsNullOrEmpty(this.SelectedJob.InvoiceUri)) {
+                    if (String.IsNullOrEmpty(this.SelectedJob.InvoiceUri))
+                    {
                         uri = await TrukmanContext.CreateInvoiceForJobAsync(this.SelectedJob.ID);
-						this.SelectedJob.InvoiceUri = uri;
-					}
-					else 
+                        this.SelectedJob.InvoiceUri = uri;
+                    }
+                    else
                         uri = this.SelectedJob.InvoiceUri;
 
                     if (!String.IsNullOrEmpty(uri))
@@ -119,7 +122,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.SelectedJob = null;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerInvoiceListViewModel SelectJob");
         }
 
         private void Refresh(object parameter)

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Timers;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -199,7 +200,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDriverViewModel Submit");
         }
 
         private async Task RegisterDriver(DriverInfo driverInfo)
@@ -263,7 +264,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDriverViewModel SubmitCode");
         }
 
         public void CancelConfirmationCode(object parameter)
@@ -295,7 +296,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     {
                         this.IsBusy = false;
                     }
-                });
+                }).LogExceptions("SignUpDriverViewModel ResendConfirmationCode");
             }
         }
 
@@ -327,7 +328,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDriverViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

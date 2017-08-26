@@ -52,7 +52,7 @@ namespace KAS.Trukman.Views.Pages
                 TextColor = PlatformHelper.DriverAuthorizationTextColor,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             };
-            commonLabel.SetBinding(Label.TextProperty, "CommonText", BindingMode.TwoWay);
+            commonLabel.SetBinding(Label.TextProperty, "CommonText");
 
             var commonContent = new ContentView
             {
@@ -67,13 +67,13 @@ namespace KAS.Trukman.Views.Pages
                 PlaceholderColor = PlatformHelper.EntryPlaceholderColor
             };
             assignIDNumber.SetBinding(AppEntry.TextProperty, "AssignIDNumber", BindingMode.TwoWay);
-            assignIDNumber.SetBinding(AppEntry.PlaceholderProperty, new Binding("DriverAuthorizationAssignIDNumberPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            assignIDNumber.SetBinding(AppEntry.PlaceholderProperty, new Binding("UserAuthorizationAssignIDNumberPlaceholder", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
             var assignIDNumberContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(20, 0, 20, 0),
+                Padding = new Thickness(20, 0, 20, 10),
                 Content = assignIDNumber
             };
 
@@ -83,7 +83,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 BackgroundColor = Color.Transparent
             };
-            authorizeButton.SetBinding(AppButton.TextProperty, new Binding("DriverAuthorizationAuthorizeButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            authorizeButton.SetBinding(AppButton.TextProperty, new Binding("UserAuthorizationAuthorizeButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             authorizeButton.SetBinding(AppButton.CommandProperty, "AuthorizeCommand");
 
             var declineButton = new AppButton
@@ -92,7 +92,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 BackgroundColor = Color.Transparent
             };
-            declineButton.SetBinding(AppButton.TextProperty, new Binding("DriverAuthorizationDeclineButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            declineButton.SetBinding(AppButton.TextProperty, new Binding("UserAuthorizationDeclineButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             declineButton.SetBinding(AppButton.CommandProperty, "DeclineCommand");
 
             var commandButtons = new Grid
@@ -130,7 +130,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(20, 0, 20, 0),
+                Padding = new Thickness(20, 0, 20, 10),
                 Content = frame
             };
             commandContent.SetBinding(ContentView.IsVisibleProperty, "RequestedButtonsVisible", BindingMode.OneWay);
@@ -143,9 +143,9 @@ namespace KAS.Trukman.Views.Pages
                 ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
                 }
             };
             contentGrid.Children.Add(imageContent, 0, 0);

@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -25,8 +26,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private System.Timers.Timer _currentPositionTimer = null;
 
-        public RouteViewModel()
-            : base()
+        public RouteViewModel() : base()
         {
             this.RouteSteps = new ObservableCollection<RouteStepInfo>();
 
@@ -149,13 +149,13 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.SetCurrentPosition();
                 }
-            });
+            }).LogExceptions("RouteViewModel CreateRoute");
         }
 
         private void RecreateRoute()
         {
             var timer = new System.Timers.Timer { Interval = 200 };
-            timer.Elapsed += (sender, args) => 
+            timer.Elapsed += (sender, args) =>
             {
                 timer.Stop();
                 this.CreateRoute();
@@ -174,7 +174,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void AddRouteSteps(RouteStepInfo[] steps)
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 this.RouteSteps.Clear();
                 foreach (var step in steps)
                     this.RouteSteps.Add(step);
@@ -184,7 +185,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private void RemoveSteps()
         {
             var steps = this.RouteSteps.TakeWhile(rs => rs.StepIndex < _currentIndex).ToArray();
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 foreach (var step in steps)
                     this.RouteSteps.Remove(step);
             });
@@ -195,7 +197,8 @@ namespace KAS.Trukman.ViewModels.Pages
             if (_currentPositionTimer == null)
             {
                 _currentPositionTimer = new System.Timers.Timer { Interval = 10000 };
-                _currentPositionTimer.Elapsed += (sender, args) => {
+                _currentPositionTimer.Elapsed += (sender, args) =>
+                {
                     this.SetCurrentPosition();
                 };
             }
@@ -222,7 +225,8 @@ namespace KAS.Trukman.ViewModels.Pages
                         if ((position.Latitude == 0) && (position.Longitude == 0) && (this.StartPosition != null))
                             position = this.StartPosition.Position;
 
-                        this.CurrentPosition = new CarInfo {
+                        this.CurrentPosition = new CarInfo
+                        {
                             Duration = (this.CurrentPosition != null ? this.CurrentPosition.Duration : 0),
                             Distance = (this.CurrentPosition != null ? this.CurrentPosition.Distance : 0),
                             Position = position
@@ -282,7 +286,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 {
                     this.StartCurrentPositionTimer();
                 }
-            });
+            }).LogExceptions("RouteViewModel SetCurrentPosition");
         }
 
         private Position[] DecodeRoutePoints(string overviewPolyline)

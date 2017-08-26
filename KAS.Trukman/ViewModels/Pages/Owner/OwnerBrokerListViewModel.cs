@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -15,8 +16,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     #region OwnerBrokerListViewModel
     public class OwnerBrokerListViewModel : PageViewModel
     {
-        public OwnerBrokerListViewModel() 
-            : base()
+        public OwnerBrokerListViewModel() : base()
         {
             this.Brokers = new ObservableCollection<User>();
 
@@ -52,11 +52,12 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SelectBrokers()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
-					var brokers = await TrukmanContext.SelectBrockersAsync();
+                    var brokers = await TrukmanContext.SelectBrockersAsync();
                     this.ShowBrokers(brokers);
                 }
                 catch (Exception exception)
@@ -68,7 +69,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsRefreshing = false;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerBrokerListViewModel SelectBrokers");
         }
 
         private void ShowBrokers(User[] brokers)

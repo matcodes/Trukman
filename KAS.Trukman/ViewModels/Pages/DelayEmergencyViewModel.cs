@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region DelayEmergencyViewModel
     public class DelayEmergencyViewModel : PageViewModel
     {
-        public DelayEmergencyViewModel() 
-            : base()
+        public DelayEmergencyViewModel() : base()
         {
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
@@ -28,8 +28,8 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Initialize(parameters);
 
-			var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
-			this.Trip = trip;
+            var trip = (parameters != null && parameters.Length > 0 ? (parameters[0] as Trip) : null);
+            this.Trip = trip;
         }
 
         public override void Appering()
@@ -51,7 +51,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         protected override void DisableCommands()
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 this.ShowHomePageCommand.IsEnabled = false;
                 this.ShowPrevPageCommand.IsEnabled = false;
                 this.SelectItemCommand.IsEnabled = false;
@@ -63,7 +64,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         protected override void EnabledCommands()
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 this.ShowHomePageCommand.IsEnabled = true;
                 this.ShowPrevPageCommand.IsEnabled = true;
                 this.SelectItemCommand.IsEnabled = true;
@@ -91,12 +93,13 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Submit(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
                 {
-					await TrukmanContext.SendJobAlertAsync(this.Trip.ID, (int)this.SelectedItem, this.Comments);
+                    await TrukmanContext.SendJobAlertAsync(this.Trip.ID, (int)this.SelectedItem, this.Comments);
 
                     this.ShowPrevPage(null);
                 }
@@ -109,10 +112,10 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("DelayEmergencyViewModel Submit");
         }
 
-		public Trip Trip { get; private set; }
+        public Trip Trip { get; private set; }
 
         public DelayEmergencyItems SelectedItem
         {

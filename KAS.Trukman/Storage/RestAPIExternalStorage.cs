@@ -1097,9 +1097,9 @@ namespace KAS.Trukman.Storage
             return await this.SelectTripByID(id);
         }
 
-        public async Task<Trip[]> SelectActiveTrips()
+        public async Task<Trip[]> SelectActiveTrips(Guid ownerId)
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
+            var tasks = await this.SelectTasksByOwnerId(ownerId, 0, 100);
             tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() == DateTime.MinValue).Take(3).ToList<TrukmanTask>();
             var trips = new List<Trip>();
             foreach (var task in tasks)
@@ -1156,9 +1156,9 @@ namespace KAS.Trukman.Storage
         //    throw new NotImplementedException();
         //}
 
-        public async Task<Trip[]> SelectCompletedTrips()
+        public async Task<Trip[]> SelectCompletedTrips(Guid ownerId)
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
+            var tasks = await this.SelectTasksByOwnerId(ownerId, 0, 100);
             tasks = tasks.Where(t => t.CompleteTime.GetValueOrDefault() != DateTime.MinValue).Take(3).ToList();
             var trips = new List<Trip>();
             foreach (var task in tasks)
@@ -1353,9 +1353,9 @@ namespace KAS.Trukman.Storage
             return jobAlerts;
         }
 
-        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        public async Task<JobAlert[]> SelectJobAlertsAsync(Guid ownerId)
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
+            var tasks = await this.SelectTasksByOwnerId(ownerId, 0, 100);
 
             var jobAlerts = tasks.SelectMany(task => this.TaskAlertsToJobAlerts(task)).ToArray<JobAlert>();
             return jobAlerts;
@@ -1477,6 +1477,9 @@ namespace KAS.Trukman.Storage
                 var photo = new Photo
                 {
                     ID = taskPhoto.Id.ToString(),
+                    PhotoID = taskPhoto.Id.ToString(),
+                    TripID = task.Id.ToString(),
+                    //UpdateTime = taskPhoto.data
                     Job = job,
                     Company = company,
                     Type = taskPhoto.Kind,
@@ -1490,9 +1493,9 @@ namespace KAS.Trukman.Storage
             return photos;
         }
 
-        public async Task<Photo[]> SelectPhotosAsync()
+        public async Task<Photo[]> SelectPhotosAsync(Guid ownerId)
         {
-            var tasks = await this.SelectTasksByOwnerId(Guid.Parse(_currentUser.ID), 0, 100);
+            var tasks = await this.SelectTasksByOwnerId(ownerId, 0, 100);
 
             var jobPhotos = tasks.SelectMany(task => this.TaskPhotosToPhotos(task)).ToArray<Photo>();
             return jobPhotos;
@@ -1530,10 +1533,19 @@ namespace KAS.Trukman.Storage
 
         public async Task<User> SelectRequestedUser(string companyID)
         {
-            var dispatcherRequests = await GetDispatcherRequests(Guid.Parse(companyID));
-            if (dispatcherRequests.Length > 0)
-                return DispatcherToUser(dispatcherRequests[0].Dispatcher);
-            else
+            if (_currentUser.Role == UserRole.Owner)
+            {
+                var dispatcherRequests = await GetDispatcherRequests(Guid.Parse(companyID));
+                if (dispatcherRequests.Length > 0)
+                    return DispatcherToUser(dispatcherRequests[0].Dispatcher);
+                else
+                {
+                    var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
+                    if (driverRequests.Length > 0)
+                        return DriverToUser(driverRequests[0].Driver);
+                }
+            }
+            else if (_currentUser.Role == UserRole.Dispatch)
             {
                 var driverRequests = await GetDriverRequests(Guid.Parse(companyID));
                 if (driverRequests.Length > 0)
@@ -1605,8 +1617,7 @@ namespace KAS.Trukman.Storage
             if (_currentUser.Role == UserRole.Owner)
                 owner = await GetCompanyById(_currentUser.ID);
             else if (_currentUser.Role == UserRole.Dispatch)
-            {
-            }
+                owner = await GetDispatcherCompany(Guid.Parse(_currentUser.ID));
             else if (_currentUser.Role == UserRole.Driver)
                 owner = await GetDriverCompany(Guid.Parse(_currentUser.ID));
 

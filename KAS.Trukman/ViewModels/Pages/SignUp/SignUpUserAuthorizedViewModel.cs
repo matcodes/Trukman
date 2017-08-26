@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -90,7 +91,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpUserAuthorizedViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

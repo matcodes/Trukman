@@ -7,6 +7,7 @@ using KAS.Trukman.AppContext;
 using System.Threading.Tasks;
 using MBProgressHUD;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.iOS
 {
@@ -79,12 +80,12 @@ namespace KAS.Trukman.iOS
 						}
 						hud.Hide(true);
 					});
-				});
+				}).LogExceptions("JobCreateViewController ViewDidLoad");
 			};
 			this.NavigationItem.RightBarButtonItem = rightBarItem;
 			Task.Run(() => {
 				company = (TrukmanContext.Company as Company); // await TrukmanContext.FetchParseCompany(TrukmanContext.Company.Name);
-			});
+			}).LogExceptions("JobCreateViewController ViewDidLoad company");
 		}
 
 		public override void DidReceiveMemoryWarning ()

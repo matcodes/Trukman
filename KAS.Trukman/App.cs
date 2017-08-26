@@ -72,7 +72,7 @@ namespace KAS.Trukman
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     var page = new OwnerUserAuthorizationPage();
-                    page.ViewModel.Initialize(message.CompanyName, message.Driver);
+                    page.ViewModel.Initialize(message.CompanyName, message.User);
                     await (this.MainPage as NavigationPage).PushAsync(page);
                 });
         }

@@ -42,9 +42,9 @@ namespace KAS.Trukman.Storage
 
         Task<Company> SelectUserCompanyAsync();
 
-        Task<Trip[]> SelectActiveTrips();
+        Task<Trip[]> SelectActiveTrips(Guid ownerId);
 
-        Task<Trip[]> SelectCompletedTrips();
+        Task<Trip[]> SelectCompletedTrips(Guid ownerId);
 
         Task<Position> SelectDriverPosition(string tripID);
 
@@ -106,7 +106,7 @@ namespace KAS.Trukman.Storage
 
 		Task SendJobAlertAsync (string tripID, int alertType, string alertText);
 
-        Task<JobAlert[]> SelectJobAlertsAsync();
+        Task<JobAlert[]> SelectJobAlertsAsync(Guid ownerId);
 
         Task SetJobAlertIsViewedAsync(string jobAlertID, bool isViewed);
 
@@ -120,7 +120,7 @@ namespace KAS.Trukman.Storage
 
 		Task<Trip> CreateTripAsync (Trip trip);
 
-		Task<Photo[]> SelectPhotosAsync ();
+		Task<Photo[]> SelectPhotosAsync(Guid ownerId);
 
         Task<string> CreateInvoiceForJobAsync(string tripID);
 

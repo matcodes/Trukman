@@ -1,4 +1,5 @@
 ﻿using KAS.Trukman.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -16,8 +17,7 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _requestedTimer = null;
         private System.Timers.Timer _receivedTimer = null;
 
-        public LumperViewModel()
-            : base()
+        public LumperViewModel() : base()
         {
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
@@ -139,7 +139,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Request(object parameter)
         {
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 this.DisableCommands();
                 this.IsBusy = true;
                 try
@@ -158,7 +159,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("LumperViewModel Request");
         }
 
         private void Resend(object parameter)
@@ -187,7 +188,7 @@ namespace KAS.Trukman.ViewModels.Pages
 
                 this.State = LumperStates.Requested;
                 this.StartRequestedTimer();
-            });
+            }).LogExceptions("LumperViewModel Resend");
         }
 
         private void Cancel(object parameter)
@@ -215,7 +216,7 @@ namespace KAS.Trukman.ViewModels.Pages
                 }
 
                 this.State = LumperStates.None;
-            });
+            }).LogExceptions("LumperViewModel Cancel");
         }
 
         private void StartRequestedTimer()
@@ -259,7 +260,8 @@ namespace KAS.Trukman.ViewModels.Pages
         private void StartReceivedTimer()
         {
             _receivedTimer = new System.Timers.Timer { Interval = 5000 };
-            _receivedTimer.Elapsed += (sender, args) => {
+            _receivedTimer.Elapsed += (sender, args) =>
+            {
                 this.StopReceivedTimer();
 
                 // To do: Check completed

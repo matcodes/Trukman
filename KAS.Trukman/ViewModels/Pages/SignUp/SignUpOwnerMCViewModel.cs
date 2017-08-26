@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Enums;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -15,8 +16,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
     {
         private int _failedRequestCount = 0;
 
-        public SignUpOwnerMCViewModel()
-            : base()
+        public SignUpOwnerMCViewModel() : base()
         {
             this.EnglishLanguageCommand = new VisualCommand(this.EnglishLanguage);
             this.EspanolLanguageCommand = new VisualCommand(this.EspanolLanguage);
@@ -59,7 +59,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
 
         private void Submit(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -83,7 +84,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpOwnerMCViewModel Submit");
         }
 
         private void Continue(object parameter)

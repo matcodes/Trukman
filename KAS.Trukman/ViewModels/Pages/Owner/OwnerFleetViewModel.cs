@@ -14,6 +14,7 @@ using System.Timers;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
@@ -24,8 +25,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private Position _lastCarPosition = new Position(0, 0);
 
-        public OwnerFleetViewModel()
-            : base()
+        public OwnerFleetViewModel() : base()
         {
             this.Trips = new ObservableCollection<Trip>();
 
@@ -34,15 +34,15 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
             this.SelectTripCommand = new VisualCommand(this.SelectTrip);
 
-			this.RefreshCommand = new VisualCommand (this.Refresh);
+            this.RefreshCommand = new VisualCommand(this.Refresh);
         }
 
-		public override void Initialize (params object[] parameters)
-		{
-			base.Initialize (parameters);
+        public override void Initialize(params object[] parameters)
+        {
+            base.Initialize(parameters);
 
-			this.SelectActiveTrips();
-		}
+            this.SelectActiveTrips();
+        }
 
         public override void Appering()
         {
@@ -86,25 +86,27 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 finally
                 {
                     this.IsBusy = false;
-				    this.IsRefreshing = false;
+                    this.IsRefreshing = false;
                 }
-            });
+            }).LogExceptions("OwnerFleetViewModel SelectActiveTrips");
         }
 
         private void ShowTrips(Trip[] trips)
-		{
-			Device.BeginInvokeOnMainThread (() => {
-				this.Trips.Clear ();
-				this.SelectedTrip = null;
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                this.Trips.Clear();
+                this.SelectedTrip = null;
 
-				if (trips != null)
-					foreach (var trip in trips) {
-						this.Trips.Add (trip);
-						if (this.SelectedTrip == null)
-							this.SelectedTrip = trip;
-					}
-			});
-		}
+                if (trips != null)
+                    foreach (var trip in trips)
+                    {
+                        this.Trips.Add(trip);
+                        if (this.SelectedTrip == null)
+                            this.SelectedTrip = trip;
+                    }
+            });
+        }
 
         private void CreateBaseRoute()
         {
@@ -157,7 +159,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     this.IsBusy = false;
                     this.SetCurrentPosition();
                 }
-            });
+            }).LogExceptions("OwnerFleetViewModel CreateBaseRoute");
         }
 
         private void RecreateRoute()
@@ -173,7 +175,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void SetCurrentPosition()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.StopCurrentPositionTimer();
                 try
                 {
@@ -223,7 +226,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 {
                     this.StartCurrentPositionTimer();
                 }
-            });
+            }).LogExceptions("OwnerFleetViewModel SetCurrentPosition");
         }
 
         private void StartCurrentPositionTimer()
@@ -316,10 +319,10 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         }
 
-		private void Refresh(object parameter)
-		{
-			this.SelectActiveTrips ();
-		}
+        private void Refresh(object parameter)
+        {
+            this.SelectActiveTrips();
+        }
 
         public ObservableCollection<Trip> Trips { get; private set; }
 
@@ -365,11 +368,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("CurrentPosition", value); }
         }
 
-		public bool IsRefreshing
-		{
-			get { return (bool)this.GetValue ("IsRefreshing", false); }
-			set { this.SetValue ("IsRefreshing", value); }
-		}
+        public bool IsRefreshing
+        {
+            get { return (bool)this.GetValue("IsRefreshing", false); }
+            set { this.SetValue("IsRefreshing", value); }
+        }
 
         public VisualCommand SelectTripCommand { get; private set; }
 
@@ -377,7 +380,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         public VisualCommand ShowHomePageCommand { get; private set; }
 
-		public VisualCommand RefreshCommand { get; private set; }
+        public VisualCommand RefreshCommand { get; private set; }
     }
     #endregion
 }

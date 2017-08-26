@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using KAS.Trukman.Messages;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region ContractorInfoViewModel
     public class ContractorInfoViewModel : PageViewModel
     {
-        public ContractorInfoViewModel() 
-            : base()
+        public ContractorInfoViewModel() : base()
         {
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowPrevPageCommand = new VisualCommand(this.ShowPrevPage);
@@ -26,7 +26,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
             var contractor = (parameters != null && parameters.Length > 0 ? (parameters[0] as Contractor) : null);
 
-            if (contractor != null) {
+            if (contractor != null)
+            {
                 this.Name = contractor.Name;
                 this.Phone = contractor.Phone;
                 this.Fax = contractor.Fax;
@@ -38,12 +39,13 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void FindAddress()
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 var geocoder = new Geocoder();
                 var locations = await geocoder.GetPositionsForAddressAsync(this.Address);
 
                 this.AddressPosition = locations.FirstOrDefault();
-            });
+            }).LogExceptions("ContractorInfoViewModel FindAddress");
         }
 
         public override void Appering()

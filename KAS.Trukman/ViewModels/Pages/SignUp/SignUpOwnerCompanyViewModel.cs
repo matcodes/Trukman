@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Trukman.Helpers;
 using System.Timers;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages.SignUp
 {
@@ -97,7 +98,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
 
         private void Submit(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -140,7 +142,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpOwnerCompanyViewModel Submit");
         }
 
         private void StartShowTimer()
@@ -190,7 +192,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpOwnerCompanyViewModel SubmitCode");
         }
 
         public void CancelConfirmationCode(object parameter)
@@ -222,7 +224,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     {
                         this.IsBusy = false;
                     }
-                });
+                }).LogExceptions("SignUpOwnerCompanyViewModel ResendConfirmationCode");
             }
         }
 
@@ -244,7 +246,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpOwnerCompanyViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

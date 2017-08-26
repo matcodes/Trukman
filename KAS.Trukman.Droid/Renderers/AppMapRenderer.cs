@@ -21,6 +21,7 @@ using Android.Gms.Maps.Model;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Data.Classes;
 using Xamarin.Forms.Maps;
+using KAS.Trukman.Extensions;
 
 [assembly: ExportRenderer(typeof(AppMap), typeof(AppMapRenderer))]
 namespace KAS.Trukman.Droid.Renderers
@@ -149,7 +150,7 @@ namespace KAS.Trukman.Droid.Renderers
                 }
 
                 this.ShowElements();
-            });
+            }).LogExceptions("AppMapRenderer DrawItems");
         }
 
         private void ShowElements()

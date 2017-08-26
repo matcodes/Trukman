@@ -12,9 +12,9 @@ namespace KAS.Trukman.Messages
         #region Static members
         private static readonly string MESSAGE_KEY = "ShowOwnerUserAuthorizationPageMessage";
 
-        public static void Send(string companyName, User driver, string companyID)
+        public static void Send(string companyName, User user, string companyID)
         {
-            var message = new ShowOwnerUserAuthorizationPageMessage(companyName, driver, companyID);
+            var message = new ShowOwnerUserAuthorizationPageMessage(companyName, user, companyID);
             MessagingCenter.Send<ShowOwnerUserAuthorizationPageMessage>(message, MESSAGE_KEY);
         }
 
@@ -29,16 +29,16 @@ namespace KAS.Trukman.Messages
         }
         #endregion
 
-        public ShowOwnerUserAuthorizationPageMessage(string companyName, User driver, string companyID)
+        public ShowOwnerUserAuthorizationPageMessage(string companyName, User user, string companyID)
         {
             this.CompanyName = companyName;
-            this.Driver = driver;
+            this.User = user;
             this.CompanyID = companyID;
         }
 
         public string CompanyName { get; private set; }
 
-        public User Driver { get; private set; }
+        public User User { get; private set; }
 
         public string CompanyID { get; private set; }
     }

@@ -17,6 +17,7 @@ using Parse;
 using Trukman.Helpers;
 using KAS.Trukman.Data.Route;
 using KAS.Trukman.Helpers;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.AppContext
 {
@@ -105,7 +106,7 @@ namespace KAS.Trukman.AppContext
                         Initialized = true;
                     }
                 }
-            });
+            }).LogExceptions("TrukmanContext Initialize");
         }
 
         public static void RegisterUser(User user)
@@ -176,12 +177,12 @@ namespace KAS.Trukman.AppContext
 
         public static async Task<Trip[]> SelectActiveTrips()
         {
-            return await _localStorage.SelectActiveTrips();
+            return await _localStorage.SelectActiveTrips(Guid.Parse(TrukmanContext.Company.ID));
         }
 
         public static async Task<Trip[]> SelectCompletedTrips()
         {
-            return await _localStorage.SelectCompletedTrips();
+            return await _localStorage.SelectCompletedTrips(Guid.Parse(TrukmanContext.Company.ID));
         }
 
         public static void InitializeOwnerNotification()
@@ -242,7 +243,7 @@ namespace KAS.Trukman.AppContext
 
         public static async Task<JobAlert[]> SelectJobAlertsAsync()
         {
-            var jobAlerts = await _localStorage.SelectJobAlertsAsync();
+            var jobAlerts = await _localStorage.SelectJobAlertsAsync(Guid.Parse(TrukmanContext.Company.ID));
             return jobAlerts;
         }
 
@@ -446,7 +447,7 @@ namespace KAS.Trukman.AppContext
 
         public static async Task<Photo[]> SelectPhotosAsync()
         {
-            var photos = await _localStorage.SelectPhotosAsync();
+            var photos = await _localStorage.SelectPhotosAsync(Guid.Parse(TrukmanContext.Company.ID));
             return photos;
         }
 
@@ -504,7 +505,7 @@ namespace KAS.Trukman.AppContext
                         StartSynchronizeTimer();
                     }
                 }
-            });
+            }).LogExceptions("TrukmanContext Synchronize");
         }
 
         private static void StopSynchronizeTimer()

@@ -22,6 +22,7 @@ using Android;
 using HockeyApp;
 using KAS.Trukman.Data.Classes;
 using Android.Support.V7.App;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.Droid
 {
@@ -246,7 +247,7 @@ namespace KAS.Trukman.Droid
                     // To do: Show exception message
                     ShowToastMessage.Send("Error save photo.");
                 }
-            });
+            }).LogExceptions("MainActivity SavePhotoToStore");
         }
 
         private int GetRotation()

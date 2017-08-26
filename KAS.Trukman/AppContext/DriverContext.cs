@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.AppContext
 {
@@ -102,7 +103,7 @@ namespace KAS.Trukman.AppContext
                         _inSynchronize = false;
                     }
                 }
-            });
+            }).LogExceptions("DriverContext Synchronize");
         }
 
         private void GeoLocationChanged(GeoLocationChangedMessage message)
@@ -132,7 +133,7 @@ namespace KAS.Trukman.AppContext
                 {
                     ShowToastMessage.Send(exception.Message);
                 }
-            });
+            }).LogExceptions("DriverContext GeoLocationChanged");
         }
 
         private void DeclinedTripChanged(DeclineTripChangedMessage message)
@@ -158,7 +159,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext DeclinedTripChanged");
         }
 
         private void DeclineTripChangedBack(DeclineTripChangedBackMessage message)
@@ -184,7 +185,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext DeclineTripChangedBack");
         }
 
         private void DeclineTripSubmit(DeclineTripSubmitMessage message)
@@ -209,7 +210,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext DeclineTripSubmit");
         }
 
         private void AcceptTripChanged(AcceptTripChangedMessage message)
@@ -239,7 +240,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext AcceptTripChanged");
         }
 
         private void CancelledTripChanged(CancelledTripChangedMessage message)
@@ -265,7 +266,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext CancelledTripChanged");
         }
 
         private void CompletedTripChanged(CompletedTripChangedMessage message)
@@ -291,7 +292,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext CompletedTripChanged");
         }
 
         private void SendPhoto(SendPhotoMessage message)
@@ -341,7 +342,7 @@ namespace KAS.Trukman.AppContext
                 {
                     _inSynchronize = false;
                 }
-            });
+            }).LogExceptions("DriverContext SendPhoto");
         }
 
         private bool _calcShipperPositionInProgress = false;
@@ -372,7 +373,7 @@ namespace KAS.Trukman.AppContext
                             _calcShipperPositionInProgress = false;
                         }
                     }
-                });
+                }).LogExceptions("DriverContext CalcShipperPosition");
         }
 
         private bool _calcReceiverPositionInProgress = false;
@@ -404,7 +405,7 @@ namespace KAS.Trukman.AppContext
                             _calcReceiverPositionInProgress = false;
                         }
                     }
-                });
+                }).LogExceptions("DriverContext CalcReceiverPosition");
         }
 
         private void CalcDistanceToShipper()
@@ -421,7 +422,7 @@ namespace KAS.Trukman.AppContext
                 {
                     Console.WriteLine(exception);
                 }
-            });
+            }).LogExceptions("DriverContext CalcDistanceToShipper");
         }
 
         private void CalcDistanceToReceiver()
@@ -438,7 +439,7 @@ namespace KAS.Trukman.AppContext
                 {
                     Console.WriteLine(exception);
                 }
-            });
+            }).LogExceptions("DriverContext CalcDistanceToReceiver");
         }
 
         private async Task CheckArrivedToPickup()

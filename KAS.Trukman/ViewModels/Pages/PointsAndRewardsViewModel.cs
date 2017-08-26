@@ -11,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using KAS.Trukman.AppContext;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
     #region PointsAndRewardsViewModel
     public class PointsAndRewardsViewModel : PageViewModel
     {
-        public PointsAndRewardsViewModel() 
-            : base()
+        public PointsAndRewardsViewModel() : base()
         {
             this.JobPointGroups = new ObservableCollection<JobPointGroup>();
 
@@ -54,7 +54,8 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void SelectJobPoints()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -70,12 +71,13 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsRefreshing = false;
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("PointsAndRewardsViewModel SelectJobPoints");
         }
 
         private void ShowJobPoints(JobPoint[] jobPoints)
         {
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 this.JobPointGroups.Clear();
                 this.SelectedJobPoint = null;
 
@@ -145,7 +147,8 @@ namespace KAS.Trukman.ViewModels.Pages
             : base()
         {
             this.Job = job;
-            this.CollectionChanged += (sender, args) => {
+            this.CollectionChanged += (sender, args) =>
+            {
                 if (args.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                     foreach (var item in args.NewItems)
                         this.Points += (item as JobPoint).Value;

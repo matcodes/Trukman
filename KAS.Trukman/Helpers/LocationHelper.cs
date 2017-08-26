@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
 using Plugin.Geolocator;
 using KAS.Trukman.Messages;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.Helpers
 {
@@ -31,56 +32,60 @@ namespace KAS.Trukman.Helpers
 
         static LocationHelper()
         {
-			IsSelfPermission = false;
-			IsSelfIntent = true;
+            IsSelfPermission = false;
+            IsSelfIntent = true;
 
             _locator = CrossGeolocator.Current;
             _locator.DesiredAccuracy = LOCATION_DESIRED_ACCURACY;
-			_locator.AllowsBackgroundUpdates = true;
+            _locator.AllowsBackgroundUpdates = true;
 
             _lastTime = DateTime.Now.AddMinutes(-1);
 
             State = States.Wait;
         }
 
-		public static void Initialize()
-		{
-			_locator.PositionChanged += (sender, args) => {
-				Update(args.Position);
-			};
-			Update ();
-		}
+        public static void Initialize()
+        {
+            _locator.PositionChanged += (sender, args) =>
+            {
+                Update(args.Position);
+            };
+            Update();
+        }
 
         public static void Update()
         {
-            Task.Run(async () => {
-				if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent))
-					await GetLocationAsync();
-            });
+            Task.Run(async () =>
+            {
+                if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent))
+                    await GetLocationAsync();
+            }).LogExceptions("LocationHelper Update");
         }
 
-		public static void Update (Position position)
-		{
-			Task.Run (() => {
-				if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent)) {
-					State = States.Working;
-					try 
-					{
-						var now = DateTime.Now;
-						GeoLocationChangedMessage.Send(position.Latitude, position.Longitude);
-						_lastTime = now;
-					}
-					catch (Exception exception)
-					{
-						Console.WriteLine(exception.Message);
-					}
-					finally
-					{
-						State = States.Wait;
-					}
-				}
-			});
-		}
+        public static void Update(Position position)
+        {
+            Task.Run(() =>
+            {
+                if ((State == States.Wait) && (CheckTime()) && (IsSelfPermission) && (IsSelfIntent))
+                {
+                    State = States.Working;
+                    try
+                    {
+                        var now = DateTime.Now;
+                        GeoLocationChangedMessage.Send(position.Latitude, position.Longitude);
+                        _lastTime = now;
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+                    finally
+                    {
+                        State = States.Wait;
+                    }
+                }
+            }).LogExceptions("LocationHelper Update");
+        }
 
         private static bool CheckTime()
         {
@@ -113,9 +118,9 @@ namespace KAS.Trukman.Helpers
 
         private static States State { get; set; }
 
-		public static bool IsSelfPermission { get; set; }
+        public static bool IsSelfPermission { get; set; }
 
-		public static bool IsSelfIntent { get; set; }
+        public static bool IsSelfIntent { get; set; }
     }
     #endregion
 }

@@ -43,7 +43,7 @@ namespace KAS.Trukman.Languages
                 this.PointsAndRewardsPageName = appLanguage.PointsAndRewardsPageName;
                 this.SettingsPageName = appLanguage.SettingsPageName;
                 this.HelpPageName = appLanguage.HelpPageName;
-                this.DriverAuthorizePageName = appLanguage.DriverAuthorizePageName;
+                this.UserAuthorizePageName = appLanguage.UserAuthorizePageName;
                 #endregion
 
                 #region Main menu
@@ -258,10 +258,10 @@ namespace KAS.Trukman.Languages
                 #endregion
 
                 #region User authorization page
-                this.DriverAuthorizationCommonLabel = appLanguage.DriverAuthorizationCommonLabel;
-                this.DriverAuthorizationAssignIDNumberPlaceholder = appLanguage.DriverAuthorizationAssignIDNumberPlaceholder;
-                this.DriverAuthorizationAuthorizeButtonText = appLanguage.DriverAuthorizationAuthorizeButtonText;
-                this.DriverAuthorizationDeclineButtonText = appLanguage.DriverAuthorizationDeclineButtonText;
+                this.UserAuthorizationCommonLabel = appLanguage.UserAuthorizationCommonLabel;
+                this.UserAuthorizationAssignIDNumberPlaceholder = appLanguage.UserAuthorizationAssignIDNumberPlaceholder;
+                this.UserAuthorizationAuthorizeButtonText = appLanguage.UserAuthorizationAuthorizeButtonText;
+                this.UserAuthorizationDeclineButtonText = appLanguage.UserAuthorizationDeclineButtonText;
                 #endregion
 
                 #region SignUpOwnerWelcome page
@@ -438,10 +438,10 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HelpPageName", value); }
         }
 
-        public string DriverAuthorizePageName
+        public string UserAuthorizePageName
         {
-            get { return (string)this.GetValue("DriverAuthorizePageName"); }
-            set { this.SetValue("DriverAuthorizePageName", value); }
+            get { return (string)this.GetValue("UserAuthorizePageName"); }
+            set { this.SetValue("UserAuthorizePageName", value); }
         }
         #endregion
 
@@ -1428,28 +1428,28 @@ namespace KAS.Trukman.Languages
         #endregion
 
         #region User authorization page
-        public string DriverAuthorizationCommonLabel
+        public string UserAuthorizationCommonLabel
         {
-            get { return (string)this.GetValue("DriverAuthorizationCommonLabel"); }
-            set { this.SetValue("DriverAuthorizationCommonLabel", value); }
+            get { return (string)this.GetValue("UserAuthorizationCommonLabel"); }
+            set { this.SetValue("UserAuthorizationCommonLabel", value); }
         }
 
-        public string DriverAuthorizationAssignIDNumberPlaceholder
+        public string UserAuthorizationAssignIDNumberPlaceholder
         {
-            get { return (string)this.GetValue("DriverAuthorizationAssignIDNumberPlaceholder"); }
-            set { this.SetValue("DriverAuthorizationAssignIDNumberPlaceholder", value); }
+            get { return (string)this.GetValue("UserAuthorizationAssignIDNumberPlaceholder"); }
+            set { this.SetValue("UserAuthorizationAssignIDNumberPlaceholder", value); }
         }
 
-        public string DriverAuthorizationAuthorizeButtonText
+        public string UserAuthorizationAuthorizeButtonText
         {
-            get { return (string)this.GetValue("DriverAuthorizationAuthorizeButtonText"); }
-            set { this.SetValue("DriverAuthorizationAuthorizeButtonText", value); }
+            get { return (string)this.GetValue("UserAuthorizationAuthorizeButtonText"); }
+            set { this.SetValue("UserAuthorizationAuthorizeButtonText", value); }
         }
 
-        public string DriverAuthorizationDeclineButtonText
+        public string UserAuthorizationDeclineButtonText
         {
-            get { return (string)this.GetValue("DriverAuthorizationDeclineButtonText"); }
-            set { this.SetValue("DriverAuthorizationDeclineButtonText", value); }
+            get { return (string)this.GetValue("UserAuthorizationDeclineButtonText"); }
+            set { this.SetValue("UserAuthorizationDeclineButtonText", value); }
         }
         #endregion
 

@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Trukman.Helpers;
 using KAS.Trukman.AppContext;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -21,8 +22,7 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _lumperRequestedTimer = null;
         private System.Timers.Timer _lumperReceivedTimer = null;
 
-        public AdvancesViewModel()
-            : base()
+        public AdvancesViewModel() : base()
         {
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
@@ -129,12 +129,12 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void GetLumperComcheck()
         {
-            Task.Run(() => this.CheckLumperComcheck());
+            Task.Run(() => this.CheckLumperComcheck()).LogExceptions("AdvancesViewModel GetLumperComcheck");
         }
 
         private void GetFuelComcheck()
         {
-            Task.Run(() => this.CheckFuelComcheck());
+            Task.Run(() => this.CheckFuelComcheck()).LogExceptions("AdvancesViewModel GetFuelComcheck");
         }
 
         private void FuelSetStateText()
@@ -196,7 +196,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("AdvancesViewModel FuelRequest");
         }
 
         private void FuelResend(object parameter)
@@ -224,7 +224,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.EnabledCommands();
                 }
 
-            });
+            }).LogExceptions("AdvancesViewModel FuelResend");
         }
 
         private void FuelCancel(object parameter)
@@ -248,7 +248,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.IsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("AdvancesViewModel FuelCancel");
         }
 
         private void FuelStartRequestedTimer()
@@ -430,7 +430,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("AdvancesViewModel LumperRequest");
         }
 
         private void LumperResend(object parameter)
@@ -457,7 +457,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("AdvancesViewModel LumperResend");
         }
 
         private void LumperCancel(object parameter)
@@ -481,7 +481,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.LumperIsBusy = false;
                     this.EnabledCommands();
                 }
-            });
+            }).LogExceptions("AdvancesViewModel LumperCancel");
         }
 
         private void LumperStartRequestedTimer()

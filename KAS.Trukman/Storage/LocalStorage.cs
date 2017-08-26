@@ -347,13 +347,12 @@ namespace KAS.Trukman.Storage
                 this.SaveTrip(externalTrip);
         }
 
-        public async Task<Trip[]> SelectActiveTrips()
+        public async Task<Trip[]> SelectActiveTrips(Guid ownerId)
         {
             Trip[] trips = new Trip[] { };
             try
             {
-                trips = await _externalStorage.SelectActiveTrips();
-
+                trips = await _externalStorage.SelectActiveTrips(ownerId);
             }
             catch (Exception exception)
             {
@@ -363,12 +362,12 @@ namespace KAS.Trukman.Storage
             return trips;
         }
 
-        public async Task<Trip[]> SelectCompletedTrips()
+        public async Task<Trip[]> SelectCompletedTrips(Guid ownerId)
         {
             Trip[] trips = new Trip[] { };
             try
             {
-                trips = await _externalStorage.SelectCompletedTrips();
+                trips = await _externalStorage.SelectCompletedTrips(ownerId);
             }
             catch (Exception exception)
             {
@@ -934,11 +933,11 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task<JobAlert[]> SelectJobAlertsAsync()
+        public async Task<JobAlert[]> SelectJobAlertsAsync(Guid ownerId)
         {
             try
             {
-                var jobAlerts = await _externalStorage.SelectJobAlertsAsync();
+                var jobAlerts = await _externalStorage.SelectJobAlertsAsync(ownerId);
                 return jobAlerts;
             }
             catch (Exception exception)
@@ -1030,11 +1029,11 @@ namespace KAS.Trukman.Storage
             }
         }
 
-        public async Task<Photo[]> SelectPhotosAsync()
+        public async Task<Photo[]> SelectPhotosAsync(Guid ownerId)
         {
             try
             {
-                var result = await _externalStorage.SelectPhotosAsync();
+                var result = await _externalStorage.SelectPhotosAsync(ownerId);
                 return result;
             }
             catch (Exception exception)

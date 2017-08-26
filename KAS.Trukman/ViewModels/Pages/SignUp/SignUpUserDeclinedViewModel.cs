@@ -2,6 +2,7 @@
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -91,7 +92,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpUserDeclinedViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

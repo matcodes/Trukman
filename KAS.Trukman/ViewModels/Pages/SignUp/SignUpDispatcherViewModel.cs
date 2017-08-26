@@ -3,6 +3,7 @@ using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Data.Enums;
 using KAS.Trukman.Data.Infos;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -199,7 +200,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDispatcherViewModel Submit");
         }
 
         private async Task RegisterDispatcher(DispatcherInfo dispatcherInfo)
@@ -263,7 +264,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDispatcherViewModel SubmitCode");
         }
 
         public void CancelConfirmationCode(object parameter)
@@ -295,7 +296,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     {
                         this.IsBusy = false;
                     }
-                });
+                }).LogExceptions("SignUpDispatcherViewModel ResendConfirmationCode");
             }
         }
 
@@ -327,7 +328,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 {
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("SignUpDispatcherViewModel Continue");
         }
 
         public SignUpLanguage SelectedLanguage

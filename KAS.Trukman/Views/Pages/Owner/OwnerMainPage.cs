@@ -132,7 +132,7 @@ namespace KAS.Trukman.Views.Pages.Owner
         private void ShowOwnerUserAuthorizationPage(ShowOwnerUserAuthorizationPageMessage message)
         {
             var page = new OwnerUserAuthorizationPage();
-            page.ViewModel.Initialize(message.CompanyName, message.Driver, message.CompanyID);
+            page.ViewModel.Initialize(message.CompanyName, message.User, message.CompanyID);
             this.PushPage(page);
         }
 

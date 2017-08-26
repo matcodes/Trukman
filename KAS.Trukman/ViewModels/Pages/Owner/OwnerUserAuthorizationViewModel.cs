@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using KAS.Trukman.Extensions;
+using KAS.Trukman.Data.Enums;
 
 namespace KAS.Trukman.ViewModels.Pages
 {
@@ -45,23 +47,26 @@ namespace KAS.Trukman.ViewModels.Pages
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.DriverAuthorizePageName;
-            var role = "";
-            if (this.User.Role == Data.Enums.UserRole.Dispatch)
-                role = "dispatcher";
-            else if (this.User.Role == Data.Enums.UserRole.Driver)
-                role = "driver";
-            this.CommonText = String.Format(AppLanguages.CurrentLanguage.DriverAuthorizationCommonLabel, this.FirstName, this.LastName, role);
+            this.Title = AppLanguages.CurrentLanguage.UserAuthorizePageName;
+            if (this.User != null)
+            {
+                var role = "";
+                if (this.User.Role == UserRole.Dispatch)
+                    role = "dispatcher";
+                else if (this.User.Role == UserRole.Driver)
+                    role = "driver";
+                this.CommonText = String.Format(AppLanguages.CurrentLanguage.UserAuthorizationCommonLabel, this.FirstName, this.LastName, role);
+            }
         }
 
         protected override void DoPropertyChanged(string propertyName)
         {
-            if (propertyName == "Driver")
+            if (propertyName == "User")
             {
                 this.FirstName = (this.User != null ? this.User.FirstName : "");
                 this.LastName = (this.User != null ? this.User.LastName : "");
 
-                // To do: get first and last names from driver object
+                // To do: get first and last names from user object
                 if (((String.IsNullOrEmpty(this.FirstName)) || (String.IsNullOrEmpty(this.LastName))) && (this.User != null))
                 {
                     var names = this.User.UserName.Split(' ');
@@ -83,12 +88,13 @@ namespace KAS.Trukman.ViewModels.Pages
 
         private void Authorize(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
                 {
-                    await TrukmanContext.AcceptUserToCompany(this.CompanyID, this.User); // await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.Driver);
+                    await TrukmanContext.AcceptUserToCompany(this.CompanyID, this.User); // await App.ServerManager.AcceptUserToCompany(this.CompanyName, this.User);
                     PopPageMessage.Send();
                 }
                 catch (Exception exception)
@@ -101,17 +107,18 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.EnabledCommands();
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerUserAuthorizationViewModel Authorize");
         }
 
         private void Decline(object parameter)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 this.DisableCommands();
                 try
                 {
-                    await TrukmanContext.DeclineUserToCompany(this.CompanyID, this.User); //  await App.ServerManager.DeclineUserFromCompany(this.CompanyName, this.Driver);
+                    await TrukmanContext.DeclineUserToCompany(this.CompanyID, this.User); //  await App.ServerManager.DeclineUserFromCompany(this.CompanyName, this.User);
                     PopPageMessage.Send();
                 }
                 catch (Exception exception)
@@ -124,7 +131,7 @@ namespace KAS.Trukman.ViewModels.Pages
                     this.EnabledCommands();
                     this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerUserAuthorizationViewModel Decline");
         }
 
         public string CompanyName

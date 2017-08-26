@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -15,8 +16,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
     #region OwnerFuelAdvanceViewModel
     public class OwnerFuelAdvanceViewModel : PageViewModel
     {
-        public OwnerFuelAdvanceViewModel()
-            : base()
+        public OwnerFuelAdvanceViewModel() : base()
         {
             this.Advances = new ObservableCollection<Advance>();
 
@@ -24,8 +24,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.RefreshCommand = new VisualCommand(this.Refresh);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
-			this.EditComcheckAcceptCommand = new VisualCommand (this.EditComcheckAccept);
-			this.EditComcheckCancelCommand = new VisualCommand (this.EditComcheckCancel);
+            this.EditComcheckAcceptCommand = new VisualCommand(this.EditComcheckAccept);
+            this.EditComcheckCancelCommand = new VisualCommand(this.EditComcheckCancel);
         }
 
         public override void Appering()
@@ -49,12 +49,13 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         {
             base.Localize();
 
-            this.Title = AppLanguages.CurrentLanguage.OwnerFuelAdvancePageName; 
+            this.Title = AppLanguages.CurrentLanguage.OwnerFuelAdvancePageName;
         }
 
         private void SelectAdvances()
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 this.IsBusy = true;
                 try
                 {
@@ -67,10 +68,10 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 }
                 finally
                 {
-					this.IsRefreshing = false;
-					this.IsBusy = false;
+                    this.IsRefreshing = false;
+                    this.IsBusy = false;
                 }
-            });
+            }).LogExceptions("OwnerFuelAdvanceViewModel SelectAdvances");
         }
 
         private void ShowAdvances(Advance[] advances)
@@ -95,26 +96,27 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             PopToRootPageMessage.Send();
         }
 
-		private void SelectAdvance(object parameter)
+        private void SelectAdvance(object parameter)
         {
-			this.IsBusy = true;
-			this.Comcheck = "";
-			this.EditingAdvance = this.SelectedAdvance;
-			this.SelectedAdvance = null;
-			try 
-			{
-				this.EditingAdvance.State = 2;
-				this.EditingAdvance.Comcheck = "";
-				//await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
-				this.EditComcheckPopupVisible = true;
-			}
-			catch (Exception exception)
-			{
-				ShowToastMessage.Send(exception.Message);		
-			}
-			finally {
-				this.IsBusy = false;
-			}
+            this.IsBusy = true;
+            this.Comcheck = "";
+            this.EditingAdvance = this.SelectedAdvance;
+            this.SelectedAdvance = null;
+            try
+            {
+                this.EditingAdvance.State = 2;
+                this.EditingAdvance.Comcheck = "";
+                //await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
+                this.EditComcheckPopupVisible = true;
+            }
+            catch (Exception exception)
+            {
+                ShowToastMessage.Send(exception.Message);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private void Refresh(object parameter)
@@ -122,34 +124,36 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.SelectAdvances();
         }
 
-		private async void EditComcheckAccept(object parameter)
-		{
-			this.IsBusy = true;
-			try
-			{
-				if (String.IsNullOrEmpty(this.Comcheck))
-					throw new Exception("Comcheck is empty.");
+        private async void EditComcheckAccept(object parameter)
+        {
+            this.IsBusy = true;
+            try
+            {
+                if (String.IsNullOrEmpty(this.Comcheck))
+                    throw new Exception("Comcheck is empty.");
 
-				this.EditingAdvance.State = 3;
-				this.EditingAdvance.Comcheck = this.Comcheck;
-				await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
-				this.Advances.Remove(this.EditingAdvance);
-				this.EditComcheckPopupVisible = false;
-				this.EditingAdvance = null;
-			}
-			catch (Exception exception) {
-				ShowToastMessage.Send (exception.Message);
-			}
-			finally {
-				this.IsBusy = false;
-			}
-		}
+                this.EditingAdvance.State = 3;
+                this.EditingAdvance.Comcheck = this.Comcheck;
+                await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
+                this.Advances.Remove(this.EditingAdvance);
+                this.EditComcheckPopupVisible = false;
+                this.EditingAdvance = null;
+            }
+            catch (Exception exception)
+            {
+                ShowToastMessage.Send(exception.Message);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
 
-		private void EditComcheckCancel(object parameter)
-		{
-			this.EditComcheckPopupVisible = false;
-			this.EditingAdvance = null;
-		}
+        private void EditComcheckCancel(object parameter)
+        {
+            this.EditComcheckPopupVisible = false;
+            this.EditingAdvance = null;
+        }
 
         public ObservableCollection<Advance> Advances { get; private set; }
 
@@ -159,11 +163,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("SelectedAdvance", value); }
         }
 
-		public Advance EditingAdvance
-		{
-			get { return (this.GetValue ("EditingAdvance")as Advance); }
-			set { this.SetValue ("EditingAdvance", value); }
-		}
+        public Advance EditingAdvance
+        {
+            get { return (this.GetValue("EditingAdvance") as Advance); }
+            set { this.SetValue("EditingAdvance", value); }
+        }
 
         public bool IsRefreshing
         {
@@ -171,17 +175,17 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             set { this.SetValue("IsRefreshing", value); }
         }
 
-		public bool EditComcheckPopupVisible
-		{
-			get { return (bool)this.GetValue ("EditComcheckPopupVisible", false); }
-			set { this.SetValue ("EditComcheckPopupVisible", value); }
-		}
+        public bool EditComcheckPopupVisible
+        {
+            get { return (bool)this.GetValue("EditComcheckPopupVisible", false); }
+            set { this.SetValue("EditComcheckPopupVisible", value); }
+        }
 
-		public string Comcheck
-		{
-			get { return (string)this.GetValue ("Comcheck"); }
-			set { this.SetValue ("Comcheck", value); }
-		}
+        public string Comcheck
+        {
+            get { return (string)this.GetValue("Comcheck"); }
+            set { this.SetValue("Comcheck", value); }
+        }
 
         public VisualCommand SelectAdvanceCommand { get; private set; }
 
@@ -191,9 +195,9 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         public VisualCommand RefreshCommand { get; private set; }
 
-		public VisualCommand EditComcheckCancelCommand { get; private set; }
+        public VisualCommand EditComcheckCancelCommand { get; private set; }
 
-		public VisualCommand EditComcheckAcceptCommand { get; private set; }
+        public VisualCommand EditComcheckAcceptCommand { get; private set; }
     }
     #endregion
 }
