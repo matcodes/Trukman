@@ -103,13 +103,13 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 this.IsBusy = true;
                 try
                 {
-                    //var emailTester = new Regex("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
+                    var emailTester = new Regex("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
                     var fleetTester = new Regex("^+([0-9])+$");
 
                     if (String.IsNullOrEmpty(this.Phone))
                         throw new Exception(AppLanguages.CurrentLanguage.SignUpCompanyPhoneEmptyErrorMessageText);
-                    //else if ((String.IsNullOrEmpty(this.EMail)) || (!emailTester.IsMatch(this.EMail.Trim())))
-                    //    throw new Exception(AppLanguages.CurrentLanguage.SignUpCompanyIncorectEMailErrorMessageText);
+                    else if ((String.IsNullOrEmpty(this.EMail)) || (!emailTester.IsMatch(this.EMail.Trim())))
+                        throw new Exception(AppLanguages.CurrentLanguage.SignUpCompanyIncorectEMailErrorMessageText);
                     else if ((String.IsNullOrEmpty(this.FleetSize)) || (!fleetTester.IsMatch(this.FleetSize.Trim())))
                         throw new Exception(AppLanguages.CurrentLanguage.SignUpCompanyFleetSizeErrorMessageText);
 

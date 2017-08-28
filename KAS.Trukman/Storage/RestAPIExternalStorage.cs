@@ -336,7 +336,6 @@ namespace KAS.Trukman.Storage
             return new Trip
             {
                 ID = task.Id.ToString(),
-                //DeclineReason = taskRequest.DeclineText,
                 DeliveryDatetime = task.UnloadingPlanTime.ToLocalTime(),
                 DriverAccepted = (task.StartTime.GetValueOrDefault() != DateTime.MinValue),
                 IsDelivery = (task.UnloadingRealTime.GetValueOrDefault() != DateTime.MinValue),
@@ -348,7 +347,7 @@ namespace KAS.Trukman.Storage
                 Points = task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
-                JobRef = task.Number,
+                JobRef = task.Id.ToString(), // task.Number,
                 FromAddress = task.LoadingAddress,
                 ToAddress = task.UnloadingAddress,
                 Weight = task.Weight,

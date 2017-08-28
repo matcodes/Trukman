@@ -39,13 +39,13 @@
     <!-- DKG map key -->
     
 		<!-- Ключ для debug версии -->
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" />
+    <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" /> -->
 		
     <!-- Ключ для release-версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBnFtQuoFKUXWgZyhJ9clT7FFEcWDP1m7E" /> -->
     
 		<!-- Ключ для HOME debug версии -->
-		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnnCN2nhWxLnzpBiJw0VHmd-KkGsSakfE" /> -->
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnnCN2nhWxLnzpBiJw0VHmd-KkGsSakfE" />
     
 		<!-- Ключ для HOME release версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAfSIM0JvTiwacD6xDf-1bIi66Q1YUhzbU " /> -->

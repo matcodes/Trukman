@@ -96,7 +96,7 @@ namespace KAS.Trukman.Views.Pages
                 if (map.IsVisible)
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        if ((map != null) && (this.ViewModel != null) && position != default(Position))
+                        if ((map != null) && (this.ViewModel != null))
                         {
                             map.Pins.Clear();
                             map.Pins.Add(new Pin { Type = PinType.Place, Position = position, Label = label });
