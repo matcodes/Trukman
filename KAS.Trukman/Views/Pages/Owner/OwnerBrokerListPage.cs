@@ -1,5 +1,6 @@
 ﻿using KAS.Trukman.Controls;
 using KAS.Trukman.Helpers;
+using KAS.Trukman.Languages;
 using KAS.Trukman.ViewModels.Pages.Owner;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,7 @@ namespace KAS.Trukman.Views.Pages.Owner
 	#region OwnerBrokerListPage
     public class OwnerBrokerListPage : TrukmanPage
     {
-        public OwnerBrokerListPage() 
-            : base()
+        public OwnerBrokerListPage() : base()
         {
             this.BindingContext = new OwnerBrokerListViewModel();
         }
@@ -36,6 +36,22 @@ namespace KAS.Trukman.Views.Pages.Owner
             brokers.SetBinding(BrokerListView.RefreshCommandProperty, "RefreshCommand");
             brokers.SetBinding(BrokerListView.IsRefreshingProperty, "IsRefreshing", BindingMode.TwoWay);
 
+            var addBroker = new AppRoundButton
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.End
+            };
+            addBroker.SetBinding(AppRoundButton.TextProperty, new Binding("OwnerBrokerListAddBrokerCommandText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            addBroker.SetBinding(AppRoundButton.CommandProperty, "AddBrokerCommand");
+
+            var addBrokerContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Padding = new Thickness(20, 0, 20, 10),
+                Content = addBroker
+            };
+
             var content = new Grid
             {
                 VerticalOptions = LayoutOptions.Fill,
@@ -44,11 +60,13 @@ namespace KAS.Trukman.Views.Pages.Owner
                 ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-                    new RowDefinition { Height = new GridLength(3, GridUnitType.Star) }
+                    new RowDefinition { Height = new GridLength(3, GridUnitType.Star) },
+                    new RowDefinition {Height = new GridLength(1, GridUnitType.Auto) }
                 }
             };
             content.Children.Add(titleBar, 0, 0);
 			content.Children.Add(brokers, 0, 1);
+            content.Children.Add(addBrokerContent, 0, 2);
 
             var busyIndicator = new ActivityIndicator
             {

@@ -18,6 +18,7 @@ namespace KAS.Trukman.Languages
             this.OwnerFuelAdvancePageName = "FUEL ADVANCE";
             this.OwnerLumperPageName = "LUMPER";
             this.OwnerBrokerListPageName = "BROKER LIST";
+            this.OwnerAddBrokerPageName = "ADD BROKER";
             this.OwnerInvoiceListPageName = "INVOICE";
             this.OwnerInvoiceViewerPageName = "INVOICE";
             this.OwnerDeliveryUpdatePageName = "UPDATES";
@@ -295,6 +296,23 @@ namespace KAS.Trukman.Languages
             this.EndUnloadingJobPointsText = "End unloading points";
             this.DoneTaskJobPointsText = "Trip Completed points";
             this.SendPhotoJobPointsText = "Send photo of Bill of lading points";
+            #endregion
+
+            #region Broker List
+            this.OwnerBrokerListAddBrokerCommandText = "Add broker";
+            #endregion
+
+            #region Owner Add Broker
+            this.OwnerAddBrokerNamePlaceholder = "Name";
+            this.OwnerAddBrokerEmailPlaceholder = "Email";
+            this.OwnerAddBrokerAddressPlaceholder = "Address";
+            this.OwnerAddBrokerStatePlaceholder = "State";
+            this.OwnerAddBrokerZipPlaceholder = "ZIP";
+            this.OwnerAddBrokerPhonePlaceholder = "Phone";
+            this.OwnerAddBrokerContactTitlePlaceholder = "Contact Title";
+            this.OwnerAddBrokerContactNamePlaceholder = "Contact Name";
+            this.OwnerAddBrokerDocketNumberPlaceholder = "Docket Number";            
+            this.OwnerAddBrokerSubmitCommandText = "Submit";
             #endregion
         }
     }

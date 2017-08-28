@@ -1213,6 +1213,11 @@ namespace KAS.Trukman.Storage
             return brokers.ToArray();
         }
 
+        public Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User[]> SelectDriversAsync()
         {
             var parseCompany = await this.SelectUserParseCompanyAsync();

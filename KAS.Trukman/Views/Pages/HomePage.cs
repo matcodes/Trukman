@@ -27,19 +27,20 @@ namespace KAS.Trukman.Views.Pages
 
         private Color lineColor = Color.FromHex("#808080");
 
-        public HomePage() 
+        public HomePage()
             : base()
         {
             _viewModel = new HomeViewModel();
-            _viewModel.PropertyChanged += (sender, args) => {
-				if ((args.PropertyName == "AddressPosition") && ((this.ViewModel.AddressPosition.Latitude != 0) ||(this.ViewModel.AddressPosition.Longitude != 0)))
+            _viewModel.PropertyChanged += (sender, args) =>
+            {
+                if ((args.PropertyName == "AddressPosition") && ((this.ViewModel.AddressPosition.Latitude != 0) || (this.ViewModel.AddressPosition.Longitude != 0)))
                     this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
-				else if ((args.PropertyName == "ContractorPosition") && ((this.ViewModel.ContractorPosition.Latitude != 0) || (this.ViewModel.ContractorPosition.Longitude != 0)))
-                    this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
-				else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripAccepted))
-					this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ?  "Origin" : "Destination"));
-				else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripPropesed))
-					this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
+                else if ((args.PropertyName == "ContractorPosition") && ((this.ViewModel.ContractorPosition.Latitude != 0) || (this.ViewModel.ContractorPosition.Longitude != 0)))
+                    this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ? "Origin" : "Destination"));
+                else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripAccepted))
+                    this.MapLocateAddress(_contractorMap, this.ViewModel.ContractorPosition, (this.ViewModel.SelectedContractor == ContractorItems.Origin ? "Origin" : "Destination"));
+                else if ((args.PropertyName == "State") && (this.ViewModel.State == HomeStates.TripPropesed))
+                    this.MapLocateAddress(_map, this.ViewModel.AddressPosition, "Origin");
                 else if (args.PropertyName == "ArrivedPosition")
                 {
                 }
@@ -48,35 +49,35 @@ namespace KAS.Trukman.Views.Pages
             this.BindingContext = _viewModel;
         }
 
-        protected override void OnAppearing ()
-		{
-			base.OnAppearing ();
-		
-			this.SubscribeMessages ();
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            this.SubscribeMessages();
         }
 
 
-        protected override void OnDisappearing ()
-		{
-			this.UnsubscribeMessages();
+        protected override void OnDisappearing()
+        {
+            this.UnsubscribeMessages();
 
-			base.OnDisappearing();
-		}
+            base.OnDisappearing();
+        }
 
-		private void SubscribeMessages()
-		{
-			ChangeLocationMessage.Subscribe(this, this.ChangeLocation);
-		}
+        private void SubscribeMessages()
+        {
+            ChangeLocationMessage.Subscribe(this, this.ChangeLocation);
+        }
 
-		private void UnsubscribeMessages()
-		{   
-			ChangeLocationMessage.Unsubscribe (this);			
-		}
+        private void UnsubscribeMessages()
+        {
+            ChangeLocationMessage.Unsubscribe(this);
+        }
 
-		private void ChangeLocation(ChangeLocationMessage message)
-		{
-			this.ViewModel.CurrentPosition = message.Position;			
-		}
+        private void ChangeLocation(ChangeLocationMessage message)
+        {
+            this.ViewModel.CurrentPosition = message.Position;
+        }
 
         protected override bool OnBackButtonPressed()
         {
@@ -86,24 +87,27 @@ namespace KAS.Trukman.Views.Pages
             return result;
         }
 
-		private void MapLocateAddress(Map map, Position position, string label)
-		{
-			var timer = new System.Timers.Timer{ Interval = 50 };
-			timer.Elapsed += (sender, e) => {
-				timer.Stop ();
-				if (map.IsVisible)
-					Device.BeginInvokeOnMainThread (() => {
-						if ((map != null) && (this.ViewModel != null)) {
-							map.Pins.Clear ();
-							map.Pins.Add (new Pin{ Type = PinType.Place, Position = position, Label = label });
-							map.MoveToRegion (new MapSpan (position, 0.01d, 0.01d));
-						}
-					});
-				else
-					timer.Start ();
-			};
-			timer.Start ();
-		}
+        private void MapLocateAddress(Map map, Position position, string label)
+        {
+            var timer = new System.Timers.Timer { Interval = 50 };
+            timer.Elapsed += (sender, e) =>
+            {
+                timer.Stop();
+                if (map.IsVisible)
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if ((map != null) && (this.ViewModel != null) && position != default(Position))
+                        {
+                            map.Pins.Clear();
+                            map.Pins.Add(new Pin { Type = PinType.Place, Position = position, Label = label });
+                            map.MoveToRegion(new MapSpan(position, 0.01d, 0.01d));
+                        }
+                    });
+                else
+                    timer.Start();
+            };
+            timer.Start();
+        }
 
         protected override View CreateContent()
         {
@@ -118,7 +122,8 @@ namespace KAS.Trukman.Views.Pages
             titleBar.SetBinding(TitleBar.RightIconProperty, new Binding("GPSState", BindingMode.OneWay, gpsStatesToImageConverter));
             titleBar.SetBinding(TitleBar.RightCommandProperty, "ShowGPSPreferencesCommand", BindingMode.OneWay);
 
-            var pageCommands = new PageCommandsView {
+            var pageCommands = new PageCommandsView
+            {
             };
 
             var content = new Grid
@@ -141,9 +146,9 @@ namespace KAS.Trukman.Views.Pages
             content.Children.Add(this.CreateTripAcceptedView(), 0, 1);
             content.Children.Add(this.CreateArrivedAsPickupOnTimeView(), 0, 1);
             content.Children.Add(this.CreateArrivedAsPickupLateView(), 0, 1);
-			content.Children.Add(this.CreateArrivedAtDeliveryOnTimeView(), 0, 1);
-			content.Children.Add(this.CreateArrivedAtDeliveryLateView(), 0, 1);
-			content.Children.Add(this.CreateTripCompletedView(), 0, 1);
+            content.Children.Add(this.CreateArrivedAtDeliveryOnTimeView(), 0, 1);
+            content.Children.Add(this.CreateArrivedAtDeliveryLateView(), 0, 1);
+            content.Children.Add(this.CreateTripCompletedView(), 0, 1);
             content.Children.Add(pageCommands, 0, 2);
 
             var busyIndicator = new ActivityIndicator
@@ -185,7 +190,8 @@ namespace KAS.Trukman.Views.Pages
                 Content = mapImage
             };
 
-            var waitingTripLabel = new Label {
+            var waitingTripLabel = new Label
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -194,14 +200,16 @@ namespace KAS.Trukman.Views.Pages
             };
             waitingTripLabel.SetBinding(Label.TextProperty, new Binding("HomeWaitingForTripLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var waitingTripContent = new ContentView {
+            var waitingTripContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 0, 20, 0),
                 Content = waitingTripLabel
             };
 
-            var grid = new Grid {
+            var grid = new Grid
+            {
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 ColumnSpacing = 0,
@@ -214,7 +222,8 @@ namespace KAS.Trukman.Views.Pages
             grid.Children.Add(mapContent, 0, 0);
             grid.Children.Add(waitingTripContent, 0, 1);
 
-            var content = new ContentView {
+            var content = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(0),
@@ -236,7 +245,8 @@ namespace KAS.Trukman.Views.Pages
             };
             nextTripLabel.SetBinding(Label.TextProperty, new Binding("HomeNextTripLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var nextTripContent = new ContentView {
+            var nextTripContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(20, 20, 20, 10),
                 Content = nextTripLabel
@@ -333,7 +343,8 @@ namespace KAS.Trukman.Views.Pages
                 Content = destinationLabel
             };
 
-            var addressesTitle = new Grid {
+            var addressesTitle = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
@@ -442,7 +453,7 @@ namespace KAS.Trukman.Views.Pages
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
                 RowSpacing = 0,
-                ColumnSpacing = 0, 
+                ColumnSpacing = 0,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
@@ -831,7 +842,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 TapCommandParameter = 0
             };
             tripTimeLabel.SetBinding(TappedLabel.TextProperty, "TripTime", BindingMode.OneWay);
@@ -851,7 +862,7 @@ namespace KAS.Trukman.Views.Pages
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Start,
-				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 FontAttributes = FontAttributes.Bold
             };
             timerLabel.SetBinding(TappedLabel.TextProperty, "CurrentTime", BindingMode.OneWay);
@@ -944,7 +955,8 @@ namespace KAS.Trukman.Views.Pages
 
         private View CreateArrivedAtDeliveryOnTimeView()
         {
-            var image = new Image {
+            var image = new Image
+            {
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.Center,
                 WidthRequest = 180,
@@ -952,14 +964,16 @@ namespace KAS.Trukman.Views.Pages
                 Source = PlatformHelper.LikeImageSource
             };
 
-            var imageContent = new ContentView {
+            var imageContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(10, 0, 0, 0),
                 Content = image
             };
 
-            var arrivedOnTimeLabel = new Label {
+            var arrivedOnTimeLabel = new Label
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -968,7 +982,8 @@ namespace KAS.Trukman.Views.Pages
             };
             arrivedOnTimeLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var arrivedOnTimeContent = new ContentView {
+            var arrivedOnTimeContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
                 Padding = new Thickness(0, 0, 10, 0),
@@ -1013,7 +1028,8 @@ namespace KAS.Trukman.Views.Pages
             };
             arrivedBonusMinsPointsContent.SetBinding(ContentView.IsVisibleProperty, "ArrivedBonusMinsVisible", BindingMode.OneWay);
 
-            var pointsLayout = new StackLayout {
+            var pointsLayout = new StackLayout
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
                 Spacing = 0
@@ -1022,7 +1038,8 @@ namespace KAS.Trukman.Views.Pages
             pointsLayout.Children.Add(arrivedBonusPointsContent);
             pointsLayout.Children.Add(arrivedBonusMinsPointsContent);
 
-            var pointsGrid = new Grid {
+            var pointsGrid = new Grid
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
                 RowSpacing = 0,
@@ -1106,7 +1123,7 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0),
                 Content = grid
             };
-			content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtDestinationOnTime));
+            content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtDestinationOnTime));
 
             return content;
         }
@@ -1199,7 +1216,7 @@ namespace KAS.Trukman.Views.Pages
                 FontAttributes = FontAttributes.Bold,
                 TextColor = PlatformHelper.HomeTextColor
             };
-			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
+            totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
             var totalPointsContent = new ContentView
             {
@@ -1260,273 +1277,129 @@ namespace KAS.Trukman.Views.Pages
                 Padding = new Thickness(0),
                 Content = grid
             };
-			content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtDestinationLate));
+            content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtDestinationLate));
 
             return content;
         }
 
-		private View CreateArrivedAsPickupOnTimeView()
-		{
-			var image = new Image {
-				HorizontalOptions = LayoutOptions.End,
-				VerticalOptions = LayoutOptions.Center,
-				WidthRequest = 180,
-				HeightRequest = 180,
-				Source = PlatformHelper.LikeImageSource
-			};
+        private View CreateArrivedAsPickupOnTimeView()
+        {
+            var image = new Image
+            {
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                WidthRequest = 180,
+                HeightRequest = 180,
+                Source = PlatformHelper.LikeImageSource
+            };
 
-			var imageContent = new ContentView {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(10, 0, 0, 0),
-				Content = image
-			};
+            var imageContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(10, 0, 0, 0),
+                Content = image
+            };
 
-			var arrivedOnTimeLabel = new Label {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			arrivedOnTimeLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var arrivedOnTimeContent = new ContentView {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 0, 10, 0),
-				Content = arrivedOnTimeLabel
-			};
-
-			var arrivedBonusPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-				FontAttributes = FontAttributes.Bold,
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			arrivedBonusPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeBonusPointsLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var arrivedBonusPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = arrivedBonusPointsLabel
-			};
-
-			var arrivedBonusMinsPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			arrivedBonusMinsPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeBonusPointsMinsLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var arrivedBonusMinsPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 5, 10, 0),
-				Content = arrivedBonusMinsPointsLabel
-			};
-			arrivedBonusMinsPointsContent.SetBinding(ContentView.IsVisibleProperty, "ArrivedBonusMinsVisible", BindingMode.OneWay);
-
-			var pointsLayout = new StackLayout {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				Spacing = 0
-			};
-			pointsLayout.Children.Add(arrivedOnTimeContent);
-			pointsLayout.Children.Add(arrivedBonusPointsContent);
-			pointsLayout.Children.Add(arrivedBonusMinsPointsContent);
-
-			var pointsGrid = new Grid {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				RowSpacing = 0,
-				ColumnSpacing = 0,
-				Padding = new Thickness(0, 10, 0, 0),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			pointsGrid.Children.Add(imageContent, 0, 0);
-			pointsGrid.Children.Add(pointsLayout, 1, 0);
-
-			var totalPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-				FontAttributes = FontAttributes.Bold,
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
-
-			var totalPointsContent = new ContentView {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 20, 10, 5),
-				Content = totalPointsLabel
-			};
-
-            var nextStepLabel = new Label {
+            var arrivedOnTimeLabel = new Label
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Start,
                 HorizontalTextAlignment = TextAlignment.Center,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = PlatformHelper.HomeTextColor
             };
-            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            arrivedOnTimeLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var nextStepContent = new ContentView {
+            var arrivedOnTimeContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 10, 10, 10),
-				Content = nextStepLabel
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0, 0, 10, 0),
+                Content = arrivedOnTimeLabel
             };
 
-            var arrivedCommands = new CommandsListView {
-                RowHeight = PlatformHelper.DisplayHeight / 8
+            var arrivedBonusPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = PlatformHelper.HomeTextColor
             };
-            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedPickUpMenuItems", BindingMode.OneWay);
-            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
-            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
+            arrivedBonusPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeBonusPointsLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var grid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				RowDefinitions = {
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			grid.Children.Add(pointsGrid, 0, 0);
-			grid.Children.Add(totalPointsContent, 0, 1);
-            grid.Children.Add(nextStepContent, 0, 2);
-            grid.Children.Add(arrivedCommands, 0, 3);
+            var arrivedBonusPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0, 5, 10, 0),
+                Content = arrivedBonusPointsLabel
+            };
 
-			var content = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0),
-				Content = grid
-			};
-			content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtPickupOnTime));
+            var arrivedBonusMinsPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            arrivedBonusMinsPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedOnTimeBonusPointsMinsLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-			return content;
-		}
+            var arrivedBonusMinsPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0, 5, 10, 0),
+                Content = arrivedBonusMinsPointsLabel
+            };
+            arrivedBonusMinsPointsContent.SetBinding(ContentView.IsVisibleProperty, "ArrivedBonusMinsVisible", BindingMode.OneWay);
 
-		private View CreateArrivedAsPickupLateView()
-		{
-			var image = new Image
-			{
-				HorizontalOptions = LayoutOptions.End,
-				VerticalOptions = LayoutOptions.Center,
-				WidthRequest = 180,
-				HeightRequest = 180,
-				Source = PlatformHelper.DislikeImageSource
-			};
+            var pointsLayout = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Spacing = 0
+            };
+            pointsLayout.Children.Add(arrivedOnTimeContent);
+            pointsLayout.Children.Add(arrivedBonusPointsContent);
+            pointsLayout.Children.Add(arrivedBonusMinsPointsContent);
 
-			var imageContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(10, 0, 0, 0),
-				Content = image
-			};
+            var pointsGrid = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(0, 10, 0, 0),
+                ColumnDefinitions = {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                }
+            };
+            pointsGrid.Children.Add(imageContent, 0, 0);
+            pointsGrid.Children.Add(pointsLayout, 1, 0);
 
-			var arrivedLateLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			arrivedLateLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedLateLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            var totalPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
 
-			var arrivedLateContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 0, 10, 0),
-				Content = arrivedLateLabel
-			};
-
-			var arrivedBonusMinsPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			arrivedBonusMinsPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedLateBonusLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var arrivedBonusMinsPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(0, 20, 10, 0),
-				Content = arrivedBonusMinsPointsLabel
-			};
-
-			var pointsLayout = new StackLayout
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center,
-				Spacing = 0
-			};
-			pointsLayout.Children.Add(arrivedLateContent);
-			pointsLayout.Children.Add(arrivedBonusMinsPointsContent);
-
-			var pointsGrid = new Grid
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				RowSpacing = 0,
-				ColumnSpacing = 0,
-				Padding = new Thickness(0, 10, 0, 0),
-				ColumnDefinitions = {
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-				}
-			};
-			pointsGrid.Children.Add(imageContent, 0, 0);
-			pointsGrid.Children.Add(pointsLayout, 1, 0);
-
-			var totalPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-				FontAttributes = FontAttributes.Bold,
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
-
-			var totalPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 20, 10, 5),
-				Content = totalPointsLabel
-			};
+            var totalPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 20, 10, 5),
+                Content = totalPointsLabel
+            };
 
             var nextStepLabel = new Label
             {
@@ -1573,154 +1446,310 @@ namespace KAS.Trukman.Views.Pages
             grid.Children.Add(arrivedCommands, 0, 3);
 
             var content = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0),
-				Content = grid
-			};
-			content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtPickupLate));
-
-			return content;
-		}
-
-		private View CreateTripCompletedView()
-		{
-			var mapImage = new Image
-			{
-				HorizontalOptions = LayoutOptions.Center,
-				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 180,
-				WidthRequest = 180,
-				Source = PlatformHelper.HomeMapImageSource
-			};
-
-			var mapContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Content = mapImage
-			};
-
-			var completedTripLabel = new Label {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				TextColor = PlatformHelper.HomeTextColor,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
-			};
-			completedTripLabel.SetBinding(Label.TextProperty, new Binding("HomeCongratulations", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-
-			var completedTripContent = new ContentView {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(20, 30, 5, 0),
-				Content = completedTripLabel
-			};
-
-			var totalJobPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-				FontAttributes = FontAttributes.Bold,
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			totalJobPointsLabel.SetBinding(Label.TextProperty, "TotalJobPointsText", BindingMode.OneWay);
-
-			var totalJobPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 0, 10, 30),
-				Content = totalJobPointsLabel
-			};
-
-			var totalDriverPointsLabel = new Label
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				HorizontalTextAlignment = TextAlignment.Center,
-				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-				FontAttributes = FontAttributes.Bold,
-				TextColor = PlatformHelper.HomeTextColor
-			};
-			totalDriverPointsLabel.SetBinding(Label.TextProperty, "TotalDriverPointsText", BindingMode.OneWay);
-
-			var totalDriverPointsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Start,
-				Padding = new Thickness(10, 30, 10, 30),
-				Content = totalDriverPointsLabel
-			};
-
-			var rewardsButton = new AppRoundButton
             {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center
-			};
-			rewardsButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeRewardsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			rewardsButton.SetBinding(AppRoundButton.CommandProperty, "RewardsCommand");
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0),
+                Content = grid
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtPickupOnTime));
 
-			var rewardsContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(20, 10, 20, 10),
-				Content = rewardsButton
-			};
+            return content;
+        }
 
-			var newTripButton = new AppRoundButton
+        private View CreateArrivedAsPickupLateView()
+        {
+            var image = new Image
             {
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Center
-			};
-			newTripButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeNewTripButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
-			newTripButton.SetBinding(AppRoundButton.CommandProperty, "NewTripCommand");
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                WidthRequest = 180,
+                HeightRequest = 180,
+                Source = PlatformHelper.DislikeImageSource
+            };
 
-			var newTripContent = new ContentView
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(20, 10, 20, 10),
-				Content = newTripButton
-			};
+            var imageContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(10, 0, 0, 0),
+                Content = image
+            };
 
-			var grid = new Grid
-			{
-				VerticalOptions = LayoutOptions.Fill,
-				HorizontalOptions = LayoutOptions.Fill,
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				RowDefinitions = {
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
-					new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
-				}
-			};
-			grid.Children.Add(mapContent, 0, 0);
-			grid.Children.Add(completedTripContent, 0, 1);
-			grid.Children.Add (totalJobPointsContent, 0, 2);
-			grid.Children.Add(totalDriverPointsContent, 0, 3);
-			grid.Children.Add(rewardsContent, 0, 4);
-			grid.Children.Add (newTripContent, 0, 5);
+            var arrivedLateLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            arrivedLateLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedLateLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-			var content = new ContentView 
-			{
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.Fill,
-				Padding = new Thickness(0),
-				Content = grid
-			};
-			content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.TripComleted));
+            var arrivedLateContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0, 0, 10, 0),
+                Content = arrivedLateLabel
+            };
 
-			return content;
-		}
+            var arrivedBonusMinsPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            arrivedBonusMinsPointsLabel.SetBinding(Label.TextProperty, new Binding("HomeArrivedLateBonusLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var arrivedBonusMinsPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(0, 20, 10, 0),
+                Content = arrivedBonusMinsPointsLabel
+            };
+
+            var pointsLayout = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Spacing = 0
+            };
+            pointsLayout.Children.Add(arrivedLateContent);
+            pointsLayout.Children.Add(arrivedBonusMinsPointsContent);
+
+            var pointsGrid = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Padding = new Thickness(0, 10, 0, 0),
+                ColumnDefinitions = {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                }
+            };
+            pointsGrid.Children.Add(imageContent, 0, 0);
+            pointsGrid.Children.Add(pointsLayout, 1, 0);
+
+            var totalPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            totalPointsLabel.SetBinding(Label.TextProperty, "ArrivedTotalPointsText", BindingMode.OneWay);
+
+            var totalPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 20, 10, 5),
+                Content = totalPointsLabel
+            };
+
+            var nextStepLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            nextStepLabel.SetBinding(Label.TextProperty, new Binding("HomeNextStepLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var nextStepContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 10, 10, 10),
+                Content = nextStepLabel
+            };
+
+            var arrivedCommands = new CommandsListView
+            {
+                RowHeight = PlatformHelper.DisplayHeight / 8
+            };
+            arrivedCommands.SetBinding(MainMenuListView.ItemsSourceProperty, "ArrivedPickUpMenuItems", BindingMode.OneWay);
+            arrivedCommands.SetBinding(MainMenuListView.SelectedItemProperty, "SelectedArrivedMenuItem", BindingMode.TwoWay);
+            arrivedCommands.SetBinding(MainMenuListView.ItemClickCommandProperty, "MenuItemClickCommand");
+
+            var grid = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                ColumnSpacing = 0,
+                RowSpacing = 0,
+                RowDefinitions = {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                }
+            };
+            grid.Children.Add(pointsGrid, 0, 0);
+            grid.Children.Add(totalPointsContent, 0, 1);
+            grid.Children.Add(nextStepContent, 0, 2);
+            grid.Children.Add(arrivedCommands, 0, 3);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0),
+                Content = grid
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.ArrivedAtPickupLate));
+
+            return content;
+        }
+
+        private View CreateTripCompletedView()
+        {
+            var mapImage = new Image
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                HeightRequest = 180,
+                WidthRequest = 180,
+                Source = PlatformHelper.HomeMapImageSource
+            };
+
+            var mapContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Content = mapImage
+            };
+
+            var completedTripLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                TextColor = PlatformHelper.HomeTextColor,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+            };
+            completedTripLabel.SetBinding(Label.TextProperty, new Binding("HomeCongratulations", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+
+            var completedTripContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(20, 30, 5, 0),
+                Content = completedTripLabel
+            };
+
+            var totalJobPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            totalJobPointsLabel.SetBinding(Label.TextProperty, "TotalJobPointsText", BindingMode.OneWay);
+
+            var totalJobPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 0, 10, 30),
+                Content = totalJobPointsLabel
+            };
+
+            var totalDriverPointsLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = PlatformHelper.HomeTextColor
+            };
+            totalDriverPointsLabel.SetBinding(Label.TextProperty, "TotalDriverPointsText", BindingMode.OneWay);
+
+            var totalDriverPointsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 30, 10, 30),
+                Content = totalDriverPointsLabel
+            };
+
+            var rewardsButton = new AppRoundButton
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center
+            };
+            rewardsButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeRewardsButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            rewardsButton.SetBinding(AppRoundButton.CommandProperty, "RewardsCommand");
+
+            var rewardsContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(20, 10, 20, 10),
+                Content = rewardsButton
+            };
+
+            var newTripButton = new AppRoundButton
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center
+            };
+            newTripButton.SetBinding(AppRoundButton.TextProperty, new Binding("HomeNewTripButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            newTripButton.SetBinding(AppRoundButton.CommandProperty, "NewTripCommand");
+
+            var newTripContent = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(20, 10, 20, 10),
+                Content = newTripButton
+            };
+
+            var grid = new Grid
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                ColumnSpacing = 0,
+                RowSpacing = 0,
+                RowDefinitions = {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) }
+                }
+            };
+            grid.Children.Add(mapContent, 0, 0);
+            grid.Children.Add(completedTripContent, 0, 1);
+            grid.Children.Add(totalJobPointsContent, 0, 2);
+            grid.Children.Add(totalDriverPointsContent, 0, 3);
+            grid.Children.Add(rewardsContent, 0, 4);
+            grid.Children.Add(newTripContent, 0, 5);
+
+            var content = new ContentView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(0),
+                Content = grid
+            };
+            content.SetBinding(ContentView.IsVisibleProperty, new Binding("State", BindingMode.OneWay, _homeStateToBoolConverter, HomeStates.TripComleted));
+
+            return content;
+        }
 
         private View CreateHorizontalLine()
         {
@@ -1749,8 +1778,9 @@ namespace KAS.Trukman.Views.Pages
         }
 
         private View CreateGPSPopup()
-        {    
-            var mainLabel = new Label {
+        {
+            var mainLabel = new Label
+            {
                 HorizontalOptions = LayoutOptions.Fill,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -1758,9 +1788,10 @@ namespace KAS.Trukman.Views.Pages
             };
             mainLabel.SetBinding(Label.TextProperty, new Binding("HomeGPSPopupMainLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var mainContent = new ContentView {
+            var mainContent = new ContentView
+            {
                 HorizontalOptions = LayoutOptions.Fill,
-                Padding= new Thickness(10, 20, 10, 20),
+                Padding = new Thickness(10, 20, 10, 20),
                 Content = mainLabel
             };
 
@@ -1813,7 +1844,8 @@ namespace KAS.Trukman.Views.Pages
             buttons.Children.Add(this.CreateVerticalLine(), 1, 0);
             buttons.Children.Add(settingsButton, 2, 0);
 
-            var popupContent = new StackLayout {
+            var popupContent = new StackLayout
+            {
                 Spacing = 0,
                 HorizontalOptions = LayoutOptions.Fill
             };

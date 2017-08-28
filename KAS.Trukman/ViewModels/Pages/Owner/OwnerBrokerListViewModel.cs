@@ -24,6 +24,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.RefreshCommand = new VisualCommand(this.Refresh);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
+            this.AddBrokerCommand = new VisualCommand(this.AddBroker);
         }
 
         public override void Appering()
@@ -94,6 +95,11 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             PopToRootPageMessage.Send();
         }
 
+        private void AddBroker(object parameter)
+        {
+            ShowOwnerAddBrokerPageMessage.Send();
+        }
+
         private void SelectBroker(object parameter)
         {
             this.SelectedBroker = null;
@@ -125,6 +131,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public VisualCommand ShowHomePageCommand { get; private set; }
 
         public VisualCommand RefreshCommand { get; private set; }
+
+        public VisualCommand AddBrokerCommand { get; private set; }
     }
     #endregion
 }

@@ -28,10 +28,11 @@ namespace KAS.Trukman.Languages
                 this.OwnerFuelAdvancePageName = appLanguage.OwnerFuelAdvancePageName;
                 this.OwnerLumperPageName = appLanguage.OwnerLumperPageName;
                 this.OwnerBrokerListPageName = appLanguage.OwnerBrokerListPageName;
+                this.OwnerAddBrokerPageName = appLanguage.OwnerAddBrokerPageName;
                 this.OwnerInvoiceListPageName = appLanguage.OwnerInvoiceListPageName;
                 this.OwnerInvoiceViewerPageName = appLanguage.OwnerInvoiceViewerPageName;
                 this.OwnerDeliveryUpdatePageName = appLanguage.OwnerDeliveryUpdatePageName;
-				this.OwnerDelayAlertsPageName = appLanguage.OwnerDelayAlertsPageName;
+                this.OwnerDelayAlertsPageName = appLanguage.OwnerDelayAlertsPageName;
                 this.TripPageName = appLanguage.TripPageName;
                 this.ShipperInfoPageName = appLanguage.ShipperInfoPageName;
                 this.ReceiverInfoPageName = appLanguage.ReceiverInfoPageName;
@@ -91,9 +92,9 @@ namespace KAS.Trukman.Languages
                 this.HomeArrivedOnTimeLabel = appLanguage.HomeArrivedOnTimeLabel;
                 this.HomeArrivedOnTimeBonusPointsLabel = appLanguage.HomeArrivedOnTimeBonusPointsLabel;
                 this.HomeArrivedOnTimeBonusPointsMinsLabel = appLanguage.HomeArrivedOnTimeBonusPointsMinsLabel;
-				this.HomeArrivedTotalPointsLabel = appLanguage.HomeArrivedTotalPointsLabel;
+                this.HomeArrivedTotalPointsLabel = appLanguage.HomeArrivedTotalPointsLabel;
                 this.HomeJobTotalPointsLabel = appLanguage.HomeJobTotalPointsLabel;
-				this.HomeDriverTotalPointsLabel = appLanguage.HomeDriverTotalPointsLabel;
+                this.HomeDriverTotalPointsLabel = appLanguage.HomeDriverTotalPointsLabel;
                 this.HomeNextStepLabel = appLanguage.HomeNextStepLabel;
                 this.HomeBonusPointsForPickupPhotoLabel = appLanguage.HomeBonusPointsForPickupPhotoLabel;
                 this.HomeBonusPointsForDeliveryPhotoLabel = appLanguage.HomeBonusPointsForDeliveryPhotoLabel;
@@ -118,23 +119,23 @@ namespace KAS.Trukman.Languages
 
                 this.HomeCongratulations = appLanguage.HomeCongratulations;
                 this.HomeRewardsButtonText = appLanguage.HomeRewardsButtonText;
-				this.HomeNewTripButtonText = appLanguage.HomeNewTripButtonText;
+                this.HomeNewTripButtonText = appLanguage.HomeNewTripButtonText;
                 #endregion
 
-				#region Lists
-				this.AdvanceListJobNumberLabel = appLanguage.AdvanceListJobNumberLabel;
-				this.AdvanceListDriverNameLabel = appLanguage.AdvanceListDriverNameLabel;
+                #region Lists
+                this.AdvanceListJobNumberLabel = appLanguage.AdvanceListJobNumberLabel;
+                this.AdvanceListDriverNameLabel = appLanguage.AdvanceListDriverNameLabel;
                 this.InvoiceListJobNumberLabel = appLanguage.InvoiceListJobNumberLabel;
                 this.InvoiceListDriverNameLabel = appLanguage.InvoiceListDriverNameLabel;
-				this.JobAlertListJobNumberLabel = appLanguage.JobAlertListJobNumberLabel;
-				this.JobAlertListDriverNameLabel = appLanguage.JobAlertListDriverNameLabel;
-				#endregion
+                this.JobAlertListJobNumberLabel = appLanguage.JobAlertListJobNumberLabel;
+                this.JobAlertListDriverNameLabel = appLanguage.JobAlertListDriverNameLabel;
+                #endregion
 
-				#region ComcheckPopup
-				this.ComcheckPopupEntryPlaceholer = appLanguage.ComcheckPopupEntryPlaceholer;
-				this.ComcheckPopupCancelButtonText = appLanguage.ComcheckPopupCancelButtonText;
-				this.ComcheckPopupAcceptButtonText = appLanguage.ComcheckPopupAcceptButtonText;
-				#endregion
+                #region ComcheckPopup
+                this.ComcheckPopupEntryPlaceholer = appLanguage.ComcheckPopupEntryPlaceholer;
+                this.ComcheckPopupCancelButtonText = appLanguage.ComcheckPopupCancelButtonText;
+                this.ComcheckPopupAcceptButtonText = appLanguage.ComcheckPopupAcceptButtonText;
+                #endregion
 
                 #region Trip page
                 this.TripReceiverTitleLabel = appLanguage.TripReceiverTitleLabel;
@@ -306,6 +307,23 @@ namespace KAS.Trukman.Languages
                 this.DoneTaskJobPointsText = appLanguage.DoneTaskJobPointsText;
                 this.SendPhotoJobPointsText = appLanguage.SendPhotoJobPointsText;
                 #endregion
+
+                #region Owner broker list page
+                this.OwnerBrokerListAddBrokerCommandText = appLanguage.OwnerBrokerListAddBrokerCommandText;
+                #endregion
+
+                #region Owner Add Broker
+                this.OwnerAddBrokerNamePlaceholder = appLanguage.OwnerAddBrokerNamePlaceholder;
+                this.OwnerAddBrokerEmailPlaceholder = appLanguage.OwnerAddBrokerEmailPlaceholder;
+                this.OwnerAddBrokerAddressPlaceholder = appLanguage.OwnerAddBrokerAddressPlaceholder;
+                this.OwnerAddBrokerStatePlaceholder = appLanguage.OwnerAddBrokerStatePlaceholder;
+                this.OwnerAddBrokerZipPlaceholder = appLanguage.OwnerAddBrokerZipPlaceholder;
+                this.OwnerAddBrokerPhonePlaceholder = appLanguage.OwnerAddBrokerPhonePlaceholder;
+                this.OwnerAddBrokerContactTitlePlaceholder = appLanguage.OwnerAddBrokerContactTitlePlaceholder;
+                this.OwnerAddBrokerContactNamePlaceholder = appLanguage.OwnerAddBrokerContactNamePlaceholder;
+                this.OwnerAddBrokerDocketNumberPlaceholder = appLanguage.OwnerAddBrokerDocketNumberPlaceholder;
+                this.OwnerAddBrokerSubmitCommandText = appLanguage.OwnerAddBrokerSubmitCommandText;
+                #endregion
             }
         }
 
@@ -342,6 +360,12 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("OwnerBrokerListPageName", value); }
         }
 
+        public string OwnerAddBrokerPageName
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerPageName"); }
+            set { this.SetValue("OwnerAddBrokerPageName", value); }
+        }
+
         public string OwnerInvoiceListPageName
         {
             get { return (string)this.GetValue("OwnerInvoiceListPageName"); }
@@ -360,17 +384,17 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("OwnerLumperPageName", value); }
         }
 
-		public string OwnerDeliveryUpdatePageName
-		{
-			get { return (string)this.GetValue("OwnerDeliveryUpdatePageName"); }
-			set { this.SetValue("OwnerDeliveryUpdatePageName", value); }
-		}
+        public string OwnerDeliveryUpdatePageName
+        {
+            get { return (string)this.GetValue("OwnerDeliveryUpdatePageName"); }
+            set { this.SetValue("OwnerDeliveryUpdatePageName", value); }
+        }
 
-		public string OwnerDelayAlertsPageName
-		{
-			get { return (string)this.GetValue ("OwnerDelayAlertsPageName"); }
-			set { this.SetValue ("OwnerDelayAlertsPageName", value); }
-		}
+        public string OwnerDelayAlertsPageName
+        {
+            get { return (string)this.GetValue("OwnerDelayAlertsPageName"); }
+            set { this.SetValue("OwnerDelayAlertsPageName", value); }
+        }
 
         public string TripPageName
         {
@@ -445,18 +469,18 @@ namespace KAS.Trukman.Languages
         }
         #endregion
 
-		#region Lists
-		public string AdvanceListJobNumberLabel
-		{
-			get { return (string)this.GetValue ("AdvanceListJobNumberLabel"); }
-			set { this.SetValue ("AdvanceListJobNumberLabel", value); }
-		}
+        #region Lists
+        public string AdvanceListJobNumberLabel
+        {
+            get { return (string)this.GetValue("AdvanceListJobNumberLabel"); }
+            set { this.SetValue("AdvanceListJobNumberLabel", value); }
+        }
 
-		public string AdvanceListDriverNameLabel
-		{
-			get { return (string)this.GetValue ("AdvanceListDriverNameLabel"); }
-			set { this.SetValue ("AdvanceListDriverNameLabel", value); }
-		}
+        public string AdvanceListDriverNameLabel
+        {
+            get { return (string)this.GetValue("AdvanceListDriverNameLabel"); }
+            set { this.SetValue("AdvanceListDriverNameLabel", value); }
+        }
 
         public string InvoiceListJobNumberLabel
         {
@@ -470,38 +494,38 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("InvoiceListDriverNameLabel", value); }
         }
 
-		public string JobAlertListJobNumberLabel
-		{
-			get { return (string)this.GetValue ("JobAlertListJobNumberLabel"); }
-			set { this.SetValue ("JobAlertListJobNumberLabel", value); }
-		}
+        public string JobAlertListJobNumberLabel
+        {
+            get { return (string)this.GetValue("JobAlertListJobNumberLabel"); }
+            set { this.SetValue("JobAlertListJobNumberLabel", value); }
+        }
 
-		public string JobAlertListDriverNameLabel
-		{
-			get { return (string)this.GetValue ("JobAlertListDriverNameLabel"); }
-			set { this.SetValue ("JobAlertListDriverNameLabel", value); }
-		}
-		#endregion
+        public string JobAlertListDriverNameLabel
+        {
+            get { return (string)this.GetValue("JobAlertListDriverNameLabel"); }
+            set { this.SetValue("JobAlertListDriverNameLabel", value); }
+        }
+        #endregion
 
-		#region ComcheckPopup
-		public string ComcheckPopupEntryPlaceholer
-		{
-			get { return (string)this.GetValue ("ComcheckPopupEntryPlaceholer"); }
-			set { this.SetValue ("ComcheckPopupEntryPlaceholer", value); }
-		}
+        #region ComcheckPopup
+        public string ComcheckPopupEntryPlaceholer
+        {
+            get { return (string)this.GetValue("ComcheckPopupEntryPlaceholer"); }
+            set { this.SetValue("ComcheckPopupEntryPlaceholer", value); }
+        }
 
-		public string ComcheckPopupCancelButtonText
-		{
-			get { return (string)this.GetValue ("ComcheckPopupCancelButtonText"); }
-			set { this.SetValue ("ComcheckPopupCancelButtonText", value); }
-		}
+        public string ComcheckPopupCancelButtonText
+        {
+            get { return (string)this.GetValue("ComcheckPopupCancelButtonText"); }
+            set { this.SetValue("ComcheckPopupCancelButtonText", value); }
+        }
 
-		public string ComcheckPopupAcceptButtonText
-		{
-			get { return (string)this.GetValue ("ComcheckPopupAcceptButtonText"); }
-			set { this.SetValue ("ComcheckPopupAcceptButtonText", value); }
-		}
-		#endregion
+        public string ComcheckPopupAcceptButtonText
+        {
+            get { return (string)this.GetValue("ComcheckPopupAcceptButtonText"); }
+            set { this.SetValue("ComcheckPopupAcceptButtonText", value); }
+        }
+        #endregion
 
         #region Main Menu
         public string MainMenuHomeLabel
@@ -726,23 +750,23 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HomeArrivedOnTimeBonusPointsMinsLabel", value); }
         }
 
-		public string HomeArrivedTotalPointsLabel
-		{
-			get { return (string)this.GetValue ("HomeArrivedTotalPointsLabel"); }
-			set { this.SetValue ("HomeArrivedTotalPointsLabel", value); }
-		}
+        public string HomeArrivedTotalPointsLabel
+        {
+            get { return (string)this.GetValue("HomeArrivedTotalPointsLabel"); }
+            set { this.SetValue("HomeArrivedTotalPointsLabel", value); }
+        }
 
         public string HomeJobTotalPointsLabel
         {
-			get { return (string)this.GetValue("HomeJobTotalPointsLabel"); }
-			set { this.SetValue("HomeJobTotalPointsLabel", value); }
+            get { return (string)this.GetValue("HomeJobTotalPointsLabel"); }
+            set { this.SetValue("HomeJobTotalPointsLabel", value); }
         }
 
-		public string HomeDriverTotalPointsLabel
-		{
-			get { return (string)this.GetValue ("HomeDriverTotalPointsLabel"); }
-			set { this.SetValue ("HomeDriverTotalPointsLabel", value); }
-		}
+        public string HomeDriverTotalPointsLabel
+        {
+            get { return (string)this.GetValue("HomeDriverTotalPointsLabel"); }
+            set { this.SetValue("HomeDriverTotalPointsLabel", value); }
+        }
 
         public string HomeNextStepLabel
         {
@@ -870,11 +894,11 @@ namespace KAS.Trukman.Languages
             set { this.SetValue("HomeRewardsButtonText", value); }
         }
 
-		public string HomeNewTripButtonText
-		{
-			get { return (string)this.GetValue ("HomeNewTripButtonText"); }
-			set { this.SetValue ("HomeNewTripButtonText", value); }
-		}
+        public string HomeNewTripButtonText
+        {
+            get { return (string)this.GetValue("HomeNewTripButtonText"); }
+            set { this.SetValue("HomeNewTripButtonText", value); }
+        }
         #endregion
 
         #region Trip page
@@ -1563,7 +1587,7 @@ namespace KAS.Trukman.Languages
             get { return (string)this.GetValue("PickUpPhotoJobPointsText"); }
             set { this.SetValue("PickUpPhotoJobPointsText", value); }
         }
- 
+
         public string DeliveryOnTimeJobPointsText
         {
             get { return (string)this.GetValue("DeliveryOnTimeJobPointsText"); }
@@ -1622,6 +1646,77 @@ namespace KAS.Trukman.Languages
         {
             get { return (string)this.GetValue("SendPhotoJobPointsText"); }
             set { this.SetValue("SendPhotoJobPointsText", value); }
+        }
+        #endregion
+
+        #region Owner broker list page
+        public string OwnerBrokerListAddBrokerCommandText
+        {
+            get { return (string)this.GetValue("OwnerBrokerListAddBrokerCommandText"); }
+            set { this.SetValue("OwnerBrokerListAddBrokerCommandText", value); }
+        }
+        #endregion
+
+        #region Owner Add Broker
+        public string OwnerAddBrokerNamePlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerNamePlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerNamePlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerEmailPlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerEmailPlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerEmailPlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerAddressPlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerAddressPlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerAddressPlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerStatePlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerStatePlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerStatePlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerZipPlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerZipPlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerZipPlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerPhonePlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerPhonePlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerPhonePlaceholder", value); }
+        }
+
+
+        public string OwnerAddBrokerContactTitlePlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerContactTitlePlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerContactTitlePlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerContactNamePlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerContactNamePlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerContactNamePlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerDocketNumberPlaceholder
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerDocketNumberPlaceholder"); }
+            set { this.SetValue("OwnerAddBrokerDocketNumberPlaceholder", value); }
+        }
+
+        public string OwnerAddBrokerSubmitCommandText
+        {
+            get { return (string)this.GetValue("OwnerAddBrokerSubmitCommandText"); }
+            set { this.SetValue("OwnerAddBrokerSubmitCommandText", value); }
         }
         #endregion
     }

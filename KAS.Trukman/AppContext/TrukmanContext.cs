@@ -434,6 +434,12 @@ namespace KAS.Trukman.AppContext
             return brockers;
         }
 
+        public static async Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        {
+            var brockers = await _localStorage.SaveBrokerAsync(brokerInfo);
+            return brockers;
+        }
+
         public static async Task<User[]> SelectDriversAsync()
         {
             var users = await _localStorage.SelectDriversAsync();

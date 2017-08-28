@@ -1001,6 +1001,20 @@ namespace KAS.Trukman.Storage
             }
         }
 
+        public async Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        {
+            try
+            {
+                var brocker = await _externalStorage.SaveBrokerAsync(brokerInfo);
+                return brocker;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw ThrowException(exception);
+            }
+        }
+
         public async Task<User[]> SelectDriversAsync()
         {
             try

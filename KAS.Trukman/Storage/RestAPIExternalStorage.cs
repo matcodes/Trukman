@@ -44,6 +44,7 @@ namespace KAS.Trukman.Storage
         private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
         //private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
         private static readonly string SELECT_TASKS_BY_OWNER_ID_ENDPOINT = "owners/selecttasksbyownerid";
+        private static readonly string SAVE_BROKER_ENDPOINT = "owners/savebroker";
 
         private static readonly string ADD_DRIVER_REQUEST_ENDPOINT = "drivers/adddriverrequest";
         private static readonly string CANCEL_DRIVER_REQUEST_ENDPOINT = "drivers/canceldriverrequest";
@@ -1125,6 +1126,35 @@ namespace KAS.Trukman.Storage
             }
 
             return users.ToArray();
+        }
+
+        public async Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        {
+            var saveBrokerRequest = new SaveBrokerRequest
+            {
+                Broker = new Broker
+                {
+                    Address = brokerInfo.Address,
+                    ContactName = brokerInfo.ContactName,
+                    ContactTitle = brokerInfo.ContactTitle,
+                    DocketNumber = brokerInfo.DocketNumber,
+                    Email = brokerInfo.Email,
+                    Name = brokerInfo.Name,
+                    Phone = brokerInfo.Phone,
+                    State = brokerInfo.State,
+                    ZIP = brokerInfo.ZIP
+                }
+            };
+            var requestContent = SerializeObject(saveBrokerRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(SAVE_BROKER_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<SaveBrokerResponse>(request);
+            if (result.Broker != null)
+                return this.BrokerToUser(result.Broker);
+            else
+                return null;
         }
 
         public async Task<Company[]> SelectCompanies(string filter)

@@ -45,7 +45,7 @@ namespace KAS.Trukman.Views.Pages
         private void MapLocateAddress()
         {
             Device.BeginInvokeOnMainThread(() => {
-                if ((_map != null) && (this.ViewModel != null))
+                if ((_map != null) && (this.ViewModel != null) && (this.ViewModel.AddressPosition != default(Position)))
                     _map.MoveToRegion(new MapSpan(this.ViewModel.AddressPosition, 0.5, 0.5));
             });
         }

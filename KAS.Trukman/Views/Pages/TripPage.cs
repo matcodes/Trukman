@@ -557,7 +557,7 @@ namespace KAS.Trukman.Views.Pages
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                if ((map != null) && (this.ViewModel != null))
+                if ((map != null) && (this.ViewModel != null) && position != default(Position))
                 {
                     map.MoveToRegion(new MapSpan(position, 0.5, 0.5));
                     map.Pins.Clear();

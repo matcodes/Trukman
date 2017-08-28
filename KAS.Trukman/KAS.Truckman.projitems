@@ -91,6 +91,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\GetPointsByDriverRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\OwnerLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\ResendVerificationCodeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SaveBrokerRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectBrokersRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectCompaniesByFilterRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\SelectDriversRequest.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\GetPointsByDriverResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\OwnerLoginResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\ResendVerificationCodeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SaveBrokerResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectBrokersResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectCompaniesByFilterResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\SelectDriversResponse.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\TaskRequestAnswers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\TaskRequestDeclineReasons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Enums\UserRole.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\BrokerInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\CompanyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\DispatcherInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Infos\DriverInfo.cs" />
@@ -219,6 +222,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\AcceptTripChangedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\CancelledTripChangedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\CompletedTripChangedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowOwnerAddBrokerPageMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\DeclineTripChangedBackMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\DeclineTripChangedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\DeclineTripSubmitMessage.cs" />
@@ -293,6 +297,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\NavBarViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerAddBrokerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerDelayAlertsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerUserAuthorizationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Pages\Owner\OwnerFleetViewModel.cs" />
@@ -342,6 +347,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainMenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\NavBarPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerAddBrokerPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerUserAuthorizationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFleetPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Pages\Owner\OwnerFuelAdvancePage.cs" />

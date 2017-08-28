@@ -114,9 +114,11 @@ namespace KAS.Trukman.Storage
 
 		Task SetAdvanceStateAsync (Advance advance);
 
-		Task<User[]> SelectBrockersAsync ();
+		Task<User[]> SelectBrockersAsync();
 
-		Task<User[]> SelectDriversAsync ();
+        Task<User> SaveBrokerAsync(BrokerInfo brokerInfo);
+
+        Task<User[]> SelectDriversAsync ();
 
 		Task<Trip> CreateTripAsync (Trip trip);
 
