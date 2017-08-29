@@ -27,7 +27,7 @@ namespace KAS.Trukman.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
 			var hockeyManager = BITHockeyManager.SharedHockeyManager;
-			hockeyManager.Configure ("d30cee35c8b5469d8987e7d557b150f8");
+			hockeyManager.Configure ("452d86e243c640e79cc9e06904ac065d");
 			hockeyManager.StartManager ();
 
             UIApplication.SharedApplication.IdleTimerDisabled = true;
