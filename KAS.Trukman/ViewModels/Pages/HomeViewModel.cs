@@ -31,8 +31,7 @@ namespace KAS.Trukman.ViewModels.Pages
         private System.Timers.Timer _checkGPSTimer = null;
         private System.Timers.Timer _arrivedTimeTimer = null;
 
-        public HomeViewModel()
-            : base()
+        public HomeViewModel() : base()
         {
             this.ShowMainMenuCommand = new VisualCommand(this.ShowMainMenu);
             this.DeclineCommand = new VisualCommand(this.Decline);

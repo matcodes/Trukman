@@ -8,8 +8,10 @@ namespace KAS.Trukman.Data.API
     #region Broker
     public class Broker : BaseEntity
     {
-        [JsonProperty("BrokerId")]
-        public Guid BrokerId { get; set; }
+        public Broker() : base()
+        {
+            this.Id = Guid.NewGuid();
+        }
 
         [JsonProperty("Name")]
         public string Name { get; set; }

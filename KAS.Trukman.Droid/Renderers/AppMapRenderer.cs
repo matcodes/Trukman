@@ -157,46 +157,50 @@ namespace KAS.Trukman.Droid.Renderers
         {
             (this.Context as Activity).RunOnUiThread(() =>
             {
-                if (_startMarker != null)
-                    _startMarker.Remove();
-                if (_endMarker != null)
-                    _endMarker.Remove();
-                if (_basePolyline != null)
-                    _basePolyline.Remove();
-                if (_polyline != null)
-                    _polyline.Remove();
-                if (_carMarker != null)
-                    _carMarker.Remove();
-
-                if (_startMarkerOptions != null)
-                    _startMarker = _map.AddMarker(_startMarkerOptions);
-                if (_endMarkerOptions != null)
-                    _endMarker = _map.AddMarker(_endMarkerOptions);
-                if (_basePolylineOptions != null)
-                    _basePolyline = _map.AddPolyline(_basePolylineOptions);
-                if (_polylineOptions != null)
-                    _polyline = _map.AddPolyline(_polylineOptions);
-                if (_carMarkerOptions != null)
-                    _carMarker = _map.AddMarker(_carMarkerOptions);
-
-                LatLng center = null;
-                if (_carMarker != null)
-                    center = new LatLng(_carMarker.Position.Latitude, _carMarker.Position.Longitude);
-                else if (_startMarker != null)
-                    center = new LatLng(_startMarker.Position.Latitude, _startMarker.Position.Longitude);
-                else if (_endMarker != null)
-                    center = new LatLng(_endMarker.Position.Latitude, _endMarker.Position.Longitude);
-
-                if (center != null)
+                try
                 {
-                    if (_isFirstDraw)
+                    if (_startMarker != null)
+                        _startMarker.Remove();
+                    if (_endMarker != null)
+                        _endMarker.Remove();
+                    if (_basePolyline != null)
+                        _basePolyline.Remove();
+                    if (_polyline != null)
+                        _polyline.Remove();
+                    if (_carMarker != null)
+                        _carMarker.Remove();
+
+                    if (_startMarkerOptions != null)
+                        _startMarker = _map.AddMarker(_startMarkerOptions);
+                    if (_endMarkerOptions != null)
+                        _endMarker = _map.AddMarker(_endMarkerOptions);
+                    if (_basePolylineOptions != null)
+                        _basePolyline = _map.AddPolyline(_basePolylineOptions);
+                    if (_polylineOptions != null)
+                        _polyline = _map.AddPolyline(_polylineOptions);
+                    if (_carMarkerOptions != null)
+                        _carMarker = _map.AddMarker(_carMarkerOptions);
+
+                    LatLng center = null;
+                    if (_carMarker != null)
+                        center = new LatLng(_carMarker.Position.Latitude, _carMarker.Position.Longitude);
+                    else if (_startMarker != null)
+                        center = new LatLng(_startMarker.Position.Latitude, _startMarker.Position.Longitude);
+                    else if (_endMarker != null)
+                        center = new LatLng(_endMarker.Position.Latitude, _endMarker.Position.Longitude);
+
+                    if (center != null)
                     {
-                        _map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(center, 13));
-                        _isFirstDraw = true;
+                        if (_isFirstDraw)
+                        {
+                            _map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(center, 13));
+                            _isFirstDraw = true;
+                        }
+                        else
+                            _map.AnimateCamera(CameraUpdateFactory.NewLatLng(center));
                     }
-                    else
-                        _map.AnimateCamera(CameraUpdateFactory.NewLatLng(center));
                 }
+                catch { }
             });
         }
 

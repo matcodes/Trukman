@@ -58,7 +58,7 @@ namespace KAS.Trukman.Droid
         {
             base.OnCreate(bundle);
 
-            CrashManager.Register(this, "a775372499f441429cd55ce97a432cfe");
+            CrashManager.Register(this, "916e2948dfda4237a1bf0c60188e3f6f");
 
 
             //Trip trip = null;
