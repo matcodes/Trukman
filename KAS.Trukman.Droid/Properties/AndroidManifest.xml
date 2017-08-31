@@ -37,11 +37,11 @@
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJE-QQq6qht1tNZ1W-qVLJEHbrTYd94" /> -->
 		<!-- DKG map key -->
 		<!-- Ключ для debug версии -->
-		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" /> -->
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCgJXfgKxSrhbTkWy4129INuGlQUKgoOp0" />
 		<!-- Ключ для release-версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBnFtQuoFKUXWgZyhJ9clT7FFEcWDP1m7E" /> -->
 		<!-- Ключ для HOME debug версии -->
-		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnnCN2nhWxLnzpBiJw0VHmd-KkGsSakfE" />
+		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnnCN2nhWxLnzpBiJw0VHmd-KkGsSakfE" /> -->
 		<!-- Ключ для HOME release версии -->
 		<!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAfSIM0JvTiwacD6xDf-1bIi66Q1YUhzbU " /> -->
 		<receiver android:name="parse.ParsePushBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
@@ -69,6 +69,9 @@
 		</receiver>
 		<service android:name="md5a3d95eab3a12c4749fd3c7dee5454ff8.TrukmanService" />
 		<provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="2147483647" android:authorities="kas.apps.trukman.mono.MonoRuntimeProvider.__mono_init__" />
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.shoppler.trukman.provider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
+		</provider>
 		<!--suppress ExportedReceiver-->
 		<receiver android:name="mono.android.Seppuku">
 			<intent-filter>

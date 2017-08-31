@@ -23,6 +23,7 @@ using HockeyApp;
 using KAS.Trukman.Data.Classes;
 using Android.Support.V7.App;
 using KAS.Trukman.Extensions;
+using Android.Support.V4.Content;
 
 namespace KAS.Trukman.Droid
 {
@@ -169,8 +170,17 @@ namespace KAS.Trukman.Droid
             Intent intent = new Intent(MediaStore.ActionImageCapture);
 
             _pictureFile = new Java.IO.File(_pictureDirectory, String.Format("invoice_{0}.jpg", Guid.NewGuid()));
-            intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(_pictureFile));
-            StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+            try
+            {
+                var uri = FileProvider.GetUriForFile(this, "com.shoppler.trukman.provider", _pictureFile);
+
+                intent.PutExtra(MediaStore.ExtraOutput, uri); // Android.Net.Uri.FromFile(_pictureFile));
+                StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+            }
+            catch(Exception exc)
+            {
+
+            }
         }
 
         private void CreateDirectoryForPictures()

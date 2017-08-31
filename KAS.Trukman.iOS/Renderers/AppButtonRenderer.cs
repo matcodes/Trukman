@@ -22,6 +22,7 @@ namespace KAS.Trukman.iOS
             if (button != null)
             {
                 button.ContentEdgeInsets = new UIEdgeInsets(7, 4, 7, 4);
+                //button.SetTitleColor(UIColor.White, UIControlState.Normal);
             }
         }
     }

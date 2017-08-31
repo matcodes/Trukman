@@ -29,6 +29,7 @@ namespace KAS.Trukman.Droid.Renderers
             if (this.Control != null)
             {
                 this.Control.SetPadding(4, 7, 4, 7);
+                this.Control.SetTextColor(Android.Graphics.Color.White);
                 //var appButton = (this.Element as AppButton);
                 //var resource = Resource.Drawable.appbutton;
                 //if (appButton.AppStyle == AppButtonStyle.Left)
