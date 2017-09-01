@@ -104,8 +104,8 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
             this.SelectedAdvance = null;
             try
             {
-                this.EditingAdvance.State = 2;
-                this.EditingAdvance.Comcheck = "";
+                //this.EditingAdvance.State = 2;
+                //this.EditingAdvance.Comcheck = "";
                 //await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
                 this.EditComcheckPopupVisible = true;
             }
@@ -132,7 +132,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 if (String.IsNullOrEmpty(this.Comcheck))
                     throw new Exception("Comcheck is empty.");
 
-                this.EditingAdvance.State = 3;
+                this.EditingAdvance.State = (int)ComcheckRequestState.Visible;
                 this.EditingAdvance.Comcheck = this.Comcheck;
                 await TrukmanContext.SetAdvanceStateAsync(this.EditingAdvance);
                 this.Advances.Remove(this.EditingAdvance);

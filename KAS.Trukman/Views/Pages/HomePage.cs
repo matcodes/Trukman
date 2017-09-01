@@ -1876,7 +1876,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 40, 40, 40),
+                Padding = new Thickness(40),
                 Content = frame
             };
             content.SetBinding(ContentView.IsVisibleProperty, "GPSPopupVisible", BindingMode.TwoWay);

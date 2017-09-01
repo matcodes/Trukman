@@ -249,9 +249,9 @@ namespace KAS.Trukman.Views.Pages.Owner
             var content = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 40, 40, 0),
+                Padding = new Thickness(40),
                 Content = frame
             };
             content.SetBinding(ContentView.IsVisibleProperty, "EditComcheckPopupVisible", BindingMode.TwoWay);

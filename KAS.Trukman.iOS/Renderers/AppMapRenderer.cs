@@ -55,71 +55,86 @@ namespace KAS.Trukman.iOS
 		{
 			base.OnElementPropertyChanged (sender, args);
 			this.InvokeOnMainThread (() => {
-				
-				var map = (this.Element as AppMap);
-				var nativeMap = (this.Control as MKMapView);
+                try
+                {
+                    var map = (this.Element as AppMap);
+                    var nativeMap = (this.Control as MKMapView);
 
-				if (args.PropertyName == "BaseRoutePoints") {
-					if (_baseRoute != null)
-						nativeMap.RemoveOverlay (_baseRoute);
+                    if (args.PropertyName == "BaseRoutePoints")
+                    {
+                        if (_baseRoute != null)
+                            nativeMap.RemoveOverlay(_baseRoute);
 
-					var coords = new List<CLLocationCoordinate2D> ();
-					foreach (var position in map.BaseRoutePoints)
-						coords.Add (new CLLocationCoordinate2D (position.Latitude, position.Longitude));
+                        var coords = new List<CLLocationCoordinate2D>();
+                        foreach (var position in map.BaseRoutePoints)
+                            coords.Add(new CLLocationCoordinate2D(position.Latitude, position.Longitude));
 
-					_baseRoute = MKPolyline.FromCoordinates (coords.ToArray ());
+                        _baseRoute = MKPolyline.FromCoordinates(coords.ToArray());
 
-					nativeMap.AddOverlay (_baseRoute);
-				} else if (args.PropertyName == "RoutePoints") {
-					if (_route != null)
-						nativeMap.RemoveOverlay (_route);
+                        nativeMap.AddOverlay(_baseRoute);
+                    }
+                    else if (args.PropertyName == "RoutePoints")
+                    {
+                        if (_route != null)
+                            nativeMap.RemoveOverlay(_route);
 
-					var coords = new List<CLLocationCoordinate2D> ();
-					foreach (var position in map.RoutePoints)
-						coords.Add (new CLLocationCoordinate2D (position.Latitude, position.Longitude));
+                        var coords = new List<CLLocationCoordinate2D>();
+                        foreach (var position in map.RoutePoints)
+                            coords.Add(new CLLocationCoordinate2D(position.Latitude, position.Longitude));
 
-					_route = MKPolyline.FromCoordinates (coords.ToArray ());
-					nativeMap.AddOverlay (_route);
-				} else if (args.PropertyName == "RouteStartPosition") {
-					if (_routeStartPosition != null)
-						nativeMap.RemoveAnnotation (_routeStartPosition);
+                        _route = MKPolyline.FromCoordinates(coords.ToArray());
+                        nativeMap.AddOverlay(_route);
+                    }
+                    else if (args.PropertyName == "RouteStartPosition")
+                    {
+                        if (_routeStartPosition != null)
+                            nativeMap.RemoveAnnotation(_routeStartPosition);
 
-					_routeStartPosition = new MKPointAnnotation {
-						Title = map.RouteStartPosition.Contractor.Name,
-						Subtitle = map.RouteStartPosition.Address,
-						Coordinate = new CLLocationCoordinate2D (map.RouteStartPosition.Position.Latitude, map.RouteStartPosition.Position.Longitude)
-					};
+                        _routeStartPosition = new MKPointAnnotation
+                        {
+                            Title = map.RouteStartPosition.Contractor.Name,
+                            Subtitle = map.RouteStartPosition.Address,
+                            Coordinate = new CLLocationCoordinate2D(map.RouteStartPosition.Position.Latitude, map.RouteStartPosition.Position.Longitude)
+                        };
 
-					nativeMap.AddAnnotation (_routeStartPosition);
-				} else if (args.PropertyName == "RouteEndPosition") {
-					if (_routeEndPosition != null)
-						nativeMap.RemoveAnnotation (_routeEndPosition);
+                        nativeMap.AddAnnotation(_routeStartPosition);
+                    }
+                    else if (args.PropertyName == "RouteEndPosition")
+                    {
+                        if (_routeEndPosition != null)
+                            nativeMap.RemoveAnnotation(_routeEndPosition);
 
-					_routeEndPosition = new MKPointAnnotation {
-						Title = map.RouteEndPosition.Contractor.Name,
-						Subtitle = map.RouteEndPosition.Address,
-						Coordinate = new CLLocationCoordinate2D (map.RouteEndPosition.Position.Latitude, map.RouteEndPosition.Position.Longitude)
-					};
+                        _routeEndPosition = new MKPointAnnotation
+                        {
+                            Title = map.RouteEndPosition.Contractor.Name,
+                            Subtitle = map.RouteEndPosition.Address,
+                            Coordinate = new CLLocationCoordinate2D(map.RouteEndPosition.Position.Latitude, map.RouteEndPosition.Position.Longitude)
+                        };
 
-					nativeMap.AddAnnotation (_routeEndPosition);
-				} else if (args.PropertyName == "RouteCarPosition") {
-					CLLocationCoordinate2D carPosition = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude);
-					var region = new MKCoordinateRegion(carPosition, nativeMap.Region.Span);
-					if (_routeCarPosition != null)
-						nativeMap.RemoveAnnotation (_routeCarPosition);
-					else 
-						region = MKCoordinateRegion.FromDistance (carPosition, 1000, 1000);
+                        nativeMap.AddAnnotation(_routeEndPosition);
+                    }
+                    else if (args.PropertyName == "RouteCarPosition")
+                    {
+                        CLLocationCoordinate2D carPosition = new CLLocationCoordinate2D(map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude);
+                        var region = new MKCoordinateRegion(carPosition, nativeMap.Region.Span);
+                        if (_routeCarPosition != null)
+                            nativeMap.RemoveAnnotation(_routeCarPosition);
+                        else
+                            region = MKCoordinateRegion.FromDistance(carPosition, 1000, 1000);
 
-					nativeMap.Region =  region;
+                        nativeMap.Region = region;
 
-					_routeCarPosition = new MKPointAnnotation {
-						Title = map.RouteCarPosition.GetDurationText (),
-						Subtitle = map.RouteCarPosition.GetDistanceTextFromMiles (),
-						Coordinate = new CLLocationCoordinate2D (map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
-					};
+                        _routeCarPosition = new MKPointAnnotation
+                        {
+                            Title = map.RouteCarPosition.GetDurationText(),
+                            Subtitle = map.RouteCarPosition.GetDistanceTextFromMiles(),
+                            Coordinate = new CLLocationCoordinate2D(map.RouteCarPosition.Position.Latitude, map.RouteCarPosition.Position.Longitude)
+                        };
 
-					nativeMap.AddAnnotation (_routeCarPosition);
-				}
+                        nativeMap.AddAnnotation(_routeCarPosition);
+                    }
+                }
+                catch { }
 			});
 		}
 

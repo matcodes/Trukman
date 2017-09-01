@@ -128,7 +128,7 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                     if (jobAlert != null)
                     {
                         await TrukmanContext.SetJobAlertIsViewedAsync(jobAlert.ID, true);
-                        this.RemoveJobAlert(jobAlert);
+                        //this.RemoveJobAlert(jobAlert);
                     }
                 }
                 catch (Exception exception)

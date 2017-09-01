@@ -68,7 +68,7 @@ namespace KAS.Trukman.Views.Pages.Owner
                 ColumnSpacing = 0
             };
 			pageContent.Children.Add (content);
-			pageContent.Children.Add (this.CreateEditComcheckPopup ());
+			pageContent.Children.Add (this.CreateEditComcheckPopup());
 			pageContent.Children.Add (busyIndicator);
 
             return pageContent;
@@ -102,13 +102,6 @@ namespace KAS.Trukman.Views.Pages.Owner
 
         private View CreateEditComcheckPopup()
 		{
-			//var appBoxView = new AppBoxView
-			//{
-			//	HorizontalOptions = LayoutOptions.Fill,
-			//	VerticalOptions = LayoutOptions.Fill,
-			//	Color = Color.White
-			//};
-
 			var jobLabel = new Label
 			{
 				VerticalOptions = LayoutOptions.Center,
@@ -255,9 +248,9 @@ namespace KAS.Trukman.Views.Pages.Owner
             var content = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 40, 40, 0),
+                Padding = new Thickness(40),
                 Content = frame
             };
 			content.SetBinding(ContentView.IsVisibleProperty, "EditComcheckPopupVisible", BindingMode.TwoWay);

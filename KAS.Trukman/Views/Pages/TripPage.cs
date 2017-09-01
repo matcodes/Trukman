@@ -545,7 +545,7 @@ namespace KAS.Trukman.Views.Pages
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 0),
+                Padding = new Thickness(40),
                 Content = frame
             };
             content.SetBinding(ContentView.IsVisibleProperty, "PopupVisible", BindingMode.TwoWay);

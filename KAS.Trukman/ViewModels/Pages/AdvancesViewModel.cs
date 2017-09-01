@@ -18,9 +18,9 @@ namespace KAS.Trukman.ViewModels.Pages
     public class AdvancesViewModel : PageViewModel
     {
         private System.Timers.Timer _fuelRequestedTimer = null;
-        private System.Timers.Timer _fuelReceivedTimer = null;
+        //private System.Timers.Timer _fuelReceivedTimer = null;
         private System.Timers.Timer _lumperRequestedTimer = null;
-        private System.Timers.Timer _lumperReceivedTimer = null;
+        //private System.Timers.Timer _lumperReceivedTimer = null;
 
         public AdvancesViewModel() : base()
         {
@@ -53,9 +53,9 @@ namespace KAS.Trukman.ViewModels.Pages
 
         public override void Disappering()
         {
-            this.FuelStopReceivedTimer();
+            //this.FuelStopReceivedTimer();
             this.FuelStopRequestedTimer();
-            this.LumperStopReceivedTimer();
+            //this.LumperStopReceivedTimer();
             this.LumperStopRequestedTimer();
 
             base.Disappering();
@@ -274,15 +274,15 @@ namespace KAS.Trukman.ViewModels.Pages
                 if (comcheckState == ComcheckRequestState.None)
                 {
                     this.FuelStopRequestedTimer();
-                    this.FuelStopReceivedTimer();
+                    //this.FuelStopReceivedTimer();
                     this.FuelState = FuelAdvanceStates.None;
                 }
-                if (comcheckState == ComcheckRequestState.Received)
-                {
-                    this.FuelStopRequestedTimer();
-                    this.FuelState = FuelAdvanceStates.Received;
-                    this.FuelStartReceivedTimer();
-                }
+                //if (comcheckState == ComcheckRequestState.Received)
+                //{
+                //    this.FuelStopRequestedTimer();
+                //    this.FuelState = FuelAdvanceStates.Received;
+                //    this.FuelStartReceivedTimer();
+                //}
                 else if (comcheckState == ComcheckRequestState.Requested)
                 {
                     this.FuelState = FuelAdvanceStates.Requested;
@@ -293,7 +293,8 @@ namespace KAS.Trukman.ViewModels.Pages
                     var comcheck = await TrukmanContext.GetComcheckAsync(this.Trip.ID, ComcheckRequestType.FuelAdvance);
                     if (!string.IsNullOrEmpty(comcheck))
                     {
-                        this.FuelStopReceivedTimer();
+                        this.FuelStopRequestedTimer();
+                        //this.FuelStopReceivedTimer();
                         this.FuelComcheck = comcheck;
                         this.FuelState = FuelAdvanceStates.Completed;
                     }
@@ -320,15 +321,15 @@ namespace KAS.Trukman.ViewModels.Pages
                 if (comcheckState == ComcheckRequestState.None)
                 {
                     this.LumperStopRequestedTimer();
-                    this.LumperStopReceivedTimer();
+                    //this.LumperStopReceivedTimer();
                     this.LumperState = LumperStates.None;
                 }
-                if (comcheckState == ComcheckRequestState.Received)
-                {
-                    this.LumperStopRequestedTimer();
-                    this.LumperState = LumperStates.Received;
-                    this.LumperStartReceivedTimer();
-                }
+                //if (comcheckState == ComcheckRequestState.Received)
+                //{
+                //    this.LumperStopRequestedTimer();
+                //    this.LumperState = LumperStates.Received;
+                //    this.LumperStartReceivedTimer();
+                //}
                 else if (comcheckState == ComcheckRequestState.Requested)
                 {
                     this.LumperState = LumperStates.Requested;
@@ -339,7 +340,8 @@ namespace KAS.Trukman.ViewModels.Pages
                     var comcheck = await TrukmanContext.GetComcheckAsync(this.Trip.ID, ComcheckRequestType.Lumper);
                     if (!string.IsNullOrEmpty(comcheck))
                     {
-                        this.LumperStopReceivedTimer();
+                        this.LumperStopRequestedTimer();
+                        //this.LumperStopReceivedTimer();
                         this.LumperComcheck = comcheck;
                         this.LumperState = LumperStates.Completed;
                     }
@@ -362,24 +364,24 @@ namespace KAS.Trukman.ViewModels.Pages
                 _fuelRequestedTimer.Stop();
         }
 
-        private void FuelStartReceivedTimer()
-        {
-            if (_fuelReceivedTimer == null)
-            {
-                _fuelReceivedTimer = new System.Timers.Timer { Interval = 5000 };
-                _fuelReceivedTimer.Elapsed += (sender, args) =>
-                {
-                    CheckFuelComcheck();
-                };
-            }
-            _fuelReceivedTimer.Start();
-        }
+        //private void FuelStartReceivedTimer()
+        //{
+        //    if (_fuelReceivedTimer == null)
+        //    {
+        //        _fuelReceivedTimer = new System.Timers.Timer { Interval = 5000 };
+        //        _fuelReceivedTimer.Elapsed += (sender, args) =>
+        //        {
+        //            CheckFuelComcheck();
+        //        };
+        //    }
+        //    _fuelReceivedTimer.Start();
+        //}
 
-        private void FuelStopReceivedTimer()
-        {
-            if (_fuelReceivedTimer != null)
-                _fuelReceivedTimer.Stop();
-        }
+        //private void FuelStopReceivedTimer()
+        //{
+        //    if (_fuelReceivedTimer != null)
+        //        _fuelReceivedTimer.Stop();
+        //}
 
         private void LumperSetStateText()
         {
@@ -503,24 +505,24 @@ namespace KAS.Trukman.ViewModels.Pages
                 _lumperRequestedTimer.Stop();
         }
 
-        private void LumperStartReceivedTimer()
-        {
-            if (_lumperReceivedTimer == null)
-            {
-                _lumperReceivedTimer = new System.Timers.Timer { Interval = 5000 };
-                _lumperReceivedTimer.Elapsed += (sender, args) =>
-                {
-                    this.CheckLumperComcheck();
-                };
-            }
-            _lumperReceivedTimer.Start();
-        }
+        //private void LumperStartReceivedTimer()
+        //{
+        //    if (_lumperReceivedTimer == null)
+        //    {
+        //        _lumperReceivedTimer = new System.Timers.Timer { Interval = 5000 };
+        //        _lumperReceivedTimer.Elapsed += (sender, args) =>
+        //        {
+        //            this.CheckLumperComcheck();
+        //        };
+        //    }
+        //    _lumperReceivedTimer.Start();
+        //}
 
-        private void LumperStopReceivedTimer()
-        {
-            if (_lumperReceivedTimer != null)
-                _lumperReceivedTimer.Stop();
-        }
+        //private void LumperStopReceivedTimer()
+        //{
+        //    if (_lumperReceivedTimer != null)
+        //        _lumperReceivedTimer.Stop();
+        //}
 
         public Trip Trip { get; private set; }
 

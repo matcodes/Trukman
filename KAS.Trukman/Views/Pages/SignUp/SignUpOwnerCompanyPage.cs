@@ -510,7 +510,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 40, 40, 40),
+                Padding = new Thickness(40),
                 Content = frame
             };
             content.SetBinding(Grid.IsVisibleProperty, "EnterConfirmationCodePopupVisible", BindingMode.TwoWay);
@@ -600,7 +600,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = background,
-                Padding = new Thickness(40, 40, 40, 40),
+                Padding = new Thickness(40),
                 Content = frame
             };
             content.SetBinding(Grid.IsVisibleProperty, "ConfirmationCodeAcceptedPopupVisible", BindingMode.TwoWay);
