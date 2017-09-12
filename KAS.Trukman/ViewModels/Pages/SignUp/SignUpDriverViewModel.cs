@@ -77,6 +77,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                     this.StopShowTimer();
                     this.ConfirmationState = 0;
                 }
+                else
+                    this.ConfirmationCode = "";
             }
             else if (propertyName == "ConfirmationCodeAcceptedPopupVisible")
             {

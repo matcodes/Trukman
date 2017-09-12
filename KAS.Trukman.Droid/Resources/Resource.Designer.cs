@@ -2474,26 +2474,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f020070
 			public const int avd_hide_password = 2130837616;
 			
-			// aapt resource value: 0x7f020168
-			public const int avd_hide_password_1 = 2130837864;
-			
-			// aapt resource value: 0x7f020169
-			public const int avd_hide_password_2 = 2130837865;
-			
-			// aapt resource value: 0x7f02016a
-			public const int avd_hide_password_3 = 2130837866;
-			
 			// aapt resource value: 0x7f020071
 			public const int avd_show_password = 2130837617;
-			
-			// aapt resource value: 0x7f02016b
-			public const int avd_show_password_1 = 2130837867;
-			
-			// aapt resource value: 0x7f02016c
-			public const int avd_show_password_2 = 2130837868;
-			
-			// aapt resource value: 0x7f02016d
-			public const int avd_show_password_3 = 2130837869;
 			
 			// aapt resource value: 0x7f020072
 			public const int background = 2130837618;
