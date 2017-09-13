@@ -9,12 +9,12 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
-    #region OwnerAddBrokerPage
-    public class OwnerAddBrokerPage : TrukmanPage
+    #region OwnerBrokerPage
+    public class OwnerBrokerPage : TrukmanPage
     {
-        public OwnerAddBrokerPage() : base()
+        public OwnerBrokerPage() : base()
         {
-            this.BindingContext = new OwnerAddBrokerViewModel();
+            this.BindingContext = new OwnerBrokerViewModel();
         }
 
         protected override View CreateContent()
@@ -198,6 +198,46 @@ namespace KAS.Trukman.Views.Pages.Owner
             };
             #endregion
 
+            name.Completed += ((sender, args) =>
+            {
+                email.Focus();
+            });
+
+            email.Completed += ((sender, args) =>
+            {
+                address.Focus();
+            });
+
+            address.Completed += ((sender, args) =>
+            {
+                state.Focus();
+            });
+
+            state.Completed += ((sender, args) =>
+            {
+                zip.Focus();
+            });
+
+            zip.Completed += ((sender, args) =>
+            {
+                phone.Focus();
+            });
+
+            phone.Completed += ((sender, args) =>
+            {
+                contactTitle.Focus();
+            });
+
+            contactTitle.Completed += ((sender, args) =>
+            {
+                contactName.Focus();
+            });
+
+            contactName.Completed += ((sender, args) =>
+            {
+                docketNumber.Focus();
+            });
+
             var submit = new AppRoundButton
             {
                 HorizontalOptions = LayoutOptions.Fill,
@@ -285,9 +325,9 @@ namespace KAS.Trukman.Views.Pages.Owner
             return pageContent;
         }
 
-        public new OwnerAddBrokerViewModel ViewModel
+        public new OwnerBrokerViewModel ViewModel
         {
-            get { return (this.BindingContext as OwnerAddBrokerViewModel); }
+            get { return (this.BindingContext as OwnerBrokerViewModel); }
         }
     }
     #endregion

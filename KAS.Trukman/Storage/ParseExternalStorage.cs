@@ -1199,21 +1199,23 @@ namespace KAS.Trukman.Storage
             await parseComcheck.SaveAsync();
         }
 
-        public async Task<User[]> SelectBrockersAsync()
+        public Task<User[]> SelectBrockersAsync()
         {
-            var parseCompany = await this.SelectUserParseCompanyAsync();
-            var query = parseCompany.Brokers.Query;
-            var parseUsers = await query.FindAsync();
-            var brokers = new List<User>();
-            foreach (var parseUser in parseUsers)
-            {
-                var user = this.ParseUserToUser(parseUser);
-                brokers.Add(user);
-            }
-            return brokers.ToArray();
+            //var parseCompany = await this.SelectUserParseCompanyAsync();
+            //var query = parseCompany.Brokers.Query;
+            //var parseUsers = await query.FindAsync();
+            //var brokers = new List<User>();
+            //foreach (var parseUser in parseUsers)
+            //{
+            //    var user = this.ParseUserToUser(parseUser);
+            //    brokers.Add(user);
+            //}
+            //return brokers.ToArray();
+
+            throw new NotImplementedException();
         }
 
-        public Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        public Task<User> SaveBrokerAsync(BrokerUser brokerUser)
         {
             throw new NotImplementedException();
         }

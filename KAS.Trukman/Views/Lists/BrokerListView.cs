@@ -25,7 +25,7 @@ namespace KAS.Trukman
 		public BrokerCell() 
 			: base()
 		{
-			this.SetBinding(BrokerCell.TextProperty, "FullName");
+			this.SetBinding(BrokerCell.TextProperty, "UserName");
 			this.TextColor = Color.White;
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
-using KAS.Trukman.Data.Infos;
+using KAS.Trukman.Data.Classes;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
 using System;
@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace KAS.Trukman.ViewModels.Pages.Owner
 {
-    #region OwnerAddBrokerViewModel
-    public class OwnerAddBrokerViewModel : PageViewModel
+    #region OwnerBrokerViewModel
+    public class OwnerBrokerViewModel : PageViewModel
     {
-        public OwnerAddBrokerViewModel() : base()
+        public OwnerBrokerViewModel() : base()
         {
             this.SubmitCommand = new VisualCommand(this.Submit);
             this.ShowHomePageCommand = new VisualCommand(this.ShowHomePage);
@@ -23,6 +23,21 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
         public override void Initialize(params object[] parameters)
         {
             base.Initialize(parameters);
+
+            BrokerUser brokerUser = parameters.Length > 0 ? (parameters[0] as BrokerUser) : null;
+            if (brokerUser != null)
+            {
+                this.BrokerId = brokerUser.ID;
+                this.Name = brokerUser.UserName;
+                this.Email = brokerUser.Email;
+                this.Address = brokerUser.Address;
+                this.State = brokerUser.State;
+                this.ZIP = brokerUser.ZIP;
+                this.Phone = brokerUser.Phone;
+                this.ContactTitle = brokerUser.ContactTitle;
+                this.ContactName = brokerUser.ContactName;
+                this.DocketNumber = brokerUser.DocketNumber;
+            }
         }
 
         protected override void Localize()
@@ -49,28 +64,39 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                 try
                 {
                     this.IsBusy = true;
-                    var brokerInfo = new BrokerInfo
+                    var brokerUser = new BrokerUser
                     {
+                        ID = this.BrokerId,
                         Address = this.Address,
                         ContactName = this.ContactName,
                         ContactTitle = this.ContactTitle,
                         DocketNumber = this.DocketNumber,
                         Email = this.Email,
-                        Name = this.Name,
+                        UserName = this.Name,
                         Phone = this.Phone,
                         State = this.State,
                         ZIP = this.ZIP
                     };
 
-                    await TrukmanContext.SaveBrokerAsync(brokerInfo);
+                    await TrukmanContext.SaveBrokerAsync(brokerUser);
 
                     PopPageMessage.Send();
+                }
+                catch(Exception exc)
+                {
+                    ShowToastMessage.Send(exc.Message);
                 }
                 finally
                 {
                     this.IsBusy = false;
                 }
             });
+        }
+
+        public string BrokerId
+        {
+            get { return (string)this.GetValue("BrokerId"); }
+            set { this.SetValue("BrokerId", value); }
         }
 
         public string Name

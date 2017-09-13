@@ -1,6 +1,7 @@
 ﻿using KAS.Trukman.AppContext;
 using KAS.Trukman.Classes;
 using KAS.Trukman.Data.Classes;
+using KAS.Trukman.Data.Infos;
 using KAS.Trukman.Extensions;
 using KAS.Trukman.Languages;
 using KAS.Trukman.Messages;
@@ -97,11 +98,12 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void AddBroker(object parameter)
         {
-            ShowOwnerAddBrokerPageMessage.Send();
+            ShowOwnerBrokerPageMessage.Send(null);
         }
 
         private void SelectBroker(object parameter)
         {
+            ShowOwnerBrokerPageMessage.Send(this.SelectedBroker as BrokerUser);
             this.SelectedBroker = null;
         }
 

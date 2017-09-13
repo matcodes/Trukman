@@ -69,7 +69,7 @@
 		</receiver>
 		<service android:name="md5a3d95eab3a12c4749fd3c7dee5454ff8.TrukmanService" />
 		<provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="2147483647" android:authorities="kas.apps.trukman.mono.MonoRuntimeProvider.__mono_init__" />
-		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.shoppler.trukman.provider" android:exported="false" android:grantUriPermissions="true">
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
 		</provider>
 		<!--suppress ExportedReceiver-->

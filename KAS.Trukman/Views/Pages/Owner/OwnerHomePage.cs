@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace KAS.Trukman.Views.Pages.Owner
 {
-    #region OwnerHomeGage
+    #region OwnerHomePage
     public class OwnerHomePage : TrukmanPage
     {
         public OwnerHomePage()

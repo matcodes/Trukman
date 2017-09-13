@@ -434,7 +434,7 @@ namespace KAS.Trukman.AppContext
             return brockers;
         }
 
-        public static async Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        public static async Task<User> SaveBrokerAsync(BrokerUser brokerInfo)
         {
             var brockers = await _localStorage.SaveBrokerAsync(brokerInfo);
             return brockers;

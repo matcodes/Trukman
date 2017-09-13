@@ -172,7 +172,7 @@ namespace KAS.Trukman.Droid
             _pictureFile = new Java.IO.File(_pictureDirectory, String.Format("invoice_{0}.jpg", Guid.NewGuid()));
             try
             {
-                var uri = FileProvider.GetUriForFile(this, "com.shoppler.trukman.provider", _pictureFile);
+                var uri = FileProvider.GetUriForFile(this, this.ApplicationContext.PackageName + ".provider", _pictureFile);
 
                 intent.PutExtra(MediaStore.ExtraOutput, uri); // Android.Net.Uri.FromFile(_pictureFile));
                 StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);

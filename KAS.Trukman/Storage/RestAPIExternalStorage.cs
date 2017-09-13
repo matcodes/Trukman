@@ -347,7 +347,7 @@ namespace KAS.Trukman.Storage
                 Points = task.PlanPoints,
                 Shipper = shipper,
                 Receiver = receiver,
-                JobRef = task.Id.ToString(), // task.Number,
+                JobRef = task.Number,
                 FromAddress = task.LoadingAddress,
                 ToAddress = task.UnloadingAddress,
                 Weight = task.Weight,
@@ -364,14 +364,20 @@ namespace KAS.Trukman.Storage
 
         private User BrokerToUser(Broker broker)
         {
-            return new User
+            return new BrokerUser
             {
                 ID = broker.Id.ToString(),
                 UserName = broker.Name,
-                FirstName = broker.Name,
+                FirstName = broker.ContactTitle,
                 LastName = broker.ContactName,
                 Phone = broker.Phone,
-                Role = UserRole.Broker
+                Role = UserRole.Broker,
+                Address = broker.Address,
+                State = broker.State,
+                ZIP = broker.ZIP,
+                ContactTitle = broker.ContactTitle,
+                ContactName = broker.ContactName,
+                DocketNumber = broker.DocketNumber
             };
         }
 
@@ -1127,21 +1133,26 @@ namespace KAS.Trukman.Storage
             return users.ToArray();
         }
 
-        public async Task<User> SaveBrokerAsync(BrokerInfo brokerInfo)
+        public async Task<User> SaveBrokerAsync(BrokerUser brokerUser)
         {
+            Guid guid = Guid.Empty;
+            if (!Guid.TryParse(brokerUser.ID, out guid) || guid == Guid.Empty)
+                guid = Guid.NewGuid();
+
             var saveBrokerRequest = new SaveBrokerRequest
             {
                 Broker = new Broker
                 {
-                    Address = brokerInfo.Address,
-                    ContactName = brokerInfo.ContactName,
-                    ContactTitle = brokerInfo.ContactTitle,
-                    DocketNumber = brokerInfo.DocketNumber,
-                    Email = brokerInfo.Email,
-                    Name = brokerInfo.Name,
-                    Phone = brokerInfo.Phone,
-                    State = brokerInfo.State,
-                    ZIP = brokerInfo.ZIP
+                    Id = guid,
+                    Address = brokerUser.Address,
+                    ContactName = brokerUser.ContactName,
+                    ContactTitle = brokerUser.ContactTitle,
+                    DocketNumber = brokerUser.DocketNumber,
+                    Email = brokerUser.Email,
+                    Name = brokerUser.UserName,
+                    Phone = brokerUser.Phone,
+                    State = brokerUser.State,
+                    ZIP = brokerUser.ZIP
                 }
             };
             var requestContent = SerializeObject(saveBrokerRequest);

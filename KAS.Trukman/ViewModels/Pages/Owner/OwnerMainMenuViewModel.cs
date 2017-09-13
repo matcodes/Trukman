@@ -73,26 +73,32 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
 
         private void ManageDrivers(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void ManageDispatchers(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void ManageFleet(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void Settings(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void Help(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         private void SelectLanguage(object parameter)
         {
+            PopToRootPageMessage.Send();
         }
 
         public MenuItem SelectedItem

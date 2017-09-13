@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
-using KAS.Trukman.Storage.ParseClasses;
-using Parse;
-using Trukman.Helpers;
 using KAS.Trukman.Data.Route;
 
 namespace KAS.Trukman.Storage
@@ -116,7 +113,7 @@ namespace KAS.Trukman.Storage
 
 		Task<User[]> SelectBrockersAsync();
 
-        Task<User> SaveBrokerAsync(BrokerInfo brokerInfo);
+        Task<User> SaveBrokerAsync(BrokerUser brokerInfo);
 
         Task<User[]> SelectDriversAsync ();
 
