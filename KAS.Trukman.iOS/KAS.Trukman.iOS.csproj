@@ -72,9 +72,10 @@
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchDebug>true</MtouchDebug>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: liryk@yandex.ru (YM695XL2YX)</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
+    <CodesignProvision>iOS Team Provisioning Profile: dkg.apps.kas-trukman-ios</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -198,11 +199,17 @@
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <InterfaceDefinition Include="Main.storyboard" />
-    <InterfaceDefinition Include="Native ViewControllers\RateConfirmationViewController.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\RateConfirmationViewController.xib">
+      <SubType>Designer</SubType>
+    </InterfaceDefinition>
     <InterfaceDefinition Include="Native ViewControllers\OCRPdfViewController.xib" />
     <InterfaceDefinition Include="Native ViewControllers\OCRResultViewController.xib" />
-    <InterfaceDefinition Include="Native ViewControllers\JobCreateViewController.xib" />
-    <InterfaceDefinition Include="Native ViewControllers\JobTextCreateViewCell.xib" />
+    <InterfaceDefinition Include="Native ViewControllers\JobCreateViewController.xib">
+      <SubType>Designer</SubType>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="Native ViewControllers\JobTextCreateViewCell.xib">
+      <SubType>Designer</SubType>
+    </InterfaceDefinition>
     <InterfaceDefinition Include="Native ViewControllers\JobButtonCreateViewCell.xib" />
     <InterfaceDefinition Include="Native ViewControllers\UserListViewController.xib" />
     <InterfaceDefinition Include="Native ViewControllers\CarInfoViewController.xib" />

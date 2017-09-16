@@ -74,6 +74,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckFuelRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckLumperRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CheckTaskRequestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CreateTaskRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\CreateTaskRequestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DispatcherLoginRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DispatcherRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Requests\DriverLoginRequest.cs" />
@@ -126,6 +128,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CheckFuelRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CheckLumperRequestResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CheckTaskRequestResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CreateTaskRequestResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\CreateTaskResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\DispatcherLoginResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\DriverLoginResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\API\Responses\FindFuelRequestsResponse.cs" />

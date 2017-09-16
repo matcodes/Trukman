@@ -207,13 +207,21 @@ namespace KAS.Trukman.ViewModels.Pages.Owner
                                     var routePoints = this.DecodeRoutePoints(route.OverviewPolyline.Points);
                                     this.RoutePoints = routePoints;
                                 }
-
-                                this.CurrentPosition = new CarInfo
+                                else
                                 {
-                                    Distance = leg.Distance.Value,
-                                    Duration = leg.Duration.Value,
-                                    Position = position
-                                };
+                                    string driver = (trip.Driver != null ? trip.Driver.FullName : "");
+                                    ShowToastMessage.Send("Not found route from location of " + driver);
+                                }
+
+                                if (leg != null)
+                                {
+                                    this.CurrentPosition = new CarInfo
+                                    {
+                                        Distance = leg.Distance.Value,
+                                        Duration = leg.Duration.Value,
+                                        Position = position
+                                    };
+                                }
                             }
                         }
                     }

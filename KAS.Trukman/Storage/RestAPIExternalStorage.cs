@@ -41,6 +41,8 @@ namespace KAS.Trukman.Storage
         private static readonly string ANSWER_FUEL_REQUEST_ENDPOINT = "owners/answerfuelrequest";
         private static readonly string ANSWER_LUMPER_REQUEST_ENDPOINT = "owners/answerlumperrequest";
         private static readonly string SELECT_TASK_BY_ID_ENDPOINT = "owners/selecttaskbyid";
+        private static readonly string CREATE_TASK_ENDPOINT = "owners/createtask";
+        private static readonly string CREATE_TASK_REQUEST_ENDPOINT = "owners/createtaskrequest";
         private static readonly string SELECT_NOTIFICATIONS_ENDPOINT = "owners/selectnotifications";
         //private static readonly string SET_NOTIFICATION_IS_VIEWED_ENDPOINT = "owners/setnotificationisviewed";
         private static readonly string SELECT_TASKS_BY_OWNER_ID_ENDPOINT = "owners/selecttasksbyownerid";
@@ -358,7 +360,8 @@ namespace KAS.Trukman.Storage
                 Company = company,
                 InvoiceUri = task.InvoiceUri,
                 ReportUri = task.ReportUri,
-                DriverDisplayName = (driver != null ? driver.UserName : "")
+                DriverDisplayName = (driver != null ? driver.UserName : ""),
+                Price = task.Cost
             };
         }
 
@@ -432,10 +435,89 @@ namespace KAS.Trukman.Storage
             return uri;
         }
 
-        public Task<Trip> CreateTripAsync(Trip trip)
+        private TrukmanTask TripToTask(Trip trip)
         {
-            // TODO: 
-            return Task.FromResult<Trip>(new Trip());
+            //var shipper = new Contractor
+            //{
+            //    ID = Guid.NewGuid().ToString(),
+            //    Name = task.LoadingName,
+            //    Phone = task.LoadingPhone,
+            //    Fax = task.LoadingFax,
+            //    Address = task.LoadingAddress,
+            //    SpecialInstruction = task.LoadingInstructions,
+            //};
+            //var receiver = new Contractor
+            //{
+            //    ID = Guid.NewGuid().ToString(),
+            //    Name = task.UnloadingName,
+            //    Phone = task.UnloadingPhone,
+            //    Fax = task.UnloadingFax,
+            //    Address = task.UnloadingAddress,
+            //    SpecialInstruction = task.UnloadingInstructions
+            //};
+
+            var broker = new Broker { Id = Guid.Parse(trip.Broker.ID), Name = trip.Broker.FullName };
+
+            return new TrukmanTask
+            {
+                OwnerId = Guid.Parse(trip.Company.ID),
+                Number = trip.JobRef,
+                LoadingName = (trip.Shipper != null ? trip.Shipper.Name : ""),
+                LoadingAddress = trip.FromAddress,
+                LoadingPlanTime = trip.PickupDatetime.ToUniversalTime(),
+                LoadingDonePlanTime = trip.PickupDatetime.ToUniversalTime().AddHours(1), //
+                UnloadingName = (trip.Receiver != null ? trip.Receiver.Name : ""),
+                UnloadingAddress = trip.ToAddress,
+                UnloadingPlanTime = trip.DeliveryDatetime.ToUniversalTime(),
+                UnloadingDonePlanTime = trip.DeliveryDatetime.ToUniversalTime().AddHours(1), //
+                PlanPoints = 500,
+                Cost = trip.Price,
+                Weight = trip.Weight,
+                Broker = broker
+            };
+        }
+
+        private async Task<TrukmanTask> CreateTask(TrukmanTask task, Guid? driverId = null)
+        {
+            var createTaskRequest = new CreateTaskRequest
+            {
+                Task = task,
+                DriverId = driverId
+            };
+            var requestContent = SerializeObject(createTaskRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CREATE_TASK_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CreateTaskResponse>(request);
+            return result.Task;
+        }
+
+        private async Task<bool> CreateTaskRequest(Guid taskId, Guid driverId)
+        {
+            var createTaskRequestRequest = new CreateTaskRequestRequest
+            {
+                TaskId = taskId,
+                DriverId = driverId
+            };
+            var requestContent = SerializeObject(createTaskRequestRequest);
+            var request = new HttpRequestMessage();
+            request.Method = HttpMethod.Post;
+            request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+            request.RequestUri = CreateRequestUri(CREATE_TASK_REQUEST_ENDPOINT, null);
+            var result = await ExecuteRequestAsync<CreateTaskRequestResponse>(request);
+            return (result != null);
+        }
+
+        public async Task<Trip> CreateTripAsync(Trip trip)
+        {
+            var trukmanTask = this.TripToTask(trip);
+            trukmanTask = await this.CreateTask(trukmanTask);
+            Guid driverId = Guid.Empty;
+            Guid.TryParse(trip.Driver.ID, out driverId);
+            await this.CreateTaskRequest(trukmanTask.Id, driverId);
+
+            return this.TaskToTrip(trukmanTask);
         }
 
         private async Task<bool> AnswerDriverRequest(Guid ownerId, Guid driverId, bool isAllowed)

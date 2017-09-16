@@ -28,11 +28,17 @@ namespace Trukman.Droid
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.OCRResult);
 			textView = FindViewById<TextView>(Resource.Id.ResultText);
+            //var createButton = FindViewById<Button>(Resource.Id.createButton);
+            //createButton.Click += CreateButton_Click;
 			LoadPreferences();
 			ShowOrder();
 		}
 
-		private void SavePreferences() 
+        //private void CreateButton_Click(object sender, EventArgs e)
+        //{
+        //}
+
+        private void SavePreferences() 
 		{
 			ISharedPreferences sharedPreferences = GetPreferences(FileCreationMode.Private);
 			ISharedPreferencesEditor editor = sharedPreferences.Edit();

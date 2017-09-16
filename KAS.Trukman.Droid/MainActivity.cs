@@ -170,17 +170,10 @@ namespace KAS.Trukman.Droid
             Intent intent = new Intent(MediaStore.ActionImageCapture);
 
             _pictureFile = new Java.IO.File(_pictureDirectory, String.Format("invoice_{0}.jpg", Guid.NewGuid()));
-            try
-            {
-                var uri = FileProvider.GetUriForFile(this, this.ApplicationContext.PackageName + ".provider", _pictureFile);
+            var uri = FileProvider.GetUriForFile(this, this.ApplicationContext.PackageName + ".provider", _pictureFile);
 
-                intent.PutExtra(MediaStore.ExtraOutput, uri); // Android.Net.Uri.FromFile(_pictureFile));
-                StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
-            }
-            catch(Exception exc)
-            {
-
-            }
+            intent.PutExtra(MediaStore.ExtraOutput, uri); // Android.Net.Uri.FromFile(_pictureFile));
+            StartActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
         }
 
         private void CreateDirectoryForPictures()

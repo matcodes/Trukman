@@ -64,13 +64,13 @@ namespace Trukman.Droid
         protected override void OnResume()
         {
             base.OnResume();
-            pdfWebView.LoadUrl("javascript:window.location.reload( true )");
+            //pdfWebView.LoadUrl("javascript:window.location.reload( true )");
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            pdfWebView.ClearCache(true);
+            //pdfWebView.ClearCache(true);
         }
 
         // Switch to scan/view mode

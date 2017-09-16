@@ -11,6 +11,8 @@ namespace KAS.Trukman.Data.Classes
     {
         public Trip() : base()
         {
+            this.Shipper = new Contractor();
+            this.Receiver = new Contractor();
         }
 
         #region ITrip
@@ -160,7 +162,13 @@ namespace KAS.Trukman.Data.Classes
 			get { return (string)this.GetValue ("JobRef"); }
 			set { this.SetValue ("JobRef", value); }
 		}
-		#endregion
+
+        public decimal Price
+        {
+            get { return (decimal)this.GetValue("Price", (decimal)0); }
+            set { this.SetValue("Price", value); }
+        }
+        #endregion
 
         public string ShipperID { get; set; }
 
