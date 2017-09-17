@@ -74,7 +74,7 @@ namespace KAS.Trukman.Languages
             #endregion
 
             #region Owner Home page
-            this.OwnerHomeBrockerListCommandItemLabel = "Brocker List";
+            this.OwnerHomeBrockerListCommandItemLabel = "Broker List";
             this.OwnerHomeDelayAlertsCommandItem = "Delay Alerts";
             this.OwnerHomeDeliveryUpdateCommandItemLabel = "Delivery Update";
             this.OwnerHomeDispatchDriverCommandItemLabel = "Dispatch Driver";

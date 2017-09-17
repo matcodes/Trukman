@@ -8,68 +8,83 @@ namespace Trukman.Helpers
 {
     #region MCQuery
     public static class MCQuery
-	{
-		private static string ENDPOINT_ADDRESS = "http://www.safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+    {
+        private static string ENDPOINT_ADDRESS = "https://www.safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+        private static string ENDPOINT_ADDRESS_RESERVE = "https://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
 
-		public static async Task<MCInfo> VerifyMC(string mc) 
-		{
-			string url = ENDPOINT_ADDRESS + mc;
+        private static async Task<string> GetMCContent(string url)
+        {
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            message.Headers.Add("ContentType", "application/x-www-form-urlencoded");
+            HttpResponseMessage response = GetHttpResponseMessage(message);
+            response.EnsureSuccessStatusCode();
+            string result = await response.Content.ReadAsStringAsync();
+            return result;
+        }
 
-			HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
-			message.Headers.Add("ContentType", "application/x-www-form-urlencoded");
+        public static async Task<MCInfo> VerifyMC(string mc)
+        {
+            string url = ENDPOINT_ADDRESS + mc;
+            string result = "";
+            try
+            {
+                result = await GetMCContent(url);
+            }
+            catch(Exception exc)
+            {
+                url = ENDPOINT_ADDRESS_RESERVE + mc;
+                result = await GetMCContent(url);
+            }
 
-			HttpResponseMessage response = GetHttpResponseMessage(message);
-			response.EnsureSuccessStatusCode();
-			string result = await response.Content.ReadAsStringAsync();
-			MCInfo mcr = new MCInfo(mc);
+            MCInfo mcr = new MCInfo(mc);
             Regex dataRegex = new Regex("Legal Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Name>[a-zA-Z0-9\\s]{3,})&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#DBAName\\\">DBA Name:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<DBA>[a-zA-Z0-9\\s]*)&nbsp;</TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#PhysicalAddress\\\">Physical Address:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>\\r\\n     (?<Address>[a-zA-Z0-9\\s(<br>)(\\\\r),&;]*)/TD>\\r\\n   </TR><TR>\\r\\n    <TH SCOPE=\\\"ROW\\\" class=\\\"querylabelbkg\\\" align=right><A class=\\\"querylabel\\\" href=\\\"saferhelp.aspx#Phone\\\">Phone:</A></TH>\\r\\n    <TD class=\\\"queryfield\\\" valign=top colspan=3>(?<Phone>[0-9(-)-\\s]*)");
-			Match data = dataRegex.Match(result);
-			mcr.Success = data.Success;
-			if (data.Success)
-			{
-				mcr.Name = data.Groups[1].Value;
-				mcr.DBA = data.Groups[2].Value;
-				mcr.Address = new StringBuilder(data.Groups[3].Value)
-					.Replace(@"<br>", "")
-					.Replace("\\r\\n", "")
+            Match data = dataRegex.Match(result);
+            mcr.Success = data.Success;
+            if (data.Success)
+            {
+                mcr.Name = data.Groups[1].Value;
+                mcr.DBA = data.Groups[2].Value;
+                mcr.Address = new StringBuilder(data.Groups[3].Value)
+                    .Replace(@"<br>", "")
+                    .Replace("\\r\\n", "")
                     .Replace("\r\n", "")
                     .Replace("<", "")
-					.Replace("&nbsp;", "")
-					.ToString();
+                    .Replace("&nbsp;", "")
+                    .ToString();
 
                 Regex regEx = new Regex(@"\s+");
                 mcr.Address = regEx.Replace(mcr.Address, " ");
                 mcr.Phone = regEx.Replace(data.Groups[4].Value, "");
-			}
-			return mcr;
-		}
+            }
+            return mcr;
+        }
 
-		private static HttpResponseMessage GetHttpResponseMessage (HttpRequestMessage httpRequestMessage)
-		{
-			using (HttpClient httpClient = new HttpClient ())
-			{
-				httpClient.Timeout = new TimeSpan(0, 0, 30);
+        private static HttpResponseMessage GetHttpResponseMessage(HttpRequestMessage httpRequestMessage)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.Timeout = new TimeSpan(0, 0, 30);
 
-				Task<HttpResponseMessage> responseMessageTask = httpClient.SendAsync (httpRequestMessage);
-				HttpResponseMessage httpResponseMessage = responseMessageTask.Result;
+                Task<HttpResponseMessage> responseMessageTask = httpClient.SendAsync(httpRequestMessage);
+                HttpResponseMessage httpResponseMessage = responseMessageTask.Result;
 
-				return httpResponseMessage;
-			}
-		}
-	}
+                return httpResponseMessage;
+            }
+        }
+    }
     #endregion
 
     #region MCInfo
     public class MCInfo
     {
-		public MCInfo()
+        public MCInfo()
         {
         }
 
-		public MCInfo(string mc) 
-		{
-			MCCode = mc;
-		}
+        public MCInfo(string mc)
+        {
+            MCCode = mc;
+        }
 
         public bool Success { get; set; }
 

@@ -28,8 +28,6 @@ namespace KAS.Trukman.Helpers
 
             if ((!String.IsNullOrEmpty(origin)) && (!String.IsNullOrEmpty(destination)))
             {
-                //string resultData = "";
-
                 var par = new Dictionary<string, object>();
                 par.Add("origin", origin);
                 par.Add("destination", destination);
@@ -37,32 +35,6 @@ namespace KAS.Trukman.Helpers
                 var startPosition = await _localStorage.GetPositionByAddress(origin);
                 var endPosition = await _localStorage.GetPositionByAddress(destination);
                 result = await _localStorage.GetMapRoute(startPosition, endPosition);
-
-                //await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("getMapRoute", par).ContinueWith(t =>
-                //{
-                //    try
-                //    {
-                //        resultData = t.Result["text"].ToString();
-                //    }
-                //    catch (Exception exception)
-                //    {
-                //        Console.WriteLine(exception);
-                //        // To do: Exception message
-                //        throw new Exception("Check internet connection");
-                //    }
-                //});
-
-                //if (!string.IsNullOrEmpty(resultData))
-                //    try
-                //    {
-                //        result = JsonConvert.DeserializeObject<RouteResult>(resultData);
-                //    }
-                //    catch (Exception exception)
-                //    {
-                //        Console.WriteLine(exception);
-                //        // To do: Exception message
-                //        throw new Exception("Bad route response");
-                //    }
             }
             return result;
         }
@@ -101,64 +73,11 @@ OVER_QUERY_LIMIT
         public static async Task<Position> GetPositionByAddress(string address)
         {
             return await _localStorage.GetPositionByAddress(address);
-
-            //IDictionary<string, object> parameters = new Dictionary<string, object>
-            //    {
-            //        { "address", address }
-            //    };
-            //var latitude = 0.0d;
-            //var longitude = 0.0d;
-            //try
-            //{
-            //    await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("geocodeAddress", parameters).ContinueWith(t =>
-            //    {
-            //        try
-            //        {
-            //            latitude = (double)(t.Result["lat"]);
-            //            longitude = (double)(t.Result["lng"]);
-            //        }
-            //        catch (Exception exception)
-            //        {
-            //            Console.WriteLine(exception);
-            //        }
-            //    });
-            //}
-            //catch (Exception exception)
-            //{
-            //    Console.WriteLine(exception);
-            //}
-            //return new Position(latitude, longitude);
         }
 
         public static async Task<string> GetAddressByPosition(Position position)
         {
             return await _localStorage.GetAddressByPosition(position);
-
-            //IDictionary<string, object> parameters = new Dictionary<string, object>
-            //    {
-            //        { "lat", position.Latitude },
-            //        { "lng", position.Longitude }
-            //    };
-            //var address = "";
-            //try
-            //{
-            //    await ParseCloud.CallFunctionAsync<IDictionary<string, object>>("reverseGeocodeAddress", parameters).ContinueWith(t =>
-            //    {
-            //        try
-            //        {
-            //            address = (string)(t.Result["address"]);
-            //        }
-            //        catch (Exception exception)
-            //        {
-            //            Console.WriteLine(exception);
-            //        }
-            //    });
-            //}
-            //catch (Exception exception)
-            //{
-            //    Console.WriteLine(exception);
-            //}
-            //return address;
         }
 
         public static double Distance(Position positionFrom, Position positionTo)

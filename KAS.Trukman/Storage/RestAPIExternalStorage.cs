@@ -370,6 +370,7 @@ namespace KAS.Trukman.Storage
             return new BrokerUser
             {
                 ID = broker.Id.ToString(),
+                Email = broker.Email,
                 UserName = broker.Name,
                 FirstName = broker.ContactTitle,
                 LastName = broker.ContactName,

@@ -14,7 +14,7 @@ namespace KAS.Trukman
 			this.IsPullToRefreshEnabled = true;
 			this.IsGroupingEnabled = true;
 			this.GroupDisplayBinding = new Binding ("Job");
-			if (Device.RuntimePlatform ==  Device.WinPhone)
+			//if (Device.RuntimePlatform ==  Device.WinPhone)
 				this.GroupHeaderTemplate = new DataTemplate(typeof(DelayAlertGroupCell));
 			this.ItemTemplate = new DataTemplate (typeof(DelayAlertItemCell));
 
