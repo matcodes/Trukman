@@ -9,8 +9,8 @@ namespace Trukman.Helpers
     #region MCQuery
     public static class MCQuery
     {
-        private static string ENDPOINT_ADDRESS = "https://www.safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
-        private static string ENDPOINT_ADDRESS_RESERVE = "https://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+        private static string ENDPOINT_ADDRESS = "http://www.safersys.org/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
+        private static string ENDPOINT_ADDRESS_RESERVE = "http://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=MC_MX&query_string=";
 
         private static async Task<string> GetMCContent(string url)
         {
@@ -30,7 +30,7 @@ namespace Trukman.Helpers
             {
                 result = await GetMCContent(url);
             }
-            catch(Exception exc)
+            catch(Exception)
             {
                 url = ENDPOINT_ADDRESS_RESERVE + mc;
                 result = await GetMCContent(url);
