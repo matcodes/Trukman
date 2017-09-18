@@ -36,6 +36,11 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public override void Initialize(params object[] parameters)
         {
             this.Company = (parameters != null && parameters.Length > 0 ? (parameters[0] as Company) : null);
+
+            if (TrukmanContext.User.Role == Data.Enums.UserRole.Driver)
+                this.UserRole = AppLanguages.CurrentLanguage.SignUpDriverLabel;
+            else if (TrukmanContext.User.Role == Data.Enums.UserRole.Dispatch)
+                this.UserRole = AppLanguages.CurrentLanguage.SignUpDispatcherLabel;
         }
 
         protected override void Localize()
@@ -77,9 +82,9 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 this.IsBusy = true;
                 try
                 {
-                    if (TrukmanContext.User.Role == UserRole.Driver)
+                    if (TrukmanContext.User.Role == Data.Enums.UserRole.Driver)
                         await TrukmanContext.InitializeDriverContext();
-                    if (TrukmanContext.User.Role == UserRole.Dispatch)
+                    if (TrukmanContext.User.Role == Data.Enums.UserRole.Dispatch)
                         await TrukmanContext.InitializeDispatcherContext();
                 }
                 catch (Exception exception)
@@ -110,6 +115,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             get { return (this.GetValue("Company") as Company); }
             set { this.SetValue("Company", value); }
+        }
+
+        public string UserRole
+        {
+            get { return (string)this.GetValue("UserRole", ""); }
+            set { this.SetValue("UserRole", value); }
         }
 
         public VisualCommand ShowPrevPageCommand { get; private set; }

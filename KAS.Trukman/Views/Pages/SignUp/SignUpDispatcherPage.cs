@@ -62,7 +62,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = logo
             };
 
-            var signUpOwner = new Label
+            var signUpUser = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -71,14 +71,14 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 FontAttributes = FontAttributes.Bold,
                 TextColor = PlatformHelper.SignUpTextColor
             };
-            signUpOwner.SetBinding(Label.TextProperty, new Binding("SignUpDispatcherLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            signUpUser.SetBinding(Label.TextProperty, new Binding("SignUpDispatcherLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
 
-            var signUpOwnerContent = new ContentView
+            var signUpUserContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
                 Padding = new Thickness(20, 20, 20, 10),
-                Content = signUpOwner
+                Content = signUpUser
             };
 
             var firstName = new AppEntry
@@ -201,7 +201,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 }
             };
             content.Children.Add(logoContent, 0, 0);
-            content.Children.Add(signUpOwnerContent, 0, 1);
+            content.Children.Add(signUpUserContent, 0, 1);
             content.Children.Add(firstNameContent, 0, 2);
             content.Children.Add(lastNameContent, 0, 3);
             content.Children.Add(phoneContent, 0, 4);

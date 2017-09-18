@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using KAS.Trukman.AppContext;
 using HockeyApp;
+using KAS.Trukman.Data.Enums;
 
 namespace KAS.Trukman.Droid.Activities
 {
@@ -61,7 +62,7 @@ namespace KAS.Trukman.Droid.Activities
             }
             else
             {
-                if (TrukmanContext.User.Role == 0)
+                if (TrukmanContext.User.Role == UserRole.Owner || TrukmanContext.User.Role == UserRole.Dispatch)
                 {
                     var intent = new Intent(this, typeof(OCRPdfActivity));
                     intent.SetFlags(ActivityFlags.GrantReadUriPermission);

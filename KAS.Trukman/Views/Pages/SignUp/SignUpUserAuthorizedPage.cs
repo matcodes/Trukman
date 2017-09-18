@@ -57,7 +57,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 Content = logo
             };
 
-            var signUpDriver = new Label
+            var signUpUser = new Label
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -66,14 +66,14 @@ namespace KAS.Trukman.Views.Pages.SignUp
                 FontAttributes = FontAttributes.Bold,
                 TextColor = PlatformHelper.SignUpTextColor
             };
-            signUpDriver.SetBinding(Label.TextProperty, new Binding("SignUpDriverLabel", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
+            signUpUser.SetBinding(Label.TextProperty, "UserRole");
 
-            var signUpDriverContent = new ContentView
+            var signUpContent = new ContentView
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
                 Padding = new Thickness(20, 20, 20, 10),
-                Content = signUpDriver
+                Content = signUpUser
             };
 
             var lockImage = new Image
@@ -144,7 +144,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             };
             content.Children.Add(title, 0, 0);
             content.Children.Add(logoContent, 0, 1);
-            content.Children.Add(signUpDriverContent, 0, 2);
+            content.Children.Add(signUpContent, 0, 2);
             content.Children.Add(lockContent, 0, 3);
             content.Children.Add(welcomeContent, 0, 4);
             content.Children.Add(continueContent, 0, 5);

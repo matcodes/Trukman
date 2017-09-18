@@ -200,7 +200,7 @@ namespace KAS.Trukman.Languages
             this.SignUpEspanolLanguageLabel = "ESP";
             this.SignUpMainLabel = "SIGN UP AS";
             this.SignUpDriverLabel = "DRIVER";
-            this.SignUpDispatcherLabel = "DISPATCH";
+            this.SignUpDispatcherLabel = "DISPATCHER";
             this.SignUpOwnerLabel = "OWNER/OPERATOR";
             this.SignUpUserPendingLabel = "Waiting for {0} to authorize you";
             this.SignUpUserDeclinedLabel = "{0} has declined your authorization request";
