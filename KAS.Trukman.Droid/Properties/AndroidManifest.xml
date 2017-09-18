@@ -20,7 +20,7 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<application android:label="TRUKMAN" android:largeHeap="true" android:icon="@drawable/icon" android:name="md5e78cf67154f813ad1778fd0eea157033.MainApplication" android:allowBackup="true" android:debuggable="true">
-		<activity android:name="com.trukman.ui.pdfactivity">
+		<activity android:name="com.trukman.ui.rateconfirmationactivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

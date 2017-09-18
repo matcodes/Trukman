@@ -219,6 +219,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\OCRPdfActivity.cs" />
+    <Compile Include="Activities\RateConfirmationActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\AppBoxViewRenderer.cs" />
@@ -231,8 +233,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\AndroidPlatformHelper.cs" />
-    <Compile Include="OCRActivity.cs" />
-    <Compile Include="PDFActivity.cs" />
+    <Compile Include="Activities\OCRResultActivity.cs" />
     <Compile Include="Services\TrukmanBootReceiver.cs" />
     <Compile Include="Services\TrukmanService.cs" />
     <Compile Include="Services\TrukmanServiceBinder.cs" />
@@ -430,6 +431,9 @@
     <AndroidResource Include="Resources\drawable\authorized.png" />
     <AndroidResource Include="Resources\drawable\lock_transparent.png" />
     <AndroidResource Include="Resources\drawable\signup_frozen.png" />
+    <AndroidResource Include="Resources\layout\RateConfirmation.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -448,7 +452,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\color\segmented_control_text.xml" />
     <AndroidResource Include="Resources\layout\OCRResult.axml" />
-    <AndroidResource Include="Resources\layout\PDF.axml" />
+    <AndroidResource Include="Resources\layout\OCRPdf.axml" />
     <AndroidResource Include="Resources\values\attrs.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\dimens.xml" />

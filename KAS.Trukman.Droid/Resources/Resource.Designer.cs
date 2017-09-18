@@ -2474,8 +2474,26 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f020070
 			public const int avd_hide_password = 2130837616;
 			
+			// aapt resource value: 0x7f020168
+			public const int avd_hide_password_1 = 2130837864;
+			
+			// aapt resource value: 0x7f020169
+			public const int avd_hide_password_2 = 2130837865;
+			
+			// aapt resource value: 0x7f02016a
+			public const int avd_hide_password_3 = 2130837866;
+			
 			// aapt resource value: 0x7f020071
 			public const int avd_show_password = 2130837617;
+			
+			// aapt resource value: 0x7f02016b
+			public const int avd_show_password_1 = 2130837867;
+			
+			// aapt resource value: 0x7f02016c
+			public const int avd_show_password_2 = 2130837868;
+			
+			// aapt resource value: 0x7f02016d
+			public const int avd_show_password_3 = 2130837869;
 			
 			// aapt resource value: 0x7f020072
 			public const int background = 2130837618;
@@ -3228,17 +3246,17 @@ namespace KAS.Trukman.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0e00e3
-			public const int PDFLayout = 2131624163;
-			
-			// aapt resource value: 0x7f0e00e5
-			public const int PDFView = 2131624165;
+			// aapt resource value: 0x7f0e00e2
+			public const int PDFLayout = 2131624162;
 			
 			// aapt resource value: 0x7f0e00e4
-			public const int PDFWebView = 2131624164;
+			public const int PDFView = 2131624164;
 			
-			// aapt resource value: 0x7f0e00e2
-			public const int ResultText = 2131624162;
+			// aapt resource value: 0x7f0e00e3
+			public const int PDFWebView = 2131624163;
+			
+			// aapt resource value: 0x7f0e00e8
+			public const int ResultText = 2131624168;
 			
 			// aapt resource value: 0x7f0e00ce
 			public const int action0 = 2131624142;
@@ -3354,8 +3372,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e00ab
 			public const int button_update = 2131624107;
 			
-			// aapt resource value: 0x7f0e00e8
-			public const int cancelButton = 2131624168;
+			// aapt resource value: 0x7f0e00e7
+			public const int cancelButton = 2131624167;
 			
 			// aapt resource value: 0x7f0e00cf
 			public const int cancel_action = 2131624143;
@@ -3389,6 +3407,9 @@ namespace KAS.Trukman.Droid
 			
 			// aapt resource value: 0x7f0e0080
 			public const int contractorTitle = 2131624064;
+			
+			// aapt resource value: 0x7f0e00e9
+			public const int createButton = 2131624169;
 			
 			// aapt resource value: 0x7f0e005f
 			public const int custom = 2131624031;
@@ -3426,8 +3447,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e007f
 			public const int distanceValue = 2131624063;
 			
-			// aapt resource value: 0x7f0e00e7
-			public const int doneButton = 2131624167;
+			// aapt resource value: 0x7f0e00e6
+			public const int doneButton = 2131624166;
 			
 			// aapt resource value: 0x7f0e007e
 			public const int durationValue = 2131624062;
@@ -3519,6 +3540,9 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e000c
 			public const int item_touch_helper_previous_elevation = 2131623948;
 			
+			// aapt resource value: 0x7f0e00ea
+			public const int jobButton = 2131624170;
+			
 			// aapt resource value: 0x7f0e00ad
 			public const int label_author = 2131624109;
 			
@@ -3570,8 +3594,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e0052
 			public const int list_item = 2131624018;
 			
-			// aapt resource value: 0x7f0e00ea
-			public const int masked = 2131624170;
+			// aapt resource value: 0x7f0e00ee
+			public const int masked = 2131624174;
 			
 			// aapt resource value: 0x7f0e00d1
 			public const int media_actions = 2131624145;
@@ -3723,8 +3747,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e0012
 			public const int satellite = 2131623954;
 			
-			// aapt resource value: 0x7f0e00e6
-			public const int scanButton = 2131624166;
+			// aapt resource value: 0x7f0e00e5
+			public const int scanButton = 2131624165;
 			
 			// aapt resource value: 0x7f0e0036
 			public const int screen = 2131623990;
@@ -3777,6 +3801,9 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e007c
 			public const int select_dialog_listview = 2131624060;
 			
+			// aapt resource value: 0x7f0e00ec
+			public const int sendButton = 2131624172;
+			
 			// aapt resource value: 0x7f0e0066
 			public const int shortcut = 2131624038;
 			
@@ -3788,6 +3815,9 @@ namespace KAS.Trukman.Droid
 			
 			// aapt resource value: 0x7f0e0040
 			public const int showTitle = 2131624000;
+			
+			// aapt resource value: 0x7f0e00eb
+			public const int signButton = 2131624171;
 			
 			// aapt resource value: 0x7f0e0089
 			public const int smallLabel = 2131624073;
@@ -3900,8 +3930,8 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e0002
 			public const int view_offset_helper = 2131623938;
 			
-			// aapt resource value: 0x7f0e00e9
-			public const int visible = 2131624169;
+			// aapt resource value: 0x7f0e00ed
+			public const int visible = 2131624173;
 			
 			// aapt resource value: 0x7f0e00c3
 			public const int volume_item_container = 2131624131;
@@ -4228,25 +4258,28 @@ namespace KAS.Trukman.Droid
 			public const int notification_template_part_time = 2130903109;
 			
 			// aapt resource value: 0x7f030046
-			public const int OCRResult = 2130903110;
+			public const int OCRPdf = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int PDF = 2130903111;
+			public const int OCRResult = 2130903111;
 			
 			// aapt resource value: 0x7f030048
-			public const int SegmentedControl = 2130903112;
+			public const int RateConfirmation = 2130903112;
 			
 			// aapt resource value: 0x7f030049
-			public const int select_dialog_item_material = 2130903113;
+			public const int SegmentedControl = 2130903113;
 			
 			// aapt resource value: 0x7f03004a
-			public const int select_dialog_multichoice_material = 2130903114;
+			public const int select_dialog_item_material = 2130903114;
 			
 			// aapt resource value: 0x7f03004b
-			public const int select_dialog_singlechoice_material = 2130903115;
+			public const int select_dialog_multichoice_material = 2130903115;
 			
 			// aapt resource value: 0x7f03004c
-			public const int support_simple_spinner_dropdown_item = 2130903116;
+			public const int select_dialog_singlechoice_material = 2130903116;
+			
+			// aapt resource value: 0x7f03004d
+			public const int support_simple_spinner_dropdown_item = 2130903117;
 			
 			static Layout()
 			{
