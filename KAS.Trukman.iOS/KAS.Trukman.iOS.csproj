@@ -216,7 +216,9 @@
     <InterfaceDefinition Include="Native ViewControllers\ContractorInfoViewController.xib" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
   </ItemGroup>
