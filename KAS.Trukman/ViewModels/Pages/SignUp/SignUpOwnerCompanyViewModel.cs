@@ -43,6 +43,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             this.Phone = (info != null ? info.Phone : "");
             this.EMail = "";
             this.FleetSize = "";
+
+            this.IsSubmitEnabled = true;
         }
 
         protected override void DoPropertyChanged(string propertyName)
@@ -103,6 +105,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             Task.Run(async () =>
             {
                 this.IsBusy = true;
+                this.IsSubmitEnabled = false;
                 try
                 {
                     var emailTester = new Regex("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
@@ -142,6 +145,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 }
                 finally
                 {
+                    this.IsSubmitEnabled = true;
                     this.IsBusy = false;
                 }
             }).LogExceptions("SignUpOwnerCompanyViewModel Submit");
@@ -321,6 +325,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             get { return (string)this.GetValue("ConfirmationCode"); }
             set { this.SetValue("ConfirmationCode", value); }
+        }
+
+        public bool IsSubmitEnabled
+        {
+            get { return (bool)this.GetValue("IsSubmitEnabled", true); }
+            set { this.SetValue("IsSubmitEnabled", value); }
         }
 
         public VisualCommand ShowPrevPageCommand { get; private set; }

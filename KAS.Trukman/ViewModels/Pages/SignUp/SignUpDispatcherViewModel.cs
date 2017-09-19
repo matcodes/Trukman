@@ -59,6 +59,8 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         public override void Initialize(params object[] parameters)
         {
             base.Initialize(parameters);
+
+            this.IsSubmitEnabled = true;
         }
 
         protected override void DoPropertyChanged(string propertyName)
@@ -174,6 +176,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             Task.Run(async () =>
             {
                 this.IsBusy = true;
+                this.IsSubmitEnabled = false;
                 try
                 {
                     var dispatcherInfo = new DispatcherInfo
@@ -198,6 +201,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 }
                 finally
                 {
+                    this.IsSubmitEnabled = true;
                     this.IsBusy = false;
                 }
             }).LogExceptions("SignUpDispatcherViewModel Submit");
@@ -407,6 +411,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             get { return (string)this.GetValue("ConfirmationCode"); }
             set { this.SetValue("ConfirmationCode", value); }
+        }
+
+        public bool IsSubmitEnabled
+        {
+            get { return (bool)this.GetValue("IsSubmitEnabled", true); }
+            set { this.SetValue("IsSubmitEnabled", value); }
         }
 
         public ObservableCollection<Company> Companies { get; private set; }

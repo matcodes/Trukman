@@ -174,6 +174,7 @@ namespace KAS.Trukman.Views.Pages.SignUp
             };
             submit.SetBinding(AppRoundButton.TextProperty, new Binding("SignUpSubmitButtonText", BindingMode.OneWay, null, null, null, AppLanguages.CurrentLanguage));
             submit.SetBinding(AppRoundButton.CommandProperty, "SubmitCommand");
+            submit.SetBinding(AppRoundButton.IsEnabledProperty, "IsSubmitEnabled");
 
             var submitContent = new ContentView
             {

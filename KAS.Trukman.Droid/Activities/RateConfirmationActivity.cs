@@ -28,6 +28,8 @@ namespace KAS.Trukman.Droid.Activities
 
             this.SetContentView(Resource.Layout.RateConfirmation);
 
+            this.ActionBar.Title = "Rate Confirmation";
+
             if (this.Intent.Action == Intent.ActionSend)
             {
                 var bundle = this.Intent.Extras;
@@ -42,11 +44,27 @@ namespace KAS.Trukman.Droid.Activities
             jobButton.Click += JobButton_Click;
 
             var signButton = this.FindViewById<Button>(Resource.Id.signButton);
+            signButton.Enabled = false;
             signButton.Click += SignButton_Click;
 
             var sendButton = this.FindViewById<Button>(Resource.Id.sendButton);
+            sendButton.Enabled = false;
             sendButton.Click += SendButton_Click;
+        }
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
+
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Resource.Id.menu_done)
+                this.StartActivity(typeof(MainActivity));
+
+            return base.OnOptionsItemSelected(item);
         }
 
         private void JobButton_Click(object sender, EventArgs e)

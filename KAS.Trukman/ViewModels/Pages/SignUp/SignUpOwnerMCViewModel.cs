@@ -42,6 +42,13 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             this.Title = AppLanguages.CurrentLanguage.SignUpPageName;
         }
 
+        public override void Initialize(params object[] parameters)
+        {
+            base.Initialize(parameters);
+
+            this.IsSubmitEnabled = true;
+        }
+
         private void ShowPrevPage(object parameter)
         {
             PopPageMessage.Send();
@@ -62,6 +69,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
             Task.Run(async () =>
             {
                 this.IsBusy = true;
+                this.IsSubmitEnabled = false;
                 try
                 {
                     MCInfo mcInfo = await MCQuery.VerifyMC(this.MCCode);
@@ -82,6 +90,7 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
                 }
                 finally
                 {
+                    this.IsSubmitEnabled = true;
                     this.IsBusy = false;
                 }
             }).LogExceptions("SignUpOwnerMCViewModel Submit");
@@ -108,6 +117,12 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             get { return (bool)this.GetValue("PopupVisible", false); }
             set { this.SetValue("PopupVisible", value); }
+        }
+
+        public bool IsSubmitEnabled
+        {
+            get { return (bool)this.GetValue("IsSubmitEnabled", true); }
+            set { this.SetValue("IsSubmitEnabled", value); }
         }
 
         public VisualCommand ShowPrevPageCommand { get; private set; }

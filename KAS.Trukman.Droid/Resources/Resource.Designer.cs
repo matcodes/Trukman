@@ -3582,6 +3582,9 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f0e00d1
 			public const int media_actions = 2131624145;
 			
+			// aapt resource value: 0x7f0e00ef
+			public const int menu_done = 2131624175;
+			
 			// aapt resource value: 0x7f0e0045
 			public const int middle = 2131624005;
 			
@@ -4269,6 +4272,22 @@ namespace KAS.Trukman.Droid
 			}
 			
 			private Layout()
+			{
+			}
+		}
+		
+		public partial class Menu
+		{
+			
+			// aapt resource value: 0x7f100000
+			public const int top_menus = 2131755008;
+			
+			static Menu()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Menu()
 			{
 			}
 		}
