@@ -16,6 +16,7 @@ using Android.Graphics;
 using System.IO;
 using KAS.Trukman.OCR;
 using System.Text.RegularExpressions;
+using KAS.Trukman.Data.Classes;
 
 namespace KAS.Trukman.Droid.Activities
 {
@@ -46,6 +47,27 @@ namespace KAS.Trukman.Droid.Activities
             Android.Net.Uri uri = this.Intent.Data;
             if (uri != null)
                 ShowPdfDocument(uri);
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.ocr_result_menu, menu);
+
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Resource.Id.menu_save)
+            {
+
+            }
+            else if (item.ItemId == Resource.Id.menu_save)
+            {
+
+            }
+
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnResume()
@@ -171,47 +193,54 @@ namespace KAS.Trukman.Droid.Activities
 
         void ShowResult(string result)
         {
-            string[] extraNames = new string[]
-            {
-                "JobNumber",
-                "Weight",
-                "ShipperName",
-                "LoadFrom",
-                "PickupTime",
-                "ReceiverName",
-                "Destination",
-                "DropTime",
-                "Price"
-            };
-
-            string[] items = new string[]
-            {
-                "Job number",
-                "Weight",
-                "Shipper name",
-                "Load from",
-                "Pickup time",
-                "Receiver name",
-                "Destination",
-                "Drop time",
-                "Price"
-            };
-
             var resultIntent = new Intent(this, typeof(OCRResultActivity));
             resultIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            resultIntent.PutExtra("text", result);
+            this.StartActivity(resultIntent);
 
-            alert.SetTitle(result);
-            alert.SetItems(items, (o, e) =>
-            {
-                resultIntent.PutExtra(extraNames[e.Which], result);
-                this.StartActivity(resultIntent);
-            });
-            alert.SetNegativeButton("Cancel", delegate { });
-            RunOnUiThread(() =>
-            {
-                alert.Show();
-            });
+
+
+            //string[] extraNames = new string[]
+            //{
+            //    "JobNumber",
+            //    "Weight",
+            //    "ShipperName",
+            //    "LoadFrom",
+            //    "PickupTime",
+            //    "ReceiverName",
+            //    "Destination",
+            //    "DropTime",
+            //    "Price"
+            //};
+
+            //string[] items = new string[]
+            //{
+            //    "Job number",
+            //    "Weight",
+            //    "Shipper name",
+            //    "Load from",
+            //    "Pickup time",
+            //    "Receiver name",
+            //    "Destination",
+            //    "Drop time",
+            //    "Price"
+            //};
+
+            //var resultIntent = new Intent(this, typeof(OCRResultActivity));
+            //resultIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+            //AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+            //alert.SetTitle(result);
+            //alert.SetItems(items, (o, e) =>
+            //{
+            //    resultIntent.PutExtra(extraNames[e.Which], result);
+            //    this.StartActivity(resultIntent);
+            //});
+            //alert.SetNegativeButton("Cancel", delegate { });
+            //RunOnUiThread(() =>
+            //{
+            //    alert.Show();
+            //});
         }
     }
 }

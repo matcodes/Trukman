@@ -2474,8 +2474,26 @@ namespace KAS.Trukman.Droid
 			// aapt resource value: 0x7f020070
 			public const int avd_hide_password = 2130837616;
 			
+			// aapt resource value: 0x7f020168
+			public const int avd_hide_password_1 = 2130837864;
+			
+			// aapt resource value: 0x7f020169
+			public const int avd_hide_password_2 = 2130837865;
+			
+			// aapt resource value: 0x7f02016a
+			public const int avd_hide_password_3 = 2130837866;
+			
 			// aapt resource value: 0x7f020071
 			public const int avd_show_password = 2130837617;
+			
+			// aapt resource value: 0x7f02016b
+			public const int avd_show_password_1 = 2130837867;
+			
+			// aapt resource value: 0x7f02016c
+			public const int avd_show_password_2 = 2130837868;
+			
+			// aapt resource value: 0x7f02016d
+			public const int avd_show_password_3 = 2130837869;
 			
 			// aapt resource value: 0x7f020072
 			public const int background = 2130837618;
@@ -3583,7 +3601,13 @@ namespace KAS.Trukman.Droid
 			public const int media_actions = 2131624145;
 			
 			// aapt resource value: 0x7f0e00ef
-			public const int menu_done = 2131624175;
+			public const int menu_cancel = 2131624175;
+			
+			// aapt resource value: 0x7f0e00f1
+			public const int menu_done = 2131624177;
+			
+			// aapt resource value: 0x7f0e00f0
+			public const int menu_save = 2131624176;
 			
 			// aapt resource value: 0x7f0e0045
 			public const int middle = 2131624005;
@@ -4280,7 +4304,10 @@ namespace KAS.Trukman.Droid
 		{
 			
 			// aapt resource value: 0x7f100000
-			public const int top_menus = 2131755008;
+			public const int ocr_result_menu = 2131755008;
+			
+			// aapt resource value: 0x7f100001
+			public const int top_menus = 2131755009;
 			
 			static Menu()
 			{
