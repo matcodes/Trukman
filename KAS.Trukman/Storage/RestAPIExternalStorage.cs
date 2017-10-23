@@ -924,7 +924,8 @@ namespace KAS.Trukman.Storage
                 DBA = companyInfo.DBA,
                 Email = companyInfo.EMail,
                 Phone = companyInfo.Phone,
-                FeetSize = companyInfo.FleetSize
+                FeetSize = companyInfo.FleetSize,
+                MCNumber = companyInfo.MCCode,
             };
             owner = await OwnerLoginAsync(owner);
             Console.WriteLine("Компания: {0}", owner);

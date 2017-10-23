@@ -34,6 +34,9 @@ namespace KAS.Trukman.Data.API
 
         [JsonProperty("FeetSize")]
         public int FeetSize { get; set; }
+
+        [JsonProperty("MCNumber")]
+        public string MCNumber { get; set; }
     }
     #endregion
 }
