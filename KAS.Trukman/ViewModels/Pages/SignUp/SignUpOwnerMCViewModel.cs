@@ -46,7 +46,20 @@ namespace KAS.Trukman.ViewModels.Pages.SignUp
         {
             base.Initialize(parameters);
 
-            this.IsSubmitEnabled = true;
+            this.MCCode = "";
+        }
+
+        protected override void DoPropertyChanged(string propertyName)
+        {
+            if (propertyName == "MCCode")
+                this.SetSubmitEnabled();
+
+            base.DoPropertyChanged(propertyName);
+        }
+
+        private void SetSubmitEnabled()
+        {
+            this.IsSubmitEnabled = (!string.IsNullOrEmpty(this.MCCode));
         }
 
         private void ShowPrevPage(object parameter)
